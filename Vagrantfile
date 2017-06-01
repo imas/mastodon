@@ -44,7 +44,7 @@ source /home/vagrant/.rvm/scripts/rvm
 
 # Configure database
 sudo -u postgres createuser -U postgres vagrant -s
-sudo -u postgres createdb -U postgres mastodon_development
+sudo -u postgres createdb -U postgres imastodon_development
 
 # Install gems and node modules
 gem install bundler
