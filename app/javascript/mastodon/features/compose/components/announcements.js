@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Immutable from 'immutable';
 import PropTypes from 'prop-types';
 import Link from 'react-router/lib/Link';
@@ -34,25 +33,20 @@ const hashtags = Immutable.fromJS([
   'みんなのP名刺',
 ]);
 
-const mapStateToProps = state => ({
-  isEmptyHome: state.getIn(['timelines', 'home', 'items']).size < 5,
-});
-
 class Announcements extends React.PureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
-    isEmptyHome: PropTypes.bool,
+    homeSize: PropTypes.number,
+    isLoading: PropTypes.bool,
   };
 
   state = {
-    show: true,
-    first: true,
+    show: false,
   };
 
   onClick = () => {
-    const currentShow = this.state.show;
-    this.setState({show: !currentShow});
+    this.setState({show: !this.state.show});
   }
   nl2br (text) {
     return text.split(/(\n)/g).map(function (line) {
@@ -64,12 +58,7 @@ class Announcements extends React.PureComponent {
   }
 
   render () {
-    const { intl, isEmptyHome } = this.props;
-
-    if(this.state.first && !isEmptyHome) {
-      this.state.first = false;
-      this.state.show = false;
-    }
+    const { intl } = this.props;
 
     return (
       <ul className='announcements'>
@@ -92,6 +81,12 @@ class Announcements extends React.PureComponent {
     );
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (!nextProps.isLoading && (nextProps.homeSize === 0 || this.props.homeSize !== nextProps.homeSize)) {
+        this.setState({show: nextProps.homeSize < 5});
+    }
+  }
+
 }
 
-export default connect(mapStateToProps)(injectIntl(Announcements));
+export default injectIntl(Announcements);
