@@ -52,9 +52,7 @@ class Announcements extends React.PureComponent {
   nl2br (text) {
     return text.split(/(\n)/g).map((line, i) => {
       if (line.match(/(\n)/g)) {
-        return (
-          <br key={i} />
-        );
+        return React.createElement('br', { key: i });
       }
       return line;
     });
