@@ -141,7 +141,8 @@ class Status < ApplicationRecord
     end
 
     def as_tag_timeline(tag, account = nil, local_only = false)
-      query = timeline_scope(local_only).tagged_with(tag)
+      where(visibility: [:public, :unlisted])
+      query = timeline_scope(local_only, false).tagged_with(tag)
 
       apply_timeline_filters(query, account, local_only)
     end
@@ -200,11 +201,13 @@ class Status < ApplicationRecord
 
     private
 
-    def timeline_scope(local_only = false)
+    def timeline_scope(local_only = false, public_only = true)
       starting_scope = local_only ? Status.local_only : Status
-      starting_scope
-        .with_public_visibility
-        .without_reblogs
+
+      if public_only
+        starting_scope = starting_scope.with_public_visibility
+      end
+      starting_scope.without_reblogs
     end
 
     def apply_timeline_filters(query, account, local_only)
