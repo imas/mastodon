@@ -20,6 +20,12 @@ module Paperclip
         if src_filesize > dst_filesize
           attachment.instance.file_content_type = 'image/jpeg'
           return dst
+        else
+          png = Paperclip::TempfileFactory.new.generate(attachment.instance.file_file_name)
+          convert(':src :png',
+                src: File.expand_path(file.path),
+                png: File.expand_path(png.path))
+          return png
         end
       end
       tmp_file = Paperclip::TempfileFactory.new.generate(attachment.instance.file_file_name)
