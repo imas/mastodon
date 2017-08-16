@@ -12,6 +12,11 @@ const makeGetStatusIds = () => createSelector([
   (state)           => state.getIn(['meta', 'me']),
 ], (columnSettings, statusIds, statuses, me) => {
   const rawRegex = columnSettings.getIn(['regex', 'body'], '').trim();
+  const rawHashtags = columnSettings.getIn(['hashtags', 'body'], '').trim();
+
+  const hashtags = rawHashtags.split(",")
+    .map(hashtag => hashtag.trim())
+    .filter(hashtag => "" != hashtag);
   let regex      = null;
 
   try {
@@ -35,6 +40,11 @@ const makeGetStatusIds = () => createSelector([
     if (showStatus && regex && statusForId.get('account') !== me) {
       const searchIndex = statusForId.get('reblog') ? statuses.getIn([statusForId.get('reblog'), 'search_index']) : statusForId.get('search_index');
       showStatus = !regex.test(searchIndex);
+    }
+
+    const tags = statusForId.get('tags')
+    if (showStatus && hashtags && tags) {
+      showStatus = !tags.some(tag => hashtags.includes(tag.get('name').toString()));
     }
 
     return showStatus;

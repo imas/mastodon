@@ -7,6 +7,7 @@ import SettingText from '../../../components/setting_text';
 
 const messages = defineMessages({
   filter_regex: { id: 'home.column_settings.filter_regex', defaultMessage: 'Filter out by regular expressions' },
+  filter_hashtags: { id: 'home.column_settings.filter_hashtags', defaultMessage: 'Hashtag filter' },
   settings: { id: 'home.settings', defaultMessage: 'Column settings' },
 });
 
@@ -38,6 +39,7 @@ export default class ColumnSettings extends React.PureComponent {
 
         <div className='column-settings__row'>
           <SettingText prefix='home_timeline' settings={settings} settingKey={['regex', 'body']} onChange={onChange} label={intl.formatMessage(messages.filter_regex)} />
+          <SettingText prefix='home_timeline' settings={settings} settingKey={['hashtags', 'body']} onChange={onChange} label={intl.formatMessage(messages.filter_hashtags)} />
         </div>
       </div>
     );
