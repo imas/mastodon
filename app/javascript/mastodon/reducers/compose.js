@@ -137,6 +137,8 @@ const setDefaultText = (state, text) => {
   return state.withMutations(map => {
     map.update('text', oldText => oldText.replace(replaceRE, '') + (text === '' ? '' : ` ${text}`));
     map.set('defaultText', text);
+    map.set('default_privacy', text === '' ? 'public' : 'unlisted');
+    map.set('privacy', text === '' ? 'public' : 'unlisted');
   });
 };
 
@@ -258,8 +260,7 @@ export default function compose(state = initialState, action) {
   case COMPOSE_EMOJI_INSERT:
     return insertEmoji(state, action.position, action.emoji);
   case COMPOSE_LOCK_TAG:
-    return setDefaultText(state, action.tag)
-      .set('privacy', action.tag !== '' ? 'unlisted' : 'public');
+    return setDefaultText(state, action.tag);
   default:
     return state;
   }
