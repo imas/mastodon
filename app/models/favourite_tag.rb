@@ -17,4 +17,5 @@ class FavouriteTag < ApplicationRecord
   accepts_nested_attributes_for :tag
 
   validates :tag, uniqueness: { scope: :account }
+  validates :visibility, presence: true
 end
