@@ -8,6 +8,12 @@ const messages = defineMessages({
   favourite_tags: { id: 'compose_form.favourite_tags', defaultMessage: 'Favourite tags' },
 });
 
+const icons = {
+  public: 'globe',
+  unlisted: 'unlock-alt',
+  private: 'lock',
+};
+
 @injectIntl
 class FavouriteTags extends React.PureComponent {
 
@@ -23,16 +29,20 @@ class FavouriteTags extends React.PureComponent {
     this.props.refreshFavouriteTags();
   }
 
-  handleLockTag (tag) {
+  handleLockTag (tag, visibility) {
     const tagName = `#${tag}`;
     return ((e) => {
       e.preventDefault();
       if (this.props.locktag === tagName) {
-        this.props.onLockTag('');
+        this.props.onLockTag('', '');
       } else {
-        this.props.onLockTag(tagName);
+        this.props.onLockTag(tagName, visibility);
       }
     }).bind(this);
+  }
+
+  visibilityToIcon (val) {
+    return icons[val];
   }
 
   render () {
@@ -48,8 +58,11 @@ class FavouriteTags extends React.PureComponent {
           <i className='fa fa-hashtag' />
           {tag.get('name')}
         </Link>
+        <div className='favourite-tags__icon'>
+          <i className={`fa fa-fw fa-${this.visibilityToIcon(tag.get('visibility'))}`} />
+        </div>
         <div className='favourite-tags__lock'>
-          <a href={`#${tag.get('name')}`} onClick={this.handleLockTag(tag.get('name'))}>
+          <a href={`#${tag.get('name')}`} onClick={this.handleLockTag(tag.get('name'), tag.get('visibility'))}>
             <i className={this.props.locktag === `#${tag.get('name')}` ? 'fa fa-lock' : 'fa fa-pencil-square-o'} />
           </a>
         </div>
