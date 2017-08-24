@@ -50,6 +50,9 @@ class FavouriteTags extends React.PureComponent {
 
     const tags = this.props.tags.map(tag => (
       <li key={tag.get('name')}>
+        <div className='favourite-tags__icon'>
+          <i className={`fa fa-fw fa-${this.visibilityToIcon(tag.get('visibility'))}`} />
+        </div>
         <Link
            to={`/timelines/tag/${tag.get('name')}`}
            className='favourite-tags__name'
@@ -58,9 +61,6 @@ class FavouriteTags extends React.PureComponent {
           <i className='fa fa-hashtag' />
           {tag.get('name')}
         </Link>
-        <div className='favourite-tags__icon'>
-          <i className={`fa fa-fw fa-${this.visibilityToIcon(tag.get('visibility'))}`} />
-        </div>
         <div className='favourite-tags__lock'>
           <a href={`#${tag.get('name')}`} onClick={this.handleLockTag(tag.get('name'), tag.get('visibility'))}>
             <i className={this.props.locktag === `#${tag.get('name')}` ? 'fa fa-lock' : 'fa fa-pencil-square-o'} />

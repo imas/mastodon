@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 20170818001626) do
     t.integer "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "visibility", default: "", null: false
+    t.integer "visibility", default: 0, null: false
     t.index ["account_id", "tag_id"], name: "index_favourite_tags_on_account_id_and_tag_id", unique: true
   end
 

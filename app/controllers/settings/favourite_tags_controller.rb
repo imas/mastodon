@@ -5,7 +5,7 @@ class Settings::FavouriteTagsController < ApplicationController
   before_action :set_favourite_tag, only: [:destroy]
 
   def index
-    @favourite_tag = FavouriteTag.new(tag: Tag.new, visibility: "public")
+    @favourite_tag = FavouriteTag.new(tag: Tag.new, visibility: FavouriteTag.visibilities[:public])
   end
 
   def create
