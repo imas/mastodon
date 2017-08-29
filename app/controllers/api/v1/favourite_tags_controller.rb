@@ -19,8 +19,11 @@ class Api::V1::FavouriteTagsController < Api::BaseController
     @favourite_tag = @account.favourite_tags.where(tag: tag).where.not(visibility: favourite_tag_visibility).first
     @favourite_tag.destroy unless @favourite_tag.nil?
     @favourite_tag = FavouriteTag.new(account: @account, tag: tag, visibility: favourite_tag_visibility)
-    @favourite_tag.save
-    index
+    if @favourite_tag.save
+      index
+    else
+      render json: current_account.favourite_tags.includes(:tag).map(&:to_json_for_api), status: :conflict
+    end
   end
 
   def destroy
