@@ -21,62 +21,81 @@ RSpec.describe Api::V1::FavouriteTagsController, type: :controller do
     let(:tag_name) { 'dummy_tag' }
     let!(:tag) { Fabricate(:tag, name: tag_name) }
 
-    it 'create the favourite tag' do
-      expect {
-        post :create, params: { tag: tag_name, visibility: 'public' }
-      }.to change(FavouriteTag, :count).by(1)
-      expect(JSON.parse(response.body, symbolize_names: true).map! {|item|
-        item.except(:id)
-      }).to eq ([{ :name => tag_name, :visibility => 'public' }])
-    end
-
-    it 'returns http success' do
-      expect(response).to have_http_status(:success)
+    context 'when the tag is a new favourite tag' do
+      it 'create a new favourite tag and returns http success' do
+        expect {
+          post :create, params: { tag: tag_name, visibility: 'public' }
+        }.to change(FavouriteTag, :count).by(1)
+        expect(JSON.parse(response.body, symbolize_names: true).map! {|item|
+          item.except(:id)
+        }).to eq ([{ name: tag_name, visibility: 'public' }])
+        expect(response).to have_http_status(:success)
+      end
     end
 
     context 'when the tag has already been favourite.' do
       before do
-        post :create, params: { tag: tag_name, visibility: 'public' }
+        Fabricate(:favourite_tag, account: user.account, tag: tag)
       end
-
-      context 'when the tag has the same visibility as already been favourite one.' do
-        before do
+      
+      it 'does not create new favourite_tag and returns http 409' do
+        expect {
           post :create, params: { tag: tag_name, visibility: 'public' }
-        end
-
-        it 'returns http 409' do
-          expect(response).to have_http_status(:conflict)
-        end
+        }.not_to change(FavouriteTag, :count)
+        expect(response).to have_http_status(:conflict)
       end
+    end
+  end
 
-      context 'when the tag has the different visibility as already been favourite one.' do
-        it 'should destroy the old one, create the new one and should render index template' do
-          expect {
-            post :create, params: { tag: tag_name, visibility: 'unlisted' }
-          }.not_to change(FavouriteTag, :count)
-          expect(JSON.parse(response.body, symbolize_names: true).map! {|item|
-            item.except(:id)
-          }).to eq ([{ :name => tag_name, :visibility => 'unlisted' }])
-        end
+  describe 'DELETE #destroy' do
+    let(:tag_name) { 'dummy_tag' }
+    let!(:tag) { Fabricate(:tag, name: tag_name) }
+    
+    before do
+      Fabricate(:favourite_tag, account: user.account, tag: tag)
+    end
 
-        it 'returns http success' do
-          expect(response).to have_http_status(:success)
-        end
+    context 'when try to destroy the favourite tag' do
+      it 'destroy the favourite tag and returns http success' do
+        delete :destroy, params: { tag: tag_name }
+        expect(FavouriteTag.count).to eq 0
+        expect(response).to have_http_status(:success)
+      end
+    end
+    
+    context 'when try to destroy an unregistered tag' do
+      it 'returns http 404' do
+        delete :destroy, params: { tag: 'unregistered' }
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
   
-  describe 'DELETE #destroy' do
-    let!(:tag) { Fabricate(:tag, name: 'dummy_tag') }
-    let!(:favourite_tag) { Fabricate(:favourite_tag, account: user.account, tag: tag) }
-
-    it 'destroy the favourite tag' do
-      delete :destroy, params: { tag: favourite_tag.name }
-      expect(FavouriteTag.count).to eq 0
+  describe 'PUT #update' do
+    let(:tag_name) { 'dummy_tag' }
+    let!(:tag) { Fabricate(:tag, name: tag_name) }
+    
+    before do
+      Fabricate(:favourite_tag, account: user.account, tag: tag)
     end
-
-    it 'returns http success' do
-      expect(response).to have_http_status(:success)
+    
+    context 'when try to change the visibility setting of a registered tag' do
+      it 'changes the visibility setting and returns http success' do
+        put :update, params: { tag: tag_name, visibility: 'unlisted' }
+        expect(FavouriteTag.count).to eq 1
+        expect(JSON.parse(response.body, symbolize_names: true).map! {|item|
+          item.except(:id)
+        }).to eq ([{ name: tag_name, visibility: 'unlisted' }])
+        expect(response).to have_http_status(:success)
+      end
+    end
+    
+    context 'when try to change the visibility setting of an unregistered tag' do
+      it 'changes the visibility setting and returns http 404' do
+        put :update, params: { tag: 'unregistered', visibility: 'unlisted' }
+        expect(FavouriteTag.count).to eq 1
+        expect(response).to have_http_status(:not_found)
+      end
     end
   end
 end

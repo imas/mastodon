@@ -216,7 +216,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :favourite_tags, only: [:index, :create, :destroy], param: :tag
+      resources :favourite_tags, only: [:index, :create, :update, :destroy], param: :tag
     end
 
     namespace :web do
