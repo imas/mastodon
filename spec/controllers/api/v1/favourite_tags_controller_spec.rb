@@ -40,8 +40,11 @@ RSpec.describe Api::V1::FavouriteTagsController, type: :controller do
       
       it 'does not create new favourite_tag and returns http 409' do
         expect {
-          post :create, params: { tag: tag_name, visibility: 'public' }
+          post :create, params: { tag: tag_name, visibility: 'private' }
         }.not_to change(FavouriteTag, :count)
+        expect(
+          JSON.parse(response.body, symbolize_names: true).except(:id)
+        ).to eq ({ name: tag_name, visibility: 'public' })
         expect(response).to have_http_status(:conflict)
       end
     end

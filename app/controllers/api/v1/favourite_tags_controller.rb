@@ -14,18 +14,18 @@ class Api::V1::FavouriteTagsController < Api::BaseController
   end
 
   def create
-    tag = find_tag
+    tag = find_or_init_tag
     @favourite_tag = FavouriteTag.new(account: @account, tag: tag, visibility: favourite_tag_visibility)
     if @favourite_tag.save
       index
     else
-      render json: current_favourite_tags, status: :conflict
+      render json: find_fav_tag_by(tag).to_json_for_api, status: :conflict
     end
   end
 
   def update
-    tag = find_tag
-    @favourite_tag = @account.favourite_tags.find_by(tag: tag)
+    tag = find_or_init_tag
+    @favourite_tag = find_fav_tag_by(tag)
     if @favourite_tag.nil?
       render json: current_favourite_tags, status: :not_found
     else
@@ -40,8 +40,8 @@ class Api::V1::FavouriteTagsController < Api::BaseController
   end
 
   def destroy
-    tag = find_tag
-    @favourite_tag = @account.favourite_tags.find_by(tag: tag)
+    tag = find_or_init_tag
+    @favourite_tag = find_fav_tag_by(tag)
     if @favourite_tag.nil?
       render json: current_favourite_tags, status: :not_found
     else
@@ -60,8 +60,12 @@ class Api::V1::FavouriteTagsController < Api::BaseController
     @account = current_user.account
   end
 
-  def find_tag
+  def find_or_init_tag
     Tag.find_or_initialize_by(name: tag_params[:tag])
+  end
+
+  def find_fav_tag_by(tag)
+    @account.favourite_tags.find_by(tag: tag)
   end
 
   def favourite_tag_visibility
