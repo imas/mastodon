@@ -10,6 +10,7 @@ class Api::V1::FavouriteTagsController < Api::BaseController
   respond_to :json
 
   def index
+
     render json: current_favourite_tags
   end
 
