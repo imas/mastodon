@@ -23,9 +23,8 @@ RSpec.describe Api::V1::FavouriteTagsController, type: :controller do
 
     context 'when the tag is a new favourite tag' do
       it 'create a new favourite tag and returns http success' do
-        expect {
-          post :create, params: { tag: tag_name, visibility: 'public' }
-        }.to change(FavouriteTag, :count).by(1)
+        post :create, params: { tag: tag_name, visibility: 'public' }
+        expect(FavouriteTag.count).to eq 4
         expect(
           JSON.parse(response.body, symbolize_names: true).except(:id)
         ).to eq ({ name: tag_name, visibility: 'public' })
@@ -61,7 +60,7 @@ RSpec.describe Api::V1::FavouriteTagsController, type: :controller do
     context 'when try to destroy the favourite tag' do
       it 'destroy the favourite tag and returns http success' do
         delete :destroy, params: { tag: tag_name }
-        expect(FavouriteTag.count).to eq 0
+        expect(FavouriteTag.count).to eq 3
         expect(response).to have_http_status(:success)
       end
     end
