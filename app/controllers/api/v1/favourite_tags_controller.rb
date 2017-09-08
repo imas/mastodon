@@ -24,7 +24,7 @@ class Api::V1::FavouriteTagsController < Api::BaseController
   end
 
   def destroy
-    tag = find_or_init_tag
+    tag = find_tag
     @favourite_tag = find_fav_tag_by(tag)
     if @favourite_tag.nil?
       render json: { succeeded: false }, status: :not_found
@@ -46,6 +46,10 @@ class Api::V1::FavouriteTagsController < Api::BaseController
 
   def find_or_init_tag
     Tag.find_or_initialize_by(name: tag_params[:tag])
+  end
+  
+  def find_tag
+    Tag.find_by(name: tag_params[:tag])
   end
 
   def find_fav_tag_by(tag)
