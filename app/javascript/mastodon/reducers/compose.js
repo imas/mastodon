@@ -138,9 +138,7 @@ const setDefaultTag = (state, text, visibility) => {
   return state.withMutations(map => {
     map.update('text', oldText => oldText.replace(replaceRE, '') + (text === '' ? '' : ` ${text}`));
     map.set('defaultText', text);
-    if (visibility !== '') {
-      map.set('privacy', visibility);
-    }
+    map.set('privacy', visibility === '' ? state.get('default_privacy') : visibility);
     map.set('tag_privacy', visibility);
   });
 };
