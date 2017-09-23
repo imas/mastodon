@@ -135,10 +135,11 @@ const insertEmoji = (state, position, emojiData) => {
 
 const setDefaultTag = (state, text, visibility) => {
   const replaceRE = new RegExp(` *${state.get('defaultText')}`);
+  const privacy = state.get('privacy') !== null ? state.get('privacy') : state.get('default_privacy');
   return state.withMutations(map => {
     map.update('text', oldText => oldText.replace(replaceRE, '') + (text === '' ? '' : ` ${text}`));
     map.set('defaultText', text);
-    map.set('privacy', visibility === '' ? state.get('default_privacy') : visibility);
+    map.set('privacy', visibility === '' ? privacy : privacyPreference(privacy, visibility));
     map.set('tag_privacy', visibility);
   });
 };
