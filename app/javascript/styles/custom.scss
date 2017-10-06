@@ -1,6 +1,6 @@
 @import 'application';
-@import 'favourite_tags';
-
-.getting-started {
-  background-size: contain;
-}
+@import 'imastodon/announcements';
+@import 'imastodon/favourite_tags';
+@import 'imastodon/getting_started';
+@import 'imastodon/statuses';
+@import 'imastodon/tutorial';

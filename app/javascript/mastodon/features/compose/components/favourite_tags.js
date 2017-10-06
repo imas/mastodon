@@ -35,11 +35,18 @@ class FavouriteTags extends React.PureComponent {
   }
 
   componentWillUpdate (nextProps, nextState) {
-    const icon = icons.concat().reverse().find(icon => nextState.lockedVisibility.includes(icon.key));
-    this.props.onLockTag(
-      nextState.lockedTag.join(' '),
-      typeof icon === 'undefined' ? '' : icon.key
-    );
+    // タグ操作に変更があった場合
+    if (!this.state.lockedTag.equals(nextState.lockedTag)) {
+      const icon = icons.concat().reverse().find(icon => nextState.lockedVisibility.includes(icon.key));
+      this.execLockTag(
+        nextState.lockedTag.join(' '),
+        typeof icon === 'undefined' ? '' : icon.key
+      );
+    }
+  }
+
+  execLockTag (tag, icon) {
+    this.props.onLockTag(tag, icon);
   }
 
   handleLockTag (tag, visibility) {
@@ -69,7 +76,7 @@ class FavouriteTags extends React.PureComponent {
           <i className={`fa fa-fw fa-${this.visibilityToIcon(tag.get('visibility'))}`} />
         </div>
         <Link
-           to={`/timelines/tag/${tag.get('name')}`}
+           to={`/timelines/tag/${tag.get('name').toLowerCase()}`}
            className='favourite-tags__name'
            key={tag.get('name')}
         >
