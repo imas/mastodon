@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171010025614) do
+ActiveRecord::Schema.define(version: 20171105012345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,15 @@ ActiveRecord::Schema.define(version: 20171010025614) do
     t.index ["username", "domain"], name: "index_accounts_on_username_and_domain", unique: true
   end
 
+  create_table "announcements", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.text "body", default: "", null: false
+    t.json "link"
+    t.boolean "disabled", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "blocks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -130,11 +139,11 @@ ActiveRecord::Schema.define(version: 20171010025614) do
   end
 
   create_table "favourite_tags", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
-    t.bigint "account_id", null: false
-    t.bigint "tag_id", null: false
     t.index ["account_id", "tag_id"], name: "index_favourite_tags_on_account_id_and_tag_id", unique: true
   end
 
