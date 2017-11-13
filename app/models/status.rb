@@ -226,9 +226,9 @@ class Status < ApplicationRecord
       starting_scope = starting_scope.without_reblogs
 
       if public_only
-        starting_scope = starting_scope.with_public_visibility
+        starting_scope.with_public_visibility
       else
-        starting_scope = starting_scope.with_public_or_unlisted_visibility(unlisted_replies)
+        starting_scope.with_public_or_unlisted_visibility(unlisted_replies)
       end
     end
 
