@@ -1,4 +1,3 @@
-$yoshino-blue: #02a0c2;
 
 /* 全体の背景色 */
 .ui
@@ -6,7 +5,7 @@ $yoshino-blue: #02a0c2;
   -webkit-background-size: 128px 128px;
   -moz-background-size: 128px 128px;
   background-size: 128px 128px;
-  background-color: #dcece4;
+  background-color: $yoshino-white;
   background-image: -webkit-gradient(linear, 0 0, 100% 0, color-stop(.5, $yoshino-blue), color-stop(.5, transparent), to(transparent));
   background-image: -moz-linear-gradient(left, $yoshino-blue 50%, transparent 50%, transparent);
   background-image: -o-linear-gradient(left, $yoshino-blue 50%, transparent 50%, transparent);
@@ -16,7 +15,7 @@ $yoshino-blue: #02a0c2;
 .drawer__inner
 {
   opacity: 0.9;
-  color: #dcece4 !important;
+  color: $yoshino-white !important;
 }
 
 /* トゥートの背景色と文字色 */
@@ -30,14 +29,14 @@ $yoshino-blue: #02a0c2;
 .suggestion-tags__body>ul>li,
 .suggestion-tags__body>ul>li *
 {
-  background-color: #eff6f6 !important;
-  color: #2f0016 !important;
+  background-color: $white !important;
+  color: $black !important;
 }
 
 .scrollable *:not(.fa)
 {
-  background-color: #eff6f6;
-  color: #2f0016;
+  background-color: $white;
+  color: $black;
 }
 
 /* ボタンの背景色 */
@@ -47,17 +46,17 @@ span.ellipsis,
 .active,
 .search__icon *
 {
-  color: #067193 !important;
+  color: $yoshino-skyblue !important;
 }
 
 .compose-form__buttons .active
 {
-  background-color: #282c37;
+  background-color: $yoshino-darkblue;
 }
 
 .button
 {
-  background-color: #9b0016;
+  background-color: $yoshino-lightred;
   opacity: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -66,7 +65,7 @@ span.ellipsis,
 
 .button:hover
 {
-  background-color: #b11a33;
+  background-color: $yoshino-red;
   opacity: 0.8;
 }
 
@@ -85,8 +84,8 @@ span.ellipsis,
 .trend-tags__header,
 .column-header__collapsible-inner
 {
-  background-color: #3e0d1d;
-  color: #ffffff;
+  background-color: $yoshino-black;
+  color: $white;
 }
 
 /* 角を丸くする */
@@ -100,29 +99,39 @@ span.ellipsis,
   /* Firefox用 */;
 }
 
+.status__content {
+
+  border-radius: 0px;
+  /* CSS3草案 */
+  -webkit-border-radius: 0px;
+  /* Safari,Google Chrome用 */
+  -moz-border-radius: 0px;
+  /* Firefox用 */;
+}
+
 /* 未収載トゥートの色分け */
 .status-unlisted
 {
-  background: #ffd7df;
+  background: $yoshinodon-unlisted;
 }
 
 /* スクロールバーの設定 */
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-track-piece
 {
-  background: #dcece4;
+  background: $yoshino-white;
 }
 
 ::-webkit-scrollbar:hover,
 ::-webkit-scrollbar-track-piece:hover
 {
-  background: #fff28a;
+  background: $yoshino-yellow;
 }
 
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:hover
 {
-  background: #d77826;
+  background: $yoshino-orange;
 }
 
 ::-webkit-scrollbar-thumb,
