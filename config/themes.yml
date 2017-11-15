@@ -14,3 +14,4 @@ sidem_sem: styles/theme_sidem_sem.scss
 sidem_kogado: styles/theme_sidem_kogado.scss
 sidem_flags: styles/theme_sidem_flags.scss
 sidem_legenders: styles/theme_sidem_leg.scss
+yoshinodon: styles/theme_yoshinodon.scss
