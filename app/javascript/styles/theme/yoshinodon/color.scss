@@ -1,13 +1,37 @@
-// // Commonly used web colors
-$black: #2b0316;            // Black
-$white: #dfece5;            // White
-$yoshino-black: $black;
-$yoshino-blue: #02a0c2;
+
+// Commonly used web colors
+$black: #000000;            // Black
+$white: #ffffff;            // White
+$success-green: #79bd9a;    // Padua
+$error-red: #df405a;        // Cerise
+$warning-red: #ff5050;      // Sunset Orange
+$gold-star: #ca8f04;        // Dark Goldenrod
+// yoshinodon colors
+$yoshino-black: #2b0316;
 $yoshino-white: #dcece4;
-$yoshinodon-unlisted: #ffd7df;
-$yoshino-skyblue: #067193;
-$yoshino-darkblue: #282c37;
-$yoshino-lightred: #9b0016;
-$yoshino-red: #b11a33;
-$yoshino-yellow: #fff28a;
+$yoshino-red: #9b0016;
 $yoshino-orange: #d77826;
+$yoshino-yellow: #fff28a;
+$yoshino-blue: #02a0c2;
+$yoshino-darkblue: #282c37;
+// Values from the classic Mastodon UI
+$classic-base-color: #282c37;         // Midnight Express
+$classic-primary-color: #9baec8;      // Echo Blue
+$classic-secondary-color: #d9e1e8;    // Pattens Blue
+$classic-highlight-color: #2b90d9;    // Summer Sky
+
+// Variables for defaults in UI
+$base-shadow-color: $black !default;
+$base-overlay-background: $black !default;
+$base-border-color: $white !default;
+$simple-background-color: $white !default;
+$primary-text-color: $white !default;
+$valid-value-color: $success-green !default;
+$error-value-color: $error-red !default;
+
+// Tell UI to use selected colors
+$ui-base-color: $classic-base-color !default;                  // Darkest
+$ui-base-lighter-color: lighten($ui-base-color, 26%) !default; // Lighter darkest
+$ui-primary-color: $classic-primary-color !default;            // Lighter
+$ui-secondary-color: $classic-secondary-color !default;        // Lightest
+$ui-highlight-color: $classic-highlight-color !default;        // Vibrant
