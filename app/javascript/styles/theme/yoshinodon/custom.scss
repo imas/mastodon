@@ -80,21 +80,25 @@ span.ellipsis,
 }
 
 /* 角を丸くする */
-* {
+.ui,
+.drawer__header,
+.drawer__header *,
+.column-header__wrapper *,
+.scrollable,
+.search,
+.search *,
+.drawer__inner,
+.feed,
+.compose-form,
+.announcements,
+.favourite-tags,
+.favourite-tags *,
+.compose-form__buttons * {
   border-radius: 10px;
   /* CSS3草案 */
   -webkit-border-radius: 10px;
   /* Safari,Google Chrome用 */
   -moz-border-radius: 10px;
-  /* Firefox用 */;
-}
-
-.status__content {
-  border-radius: 0;
-  /* CSS3草案 */
-  -webkit-border-radius: 0;
-  /* Safari,Google Chrome用 */
-  -moz-border-radius: 0px;
   /* Firefox用 */;
 }
 
