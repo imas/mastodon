@@ -90,10 +90,9 @@ span.ellipsis,
 }
 
 .status__content {
-
-  border-radius: 0px;
+  border-radius: 0;
   /* CSS3草案 */
-  -webkit-border-radius: 0px;
+  -webkit-border-radius: 0;
   /* Safari,Google Chrome用 */
   -moz-border-radius: 0px;
   /* Firefox用 */;
