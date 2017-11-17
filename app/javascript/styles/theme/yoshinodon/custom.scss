@@ -28,8 +28,8 @@ body.app-body,
 .empty-column-indicator,
 .suggestion-tags__body>ul>li,
 .suggestion-tags__body>ul>li * {
-  background-color: $white !important;
-  color: $black !important;
+  background-color: $white;
+  color: $black;
 }
 
 .scrollable *:not(.fa) {
@@ -43,7 +43,7 @@ body.app-body,
 span.ellipsis,
 .active,
 .search__icon * {
-  color: $yoshino-skyblue !important;
+  color: $yoshino-blue;
 }
 
 .compose-form__buttons .active {
@@ -51,7 +51,7 @@ span.ellipsis,
 }
 
 .button {
-  background-color: $yoshino-lightred;
+  background-color: $yoshino-red;
   opacity: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -59,7 +59,7 @@ span.ellipsis,
 }
 
 .button:hover {
-  background-color: $yoshino-red;
+  background-color: darken($yoshino-red, 5%);
   opacity: 0.8;
 }
 
@@ -107,7 +107,7 @@ span.ellipsis,
 
 /* 未収載トゥートの色分け */
 .status-unlisted {
-  background: $yoshinodon-unlisted;
+  background: lighten($yoshino-red, 62%);
 }
 
 /* スクロールバーの設定 */
