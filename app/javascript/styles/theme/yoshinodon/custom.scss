@@ -1,7 +1,6 @@
 
 /* 全体の背景色 */
-.ui
-{
+.ui {
   -webkit-background-size: 128px 128px;
   -moz-background-size: 128px 128px;
   background-size: 128px 128px;
@@ -12,8 +11,7 @@
   background-image: linear-gradient(left, $yoshino-blue 50%, transparent 50%, transparent);
 }
 
-.drawer__inner
-{
+.drawer__inner {
   opacity: 0.9;
   color: $yoshino-white !important;
 }
@@ -27,14 +25,12 @@
 .drawer__header>a:hover *,
 .empty-column-indicator,
 .suggestion-tags__body>ul>li,
-.suggestion-tags__body>ul>li *
-{
+.suggestion-tags__body>ul>li * {
   background-color: $white !important;
   color: $black !important;
 }
 
-.scrollable *:not(.fa)
-{
+.scrollable *:not(.fa) {
   background-color: $white;
   color: $black;
 }
@@ -44,18 +40,15 @@
 .status__content a>span,
 span.ellipsis,
 .active,
-.search__icon *
-{
+.search__icon * {
   color: $yoshino-skyblue !important;
 }
 
-.compose-form__buttons .active
-{
+.compose-form__buttons .active {
   background-color: $yoshino-darkblue;
 }
 
-.button
-{
+.button {
   background-color: $yoshino-lightred;
   opacity: 1;
   white-space: nowrap;
@@ -63,8 +56,7 @@ span.ellipsis,
   text-overflow: clip;
 }
 
-.button:hover
-{
+.button:hover {
   background-color: $yoshino-red;
   opacity: 0.8;
 }
@@ -82,15 +74,13 @@ span.ellipsis,
 .search-results__header,
 .favourite-tags *,
 .trend-tags__header,
-.column-header__collapsible-inner
-{
+.column-header__collapsible-inner {
   background-color: $yoshino-black;
   color: $white;
 }
 
 /* 角を丸くする */
-*
-{
+* {
   border-radius: 10px;
   /* CSS3草案 */
   -webkit-border-radius: 10px;
@@ -110,33 +100,28 @@ span.ellipsis,
 }
 
 /* 未収載トゥートの色分け */
-.status-unlisted
-{
+.status-unlisted {
   background: $yoshinodon-unlisted;
 }
 
 /* スクロールバーの設定 */
 ::-webkit-scrollbar,
-::-webkit-scrollbar-track-piece
-{
+::-webkit-scrollbar-track-piece {
   background: $yoshino-white;
 }
 
 ::-webkit-scrollbar:hover,
-::-webkit-scrollbar-track-piece:hover
-{
+::-webkit-scrollbar-track-piece:hover {
   background: $yoshino-yellow;
 }
 
 ::-webkit-scrollbar-thumb,
-::-webkit-scrollbar-thumb:hover
-{
+::-webkit-scrollbar-thumb:hover {
   background: $yoshino-orange;
 }
 
 ::-webkit-scrollbar-thumb,
-::-webkit-scrollbar-track
-{
+::-webkit-scrollbar-track {
   border-radius: 4px;
   -webkit-border-radius: 4px;
 }
