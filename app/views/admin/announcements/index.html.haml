@@ -1,0 +1,32 @@
+- content_for :page_title do
+  = t('admin.settings.announcement.title')
+
+= simple_form_for @announcement, url: admin_announcements_path, :method => :post do |f|
+  = render 'shared/error_messages', object: @announcement
+  .fields-group
+    = f.input :id, as: :hidden
+    = f.input :title, placeholder: t('admin.settings.announcement.title')
+    = f.input :body,
+      as: :text,
+      wrapper: :with_block_label,
+      label: false,
+      hint: t('admin.settings.announcement.desc_html'),
+      input_html: { rows: 8 }
+    = f.input :link,
+      as: :text,
+      wrapper: :with_block_label,
+      label: t('admin.settings.announcement.link'),
+      hint: t('admin.settings.announcement.link_html'),
+      input_html: { rows: 2 }
+  = f.button :button, type: 'submit'
+%hr
+
+%table.table
+  %tbody
+    - @announcements.each_with_index do |announcement, i|
+      %tr
+        %td
+          = announcement['title']
+        %td
+          = table_link_to 'pencil', t('admin.settings.announcement.edit'), edit_admin_announcement_path(announcement['id'])
+          = table_link_to 'trash', t('admin.settings.announcement.delete'), admin_announcement_path(announcement['id']), method: :delete

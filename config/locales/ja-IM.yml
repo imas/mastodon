@@ -212,6 +212,13 @@ ja-IM:
       admin_announcement:
         desc_html: トップページの投稿メニューの上に管理者メッセージが表示されます。<br>HTMLタグが利用可能です。
         title: 管理者からのメッセージ
+      announcement:
+        delete: 削除
+        desc_html: トップページの投稿メニューの下にお知らせが表示されます。<br>HTMLタグが利用可能です。
+        edit: 編集
+        link: ページ内リンク
+        link_html: 任意入力です。<br>1行ごとに、"URL|リンク表示名" の形式で入力してください。
+        title: お知らせ
       bootstrap_timeline_accounts:
         desc_html: 複数のユーザー名はコンマで区切ります。ローカルの公開アカウントのみ有効です。指定しない場合は管理者がデフォルトで指定されます。
         title: 新規ユーザーが自動フォローするアカウント

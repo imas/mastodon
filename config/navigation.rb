@@ -31,6 +31,7 @@ SimpleNavigation::Configuration.run do |navigation|
       admin.item :sidekiq, safe_join([fa_icon('diamond fw'), 'Sidekiq']), sidekiq_url, link_html: { target: 'sidekiq' }
       admin.item :pghero, safe_join([fa_icon('database fw'), 'PgHero']), pghero_url, link_html: { target: 'pghero' }
       admin.item :settings, safe_join([fa_icon('cogs fw'), t('admin.settings.title')]), edit_admin_settings_url
+      admin.item :announcements, safe_join([fa_icon('sticky-note fw'), t('admin.settings.announcement.title')]), admin_announcements_url
       admin.item :custom_emojis, safe_join([fa_icon('smile-o fw'), t('admin.custom_emojis.title')]), admin_custom_emojis_url, highlights_on: %r{/admin/custom_emojis}
     end
 
