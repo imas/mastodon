@@ -3,8 +3,7 @@ import Announcements from '../components/announcements';
 
 const mapStateToProps = state => {
   return {
-    homeSize: state.getIn(['timelines', 'home', 'items']).size,
-    isLoading: state.getIn(['timelines', 'home', 'isLoading']),
+    announcements: state.getIn(['meta', 'announcements']),
   };
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import Immutable from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import Link from 'react-router-dom/Link';
 import { defineMessages, injectIntl } from 'react-intl';
 import IconButton from '../../../components/announcement_icon_button';
@@ -26,69 +27,63 @@ Collapsable.propTypes = {
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
-  welcome: { id: 'welcome.message', defaultMessage: 'Welcome to {domain}!' },
 });
-
-const hashtags = Immutable.fromJS([
-  'Pの自己紹介',
-  'みんなのP名刺',
-]);
 
 class Announcements extends React.PureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
-    homeSize: PropTypes.number,
-    isLoading: PropTypes.bool,
+    announcements: ImmutablePropTypes.list,
   };
 
   state = {
-    show: false,
-    isLoaded: false,
+    showList: ImmutableList(),
   };
 
-  onClick = () => {
-    this.setState({ show: !this.state.show });
+  componentWillMount() {
+    this.setState({ showList: this.props.announcements.map(v => v === undefined) });
   }
-  nl2br (text) {
-    return text.split(/(\n)/g).map((line, i) => {
-      if (line.match(/(\n)/g)) {
-        return React.createElement('br', { key: i });
-      }
-      return line;
-    });
+
+  onClick = (e) => {
+    var index = e.currentTarget.parentNode.getAttribute('data-id');
+    this.setState(({ showList }) => ({ showList: showList.update(index, v => !v) }));
   }
 
   render () {
-    const { intl } = this.props;
+    const { intl, announcements } = this.props;
 
     return (
       <ul className='announcements'>
-        <li>
-          <Collapsable isVisible={this.state.show} fullHeight={300} minHeight={20} >
-            <div className='announcements__body'>
-              <p>{ this.nl2br(intl.formatMessage(messages.welcome, { domain: document.title }))}</p>
-              {hashtags.map((hashtag, i) =>
-                <Link key={i} to={`/timelines/tag/${hashtag}`} tabIndex={this.state.show ? undefined : -1}>
-                  #{hashtag}
-                </Link>
-              )}
+        {announcements.map((announcement, i) =>
+          <li key={i}>
+            <Collapsable isVisible={this.state.showList.get(i)} fullHeight={300} minHeight={20} >
+              <div className='announcements__body'>
+                <p>
+                  {announcement.get('title')}
+                  <br />
+                  <br />
+                  <span dangerouslySetInnerHTML={{ __html: announcement.get('body') }} />
+                </p>
+                {announcement.get('link').map((link) => {
+                  if (link.get('is_outer_link')) {
+                    return (
+                      <a href={link.get('url')} target='_blank'>{link.get('name')}</a>
+                    );
+                  } else {
+                    return (
+                      <Link key={link.get('url')} to={link.get('url')}>{link.get('name')}</Link>
+                    );
+                  }
+                })}
+              </div>
+            </Collapsable>
+            <div className='announcements__icon' data-id={i}>
+              <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={this.onClick} size={20} animate active={this.state.showList.get(i)} />
             </div>
-          </Collapsable>
-          <div className='announcements__icon'>
-            <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={this.onClick} size={20} animate active={this.state.show} />
-          </div>
-        </li>
+          </li>
+        )}
       </ul>
     );
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!this.state.isLoaded) {
-      if (!nextProps.isLoading && (nextProps.homeSize === 0 || this.props.homeSize !== nextProps.homeSize)) {
-        this.setState({ show: nextProps.homeSize < 5, isLoaded: true });
-      }
-    }
   }
 
 }
