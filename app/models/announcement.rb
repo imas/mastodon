@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: Announcements
@@ -12,7 +13,5 @@
 #
 
 class Announcement < ApplicationRecord
-
   validates :title, :body, presence: true
-
 end

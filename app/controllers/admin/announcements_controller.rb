@@ -2,7 +2,6 @@
 
 module Admin
   class AnnouncementsController < BaseController
-
     before_action :set_announcements
 
     def index
@@ -42,7 +41,7 @@ module Admin
       {
         url: value[0],
         name: value[1],
-        is_outer_link: value[0].start_with?('http')
+        is_outer_link: value[0].start_with?('http'),
       }
     end
 
@@ -50,7 +49,7 @@ module Admin
       if value.blank?
         nil
       else
-        value.lines.map {|line| link_param_to_hash(line.chomp.split('|')) }
+        value.lines.map { |line| link_param_to_hash(line.chomp.split('|')) }
       end
     end
 
@@ -58,7 +57,7 @@ module Admin
       if value.blank?
         value
       else
-        value.map {|link| link.values.shift(2).join('|') }.join("\r\n")
+        value.map { |link| link.values.shift(2).join('|') }.join("\r\n")
       end
     end
 
@@ -67,7 +66,7 @@ module Admin
     end
 
     def set_announcements
-      @announcements = Announcement.where(disabled: false).order(:id);
+      @announcements = Announcement.where(disabled: false).order(:id)
     end
   end
 end
