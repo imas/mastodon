@@ -5,3 +5,9 @@
 .column-link {
   padding: 12px 15px;
 }
+
+@media screen and (max-height: 480px) {
+  .getting-started__wrapper {
+    height: 360px;
+  }
+}
