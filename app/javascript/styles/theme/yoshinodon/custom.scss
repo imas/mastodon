@@ -13,10 +13,10 @@ body.app-body,
   background-image: linear-gradient(left, $yoshino-blue 50%, transparent 50%, transparent);
 }
 
-// .drawer__inner {
-//   opacity: 0.9;
-//   color: $yoshino-white !important;
-// }
+.drawer__inner {
+  opacity: 0.9;
+  color: $yoshino-white !important;
+}
 
 // /* トゥートの背景色と文字色 */
 // .scrollable,
