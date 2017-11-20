@@ -19,24 +19,21 @@ body.app-body,
   // color: $yoshino-white !important;
 }
 
-// /* トゥートの背景色と文字色 */
-// .scrollable,
-// .drawer__inner.darker,
-// .search-results__section *,
-// .tabs-bar__link:hover,
-// .drawer__header>a:hover,
-// .drawer__header>a:hover *,
-// .empty-column-indicator,
-// .suggestion-tags__body>ul>li,
-// .suggestion-tags__body>ul>li * {
-//   background-color: $yoshino-white;
-//   color: $yoshino-black;
-// }
-
-// .scrollable *:not(.fa) {
-//   background-color: $yoshino-white;
-//   color: $yoshino-black;
-// }
+/* トゥートの背景色と文字色 */
+.scrollable,
+.scrollable [role=feed],
+.drawer__inner.darker,
+.search-results__section *,
+.tabs-bar__link:hover,
+.drawer__header>a:hover,
+.drawer__header>a:hover *,
+.empty-column-indicator,
+.suggestion-tags__body>ul>li,
+.suggestion-tags__body>ul>li *,
+.display-name strong {
+  background-color: adjust-hue($yoshino-white, 30deg);
+  color: $yoshino-black;
+}
 
 // /* ボタンの背景色 */
 // .status__content a,
