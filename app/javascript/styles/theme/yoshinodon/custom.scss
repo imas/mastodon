@@ -15,7 +15,8 @@ body.app-body,
 
 .drawer__inner {
   opacity: 0.9;
-  color: $yoshino-white !important;
+  /* tootの文字数カウントに適用 */
+  // color: $yoshino-white !important;
 }
 
 // /* トゥートの背景色と文字色 */
