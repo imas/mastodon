@@ -16,7 +16,7 @@ body.app-body,
 .drawer__inner {
   opacity: 0.9;
   /* tootの文字数カウントに適用 */
-  // color: $yoshino-white !important;
+  // color: $yoshino-white !important; // なんかここだけこの色なの変じゃないですか
 }
 
 /* トゥートの背景色と文字色 */
@@ -36,6 +36,7 @@ body.app-body,
 }
 
 /* ボタンの背景色 */
+// これよくわかんない
 // .status__content a,
 // .status__content a>span,
 // span.ellipsis,
@@ -67,71 +68,71 @@ body.app-body,
   opacity: 0.8;
 }
 
-// /* ヘッダーの背景色と文字色 */
-// .column-header,
-// .column-header *,
-// .getting-started__wrapper,
-// .getting-started__wrapper *,
-// .column-icon,
-// .tabs-bar,
-// .drawer__header,
-// .drawer__header *,
-// .column-back-button,
-// .search-results__header,
-// .favourite-tags *,
-// .trend-tags__header,
-// .column-header__collapsible-inner {
-//   background-color: $yoshino-black;
-//   color: $white;
-// }
+/* ヘッダーの背景色と文字色 */
+.column-header,
+.column-header *,
+.getting-started__wrapper,
+.getting-started__wrapper *,
+.column-icon,
+.tabs-bar,
+.drawer__header,
+.drawer__header *,
+.column-back-button,
+.search-results__header,
+.favourite-tags *,
+.trend-tags__header,
+.column-header__collapsible-inner {
+  background-color: $yoshino-black;
+  color: $white;
+}
 
-// /* 角を丸くする */
-// .ui,
-// .drawer__header,
-// .drawer__header *,
-// .column *,
-// .column-header__wrapper *,
-// .scrollable,
-// .search,
-// .search *,
-// .drawer__inner,
-// .feed,
-// .compose-form,
-// .announcements,
-// .favourite-tags,
-// .favourite-tags *,
-// .compose-form__buttons * {
-//   border-radius: 10px;
-//   /* CSS3草案 */
-//   -webkit-border-radius: 10px;
-//   /* Safari,Google Chrome用 */
-//   -moz-border-radius: 10px;
-//   /* Firefox用 */;
-// }
+/* 角を丸くする */
+.ui,
+.drawer__header,
+.drawer__header *,
+.column *,
+.column-header__wrapper *,
+.scrollable,
+.search,
+.search *,
+.drawer__inner,
+.feed,
+.compose-form,
+.announcements,
+.favourite-tags,
+.favourite-tags *,
+.compose-form__buttons * {
+  border-radius: 10px;
+  /* CSS3草案 */
+  -webkit-border-radius: 10px;
+  /* Safari,Google Chrome用 */
+  -moz-border-radius: 10px;
+  /* Firefox用 */;
+}
 
-// /* 未収載トゥートの色分け */
-// .status-unlisted {
-//   background: lighten($yoshino-red, 62%);
-// }
+/* 未収載トゥートの色分け */
+.status-unlisted {
+  background: lighten($yoshino-red, 62%);
+}
 
-// /* スクロールバーの設定 */
-// ::-webkit-scrollbar,
-// ::-webkit-scrollbar-track-piece {
-//   background: $yoshino-white;
-// }
+/* スクロールバーの設定 */
+::-webkit-scrollbar,
+::-webkit-scrollbar-track-piece {
+  background: $yoshino-white;
+}
 
-// ::-webkit-scrollbar:hover,
-// ::-webkit-scrollbar-track-piece:hover {
-//   background: $yoshino-yellow;
-// }
+::-webkit-scrollbar:hover,
+::-webkit-scrollbar-track-piece:hover {
+  background: $yoshino-yellow;
+}
 
-// ::-webkit-scrollbar-thumb,
-// ::-webkit-scrollbar-thumb:hover {
-//   background: $yoshino-orange;
-// }
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  background: $yoshino-orange;
+}
 
-// ::-webkit-scrollbar-thumb,
-// ::-webkit-scrollbar-track {
-//   border-radius: 4px;
-//   -webkit-border-radius: 4px;
-// }
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
