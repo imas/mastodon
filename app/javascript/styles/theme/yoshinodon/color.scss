@@ -16,7 +16,7 @@ $yoshino-yellow: #fff28a;
 $yoshino-blue: #02a0c2;
 $yoshino-darkblue: #282c37;
 // Values from the classic Mastodon UI
-$classic-base-color: adjust-hue($yoshino-white, 30deg);         // Midnight Express
+$classic-base-color: $yoshino-black;         // Midnight Express
 $classic-primary-color: $yoshino-black-secondary;      // Echo Blue
 $classic-secondary-color: #d9e1e8;    // Pattens Blue
 $classic-highlight-color: #2b90d9;    // Summer Sky
@@ -26,7 +26,7 @@ $base-shadow-color: $black !default;
 $base-overlay-background: $black !default;
 $base-border-color: $white !default;
 $simple-background-color: $white !default;
-$primary-text-color: $yoshino-black-secondary !default;
+$primary-text-color: $white !default;
 $valid-value-color: $success-green !default;
 $error-value-color: $error-red !default;
 
