@@ -35,7 +35,7 @@ body.app-body,
   color: $yoshino-black;
 }
 
-// /* ボタンの背景色 */
+/* ボタンの背景色 */
 // .status__content a,
 // .status__content a>span,
 // span.ellipsis,
@@ -44,22 +44,28 @@ body.app-body,
 //   color: $yoshino-blue;
 // }
 
-// .compose-form__buttons .active {
-//   background-color: $yoshino-darkblue;
-// }
+.compose-form__buttons {
+  .text-icon-button,
+  .icon-button {
+    color: lighten($black, 33%);
+  }
+  .active {
+    background-color: $yoshino-darkblue;
+  }
+}
 
-// .button {
-//   background-color: $yoshino-red;
-//   opacity: 1;
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: clip;
-// }
+.button {
+  background-color: $yoshino-red;
+  opacity: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
 
-// .button:hover {
-//   background-color: darken($yoshino-red, 5%);
-//   opacity: 0.8;
-// }
+.button:hover {
+  background-color: darken($yoshino-red, 5%);
+  opacity: 0.8;
+}
 
 // /* ヘッダーの背景色と文字色 */
 // .column-header,
