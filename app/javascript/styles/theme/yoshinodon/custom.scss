@@ -72,6 +72,14 @@ body.app-body,
   }
 }
 
+/* 投稿フォームの名前欄 */
+.navigation-bar {
+  color: $blue;
+
+  strong {
+    color: $white;
+  }
+}
 
 /* ヘッダーの背景色と文字色 */
 .column-header,
