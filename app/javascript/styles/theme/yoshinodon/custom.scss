@@ -72,12 +72,25 @@ body.app-body,
   }
 }
 
-/* 投稿フォームの名前欄 */
+/* 投稿フォームのプロフィール欄 */
 .navigation-bar {
   color: $blue;
 
   strong {
     color: $white;
+  }
+}
+
+/* アナウンス */
+.announcements__body {
+  & > a {
+    border: solid;
+    border-color: $black;
+    border-width: 1px;
+  }
+  a,
+  p {
+    color: $black;
   }
 }
 
