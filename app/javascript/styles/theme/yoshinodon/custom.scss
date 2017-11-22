@@ -15,6 +15,7 @@ body.app-body,
 
 .drawer__inner {
   opacity: 0.9;
+  background-color: lighten($black, 13%);
   /* tootの文字数カウントに適用 */
   // color: $yoshino-white !important; // なんかここだけこの色なの変じゃないですか
 }
@@ -45,6 +46,7 @@ body.app-body,
 //   color: $yoshino-blue;
 // }
 
+/* カメラ, 公開範囲, CW */
 .compose-form__buttons {
   .text-icon-button,
   .icon-button {
@@ -55,18 +57,21 @@ body.app-body,
   }
 }
 
-.button {
+/* 投稿ボタン */
+.compose-form .button {
   background-color: $yoshino-red;
+  color: $white;
   opacity: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: clip;
+
+  &:hover {
+    background-color: darken($yoshino-red, 5%);
+    opacity: 0.8;
+  }
 }
 
-.button:hover {
-  background-color: darken($yoshino-red, 5%);
-  opacity: 0.8;
-}
 
 /* ヘッダーの背景色と文字色 */
 .column-header,
