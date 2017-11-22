@@ -94,6 +94,11 @@ body.app-body,
   }
 }
 
+/* 書き込みエリア */
+.autosuggest-textarea__textarea {
+  color: $black;
+}
+
 /* ヘッダーの背景色と文字色 */
 .column-header,
 .column-header *,
