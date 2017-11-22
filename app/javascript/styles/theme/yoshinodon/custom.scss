@@ -30,9 +30,12 @@ body.app-body,
 .drawer__header>a:hover *,
 .empty-column-indicator,
 .suggestion-tags__body>ul>li,
-.suggestion-tags__body>ul>li *,
-.display-name strong {
+.suggestion-tags__body>ul>li * {
   background-color: adjust-hue($yoshino-white, 30deg);
+  color: $yoshino-black;
+}
+
+.display-name__html {
   color: $yoshino-black;
 }
 
