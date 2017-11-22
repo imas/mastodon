@@ -59,6 +59,10 @@ body.app-body,
   }
 }
 
+.compose-form__warning {
+  background-color: $blue;
+}
+
 /* トゥート欄の名前 */
 .display-name__html {
   color: $yoshino-black;
