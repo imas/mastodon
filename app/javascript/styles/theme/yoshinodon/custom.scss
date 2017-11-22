@@ -16,8 +16,16 @@ body.app-body,
 .drawer__inner {
   opacity: 0.9;
   background-color: lighten($black, 13%);
-  /* tootの文字数カウントに適用 */
-  // color: $yoshino-white !important; // なんかここだけこの色なの変じゃないですか
+}
+
+/* tootの文字数カウント */
+.character-counter {
+  color: $yoshino-white; // なんかここだけこの色なの変じゃないですか
+}
+
+/* 検索欄子 */
+.search__input {
+  background-color: lighten($black, 13%);
 }
 
 /* トゥートの背景色と文字色 */
