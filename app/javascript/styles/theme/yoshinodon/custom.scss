@@ -18,7 +18,7 @@ body.app-body,
   background-color: lighten($black, 13%);
 }
 
-/* tootの文字数カウント */
+/* tootの文字数カウンタ */
 .character-counter {
   color: $yoshino-white; // なんかここだけこの色なの変じゃないですか
 }
@@ -43,6 +43,24 @@ body.app-body,
   color: $yoshino-black;
 }
 
+/* 公開範囲 */
+.privacy-dropdown__option {
+  .privacy-dropdown__option__content,
+  .privacy-dropdown__option__content strong,
+  .privacy-dropdown__option__icon {
+    color: $yoshino-black;
+  }
+  &.active {
+    .privacy-dropdown__option__content,
+    .privacy-dropdown__option__content strong,
+    .privacy-dropdown__option__icon {
+      color: $yoshino-white;
+    }
+  }
+}
+
+
+
 .display-name__html {
   color: $yoshino-black;
 }
@@ -63,7 +81,7 @@ body.app-body,
   .icon-button {
     color: lighten($black, 33%);
   }
-  .active {
+  .privacy-dropdown {
     background-color: $yoshino-darkblue;
   }
 }
