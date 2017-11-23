@@ -147,7 +147,12 @@ body.app-body,
 .search-results__header,
 .favourite-tags *,
 .trend-tags__header,
-.column-header__collapsible-inner {
+.column-header__collapsible-inner,
+.tabs-bar__link,
+.setting-text,
+.text-btn,
+.column-settings__section,
+.setting-toggle__label {
   background-color: $yoshino-black;
   color: $white;
 }
