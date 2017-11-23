@@ -69,15 +69,14 @@ body.app-body,
   color: $yoshino-black;
 }
 
-/* ボタンの背景色 */
-// これよくわかんない
-// .status__content a,
-// .status__content a>span,
-// span.ellipsis,
-// .active,
-// .search__icon * {
-//   color: $yoshino-blue;
-// }
+/* リンク */
+.status__content a,
+.status__content a>span,
+span.ellipsis,
+.active,
+.search__icon * {
+  color: $yoshino-blue;
+}
 
 /* カメラ, 公開範囲, CW */
 .compose-form__buttons {
