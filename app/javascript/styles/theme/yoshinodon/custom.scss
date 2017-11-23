@@ -50,6 +50,7 @@ body.app-body,
   .privacy-dropdown__option__icon {
     color: $yoshino-black;
   }
+
   &.active {
     .privacy-dropdown__option__content,
     .privacy-dropdown__option__content strong,
@@ -84,6 +85,7 @@ body.app-body,
   .icon-button {
     color: lighten($black, 33%);
   }
+
   .privacy-dropdown {
     background-color: $yoshino-darkblue;
   }
@@ -120,6 +122,7 @@ body.app-body,
     border-color: $black;
     border-width: 1px;
   }
+  
   a,
   p {
     color: $black;
