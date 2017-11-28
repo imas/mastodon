@@ -1,4 +1,3 @@
-
 // Commonly used web colors
 $black: #000000;            // Black
 $white: #ffffff;            // White
@@ -6,7 +5,7 @@ $blue: #9baec8;             // Blue
 $success-green: #79bd9a;    // Padua
 $error-red: #df405a;        // Cerise
 $warning-red: #ff5050;      // Sunset Orange
-$gold-star: #ca8f04;        // Dark Goldenrod
+
 // yoshinodon colors
 $yoshino-black: #3e0d1d;
 $yoshino-black-secondary: saturate($yoshino-black, 14%);
@@ -16,6 +15,7 @@ $yoshino-orange: #d77826;
 $yoshino-yellow: #fff28a;
 $yoshino-blue: #02a0c2;
 $yoshino-darkblue: #282c37;
+
 // Values from the classic Mastodon UI
 $classic-base-color: adjust-hue($yoshino-white, 30deg);         // Midnight Express
 $classic-primary-color: $yoshino-black-secondary;      // Echo Blue

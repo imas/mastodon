@@ -1,4 +1,3 @@
-
 /* 全体の背景色 */
 body,
 body.app-body,
@@ -183,6 +182,17 @@ span.ellipsis,
 /* 未収載トゥートの色分け */
 .status-unlisted {
   background: lighten($yoshino-red, 62%);
+}
+
+/* $gold-starの置き換え */
+.notification__favourite-icon-wrapper {
+  .star-icon {
+    color: $yoshino-blue;
+  }
+}
+
+.star-icon.active {
+  color: $yoshino-blue;
 }
 
 /* スクロールバーの設定 */
