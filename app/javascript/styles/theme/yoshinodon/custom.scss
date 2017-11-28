@@ -68,6 +68,16 @@ body.app-body,
   color: $yoshino-black;
 }
 
+/* Boostボタン */
+.icon-button {
+  &.active i.fa-retweet {
+    filter: $yoshino-blue;
+  }
+  &:not(.active) i.fa-retweet {
+    filter: brightness(23%);
+  }
+}
+
 /* リンク */
 .status__content a,
 .status__content a>span,
