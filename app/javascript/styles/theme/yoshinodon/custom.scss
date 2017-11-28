@@ -78,6 +78,11 @@ body.app-body,
   }
 }
 
+/* ボタンのhover時 */
+.icon-button:hover {
+  color: $yoshino-black;
+}
+
 /* リンク */
 .status__content a,
 .status__content a>span,
