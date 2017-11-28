@@ -76,11 +76,19 @@ body.app-body,
   &:not(.active) i.fa-retweet {
     filter: brightness(23%);
   }
+  &.disabled i.fa-retweet {
+    filter: brightness(23%);
+  }
 }
 
 /* ボタンのhover時 */
 .icon-button:hover {
   color: $yoshino-black;
+}
+
+/* ボタン無効時 */
+.icon-button.disabled {
+  color: lighten($black, 23%);
 }
 
 /* リンク */
@@ -90,6 +98,24 @@ span.ellipsis,
 .active,
 .search__icon * {
   color: $yoshino-blue;
+}
+
+/* status個別ページ */
+.activity-stream .status.light,
+.activity-stream .detailed-status.light {
+  .status__content a,
+  .status__content a>span,
+  span.ellipsis,
+  .active,
+  .search__icon * {
+    color: $yoshino-blue;
+  }
+
+  *,
+  .display-name > strong,
+  .detailed-status__display-name .display-name > strong {
+    color: $yoshino-black;
+  }
 }
 
 /* カメラ, 公開範囲, CW */
