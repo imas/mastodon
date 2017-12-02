@@ -107,12 +107,12 @@ export default class HashtagTimeline extends React.PureComponent {
           showBackButton
         >
           <ColumnSettingsContainer
-            tagId={id.toLowerCase()}
+            tag={id}
           />
         </ColumnHeader>
 
         <StatusListContainer
-          tagId={id.toLowerCase()}
+          tag={id}
           trackScroll={!pinned}
           scrollKey={`hashtag_timeline-${columnId}`}
           timelineId={`hashtag:${id}`}

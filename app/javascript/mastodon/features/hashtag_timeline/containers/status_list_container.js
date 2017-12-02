@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import { debounce } from 'lodash';
 
 const makeGetStatusIds = () => createSelector([
-  (state, { tagId }) => state.getIn(['settings', 'tag', `${tagId}`], ImmutableMap()),
+  (state, { tag }) => state.getIn(['settings', 'tag', `${tag}`], ImmutableMap()),
   (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableList()),
   (state)           => state.get('statuses'),
   (state)           => state.getIn(['meta', 'me']),
@@ -24,11 +24,7 @@ const makeGetStatusIds = () => createSelector([
     const statusForId = statuses.get(id);
     let showStatus    = true;
 
-    if (columnSettings.getIn(['shows', 'reply']) === false) {
-      showStatus = showStatus && (statusForId.get('in_reply_to_id') === null || statusForId.get('in_reply_to_account_id') === me);
-    }
-
-    if (showStatus && regex && statusForId.get('account') !== me) {
+    if (regex && statusForId.get('account') !== me) {
       const searchIndex = statusForId.get('reblog') ? statuses.getIn([statusForId.get('reblog'), 'search_index']) : statusForId.get('search_index');
       showStatus = !regex.test(searchIndex);
     }
@@ -40,8 +36,8 @@ const makeGetStatusIds = () => createSelector([
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();
 
-  const mapStateToProps = (state, { timelineId, tagId }) => ({
-    statusIds: getStatusIds(state, { type: timelineId, tagId: tagId }),
+  const mapStateToProps = (state, { timelineId, tag }) => ({
+    statusIds: getStatusIds(state, { type: timelineId, tag: tag }),
     isLoading: state.getIn(['timelines', timelineId, 'isLoading'], true),
     hasMore: !!state.getIn(['timelines', timelineId, 'next']),
   });

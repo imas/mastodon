@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 export default class SettingText extends React.PureComponent {
 
   static propTypes = {
-    tagId: PropTypes.number.isRequired,
+    tag: PropTypes.string.isRequired,
     settings: ImmutablePropTypes.map.isRequired,
     settingKey: PropTypes.array.isRequired,
     label: PropTypes.string.isRequired,
@@ -13,7 +13,7 @@ export default class SettingText extends React.PureComponent {
   };
 
   handleChange = (e) => {
-    this.props.onChange(this.props.tagId, this.props.settingKey, e.target.value);
+    this.props.onChange(this.props.tag, this.props.settingKey, e.target.value);
   }
 
   render () {

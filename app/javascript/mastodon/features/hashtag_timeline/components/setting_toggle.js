@@ -6,7 +6,7 @@ import Toggle from 'react-toggle';
 export default class SettingToggle extends React.PureComponent {
 
   static propTypes = {
-    tagId: PropTypes.number.isRequired,
+    tag: PropTypes.string.isRequired,
     prefix: PropTypes.string,
     settings: ImmutablePropTypes.map.isRequired,
     settingKey: PropTypes.array.isRequired,
@@ -16,7 +16,7 @@ export default class SettingToggle extends React.PureComponent {
   }
 
   onChange = ({ target }) => {
-    this.props.onChange(this.props.tagId, this.props.settingKey, target.checked);
+    this.props.onChange(this.props.tag, this.props.settingKey, target.checked);
   }
 
   render () {
