@@ -50,7 +50,7 @@ class HomeController < ApplicationController
       token: current_session.token,
       admin: Account.find_local(Setting.site_contact_username),
       admin_announcement: Setting.find_by(var: 'admin_announcement')&.value || '',
-      announcements: Announcement.where(disabled: false).order(:id) || '[]',
+      announcements: Announcement.where(disabled: false).order(:id) || [],
     }
   end
 

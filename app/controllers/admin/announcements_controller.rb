@@ -2,28 +2,29 @@
 
 module Admin
   class AnnouncementsController < BaseController
-    before_action :set_announcements
+    before_action :set_announcements, except: [:destroy]
+    before_action :set_announcement, only: [:show, :update]
 
     def index
       @announcement = Announcement.new
     end
 
-    def edit
-      @announcement = Announcement.find(params[:id])
-      @announcement.link = json_to_link(@announcement.link)
+    def show
       render :index
     end
 
     def create
-      if params[:announcement][:id].blank?
-        @announcement = Announcement.new(resource_params)
+      @announcement = Announcement.new(resource_params)
+      if @announcement.save_for_view
+        redirect_to admin_announcements_path, notice: I18n.t('generic.changes_saved_msg')
       else
-        @announcement = Announcement.find(params[:announcement][:id])
-        @announcement.attributes = resource_params
+        render :index
       end
-      @announcement.link = link_to_json(@announcement.link)
+    end
 
-      if @announcement.save
+    def update
+      @announcement.attributes = resource_params
+      if @announcement.save_for_view
         redirect_to admin_announcements_path, notice: I18n.t('generic.changes_saved_msg')
       else
         render :index
@@ -37,32 +38,12 @@ module Admin
 
     private
 
-    def link_param_to_hash(value)
-      {
-        url: value[0],
-        name: value[1],
-        is_outer_link: value[0].start_with?('http'),
-      }
-    end
-
-    def link_to_json(value)
-      if value.blank?
-        nil
-      else
-        value.lines.map { |line| link_param_to_hash(line.chomp.split('|')) }
-      end
-    end
-
-    def json_to_link(value)
-      if value.blank?
-        value
-      else
-        value.map { |link| link.values.shift(2).join('|') }.join("\r\n")
-      end
-    end
-
     def resource_params
-      params.require(:announcement).permit(:id, :title, :body, :link)
+      params.require(:announcement).permit(:title, :body, :link)
+    end
+
+    def set_announcement
+      @announcement = Announcement.find(params[:id]).json_to_link
     end
 
     def set_announcements

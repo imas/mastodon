@@ -33,10 +33,13 @@ class Announcements extends React.PureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    homeSize: PropTypes.number,
+    isLoading: PropTypes.bool,
     announcements: ImmutablePropTypes.list,
   };
 
   state = {
+    isLoaded: false,
     showList: ImmutableList(),
   };
 
@@ -44,9 +47,8 @@ class Announcements extends React.PureComponent {
     this.setState({ showList: this.props.announcements.map(v => v === undefined) });
   }
 
-  onClick = (e) => {
-    var index = e.currentTarget.parentNode.getAttribute('data-id');
-    this.setState(({ showList }) => ({ showList: showList.update(index, v => !v) }));
+  onClick = (i, e) => {
+    this.setState(({ showList }) => ({ showList: showList.update(i.i, v => !v) }));
   }
 
   render () {
@@ -77,13 +79,21 @@ class Announcements extends React.PureComponent {
                 })}
               </div>
             </Collapsable>
-            <div className='announcements__icon' data-id={i}>
-              <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={this.onClick} size={20} animate active={this.state.showList.get(i)} />
+            <div className='announcements__icon'>
+              <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={(e) => this.onClick({i}, e)} size={20} animate active={this.state.showList.get(i)} />
             </div>
           </li>
         )}
       </ul>
     );
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (!this.state.isLoaded) {
+      if (!nextProps.isLoading && (nextProps.homeSize === 0 || this.props.homeSize !== nextProps.homeSize)) {
+        this.setState({ showList: this.state.showList.map(v => nextProps.homeSize < 5), isLoaded: true });
+      }
+    }
   }
 
 }
