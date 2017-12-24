@@ -20,6 +20,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       github_name: Mastodon::Version.source_link_title,
       admin: object.admin&.id.to_s,
       admin_announcement: object.admin_announcement,
+      announcements: object.announcements.nil? ? [] : object.announcements,
     }
 
     if object.current_account

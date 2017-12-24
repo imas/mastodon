@@ -212,6 +212,13 @@ en:
       admin_announcement:
         desc_html: Displayed on frontpage.<br>You can use HTML tags
         title: Administrator announcement
+      announcement:
+        delete: Delete
+        desc_html: Displayed on under the frontpage.<br>You can use HTML tags
+        edit: Edit
+        link: Link to mastodon
+        link_html: Not required.<br>Please input by format of "URL|Linkname"
+        title: Announcement
       bootstrap_timeline_accounts:
         desc_html: Separate multiple usernames by comma. Only local and unlocked accounts will work. Default when empty is all local admins.
         title: Default follows for new users
