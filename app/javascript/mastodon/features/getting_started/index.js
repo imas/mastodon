@@ -56,7 +56,6 @@ export default class GettingStarted extends ImmutablePureComponent {
     const isMobile = window.innerWidth < 631; // 631px from components.scss setting.
 
     const navItems = [];
-    let gettingStarted, contents, footer;
 
     if (multiColumn) {
       if (!columns.find(item => item.get('id') === 'HOME')) {
@@ -91,7 +90,7 @@ export default class GettingStarted extends ImmutablePureComponent {
 
     navItems.push(<ColumnLink key='8' icon='book' text={intl.formatMessage(messages.info)} href='/about/more' />);
 
-    contents = (
+    const contents = (
       <div className='getting-started__wrapper'>
         <ColumnSubheading text={intl.formatMessage(messages.navigation_subheading)} />
         {navItems}
@@ -103,42 +102,42 @@ export default class GettingStarted extends ImmutablePureComponent {
       </div>
     );
 
-    footer = (
-      <div className={isMobile ? 'getting-started__footer' : 'getting-started__footer scrollable optionally-scrollable'}>
-        <div className='static-content getting-started'>
-          <p>
-            <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/FAQ.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.faq' defaultMessage='FAQ' /></a> • <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/User-guide.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.userguide' defaultMessage='User Guide' /></a> • <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.appsshort' defaultMessage='Apps' /></a>
-          </p>
-          <p>
-            <FormattedMessage
-               id='getting_started.open_source_notice'
-               defaultMessage='Mastodon is open source software. You can contribute or report issues on GitHub at {github}.'
-               values={{ github: <a href={github_url} rel='noopener' target='_blank'>{github_name}</a> }}
-            />
-          </p>
-        </div>
+    const footer = (
+      <div className='static-content getting-started'>
+        <p>
+          <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/FAQ.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.faq' defaultMessage='FAQ' /></a> • <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/User-guide.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.userguide' defaultMessage='User Guide' /></a> • <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.appsshort' defaultMessage='Apps' /></a>
+        </p>
+        <p>
+          <FormattedMessage
+            id='getting_started.open_source_notice'
+            defaultMessage='Mastodon is open source software. You can contribute or report issues on GitHub at {github}.'
+            values={{ github: <a href={github_url} rel='noopener' target='_blank'>{github_name}</a> }}
+          />
+        </p>
       </div>
     );
 
-    gettingStarted = (
-      isMobile ? (
+    if (isMobile) {
+      return (
         <Column icon='asterisk' heading={intl.formatMessage(messages.heading)} hideHeadingOnMobile>
           <div className='scrollable optionally-scrollable'>
             {contents}
+            <div className='getting-started__footer'>
+              {footer}
+            </div>
+          </div>
+        </Column>
+      );
+    } else {
+      return (
+        <Column icon='asterisk' heading={intl.formatMessage(messages.heading)} hideHeadingOnMobile>
+          {contents}
+          <div className='getting-started__footer scrollable optionally-scrollable'>
             {footer}
           </div>
         </Column>
-      ) : (
-        <Column icon='asterisk' heading={intl.formatMessage(messages.heading)} hideHeadingOnMobile>
-          {contents}
-          {footer}
-        </Column>
-      )
-    );
-
-    return (
-      gettingStarted
-    );
+      );
+    }
   }
 
 }
