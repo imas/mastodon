@@ -15,6 +15,7 @@ export default class Announcements extends React.PureComponent {
   render () {
     const { visible, onToggle, announcements } = this.props;
     const caretClass = visible ? 'fa fa-caret-down' : 'fa fa-caret-up';
+    const newIcon = '<img draggable="false" class="emojione" alt="new" title=":new:" src="/emoji/1f195.svg">';
 
     return (
       <div className='announcements'>
@@ -30,7 +31,7 @@ export default class Announcements extends React.PureComponent {
             {announcements.map((announcement, idx) => (
               <li key={idx}>
                 <div className='announcements__body'>
-                  <p dangerouslySetInnerHTML={{ __html: announcement.get('body') }} />
+                  <p dangerouslySetInnerHTML={{ __html: (announcement.get('is_new') ? newIcon : '') + announcement.get('body') }} />
                   <div className='links'>
                     {announcement.get('links').map((link, i) => {
                       if (link.get('url').indexOf('/') === 0) {
