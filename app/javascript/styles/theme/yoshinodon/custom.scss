@@ -12,7 +12,8 @@ body.app-body,
   background-image: linear-gradient(left, $yoshino-blue 50%, transparent 50%, transparent);
 }
 
-.drawer__inner {
+.drawer__inner,
+.favourite-tags {
   opacity: 0.9;
   background-color: lighten($black, 13%);
 }
