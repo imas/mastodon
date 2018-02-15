@@ -8,6 +8,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  visibility :integer          default("public"), not null
+#  order      :integer          default(0), not null
 #
 
 class FavouriteTag < ApplicationRecord
