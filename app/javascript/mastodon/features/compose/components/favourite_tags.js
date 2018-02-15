@@ -109,7 +109,7 @@ class FavouriteTags extends React.PureComponent {
               <i className='fa fa-gear' />
             </a>
           </div>
-          <div className='favourite-tags__fold__icon'>
+          <div className='compose__extra__header__fold__icon'>
             <FoldButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={this.onClickCollapse} size={20} animate active={this.state.show} />
           </div>
         </div>
