@@ -2,6 +2,7 @@ class Settings::FavouriteTagsController < ApplicationController
   layout 'admin'
   before_action :authenticate_user!
   before_action :set_account
+  before_action :set_favourite_tags, only: [:index, :create]
   before_action :set_favourite_tag, only: [:destroy]
 
   def index
@@ -40,5 +41,9 @@ class Settings::FavouriteTagsController < ApplicationController
 
   def set_favourite_tag
     @favourite_tag = @account.favourite_tags.find(params[:id])
+  end
+
+  def set_favourite_tags
+    @favourite_tags = @account.favourite_tags.order(:order).includes(:tag)
   end
 end
