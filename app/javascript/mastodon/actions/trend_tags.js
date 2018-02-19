@@ -1,6 +1,7 @@
 import api from '../api';
 
 export const TREND_TAGS_SUCCESS = 'TREND_TAGS_SUCCESS';
+export const TOGGLE_TREND_TAGS = 'TOGGLE_TREND_TAGS';
 
 export function refreshTrendTags() {
   return (dispatch, getState) => {
@@ -14,5 +15,11 @@ export function refreshTrendTagsSuccess(tags) {
   return {
     type: TREND_TAGS_SUCCESS,
     tags,
+  };
+}
+
+export function toggleTrendTags() {
+  return {
+    type: TOGGLE_TREND_TAGS,
   };
 }

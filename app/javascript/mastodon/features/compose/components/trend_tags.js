@@ -16,13 +16,14 @@ export default class TrendTags extends React.PureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    visible: PropTypes.bool.isRequired,
     trendTags: ImmutablePropTypes.map.isRequired,
     favouriteTags: ImmutablePropTypes.list.isRequired,
     refreshTrendTags: PropTypes.func.isRequired,
+    onToggle: PropTypes.func.isRequired,
   };
 
   state = {
-    show: true,
     animate: false,
   };
 
@@ -62,17 +63,13 @@ export default class TrendTags extends React.PureComponent {
     this.props.refreshTrendTags();
   }
 
-  onClickFold = () => {
-    this.setState({ show: !this.state.show });
-  }
-  
   onClickReload = () => {
     if (!this.state.animate) {
       this.setState({ animate: true });
       this.props.refreshTrendTags();
     }
   }
-  
+
   onAnimationEnd = () => {
     this.setState({ animate: false });
   }
@@ -80,15 +77,15 @@ export default class TrendTags extends React.PureComponent {
   isFavourited = (name) => {
     return this.props.favouriteTags.map(f => f.get('name').toLowerCase()).includes(name);
   }
-  
+
   reloadIcon = (isAnimate) => {
     return isAnimate ? <i className='fa fa-repeat animate' onAnimationEnd={this.onAnimationEnd} /> : <i className='fa fa-repeat' />;
   }
 
   render () {
-    const { intl } = this.props;
+    const { intl, visible, trendTags, onToggle } = this.props;
 
-    const tags = this.props.trendTags ? this.props.trendTags.keySeq().filter((v, k) => k < 5).map((name, index) => (
+    const tags = trendTags ? trendTags.keySeq().filter((v, k) => k < 5).map((name, index) => (
       <li key={name}>
         <div className='trend-tags__rank'>
           {index + 1}.
@@ -118,10 +115,10 @@ export default class TrendTags extends React.PureComponent {
             </a>
           </div>
           <div className='compose__extra__header__fold__icon'>
-            <FoldButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={this.onClickFold} size={20} animate active={this.state.show} />
+            <FoldButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={onToggle} size={20} animate active={visible} />
           </div>
         </div>
-        <Foldable isVisible={this.state.show} fullHeight={this.props.trendTags ? this.props.trendTags.size * 30 : 0} minHeight={0} >
+        <Foldable isVisible={visible} fullHeight={trendTags ? trendTags.size * 30 : 0} minHeight={0} >
           <ul className='compose__extra__body'>
             {tags}
           </ul>
