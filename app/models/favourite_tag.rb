@@ -23,6 +23,8 @@ class FavouriteTag < ApplicationRecord
   validates :visibility, presence: true
   validates :order, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
+  scope :with_order, -> { order(order: :desc, id: :asc) }
+
   delegate :name, to: :tag
 
   def to_json_for_api

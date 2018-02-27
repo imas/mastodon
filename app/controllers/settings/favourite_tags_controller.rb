@@ -58,6 +58,6 @@ class Settings::FavouriteTagsController < ApplicationController
   end
 
   def set_favourite_tags
-    @favourite_tags = @account.favourite_tags.order(:order).includes(:tag)
+    @favourite_tags = @account.favourite_tags.with_order.includes(:tag)
   end
 end

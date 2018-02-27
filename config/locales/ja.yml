@@ -448,7 +448,7 @@ ja:
     edit_it: 編集
     form:
       hint:
-        order: 昇順に表示されます
+        order: 降順に表示されます
     name_of_tag: タグ名
     order: 順序
     submit: お気に入りタグを登録

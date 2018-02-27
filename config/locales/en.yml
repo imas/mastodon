@@ -448,7 +448,7 @@ en:
     edit_it: edit
     form:
       hint:
-        order: Display in ascending order
+        order: Display in descending order
     name_of_tag: Name of tag
     order: order
     submit: Create favourite tag
