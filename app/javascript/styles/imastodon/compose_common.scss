@@ -1,16 +1,15 @@
-.compose__extra__header {
+.compose__extra {
   background: $ui-base-color;
   position: relative;
+}
+
+.compose__extra__header {
   display: flex;
   align-items: center;
   height: 26px;
   padding: 4px 12px;
   background: lighten($ui-base-color, 4%);
   font-size: 16px;
-
-  a {
-    color: $white;
-  }
 
   > i {
     padding-right: 4px;
@@ -28,10 +27,38 @@
     i {
       width: 14px;
     }
+
+    .fa-gear {
+      color: $ui-primary-color;
+    }
   }
 
   &__fold__icon {
     position: absolute;
     right: 14px;
+  }
+}
+
+.compose__extra__body {
+  li {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    position: relative
+  }
+
+  &__name {
+    font-size: 14px;
+    color: $white;
+    text-decoration: none;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .fa-hashtag {
+      color: $classic-highlight-color;
+      margin-right: 2px;
+    }
   }
 }
