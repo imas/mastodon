@@ -57,11 +57,31 @@
 }
 
 .compose__extra__body {
+  ol {
+    counter-reset: index;
+
+    li {
+      display: flex;
+      align-items: center;
+      padding: 6px 10px;
+      position: relative;
+
+      &:before {
+        counter-increment: index;
+        content: counter(index) ".";
+        font-size: 16px;
+        width: 15px;
+        padding: 0 5px;
+        text-align: center;
+      }
+    }
+  }
+
   li {
     display: flex;
     align-items: center;
     padding: 6px 10px;
-    position: relative
+    position: relative;
   }
 
   &__name {

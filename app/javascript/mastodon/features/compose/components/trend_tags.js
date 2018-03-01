@@ -85,11 +85,8 @@ export default class TrendTags extends React.PureComponent {
   render () {
     const { intl, visible, trendTags, onToggle } = this.props;
 
-    const tags = trendTags ? trendTags.keySeq().filter((v, k) => k < 5).map((name, index) => (
+    const tags = trendTags ? trendTags.keySeq().filter((v, k) => k < 5).map(name => (
       <li key={name}>
-        <div className='trend-tags__rank'>
-          {index + 1}.
-        </div>
         <Link
           to={`/timelines/tag/${name}`}
           className='compose__extra__body__name'
@@ -119,9 +116,11 @@ export default class TrendTags extends React.PureComponent {
           </div>
         </div>
         <Foldable isVisible={visible} fullHeight={trendTags ? trendTags.size * 30 : 0} minHeight={0} >
-          <ul className='compose__extra__body'>
-            {tags}
-          </ul>
+          <div className='compose__extra__body'>
+            <ol>
+              {tags}
+            </ol>
+          </div>
         </Foldable>
       </div>
     );
