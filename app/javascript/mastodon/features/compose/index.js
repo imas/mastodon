@@ -98,8 +98,8 @@ export default class Compose extends React.PureComponent {
             <NavigationContainer onClose={this.onBlur} />
             <ComposeFormContainer />
             <AnnouncementsContainer />
-            <FavouriteTagsContainer />
             <TrendTagsContainer />
+            <FavouriteTagsContainer />
           </div>
 
           <Motion defaultStyle={{ x: -100 }} style={{ x: spring(showSearch ? 0 : -100, { stiffness: 210, damping: 20 }) }}>
