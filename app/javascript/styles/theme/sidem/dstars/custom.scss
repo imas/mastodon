@@ -1,23 +1,96 @@
-.text-icon-button,
-.icon-button.inverted,
-.drawer__tab,
-.announcements__body,
-.column-back-button,
-.column-header__button,
-.autosuggest-account .display-name__account,
-.activity-stream .status.light .status__content,
-.boost-modal__action-bar > div,
-.confirmation-modal__action-bar > div,
-.report-modal__action-bar > div,
-.favourite-tags a {
+.drawer__inner {
+  background: lighten($ui-base-color, 8%);
+}
+
+.column-subheading,
+.compose-form .compose-form__buttons-wrapper,
+.compose-form .compose-form__modifiers,
+.account-section-headline {
+  background: $ui-primary-color;
+}
+
+.status__display-name,
+.status__relative-time,
+.account__header .account__header__content,
+.favourite-tags__lock a,
+.display-name__account {
+  color: $ui-primary-color;
+}
+
+.autosuggest-textarea {
+  border: 1px solid $ui-primary-color;
+  border-radius: 20px 20px 0 0;
+}
+
+.spoiler-input {
+  border-bottom: 2px solid $ui-primary-color;
+}
+
+.compose-form .autosuggest-textarea__textarea,
+.compose-form .spoiler-input__input,
+.load-more,
+.detailed-status__meta {
+  background: inherit;
   color: $primary-text-color;
 }
 
-.account__header > div,
-.card::after {
-  background: rgba($ui-secondary-color,0.4);
+.account-section-headline,
+.dropdown-menu__item a,
+.getting-started p,
+.empty-column-indicator,
+.error-column,
+.compose__extra__body__name,
+.announcements li,
+.search-results__header,
+.activity-stream .status.light .display-name strong {
+  color: $primary-text-color;
 }
 
-.card .name small {
+.announcements__body a,
+.favourite-tags__lock a,
+.status__content a,
+.reply-indicator__content a {
+  border-color: $ui-highlight-color;
+  color: $ui-highlight-color;
+}
+
+.account__header > div {
+  background: rgba($ui-base-lighter-color, 0.9);
+}
+
+.activity-stream-tabs,
+.activity-stream .entry {
+  background: $ui-base-lighter-color;
+}
+
+.activity-stream-tabs a.active {
   color: $ui-secondary-color;
+  background: $ui-primary-color;
+}
+
+.accounts-grid,
+.privacy-dropdown__dropdown {
+  background: $ui-secondary-color;
+}
+
+.announcements li,
+.emoji-mart-scroll {
+  background: lighten($ui-base-color, 13%);
+}
+
+.emoji-mart-category-label span {
+  color: $ui-secondary-color;
+  background: $ui-primary-color;
+}
+
+.privacy-dropdown__option,
+.privacy-dropdown__option__content strong,
+.admin-wrapper .content h2,
+.admin-wrapper .content h6,
+.flash-message {
+  color: $ui-highlight-color;
+}
+
+.emoji-mart-search{
+  background: $ui-highlight-color;
 }
