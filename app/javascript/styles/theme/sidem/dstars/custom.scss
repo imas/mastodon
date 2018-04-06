@@ -4,7 +4,6 @@
 
 .column-subheading,
 .compose-form .compose-form__buttons-wrapper,
-.compose-form .compose-form__modifiers,
 .account-section-headline {
   background: $ui-primary-color;
 }
@@ -13,13 +12,23 @@
 .status__relative-time,
 .account__header .account__header__content,
 .favourite-tags__lock a,
+.getting-started a,
 .display-name__account {
   color: $ui-primary-color;
 }
 
 .autosuggest-textarea {
-  border: 1px solid $ui-primary-color;
+  border-width: 1px 1px 0px 1px;
+  border-style: solid;
+  border-color: $ui-primary-color;
   border-radius: 20px 20px 0 0;
+}
+
+.compose-form .compose-form__modifiers {
+  background: inherit;
+  border-width: 0 1px 0;
+  border-style: solid;
+  border-color: $ui-primary-color;
 }
 
 .spoiler-input {
