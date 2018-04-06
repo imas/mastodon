@@ -17,9 +17,9 @@ ja-IM:
     features:
       humane_approach_body: 他の SNS の失敗から学び、Mastodon はソーシャルメディアが誤った使い方をされることの無いように倫理的な設計を目指しています。
       humane_approach_title: より思いやりのある設計
-      not_a_product_body: Mastodon は営利的な SNS ではありません。広告や、データの収集・解析は無く、またユーザーの囲い込みもありません。
+      not_a_product_body: im@stodon は営利的な SNS ではありません。広告や、データの収集・解析は無く、またユーザーの囲い込みもありません。
       not_a_product_title: あなたは人間であり、商品ではありません
-      real_conversation_body: 好きなように書ける500文字までの投稿や、文章やメディアの内容に警告をつけられる機能で、思い通りに自分自身を表現することができます。
+      real_conversation_body: 好きなように書ける500文字までのあふぅや、文章や参考資料の内容に警告をつけられる機能で、思い通りに自分自身を表現することができます。
       real_conversation_title: 本当のコミュニケーションのために
       within_reach_body: デベロッパーフレンドリーな API により実現された、iOS や Android、その他様々なプラットフォームのためのアプリでどこでも友人とやりとりできます。
       within_reach_title: いつでも身近に
@@ -37,7 +37,7 @@ ja-IM:
     follow: フォロー
     followers: フォロワー
     following: フォロー中
-    media: メディア
+    media: 参考資料
     moved_html: "%{name} さんは引っ越しました %{new_profile_link}:"
     nothing_here: 何もありません！
     people_followed_by: "%{name} さんがフォロー中のアカウント"
@@ -85,7 +85,7 @@ ja-IM:
         remote: リモート
         title: ロケーション
       login_status: ログイン
-      media_attachments: 添付されたメディア
+      media_attachments: 添付された参考資料
       memorialize: 追悼アカウント化
       moderation:
         all: すべて
@@ -214,13 +214,13 @@ ja-IM:
         create: ブロックを作成
         hint: ドメインブロックはデータベース中のアカウント項目の作成を妨げませんが、遡って自動的に指定されたモデレーションをそれらのアカウントに適用します。
         severity:
-          desc_html: "<strong>サイレンス</strong>はアカウントのあふぅをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、メディア、プロフィールデータをすべて削除します。メディアファイルの拒否は<strong>なし</strong>を使います。"
+          desc_html: "<strong>サイレンス</strong>はアカウントのあふぅをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、参考資料、プロフィールデータをすべて削除します。参考資料の拒否は<strong>なし</strong>を使います。"
           noop: なし
           silence: サイレンス
           suspend: 停止
         title: 新規ドメインブロック
-      reject_media: メディアファイルを拒否
-      reject_media_hint: ローカルに保存されたメディアファイルを削除し、今後のダウンロードを拒否します。停止とは無関係です
+      reject_media: 参考資料を拒否
+      reject_media_hint: ローカルに保存された参考資料を削除し、今後のダウンロードを拒否します。停止とは無関係です
       severities:
         noop: なし
         silence: サイレンス
@@ -345,12 +345,12 @@ ja-IM:
       execute: 実行
       failed_to_execute: 実行に失敗しました
       media:
-        hide: メディアを隠す
-        show: メディアを表示
-        title: メディア
-      no_media: メディアなし
+        hide: 参考資料を隠す
+        show: 参考資料を表示
+        title: 参考資料
+      no_media: 参考資料なし
       title: あふぅ一覧
-      with_media: メディアあり
+      with_media: 参考資料あり
     subscriptions:
       callback_url: コールバックURL
       confirmed: 確認済み
@@ -450,7 +450,7 @@ ja-IM:
     archive_takeout:
       date: 日時
       download: ダウンロード
-      hint_html: "<strong>あふぅとメディア</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。"
+      hint_html: "<strong>あふぅと参考資料</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。"
       in_progress: 準備中...
       request: アーカイブをリクエスト
       size: 容量
@@ -458,7 +458,7 @@ ja-IM:
     csv: CSV
     follows: フォロー
     mutes: だまっとけ☆
-    storage: メディア
+    storage: 参考資料
   favourite_tags:
     delete_it: 削除
     edit:
@@ -589,7 +589,7 @@ ja-IM:
   preferences:
     languages: 言語
     other: その他
-    publishing: 投稿
+    publishing: あふぅ
     web: ウェブ
   push_notifications:
     favourite:
@@ -633,7 +633,7 @@ ja-IM:
       weibo: Weibo
     current_session: 現在のセッション
     description: "%{browser} on %{platform}"
-    explanation: あなたのMastodonアカウントに現在ログインしているウェブブラウザの一覧です。
+    explanation: あなたのim@stodonアカウントに現在ログインしているウェブブラウザの一覧です。
     ip: IP
     platforms:
       adobe_air: Adobe Air
@@ -653,7 +653,7 @@ ja-IM:
     title: セッション
   settings:
     authorized_apps: 認証済みアプリ
-    back: Mastodon に戻る
+    back: im@stodon に戻る
     delete: アカウントの削除
     development: 開発
     edit_profile: プロフィールを編集
@@ -790,17 +790,17 @@ ja-IM:
       edit_profile_step: アバター画像やヘッダー画像をアップロードしたり、表示名やその他プロフィールを変更しカスタマイズすることができます。新しいフォロワーからのフォローを許可する前に検討したい場合、アカウントを非公開にすることができます。
       explanation: 始めるにあたってのアドバイスです
       final_action: 始めましょう
-      final_step: 'さあ始めましょう！ たとえフォロワーがいなくても、あなたの公開した投稿はローカルタイムラインやハッシュタグなどで誰かの目に止まるかもしれません。自己紹介をしたい時は #Pの自己紹介 ハッシュタグを使うといいかもしれません。'
+      final_step: 'さあ始めましょう！ たとえフォロワーがいなくても、あなたの公開したあふぅはローカルタイムラインやハッシュタグなどで誰かの目に止まるかもしれません。自己紹介をしたい時は #Pの自己紹介 ハッシュタグを使うといいかもしれません。'
       full_handle: あなたの正式なユーザー名
       full_handle_hint: これは別のインスタンスからフォローしてもらったりメッセージのやり取りをする際に、友達に伝えるといいでしょう。
       review_preferences_action: 設定の変更
-      review_preferences_step: 受け取りたいメールや投稿の公開範囲などの設定を必ず行ってください。不快でないならアニメーション GIF の自動再生を有効にすることもできます。
-      subject: Mastodon へようこそ
+      review_preferences_step: 受け取りたいメールやあふぅの公開範囲などの設定を必ず行ってください。不快でないならアニメーション GIF の自動再生を有効にすることもできます。
+      subject: im@stodon へようこそ
       tip_bridge_html: もし Twitter から来られたのであれば、<a href="%{bridge_url}">bridge app</a> を使用することで Mastodon での友達のアカウントを探すこともできます。ただし bridge app を使用したことのある相手に限ります！
       tip_federated_timeline: 連合タイムラインは Mastodon ネットワークの流れを見られるものです。ただしあなたと同じインスタンスの人がフォローしている人だけが含まれるので、それが全てではありません。
       tip_following: 標準では自動でインスタンスの管理者をフォローしています。もっと興味のある人たちを見つけるには、ローカルタイムラインと連合タイムラインを確認してください。
       tip_local_timeline: ローカルタイムラインは %{instance} にいる人々の流れを見られるものです。彼らはあなたと同じインスタンスにいる隣人のようなものです！
-      tip_mobile_webapp: もしモバイル端末のブラウザで Mastodon をホーム画面に追加できる場合、プッシュ通知を受け取ることができます。それはまるでネイティブアプリのように動作します！
+      tip_mobile_webapp: もしモバイル端末のブラウザで im@stodon をホーム画面に追加できる場合、プッシュ通知を受け取ることができます。それはまるでネイティブアプリのように動作します！
       tips: 豆知識
       title: ようこそ、%{name} ！
   users:
