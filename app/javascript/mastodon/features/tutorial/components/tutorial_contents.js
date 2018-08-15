@@ -24,7 +24,7 @@ const PageOne = ({ page }) => {
       <div className='tutorial-back-exist'>
         <p className='tutorial-title'>ローカルタイムライン<i className='fa fa-fw fa-users' /></p>
         <p className='tutorial-paragraph'>ここには、公開範囲が「公開」に設定されているアイマストドン内の投稿（トゥート）が流れてきます。</p>
-        <p className='tutorial-paragraph'>眺めて楽しむのも良いですし、時には会話に参加してみましょう！</p>
+        <p className='tutorial-paragraph'>ハッシュタグの宣伝などにご活用ください。</p>
       </div>
     );
   case 'htl':
@@ -40,7 +40,7 @@ const PageOne = ({ page }) => {
       <div className='tutorial-back-exist'>
         <p className='tutorial-title'>ヘルプ<i className='fa fa-fw fa-question' /></p>
         <p className='tutorial-paragraph'>困った時はここから使い方を読むことができます。</p>
-        <p className='tutorial-paragraph'>それでもわからないことがあるときには @imastodon へ聞いてみてください。</p>
+        <p className='tutorial-paragraph'>それでもわからないことがあるときには @imastodon_blue へ聞いてみてください。</p>
       </div>
     );
   case 'toot':
