@@ -1,0 +1,12 @@
+.announcements {
+  li {
+    color: $black;
+  }
+}
+
+.announcements__body {
+  a {
+    color: $black;
+    border: solid 1px $ui-base-lighter-color;
+  }
+}
