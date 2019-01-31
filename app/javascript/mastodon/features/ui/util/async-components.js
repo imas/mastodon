@@ -23,7 +23,7 @@ export function CommunityTimeline () {
 }
 
 export function HashtagTimeline () {
-  return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag_timeline');
+  return import(/* webpackChunkName: "features/hashtag_timeline" */'../../imas_hashtag_timeline');
 }
 
 export function DirectTimeline() {

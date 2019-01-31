@@ -8,7 +8,7 @@ import { IntlProvider, addLocaleData } from 'react-intl';
 import { getLocale } from '../locales';
 import PublicTimeline from '../features/standalone/public_timeline';
 import CommunityTimeline from '../features/standalone/community_timeline';
-import HashtagTimeline from '../features/standalone/hashtag_timeline';
+import HashtagTimeline from '../features/standalone/imas_hashtag_timeline';
 import ModalContainer from '../features/ui/containers/modal_container';
 import initialState from '../initial_state';
 
