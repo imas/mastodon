@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ColumnsArea);
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(ColumnsArea);

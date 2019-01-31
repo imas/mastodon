@@ -86,7 +86,7 @@ class Status extends ImmutablePureComponent {
     'muted',
     'hidden',
     'tutorial',
-  ]
+  ];
 
   handleClick = () => {
     if (this.props.onClick) {
