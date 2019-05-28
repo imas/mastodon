@@ -277,7 +277,7 @@ class Status extends ImmutablePureComponent {
       );
     }
 
-    if (account === undefined || account === null) {
+    if (account == null) {
       if (status.get('visibility') === 'public') {
         statusAvatar = <Avatar account={status.get('account')} size={48} />;
       } else {
