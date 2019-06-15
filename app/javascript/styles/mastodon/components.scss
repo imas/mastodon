@@ -680,7 +680,8 @@
       }
     }
 
-    &.mention {
+    &.mention,
+    &.tag {
       &:hover {
         text-decoration: none;
 
