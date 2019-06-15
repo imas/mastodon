@@ -171,15 +171,15 @@ export default class StatusContent extends React.PureComponent {
         <Permalink to={`/accounts/${item.get('id')}`} href={item.get('url')} key={item.get('id')} className='mention'>
           @<span>{item.get('username')}</span>
         </Permalink>
-      )).reduce((aggregate, item) => [...aggregate, item, ' '], []);
+      ));
 
       const tagLinks = status.get('tags').map(item => (
         <Permalink to={`/tags/${item.get('name')}`} href={item.get('url')} key={item.get('name')} className='tag'>
           #<span>{item.get('name')}</span>
         </Permalink>
-      )).reduce((aggregate, item) => [...aggregate, item, ' '], []);
+      ));
 
-      const links = [].concat(mentionLinks, tagLinks);
+      const links = [].concat(mentionLinks, tagLinks).reduce((aggregate, item) => [...aggregate, item, ' '], []);
 
       const toggleText = hidden ? <FormattedMessage id='status.show_more' defaultMessage='Show more' /> : <FormattedMessage id='status.show_less' defaultMessage='Show less' />;
 
