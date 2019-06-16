@@ -5,6 +5,7 @@ import { isRtl } from '../rtl';
 import { FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
+import 'core-js/fn/array/flat-map';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 
@@ -179,7 +180,7 @@ export default class StatusContent extends React.PureComponent {
         </Permalink>
       ));
 
-      const links = [].concat(mentionLinks, tagLinks).reduce((aggregate, item) => [...aggregate, item, ' '], []);
+      const links = [mentionLinks, tagLinks].flatMap(item => item.toArray()).reduce((aggregate, item) => [...aggregate, item, ' '], []);
 
       const toggleText = hidden ? <FormattedMessage id='status.show_more' defaultMessage='Show more' /> : <FormattedMessage id='status.show_less' defaultMessage='Show less' />;
 
