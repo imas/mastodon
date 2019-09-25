@@ -180,7 +180,7 @@ export default class StatusContent extends React.PureComponent {
         </Permalink>
       ));
 
-      const links = [mentionLinks, tagLinks].flatMap(item => item.toArray()).reduce((aggregate, item) => [...aggregate, item, ' '], []);
+      const links = [mentionLinks, tagLinks].flatMap(item => item.toArray()).flatMap(item => [item, ' ']);
 
       const toggleText = hidden ? <FormattedMessage id='status.show_more' defaultMessage='Show more' /> : <FormattedMessage id='status.show_less' defaultMessage='Show less' />;
 
