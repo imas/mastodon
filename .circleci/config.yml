@@ -41,11 +41,11 @@ aliases:
       - *attach_workspace
       - restore_cache:
           keys:
-            - v1-node-dependencies-{{ checksum "yarn.lock" }}
-            - v1-node-dependencies-
+            - v2-node-dependencies-{{ checksum "yarn.lock" }}
+            - v2-node-dependencies-
       - run: yarn install --frozen-lockfile
       - save_cache:
-          key: v1-node-dependencies-{{ checksum "yarn.lock" }}
+          key: v2-node-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules/
       - *persist_to_workspace
