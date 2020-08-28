@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import PollContainer from 'mastodon/containers/poll_container';
 import Icon from 'mastodon/components/icon';
 import { autoPlayGif } from 'mastodon/initial_state';
+import 'core-js/fn/array/flat-map';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 
@@ -199,29 +200,37 @@ export default class StatusContent extends React.PureComponent {
     );
 
     if (status.get('spoiler_text').length > 0) {
-      let mentionsPlaceholder = '';
+      let placeholder = '';
 
       const mentionLinks = status.get('mentions').map(item => (
         <Permalink to={`/accounts/${item.get('id')}`} href={item.get('url')} key={item.get('id')} className='mention'>
           @<span>{item.get('username')}</span>
         </Permalink>
-      )).reduce((aggregate, item) => [...aggregate, item, ' '], []);
+      ));
+
+      const tagLinks = status.get('tags').map(item => (
+        <Permalink to={`/tags/${item.get('name')}`} href={item.get('url')} key={item.get('name')} className='tag'>
+          #<span>{item.get('name')}</span>
+        </Permalink>
+      ));
+
+      const links = [mentionLinks, tagLinks].flatMap(item => item.toArray()).flatMap(item => [item, ' ']);
 
       const toggleText = hidden ? <FormattedMessage id='status.show_more' defaultMessage='Show more' /> : <FormattedMessage id='status.show_less' defaultMessage='Show less' />;
 
       if (hidden) {
-        mentionsPlaceholder = <div>{mentionLinks}</div>;
+        placeholder = <div>{links}</div>;
       }
 
       return (
         <div className={classNames} ref={this.setRef} tabIndex='0' style={directionStyle} onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-          <p style={{ marginBottom: hidden && status.get('mentions').isEmpty() ? '0px' : null }}>
+          <p style={{ marginBottom: hidden && !links.length ? '0px' : null }}>
             <span dangerouslySetInnerHTML={spoilerContent} lang={status.get('language')} />
             {' '}
             <button tabIndex='0' className={`status__content__spoiler-link ${hidden ? 'status__content__spoiler-link--show-more' : 'status__content__spoiler-link--show-less'}`} onClick={this.handleSpoilerClick}>{toggleText}</button>
           </p>
 
-          {mentionsPlaceholder}
+          {placeholder}
 
           <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''}`} style={directionStyle} dangerouslySetInnerHTML={content} lang={status.get('language')} />
 
