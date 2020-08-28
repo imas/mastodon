@@ -4,12 +4,12 @@ module DomainNormalizable
   extend ActiveSupport::Concern
 
   included do
-    before_validation :normalize_domain
+    before_save :normalize_domain
   end
 
   private
 
   def normalize_domain
-    self.domain = TagManager.instance.normalize_domain(domain)
+    self.domain = TagManager.instance.normalize_domain(domain&.strip)
   end
 end

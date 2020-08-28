@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-class ActivityPub::ActivitySerializer < ActiveModel::Serializer
+class ActivityPub::ActivitySerializer < ActivityPub::Serializer
   attributes :id, :type, :actor, :published, :to, :cc
 
   has_one :proper, key: :object, serializer: ActivityPub::NoteSerializer, if: :serialize_object?
+
   attribute :proper_uri, key: :object, unless: :serialize_object?
   attribute :atom_uri, if: :announce?
 

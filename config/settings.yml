@@ -9,7 +9,7 @@ defaults: &defaults
   site_terms: ''
   site_contact_username: ''
   site_contact_email: ''
-  open_registrations: true
+  registrations_mode: 'open'
   profile_directory: true
   closed_registrations_message: ''
   open_deletion: true
@@ -26,10 +26,15 @@ defaults: &defaults
   expand_spoilers: false
   preview_sensitive_media: false
   reduce_motion: false
+  show_application: true
   system_font_ui: false
   noindex: false
   theme: 'default'
   aggregate_reblogs: true
+  advanced_layout: false
+  use_blurhash: true
+  use_pending_items: false
+  trends: true
   notification_emails:
     follow: false
     reblog: false
@@ -38,6 +43,8 @@ defaults: &defaults
     follow_request: true
     digest: true
     report: true
+    pending_account: true
+    trending_tag: true
   interactions:
     must_be_follower: false
     must_be_following: false
@@ -56,6 +63,9 @@ defaults: &defaults
   activity_api_enabled: true
   peers_api_enabled: true
   show_known_fediverse_at_about_page: true
+  spam_check_enabled: true
+  show_domain_blocks: 'disabled'
+  show_domain_blocks_rationale: 'disabled'
 
 development:
   <<: *defaults

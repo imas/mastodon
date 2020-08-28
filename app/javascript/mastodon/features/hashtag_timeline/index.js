@@ -6,6 +6,7 @@ import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
 import ColumnSettingsContainer from './containers/column_settings_container';
 import ShowLocalSettingsContainer from './containers/show_local_settings_container';
+import FavouriteToggleContainer from './containers/favourite_toggle_container';
 import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import { addColumn, removeColumn, moveColumn } from '../../actions/columns';
 import { FormattedMessage } from 'react-intl';
@@ -84,8 +85,8 @@ class HashtagTimeline extends React.PureComponent {
     let all  = (tags.all || []).map(tag => tag.value);
     let none = (tags.none || []).map(tag => tag.value);
 
-    [id, ...any].map((tag) => {
-      this.disconnects.push(dispatch(connectHashtagStream(id, tag, isLocal, (status) => {
+    [id, ...any].map(tag => {
+      this.disconnects.push(dispatch(connectHashtagStream(id, tag, isLocal, status => {
         let tags = status.tags.map(tag => tag.name);
 
         return all.filter(tag => tags.includes(tag)).length === all.length &&
@@ -103,7 +104,7 @@ class HashtagTimeline extends React.PureComponent {
     const { dispatch, isLocal } = this.props;
     const { id, tags } = this.props.params;
 
-    this._subscribe(dispatch, id, tags);
+    this._subscribe(dispatch, id, isLocal, tags);
     dispatch(expandHashtagTimeline(id, { isLocal, tags }));
   }
 
@@ -111,6 +112,7 @@ class HashtagTimeline extends React.PureComponent {
     const { dispatch, params } = this.props;
     const { isLocal } = nextProps;
     const { id, tags } = nextProps.params;
+
     if (id !== params.id || this.props.isLocal !== isLocal || !isEqual(tags, params.tags)) {
       this._unsubscribe();
       this._subscribe(dispatch, id, isLocal, tags);
@@ -139,7 +141,7 @@ class HashtagTimeline extends React.PureComponent {
     const pinned = !!columnId;
 
     return (
-      <Column ref={this.setRef} label={`#${id}`}>
+      <Column bindToDocument={!multiColumn} ref={this.setRef} label={`#${id}`}>
         <ColumnHeader
           icon='hashtag'
           active={hasUnread}
@@ -151,6 +153,9 @@ class HashtagTimeline extends React.PureComponent {
           multiColumn={multiColumn}
           showBackButton
         >
+          <FavouriteToggleContainer
+            tag={id}
+          />
           <ShowLocalSettingsContainer
             tag={id}
           />
@@ -165,6 +170,7 @@ class HashtagTimeline extends React.PureComponent {
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.hashtag' defaultMessage='There is nothing in this hashtag yet.' />}
           shouldUpdateScroll={shouldUpdateScroll}
+          bindToDocument={!multiColumn}
         />
       </Column>
     );

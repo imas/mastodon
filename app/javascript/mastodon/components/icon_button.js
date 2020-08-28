@@ -3,6 +3,7 @@ import Motion from '../features/ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Icon from 'mastodon/components/icon';
 
 export default class IconButton extends React.PureComponent {
 
@@ -11,6 +12,9 @@ export default class IconButton extends React.PureComponent {
     title: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
     onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onKeyPress: PropTypes.func,
     size: PropTypes.number,
     active: PropTypes.bool,
     pressed: PropTypes.bool,
@@ -38,6 +42,24 @@ export default class IconButton extends React.PureComponent {
 
     if (!this.props.disabled) {
       this.props.onClick(e);
+    }
+  }
+
+  handleKeyPress = (e) => {
+    if (this.props.onKeyPress && !this.props.disabled) {
+      this.props.onKeyPress(e);
+    }
+  }
+
+  handleMouseDown = (e) => {
+    if (!this.props.disabled && this.props.onMouseDown) {
+      this.props.onMouseDown(e);
+    }
+  }
+
+  handleKeyDown = (e) => {
+    if (!this.props.disabled && this.props.onKeyDown) {
+      this.props.onKeyDown(e);
     }
   }
 
@@ -83,10 +105,14 @@ export default class IconButton extends React.PureComponent {
           title={title}
           className={classes}
           onClick={this.handleClick}
+          onMouseDown={this.handleMouseDown}
+          onKeyDown={this.handleKeyDown}
+          onKeyPress={this.handleKeyPress}
           style={style}
           tabIndex={tabIndex}
+          disabled={disabled}
         >
-          <i className={`fa fa-fw fa-${icon}`} aria-hidden='true' />
+          <Icon id={icon} fixedWidth aria-hidden='true' />
         </button>
       );
     }
@@ -101,10 +127,14 @@ export default class IconButton extends React.PureComponent {
             title={title}
             className={classes}
             onClick={this.handleClick}
+            onMouseDown={this.handleMouseDown}
+            onKeyDown={this.handleKeyDown}
+            onKeyPress={this.handleKeyPress}
             style={style}
             tabIndex={tabIndex}
+            disabled={disabled}
           >
-            <i style={{ transform: `rotate(${rotate}deg)` }} className={`fa fa-fw fa-${icon}`} aria-hidden='true' />
+            <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />
           </button>
         )}
       </Motion>

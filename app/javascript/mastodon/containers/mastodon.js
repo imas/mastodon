@@ -12,8 +12,10 @@ import { hydrateStore } from '../actions/store';
 import { connectUserStream } from '../actions/streaming';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { getLocale } from '../locales';
+import { previewState as previewMediaState } from 'mastodon/features/ui/components/media_modal';
+import { previewState as previewVideoState } from 'mastodon/features/ui/components/video_modal';
 import initialState from '../initial_state';
-import { connectCommandStream } from '../actions/commands';
+import ErrorBoundary from '../components/error_boundary';
 
 const { localeData, messages } = getLocale();
 addLocaleData(localeData);
@@ -35,6 +37,10 @@ class MastodonMount extends React.PureComponent {
     showIntroduction: PropTypes.bool,
   };
 
+  shouldUpdateScroll (_, { location }) {
+    return location.state !== previewMediaState && location.state !== previewVideoState;
+  }
+
   render () {
     const { showIntroduction } = this.props;
 
@@ -44,7 +50,7 @@ class MastodonMount extends React.PureComponent {
 
     return (
       <BrowserRouter basename='/web'>
-        <ScrollContext>
+        <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
           <Route path='/' component={UI} />
         </ScrollContext>
       </BrowserRouter>
@@ -80,7 +86,9 @@ export default class Mastodon extends React.PureComponent {
     return (
       <IntlProvider locale={locale} messages={messages}>
         <Provider store={store}>
-          <MastodonMount />
+          <ErrorBoundary>
+            <MastodonMount />
+          </ErrorBoundary>
         </Provider>
       </IntlProvider>
     );
