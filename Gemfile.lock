@@ -213,7 +213,7 @@ GEM
       faraday (~> 1)
       multi_json
     encryptor (3.0.0)
-    equatable (0.6.1)
+    equatable (0.7.0)
     erubi (1.9.0)
     et-orbi (1.2.4)
       tzinfo
