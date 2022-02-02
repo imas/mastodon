@@ -63,7 +63,7 @@ class User < ApplicationRecord
   devise :two_factor_backupable,
          otp_number_of_backup_codes: 10
 
-  devise :registerable, :recoverable, :rememberable, :validatable,
+  devise :registerable, :recoverable, :validatable,
          :confirmable
 
   include Omniauthable
@@ -152,7 +152,7 @@ class User < ApplicationRecord
 
   def confirm
     new_user      = !confirmed?
-    self.approved = true if open_registrations?
+    self.approved = true if open_registrations? && !sign_up_from_ip_requires_approval?
 
     super
 
@@ -468,7 +468,7 @@ class User < ApplicationRecord
   end
 
   def validate_email_dns?
-    email_changed? && !(Rails.env.test? || Rails.env.development?)
+    email_changed? && !external? && !(Rails.env.test? || Rails.env.development?)
   end
 
   def invite_text_required?
