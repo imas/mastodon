@@ -1,8 +1,6 @@
 # im@stodon
 
-[![Build Status](https://img.shields.io/travis/imas/mastodon.svg)][travis_imastodon]
-
-[travis_imastodon]: https://travis-ci.org/imas/mastodon
+[![Build Status](https://img.shields.io/circleci/project/github/imas/mastodon.svg)][circleci]
 
 このリポジトリは[Mastodon](https://github.com/tootsuite/mastodon)を元に独自の機能を加え[imastodon.net](https://imastodon.net/about)でサービスを提供しているソフトウェアを、MastodonのAGPLライセンスに基づき公開するリポジトリです。
 
@@ -11,7 +9,7 @@ About what is Mastodon, see [tootsuite/mastodon](https://github.com/tootsuite/ma
 
 ## 主な独自機能
 - 投稿の添付画像をpngからjpgへ変換し保存
-- 画像サイズ制限をフルHD(長辺1920px)に緩和
+- 画像サイズ制限を緩和
 - 未収載タグ付き投稿のタグTLへの表示
 - お気に入りタグ機能
 
@@ -43,7 +41,7 @@ DB_PASS=mastodon
 [crowdin]: https://crowdin.com/project/mastodon
 [docker]: https://hub.docker.com/r/tootsuite/mastodon/
 
-Mastodon is a **free, open-source social network server** based on ActivityPub. Follow friends and discover new ones. Publish anything you want: links, pictures, text, video. All servers of Mastodon are interoperable as a federated network, i.e. users on one server can seamlessly communicate with users from another one. This includes non-Mastodon software that also implements ActivityPub!
+Mastodon is a **free, open-source social network server** based on ActivityPub where users can follow friends and discover new ones. On Mastodon, users can publish anything they want: links, pictures, text, video. All Mastodon servers are interoperable as a federated network (users on one server can seamlessly communicate with users from another one, including non-Mastodon software that implements ActivityPub)!
 
 Click below to **learn more** in a video:
 
@@ -85,7 +83,7 @@ Private posts, locked accounts, phrase filtering, muting, blocking and all sorts
 
 **OAuth2 and a straightforward REST API**
 
-Mastodon acts as an OAuth2 provider so 3rd party apps can use the REST and Streaming APIs, resulting in a rich app ecosystem with a lot of choice!
+Mastodon acts as an OAuth2 provider so 3rd party apps can use the REST and Streaming APIs, resulting in a rich app ecosystem with a lot of choices!
 
 ## Deployment
 
@@ -98,25 +96,25 @@ Mastodon acts as an OAuth2 provider so 3rd party apps can use the REST and Strea
 **Requirements:**
 
 - **PostgreSQL** 9.5+
-- **Redis**
-- **Ruby** 2.4+
-- **Node.js** 8+
+- **Redis** 4+
+- **Ruby** 2.5+
+- **Node.js** 12+
 
-The repository includes deployment configurations for **Docker and docker-compose**, but also a few specific platforms like **Heroku**, **Scalingo**, and **Nanobox**. The [**stand-alone** installation guide](https://docs.joinmastodon.org/administration/installation/) is available in the documentation.
+The repository includes deployment configurations for **Docker and docker-compose**, but also a few specific platforms like **Heroku**, **Scalingo**, and **Nanobox**. The [**stand-alone** installation guide](https://docs.joinmastodon.org/admin/install/) is available in the documentation.
 
 A **Vagrant** configuration is included for development purposes.
 
 ## Contributing
 
-Mastodon is **free, open source software** licensed under **AGPLv3**.
+Mastodon is **free, open-source software** licensed under **AGPLv3**.
 
-You can open issues for bugs you've found or features you think are missing. You can also submit pull requests to this repository, or submit translations using Weblate. To get started, take a look at [CONTRIBUTING.md](CONTRIBUTING.md). If your contributions are accepted into Mastodon, you can request to be paid through [our OpenCollective](https://opencollective.com/mastodon).
+You can open issues for bugs you've found or features you think are missing. You can also submit pull requests to this repository, or submit translations using Crowdin. To get started, take a look at [CONTRIBUTING.md](CONTRIBUTING.md). If your contributions are accepted into Mastodon, you can request to be paid through [our OpenCollective](https://opencollective.com/mastodon).
 
-**IRC channel**: #mastodon on irc.freenode.net
+**IRC channel**: #mastodon on irc.libera.chat
 
 ## License
 
-Copyright (C) 2016-2019 Eugen Rochko & other Mastodon contributors (see [AUTHORS.md](AUTHORS.md))
+Copyright (C) 2016-2021 Eugen Rochko & other Mastodon contributors (see [AUTHORS.md](AUTHORS.md))
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

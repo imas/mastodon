@@ -19,6 +19,9 @@ class IdsToBigints < ActiveRecord::Migration[5.1]
       [:favourites, :account_id],
       [:favourites, :id],
       [:favourites, :status_id],
+      [:favourite_tags, :id],
+      [:favourite_tags, :account_id],
+      [:favourite_tags, :tag_id],
       [:follow_requests, :account_id],
       [:follow_requests, :id],
       [:follow_requests, :target_account_id],
@@ -70,20 +73,22 @@ class IdsToBigints < ActiveRecord::Migration[5.1]
     included_columns << [:deprecated_preview_cards, :id] if table_exists?(:deprecated_preview_cards)
 
     # Print out a warning that this will probably take a while.
-    say ''
-    say 'WARNING: This migration may take a *long* time for large instances'
-    say 'It will *not* lock tables for any significant time, but it may run'
-    say 'for a very long time. We will pause for 10 seconds to allow you to'
-    say 'interrupt this migration if you are not ready.'
-    say ''
-    say 'This migration has some sections that can be safely interrupted'
-    say 'and restarted later, and will tell you when those are occurring.'
-    say ''
-    say 'For more information, see https://github.com/tootsuite/mastodon/pull/5088'
+    if $stdout.isatty
+      say ''
+      say 'WARNING: This migration may take a *long* time for large instances'
+      say 'It will *not* lock tables for any significant time, but it may run'
+      say 'for a very long time. We will pause for 10 seconds to allow you to'
+      say 'interrupt this migration if you are not ready.'
+      say ''
+      say 'This migration has some sections that can be safely interrupted'
+      say 'and restarted later, and will tell you when those are occurring.'
+      say ''
+      say 'For more information, see https://github.com/tootsuite/mastodon/pull/5088'
 
-    10.downto(1) do |i|
-      say "Continuing in #{i} second#{i == 1 ? '' : 's'}...", true
-      sleep 1
+      10.downto(1) do |i|
+        say "Continuing in #{i} second#{i == 1 ? '' : 's'}...", true
+        sleep 1
+      end
     end
 
     tables = included_columns.map(&:first).uniq

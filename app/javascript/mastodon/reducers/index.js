@@ -16,11 +16,11 @@ import push_notifications from './push_notifications';
 import status_lists from './status_lists';
 import mutes from './mutes';
 import blocks from './blocks';
+import boosts from './boosts';
 import reports from './reports';
 import contexts from './contexts';
 import favourite_tags from './favourite_tags';
 import trend_tags from './trend_tags';
-import announcements from './announcements';
 import compose from './compose';
 import search from './search';
 import media_attachments from './media_attachments';
@@ -37,8 +37,12 @@ import polls from './polls';
 import identity_proofs from './identity_proofs';
 import trends from './trends';
 import missed_updates from './missed_updates';
+import announcements from './announcements';
+import markers from './markers';
+import picture_in_picture from './picture_in_picture';
 
 const reducers = {
+  announcements,
   dropdown_menu,
   timelines,
   meta,
@@ -56,11 +60,11 @@ const reducers = {
   push_notifications,
   mutes,
   blocks,
+  boosts,
   reports,
   contexts,
   favourite_tags,
   trend_tags,
-  announcements,
   compose,
   search,
   media_attachments,
@@ -77,6 +81,8 @@ const reducers = {
   polls,
   trends,
   missed_updates,
+  markers,
+  picture_in_picture,
 };
 
 export default combineReducers(reducers);

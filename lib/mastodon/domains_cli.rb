@@ -16,22 +16,22 @@ module Mastodon
     option :concurrency, type: :numeric, default: 5, aliases: [:c]
     option :verbose, type: :boolean, aliases: [:v]
     option :dry_run, type: :boolean
-    option :whitelist_mode, type: :boolean
+    option :limited_federation_mode, type: :boolean
     desc 'purge [DOMAIN...]', 'Remove accounts from a DOMAIN without a trace'
     long_desc <<-LONG_DESC
       Remove all accounts from a given DOMAIN without leaving behind any
       records. Unlike a suspension, if the DOMAIN still exists in the wild,
       it means the accounts could return if they are resolved again.
 
-      When the --whitelist-mode option is given, instead of purging accounts
-      from a single domain, all accounts from domains that are not whitelisted
+      When the --limited-federation-mode option is given, instead of purging accounts
+      from a single domain, all accounts from domains that have not been explicitly allowed
       are removed from the database.
     LONG_DESC
     def purge(*domains)
       dry_run = options[:dry_run] ? ' (DRY RUN)' : ''
 
       scope = begin
-        if options[:whitelist_mode]
+        if options[:limited_federation_mode]
           Account.remote.where.not(domain: DomainAllow.pluck(:domain))
         elsif !domains.empty?
           Account.remote.where(domain: domains)
@@ -42,7 +42,7 @@ module Mastodon
       end
 
       processed, = parallelize_with_progress(scope) do |account|
-        SuspendAccountService.new.call(account, reserve_username: false, skip_side_effects: true) unless options[:dry_run]
+        DeleteAccountService.new.call(account, reserve_username: false, skip_side_effects: true) unless options[:dry_run]
       end
 
       DomainBlock.where(domain: domains).destroy_all unless options[:dry_run]
@@ -52,6 +52,8 @@ module Mastodon
       custom_emojis = CustomEmoji.where(domain: domains)
       custom_emojis_count = custom_emojis.count
       custom_emojis.destroy_all unless options[:dry_run]
+
+      Instance.refresh unless options[:dry_run]
 
       say("Removed #{custom_emojis_count} custom emojis", :green)
     end
@@ -83,7 +85,7 @@ module Mastodon
       processed       = Concurrent::AtomicFixnum.new(0)
       failed          = Concurrent::AtomicFixnum.new(0)
       start_at        = Time.now.to_f
-      seed            = start ? [start] : Account.remote.domains
+      seed            = start ? [start] : Instance.pluck(:domain)
       blocked_domains = Regexp.new('\\.?' + DomainBlock.where(severity: 1).pluck(:domain).join('|') + '$')
       progress        = create_progress_bar
 
@@ -91,7 +93,7 @@ module Mastodon
 
       work_unit = ->(domain) do
         next if stats.key?(domain)
-        next if options[:exclude_suspended] && domain.match(blocked_domains)
+        next if options[:exclude_suspended] && domain.match?(blocked_domains)
 
         stats[domain] = nil
 

@@ -5,11 +5,13 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
   attributes :uri, :title, :short_description, :description, :email,
              :version, :urls, :stats, :thumbnail,
-             :languages, :registrations, :approval_required
+             :languages, :registrations, :approval_required, :invites_enabled
 
   has_one :contact_account, serializer: REST::AccountSerializer
 
-  delegate :contact_account, to: :instance_presenter
+  has_many :rules, serializer: REST::RuleSerializer
+
+  delegate :contact_account, :rules, to: :instance_presenter
 
   def uri
     Rails.configuration.x.local_domain
@@ -61,6 +63,10 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
   def approval_required
     Setting.registrations_mode == 'approved'
+  end
+
+  def invites_enabled
+    Setting.min_invite_role == 'user'
   end
 
   private
