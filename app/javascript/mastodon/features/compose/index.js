@@ -13,10 +13,12 @@ import SearchContainer from './containers/search_container';
 import Motion from '../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import SearchResultsContainer from './containers/search_results_container';
-import AnnouncementsContainer from './containers/announcements_container';
 import { changeComposing } from '../../actions/compose';
+import { openModal } from 'mastodon/actions/modal';
 import elephantUIPlane from '../../../images/elephant_ui_plane.svg';
 import { mascot } from '../../initial_state';
+import Icon from 'mastodon/components/icon';
+import { logOut } from 'mastodon/utils/log_out';
 
 const messages = defineMessages({
   start: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
@@ -26,7 +28,9 @@ const messages = defineMessages({
   community: { id: 'navigation_bar.community_timeline', defaultMessage: 'Local timeline' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
-  compose: { id: 'navigation_bar.compose', defaultMessage: 'Compose new toot' },
+  compose: { id: 'navigation_bar.compose', defaultMessage: 'Compose new post' },
+  logoutMessage: { id: 'confirmations.logout.message', defaultMessage: 'Are you sure you want to log out?' },
+  logoutConfirm: { id: 'confirmations.logout.confirm', defaultMessage: 'Log out' },
 });
 
 const mapStateToProps = (state, ownProps) => ({
@@ -63,6 +67,22 @@ class Compose extends React.PureComponent {
     }
   }
 
+  handleLogoutClick = e => {
+    const { dispatch, intl } = this.props;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    dispatch(openModal('CONFIRM', {
+      message: intl.formatMessage(messages.logoutMessage),
+      confirm: intl.formatMessage(messages.logoutConfirm),
+      closeWhenConfirm: false,
+      onConfirm: () => logOut(),
+    }));
+
+    return false;
+  }
+
   onFocus = () => {
     this.props.dispatch(changeComposing(true));
   }
@@ -80,21 +100,21 @@ class Compose extends React.PureComponent {
       const { columns } = this.props;
       header = (
         <nav className='drawer__header'>
-          <Link to='/getting-started' className='drawer__tab' title={intl.formatMessage(messages.start)} aria-label={intl.formatMessage(messages.start)}><i role='img' className='fa fa-fw fa-bars' /></Link>
+          <Link to='/getting-started' className='drawer__tab' title={intl.formatMessage(messages.start)} aria-label={intl.formatMessage(messages.start)}><Icon id='bars' fixedWidth /></Link>
           {!columns.some(column => column.get('id') === 'HOME') && (
-            <Link to='/timelines/home' className='drawer__tab' title={intl.formatMessage(messages.home_timeline)} aria-label={intl.formatMessage(messages.home_timeline)}><i role='img' className='fa fa-fw fa-home' /></Link>
+            <Link to='/home' className='drawer__tab' title={intl.formatMessage(messages.home_timeline)} aria-label={intl.formatMessage(messages.home_timeline)}><Icon id='home' fixedWidth /></Link>
           )}
           {!columns.some(column => column.get('id') === 'NOTIFICATIONS') && (
-            <Link to='/notifications' className='drawer__tab' title={intl.formatMessage(messages.notifications)} aria-label={intl.formatMessage(messages.notifications)}><i role='img' className='fa fa-fw fa-bell' /></Link>
+            <Link to='/notifications' className='drawer__tab' title={intl.formatMessage(messages.notifications)} aria-label={intl.formatMessage(messages.notifications)}><Icon id='bell' fixedWidth /></Link>
           )}
           {!columns.some(column => column.get('id') === 'COMMUNITY') && (
-            <Link to='/timelines/public/local' className='drawer__tab' title={intl.formatMessage(messages.community)} aria-label={intl.formatMessage(messages.community)}><i role='img' className='fa fa-fw fa-users' /></Link>
+            <Link to='/public/local' className='drawer__tab' title={intl.formatMessage(messages.community)} aria-label={intl.formatMessage(messages.community)}><Icon id='users' fixedWidth /></Link>
           )}
           {!columns.some(column => column.get('id') === 'PUBLIC') && (
-            <Link to='/timelines/public' className='drawer__tab' title={intl.formatMessage(messages.public)} aria-label={intl.formatMessage(messages.public)}><i role='img' className='fa fa-fw fa-globe' /></Link>
+            <Link to='/public' className='drawer__tab' title={intl.formatMessage(messages.public)} aria-label={intl.formatMessage(messages.public)}><Icon id='globe' fixedWidth /></Link>
           )}
-          <a href='/settings/preferences' className='drawer__tab' title={intl.formatMessage(messages.preferences)} aria-label={intl.formatMessage(messages.preferences)}><i role='img' className='fa fa-fw fa-cog' /></a>
-          <a href='/auth/sign_out' className='drawer__tab' data-method='delete' title={intl.formatMessage(messages.logout)} aria-label={intl.formatMessage(messages.logout)}><i role='img' className='fa fa-fw fa-sign-out' /></a>
+          <a href='/settings/preferences' className='drawer__tab' title={intl.formatMessage(messages.preferences)} aria-label={intl.formatMessage(messages.preferences)}><Icon id='cog' fixedWidth /></a>
+          <a href='/auth/sign_out' className='drawer__tab' title={intl.formatMessage(messages.logout)} aria-label={intl.formatMessage(messages.logout)} onClick={this.handleLogoutClick}><Icon id='sign-out' fixedWidth /></a>
         </nav>
       );
     }
@@ -108,15 +128,14 @@ class Compose extends React.PureComponent {
         <div className='drawer__pager'>
           {!isSearchPage && <div className='drawer__inner' onFocus={this.onFocus}>
             <NavigationContainer onClose={this.onBlur} />
+
             <ComposeFormContainer />
-            <AnnouncementsContainer />
             <FavouriteTagsContainer />
             <TrendTagsContainer />
-            {multiColumn && mascot && (
-              <div className='drawer__inner__mastodon'>
-                <img alt='' draggable='false' src={mascot} />
-              </div>
-            )}
+
+            <div className='drawer__inner__mastodon'>
+              <img alt='' draggable='false' src={mascot || elephantUIPlane} />
+            </div>
           </div>}
 
           <Motion defaultStyle={{ x: isSearchPage ? 0 : -100 }} style={{ x: spring(showSearch || isSearchPage ? 0 : -100, { stiffness: 210, damping: 20 }) }}>

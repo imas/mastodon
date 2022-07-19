@@ -5,7 +5,30 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { me } from '../../../initial_state';
 
-const APPROX_HASHTAG_RE = /(?:^|[^\/\)\w])#(\w*[a-zA-Z·]\w*)/i;
+const buildHashtagRE = () => {
+  try {
+    const HASHTAG_SEPARATORS = '_\\u00b7\\u200c';
+    const ALPHA = '\\p{L}\\p{M}';
+    const WORD = '\\p{L}\\p{M}\\p{N}\\p{Pc}';
+    return new RegExp(
+      '(?:^|[^\\/\\)\\w])#((' +
+      '[' + WORD + '_]' +
+      '[' + WORD + HASHTAG_SEPARATORS + ']*' +
+      '[' + ALPHA + HASHTAG_SEPARATORS + ']' +
+      '[' + WORD + HASHTAG_SEPARATORS +']*' +
+      '[' + WORD + '_]' +
+      ')|(' +
+      '[' + WORD + '_]*' +
+      '[' + ALPHA + ']' +
+      '[' + WORD + '_]*' +
+      '))', 'iu',
+    );
+  } catch {
+    return /(?:^|[^\/\)\w])#(\w*[a-zA-Z·]\w*)/i;
+  }
+};
+
+const APPROX_HASHTAG_RE = buildHashtagRE();
 
 const mapStateToProps = state => ({
   needsLockWarning: state.getIn(['compose', 'privacy']) === 'private' && !state.getIn(['accounts', me, 'locked']),
@@ -19,13 +42,13 @@ const WarningWrapper = ({ needsLockWarning, hashtagWarning, directMessageWarning
   }
 
   if (hashtagWarning) {
-    return <Warning message={<FormattedMessage id='compose_form.hashtag_warning' defaultMessage="This toot won't be listed under any hashtag as it is unlisted. Only public toots can be searched by hashtag." />} />;
+    return <Warning message={<FormattedMessage id='compose_form.hashtag_warning' defaultMessage="This post won't be listed under any hashtag as it is unlisted. Only public posts can be searched by hashtag." />} />;
   }
 
   if (directMessageWarning) {
     const message = (
       <span>
-        <FormattedMessage id='compose_form.direct_message_warning' defaultMessage='This toot will only be sent to all the mentioned users.' /> <a href='/terms' target='_blank'><FormattedMessage id='compose_form.direct_message_warning_learn_more' defaultMessage='Learn more' /></a>
+        <FormattedMessage id='compose_form.encryption_warning' defaultMessage='Posts on Mastodon are not end-to-end encrypted. Do not share any dangerous information over Mastodon.' /> <a href='/terms' target='_blank'><FormattedMessage id='compose_form.direct_message_warning_learn_more' defaultMessage='Learn more' /></a>
       </span>
     );
 

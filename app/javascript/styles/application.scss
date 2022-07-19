@@ -6,6 +6,7 @@
 
 @import 'mastodon/reset';
 @import 'mastodon/basics';
+@import 'mastodon/branding';
 @import 'mastodon/containers';
 @import 'mastodon/lists';
 @import 'mastodon/footer';
@@ -13,10 +14,10 @@
 @import 'mastodon/widgets';
 @import 'mastodon/forms';
 @import 'mastodon/accounts';
-@import 'mastodon/stream_entries';
+@import 'mastodon/statuses';
 @import 'mastodon/boost';
 @import 'mastodon/components';
-@import 'mastodon/introduction';
+@import 'mastodon/polls';
 @import 'mastodon/modal';
 @import 'mastodon/emoji_picker';
 @import 'mastodon/about';
@@ -25,3 +26,9 @@
 @import 'mastodon/dashboard';
 @import 'mastodon/rtl';
 @import 'mastodon/accessibility';
+
+@import 'imastodon/logo';
+@import 'imastodon/compose_common';
+@import 'imastodon/favourite_tags';
+@import 'imastodon/statuses';
+@import 'imastodon/trend_tags';

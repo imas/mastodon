@@ -3,23 +3,44 @@ require 'rails_helper'
 RSpec.describe ReblogService, type: :service do
   let(:alice)  { Fabricate(:account, username: 'alice') }
 
-  context 'OStatus' do
-    let(:bob)    { Fabricate(:account, username: 'bob', domain: 'example.com', salmon_url: 'http://salmon.example.com') }
-    let(:status) { Fabricate(:status, account: bob, uri: 'tag:example.com;something:something') }
+  context 'creates a reblog with appropriate visibility' do
+    let(:visibility)        { :public }
+    let(:reblog_visibility) { :public }
+    let(:status)            { Fabricate(:status, account: alice, visibility: visibility) }
 
     subject { ReblogService.new }
 
     before do
-      stub_request(:post, 'http://salmon.example.com')
-      subject.call(alice, status)
+      subject.call(alice, status, visibility: reblog_visibility)
     end
 
-    it 'creates a reblog' do
-      expect(status.reblogs.count).to eq 1
+    describe 'boosting privately' do
+      let(:reblog_visibility) { :private }
+
+      it 'reblogs privately' do
+        expect(status.reblogs.first.visibility).to eq 'private'
+      end
     end
 
-    it 'sends a Salmon slap for a remote reblog' do
-      expect(a_request(:post, 'http://salmon.example.com')).to have_been_made
+    describe 'public reblogs of private toots should remain private' do
+      let(:visibility)        { :private }
+      let(:reblog_visibility) { :public }
+
+      it 'reblogs privately' do
+        expect(status.reblogs.first.visibility).to eq 'private'
+      end
+    end
+  end
+
+  context 'when the reblogged status is discarded in the meantime' do
+    let(:status) { Fabricate(:status, account: alice, visibility: :public) }
+
+    before do
+      status.discard
+    end
+
+    it 'raises an exception' do
+      expect { subject.call(alice, status) }.to raise_error ActiveRecord::ActiveRecordError
     end
   end
 

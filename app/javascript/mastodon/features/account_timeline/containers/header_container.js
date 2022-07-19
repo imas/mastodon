@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { makeGetAccount } from '../../../selectors';
+import { makeGetAccount, getAccountHidden } from '../../../selectors';
 import Header from '../components/header';
 import {
   followAccount,
   unfollowAccount,
-  blockAccount,
   unblockAccount,
   unmuteAccount,
   pinAccount,
@@ -16,6 +15,7 @@ import {
   directCompose,
 } from '../../../actions/compose';
 import { initMuteModal } from '../../../actions/mutes';
+import { initBlockModal } from '../../../actions/blocks';
 import { initReport } from '../../../actions/reports';
 import { openModal } from '../../../actions/modal';
 import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
@@ -24,7 +24,6 @@ import { unfollowModal } from '../../../initial_state';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
-  blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
 });
 
@@ -33,6 +32,8 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, { accountId }) => ({
     account: getAccount(state, accountId),
+    domain: state.getIn(['meta', 'domain']),
+    hidden: getAccountHidden(state, accountId),
   });
 
   return mapStateToProps;
@@ -60,11 +61,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     if (account.getIn(['relationship', 'blocking'])) {
       dispatch(unblockAccount(account.get('id')));
     } else {
-      dispatch(openModal('CONFIRM', {
-        message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
-        confirm: intl.formatMessage(messages.blockConfirm),
-        onConfirm: () => dispatch(blockAccount(account.get('id'))),
-      }));
+      dispatch(initBlockModal(account));
     }
   },
 
@@ -78,9 +75,9 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onReblogToggle (account) {
     if (account.getIn(['relationship', 'showing_reblogs'])) {
-      dispatch(followAccount(account.get('id'), false));
+      dispatch(followAccount(account.get('id'), { reblogs: false }));
     } else {
-      dispatch(followAccount(account.get('id'), true));
+      dispatch(followAccount(account.get('id'), { reblogs: true }));
     }
   },
 
@@ -89,6 +86,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       dispatch(unpinAccount(account.get('id')));
     } else {
       dispatch(pinAccount(account.get('id')));
+    }
+  },
+
+  onNotifyToggle (account) {
+    if (account.getIn(['relationship', 'notifying'])) {
+      dispatch(followAccount(account.get('id'), { notify: false }));
+    } else {
+      dispatch(followAccount(account.get('id'), { notify: true }));
     }
   },
 

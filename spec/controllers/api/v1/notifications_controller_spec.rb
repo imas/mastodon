@@ -3,9 +3,10 @@ require 'rails_helper'
 RSpec.describe Api::V1::NotificationsController, type: :controller do
   render_views
 
-  let(:user)  { Fabricate(:user, account: Fabricate(:account, username: 'alice')) }
+  let(:user)  { Fabricate(:user, account_attributes: { username: 'alice' }) }
   let(:token) { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: scopes) }
-  let(:other) { Fabricate(:user, account: Fabricate(:account, username: 'bob')) }
+  let(:other) { Fabricate(:user) }
+  let(:third) { Fabricate(:user) }
 
   before do
     allow(controller).to receive(:doorkeeper_token) { token }
@@ -55,7 +56,8 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
       mentioning_status = PostStatusService.new.call(other.account, text: 'Hello @alice')
       @mention_from_status = mentioning_status.mentions.first
       @favourite = FavouriteService.new.call(other.account, first_status)
-      @follow = FollowService.new.call(other.account, 'alice')
+      @second_favourite = FavouriteService.new.call(third.account, first_status)
+      @follow = FollowService.new.call(other.account, user.account)
     end
 
     describe 'with no options' do
@@ -68,45 +70,76 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
       end
 
       it 'includes reblog' do
-        expect(assigns(:notifications).map(&:activity)).to include(@reblog_of_first_status)
+        expect(body_as_json.map { |x| x[:type] }).to include 'reblog'
       end
 
       it 'includes mention' do
-        expect(assigns(:notifications).map(&:activity)).to include(@mention_from_status)
+        expect(body_as_json.map { |x| x[:type] }).to include 'mention'
       end
 
       it 'includes favourite' do
-        expect(assigns(:notifications).map(&:activity)).to include(@favourite)
+        expect(body_as_json.map { |x| x[:type] }).to include 'favourite'
       end
 
       it 'includes follow' do
-        expect(assigns(:notifications).map(&:activity)).to include(@follow)
+        expect(body_as_json.map { |x| x[:type] }).to include 'follow'
       end
     end
 
-    describe 'with excluded mentions' do
+    describe 'with account_id param' do
       before do
-        get :index, params: { exclude_types: ['mention'] }
+        get :index, params: { account_id: third.account.id }
       end
 
       it 'returns http success' do
         expect(response).to have_http_status(200)
       end
 
-      it 'includes reblog' do
-        expect(assigns(:notifications).map(&:activity)).to include(@reblog_of_first_status)
+      it 'returns only notifications from specified user' do
+        expect(body_as_json.map { |x| x[:account][:id] }.uniq).to eq [third.account.id.to_s]
+      end
+    end
+
+    describe 'with invalid account_id param' do
+      before do
+        get :index, params: { account_id: 'foo' }
       end
 
-      it 'excludes mention' do
-        expect(assigns(:notifications).map(&:activity)).to_not include(@mention_from_status)
+      it 'returns http success' do
+        expect(response).to have_http_status(200)
       end
 
-      it 'includes favourite' do
-        expect(assigns(:notifications).map(&:activity)).to include(@favourite)
+      it 'returns nothing' do
+        expect(body_as_json.size).to eq 0
+      end
+    end
+
+    describe 'with excluded_types param' do
+      before do
+        get :index, params: { exclude_types: %w(mention) }
       end
 
-      it 'includes follow' do
-        expect(assigns(:notifications).map(&:activity)).to include(@follow)
+      it 'returns http success' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns everything but excluded type' do
+        expect(body_as_json.size).to_not eq 0
+        expect(body_as_json.map { |x| x[:type] }.uniq).to_not include 'mention'
+      end
+    end
+
+    describe 'with types param' do
+      before do
+        get :index, params: { types: %w(mention) }
+      end
+
+      it 'returns http success' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns only requested type' do
+        expect(body_as_json.map { |x| x[:type] }.uniq).to eq ['mention']
       end
     end
   end

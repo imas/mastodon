@@ -3,34 +3,35 @@
 class Api::V1::Instances::ActivityController < Api::BaseController
   before_action :require_enabled_api!
 
-  respond_to :json
+  skip_before_action :set_cache_headers
+  skip_before_action :require_authenticated_user!, unless: :whitelist_mode?
 
   def show
-    render_cached_json('api:v1:instances:activity:show', expires_in: 1.day) { activity }
+    expires_in 1.day, public: true
+    render_with_cache json: :activity, expires_in: 1.day
   end
 
   private
 
   def activity
-    weeks = []
+    statuses_tracker      = ActivityTracker.new('activity:statuses:local', :basic)
+    logins_tracker        = ActivityTracker.new('activity:logins', :unique)
+    registrations_tracker = ActivityTracker.new('activity:accounts:local', :basic)
 
-    12.times do |i|
-      day     = i.weeks.ago.to_date
-      week_id = day.cweek
-      week    = Date.commercial(day.cwyear, week_id)
+    (0...12).map do |i|
+      start_of_week = i.weeks.ago
+      end_of_week   = start_of_week + 6.days
 
-      weeks << {
-        week: week.to_time.to_i.to_s,
-        statuses: Redis.current.get("activity:statuses:local:#{week_id}") || '0',
-        logins: Redis.current.pfcount("activity:logins:#{week_id}").to_s,
-        registrations: Redis.current.get("activity:accounts:local:#{week_id}") || '0',
+      {
+        week: start_of_week.to_i.to_s,
+        statuses: statuses_tracker.sum(start_of_week, end_of_week).to_s,
+        logins: logins_tracker.sum(start_of_week, end_of_week).to_s,
+        registrations: registrations_tracker.sum(start_of_week, end_of_week).to_s,
       }
     end
-
-    weeks
   end
 
   def require_enabled_api!
-    head 404 unless Setting.activity_api_enabled
+    head 404 unless Setting.activity_api_enabled && !whitelist_mode?
   end
 end

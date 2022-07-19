@@ -12,19 +12,20 @@ export default class NavigationBar extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
+    onLogout: PropTypes.func.isRequired,
     onClose: PropTypes.func,
   };
 
   render () {
     return (
       <div className='navigation-bar'>
-        <Permalink href={this.props.account.get('url')} to={`/accounts/${this.props.account.get('id')}`}>
+        <Permalink href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
           <span style={{ display: 'none' }}>{this.props.account.get('acct')}</span>
-          <Avatar account={this.props.account} size={40} />
+          <Avatar account={this.props.account} size={48} />
         </Permalink>
 
         <div className='navigation-bar__profile'>
-          <Permalink href={this.props.account.get('url')} to={`/accounts/${this.props.account.get('id')}`}>
+          <Permalink href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
             <strong className='navigation-bar__profile-account'>@{this.props.account.get('acct')}</strong>
           </Permalink>
 
@@ -33,7 +34,7 @@ export default class NavigationBar extends ImmutablePureComponent {
 
         <div className='navigation-bar__actions'>
           <IconButton className='close' title='' icon='close' onClick={this.props.onClose} />
-          <ActionBar account={this.props.account} />
+          <ActionBar account={this.props.account} onLogout={this.props.onLogout} />
         </div>
       </div>
     );

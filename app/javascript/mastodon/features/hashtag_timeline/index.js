@@ -5,7 +5,6 @@ import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
 import ColumnSettingsContainer from './containers/column_settings_container';
-import ShowLocalSettingsContainer from './containers/show_local_settings_container';
 import FavouriteToggleContainer from './containers/favourite_toggle_container';
 import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import { addColumn, removeColumn, moveColumn } from '../../actions/columns';
@@ -14,8 +13,7 @@ import { connectHashtagStream } from '../../actions/streaming';
 import { isEqual } from 'lodash';
 
 const mapStateToProps = (state, props) => ({
-  hasUnread: state.getIn(['timelines', `hashtag:${props.params.id}`, 'unread']) > 0,
-  isLocal: state.getIn(['settings', 'tag', `${props.params.id}`, 'shows', 'local'], false),
+  hasUnread: state.getIn(['timelines', `hashtag:${props.params.id}${props.params.local ? ':local' : ''}`, 'unread']) > 0,
 });
 
 export default @connect(mapStateToProps)
@@ -27,10 +25,8 @@ class HashtagTimeline extends React.PureComponent {
     params: PropTypes.object.isRequired,
     columnId: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    shouldUpdateScroll: PropTypes.func,
     hasUnread: PropTypes.bool,
     multiColumn: PropTypes.bool,
-    isLocal: PropTypes.bool,
   };
 
   handlePin = () => {
@@ -80,13 +76,13 @@ class HashtagTimeline extends React.PureComponent {
     this.column.scrollTop();
   }
 
-  _subscribe (dispatch, id, isLocal, tags = {}) {
+  _subscribe (dispatch, id, tags = {}, local) {
     let any  = (tags.any || []).map(tag => tag.value);
     let all  = (tags.all || []).map(tag => tag.value);
     let none = (tags.none || []).map(tag => tag.value);
 
-    [id, ...any].map((tag) => {
-      this.disconnects.push(dispatch(connectHashtagStream(id, tag, isLocal, (status) => {
+    [id, ...any].map(tag => {
+      this.disconnects.push(dispatch(connectHashtagStream(id, tag, local, status => {
         let tags = status.tags.map(tag => tag.name);
 
         return all.filter(tag => tags.includes(tag)).length === all.length &&
@@ -101,22 +97,22 @@ class HashtagTimeline extends React.PureComponent {
   }
 
   componentDidMount () {
-    const { dispatch, isLocal } = this.props;
-    const { id, tags } = this.props.params;
+    const { dispatch } = this.props;
+    const { id, tags, local } = this.props.params;
 
-    this._subscribe(dispatch, id, tags);
-    dispatch(expandHashtagTimeline(id, { isLocal, tags }));
+    this._subscribe(dispatch, id, tags, local);
+    dispatch(expandHashtagTimeline(id, { tags, local }));
   }
 
   componentWillReceiveProps (nextProps) {
     const { dispatch, params } = this.props;
-    const { isLocal } = nextProps;
-    const { id, tags } = nextProps.params;
-    if (id !== params.id || this.props.isLocal !== isLocal || !isEqual(tags, params.tags)) {
+    const { id, tags, local } = nextProps.params;
+
+    if (id !== params.id || !isEqual(tags, params.tags) || !isEqual(local, params.local)) {
       this._unsubscribe();
-      this._subscribe(dispatch, id, isLocal, tags);
-      this.props.dispatch(clearTimeline(`hashtag:${id}`));
-      this.props.dispatch(expandHashtagTimeline(id, { isLocal, tags }));
+      this._subscribe(dispatch, id, tags, local);
+      dispatch(clearTimeline(`hashtag:${id}${local ? ':local' : ''}`));
+      dispatch(expandHashtagTimeline(id, { tags, local }));
     }
   }
 
@@ -129,18 +125,17 @@ class HashtagTimeline extends React.PureComponent {
   }
 
   handleLoadMore = maxId => {
-    const { isLocal } = this.props;
-    const { id, tags } = this.props.params;
-    this.props.dispatch(expandHashtagTimeline(id, { maxId, isLocal, tags }));
+    const { id, tags, local } = this.props.params;
+    this.props.dispatch(expandHashtagTimeline(id, { maxId, tags, local }));
   }
 
   render () {
-    const { shouldUpdateScroll, hasUnread, columnId, multiColumn } = this.props;
-    const { id } = this.props.params;
+    const { hasUnread, columnId, multiColumn } = this.props;
+    const { id, local } = this.props.params;
     const pinned = !!columnId;
 
     return (
-      <Column ref={this.setRef} label={`#${id}`}>
+      <Column bindToDocument={!multiColumn} ref={this.setRef} label={`#${id}`}>
         <ColumnHeader
           icon='hashtag'
           active={hasUnread}
@@ -155,20 +150,16 @@ class HashtagTimeline extends React.PureComponent {
           <FavouriteToggleContainer
             tag={id}
           />
-          <ShowLocalSettingsContainer
-            tag={id}
-          />
           {columnId && <ColumnSettingsContainer columnId={columnId} />}
         </ColumnHeader>
 
         <StatusListContainer
-          tag={id}
           trackScroll={!pinned}
           scrollKey={`hashtag_timeline-${columnId}`}
-          timelineId={`hashtag:${id}`}
+          timelineId={`hashtag:${id}${local ? ':local' : ''}`}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.hashtag' defaultMessage='There is nothing in this hashtag yet.' />}
-          shouldUpdateScroll={shouldUpdateScroll}
+          bindToDocument={!multiColumn}
         />
       </Column>
     );

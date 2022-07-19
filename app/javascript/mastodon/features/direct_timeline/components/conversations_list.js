@@ -10,28 +10,34 @@ export default class ConversationsList extends ImmutablePureComponent {
 
   static propTypes = {
     conversations: ImmutablePropTypes.list.isRequired,
+    scrollKey: PropTypes.string.isRequired,
     hasMore: PropTypes.bool,
     isLoading: PropTypes.bool,
     onLoadMore: PropTypes.func,
-    shouldUpdateScroll: PropTypes.func,
   };
 
   getCurrentIndex = id => this.props.conversations.findIndex(x => x.get('id') === id)
 
   handleMoveUp = id => {
     const elementIndex = this.getCurrentIndex(id) - 1;
-    this._selectChild(elementIndex);
+    this._selectChild(elementIndex, true);
   }
 
   handleMoveDown = id => {
     const elementIndex = this.getCurrentIndex(id) + 1;
-    this._selectChild(elementIndex);
+    this._selectChild(elementIndex, false);
   }
 
-  _selectChild (index) {
-    const element = this.node.node.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
+  _selectChild (index, align_top) {
+    const container = this.node.node;
+    const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
 
     if (element) {
+      if (align_top && container.scrollTop > element.offsetTop) {
+        element.scrollIntoView(true);
+      } else if (!align_top && container.scrollTop + container.clientHeight < element.offsetTop + element.offsetHeight) {
+        element.scrollIntoView(false);
+      }
       element.focus();
     }
   }
@@ -52,13 +58,14 @@ export default class ConversationsList extends ImmutablePureComponent {
     const { conversations, onLoadMore, ...other } = this.props;
 
     return (
-      <ScrollableList {...other} onLoadMore={onLoadMore && this.handleLoadOlder} scrollKey='direct' ref={this.setRef}>
+      <ScrollableList {...other} onLoadMore={onLoadMore && this.handleLoadOlder} ref={this.setRef}>
         {conversations.map(item => (
           <ConversationContainer
             key={item.get('id')}
             conversationId={item.get('id')}
             onMoveUp={this.handleMoveUp}
             onMoveDown={this.handleMoveDown}
+            scrollKey={this.props.scrollKey}
           />
         ))}
       </ScrollableList>

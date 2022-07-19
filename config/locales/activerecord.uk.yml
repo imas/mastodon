@@ -1,13 +1,49 @@
 ---
 uk:
   activerecord:
+    attributes:
+      poll:
+        expires_at: Кінцевий термін
+        options: Варіанти вибору
+      user:
+        agreement: Угода про надання послуг
+        email: E-mail адреса
+        locale: Локаль
+        password: Пароль
+      user/account:
+        username: Ім'я користувача
+      user/invite_request:
+        text: Причина
     errors:
       models:
         account:
           attributes:
             username:
-              invalid: тільки букви, цифри та нижні підкреслювання
+              invalid: тільки літери, цифри та підкреслення
+              reserved: зарезервовано
+        admin/webhook:
+          attributes:
+            url:
+              invalid: не є дійсною URL-адресою
+        doorkeeper/application:
+          attributes:
+            website:
+              invalid: не є дійсною URL-адресою
         status:
           attributes:
             reblog:
               taken: статусу вже існує
+        user:
+          attributes:
+            email:
+              blocked: використовує не дозволенного постачальника електронної пошти
+              unreachable: не існує
+            role_id:
+              elevated: не може бути вищою за поточну роль
+        user_role:
+          attributes:
+            permissions_as_keys:
+              dangerous: включити небезпечні для базової ролі дозволи
+              elevated: не можна включити права, якими не володіє ваша поточна роль
+            position:
+              elevated: не може бути вищою за поточну роль

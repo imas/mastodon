@@ -1,75 +1,84 @@
 # frozen_string_literal: true
 
 class ProcessMentionsService < BaseService
-  include StreamEntryRenderer
+  include Payloadable
 
   # Scan status for mentions and fetch remote mentioned users, create
   # local mention pointers, send Salmon notifications to mentioned
   # remote users
   # @param [Status] status
   def call(status)
-    return unless status.local?
+    @status = status
 
-    @status  = status
-    mentions = []
+    return unless @status.local?
 
-    status.text = status.text.gsub(Account::MENTION_RE) do |match|
-      username, domain  = Regexp.last_match(1).split('@')
-      mentioned_account = Account.find_remote(username, domain)
+    @previous_mentions = @status.active_mentions.includes(:account).to_a
+    @current_mentions  = []
 
-      if mention_undeliverable?(mentioned_account)
-        begin
-          mentioned_account = resolve_account_service.call(Regexp.last_match(1))
-        rescue Goldfinger::Error, HTTP::Error, OpenSSL::SSL::SSLError, Mastodon::UnexpectedResponseError
-          mentioned_account = nil
-        end
-      end
-
-      next match if mention_undeliverable?(mentioned_account) || mentioned_account&.suspended
-
-      mentions << mentioned_account.mentions.where(status: status).first_or_create(status: status)
-
-      "@#{mentioned_account.acct}"
+    Status.transaction do
+      scan_text!
+      assign_mentions!
     end
-
-    status.save!
-
-    mentions.each { |mention| create_notification(mention) }
   end
 
   private
 
-  def mention_undeliverable?(mentioned_account)
-    mentioned_account.nil? || (!mentioned_account.local? && mentioned_account.ostatus? && @status.stream_entry.hidden?)
-  end
+  def scan_text!
+    @status.text = @status.text.gsub(Account::MENTION_RE) do |match|
+      username, domain = Regexp.last_match(1).split('@')
 
-  def create_notification(mention)
-    mentioned_account = mention.account
+      domain = begin
+        if TagManager.instance.local_domain?(domain)
+          nil
+        else
+          TagManager.instance.normalize_domain(domain)
+        end
+      end
 
-    if mentioned_account.local?
-      LocalNotificationWorker.perform_async(mentioned_account.id, mention.id, mention.class.name)
-    elsif mentioned_account.ostatus? && !@status.stream_entry.hidden?
-      NotificationWorker.perform_async(ostatus_xml, @status.account_id, mentioned_account.id)
-    elsif mentioned_account.activitypub?
-      ActivityPub::DeliveryWorker.perform_async(activitypub_json, mention.status.account_id, mentioned_account.inbox_url)
+      mentioned_account = Account.find_remote(username, domain)
+
+      # Unapproved and unconfirmed accounts should not be mentionable
+      next if mentioned_account&.local? && !(mentioned_account.user_confirmed? && mentioned_account.user_approved?)
+
+      # If the account cannot be found or isn't the right protocol,
+      # first try to resolve it
+      if mention_undeliverable?(mentioned_account)
+        begin
+          mentioned_account = ResolveAccountService.new.call(Regexp.last_match(1))
+        rescue Webfinger::Error, HTTP::Error, OpenSSL::SSL::SSLError, Mastodon::UnexpectedResponseError
+          mentioned_account = nil
+        end
+      end
+
+      # If after resolving it still isn't found or isn't the right
+      # protocol, then give up
+      next match if mention_undeliverable?(mentioned_account) || mentioned_account&.suspended?
+
+      mention   = @previous_mentions.find { |x| x.account_id == mentioned_account.id }
+      mention ||= mentioned_account.mentions.new(status: @status)
+
+      @current_mentions << mention
+
+      "@#{mentioned_account.acct}"
     end
+
+    @status.save!
   end
 
-  def ostatus_xml
-    @ostatus_xml ||= stream_entry_to_xml(@status.stream_entry)
+  def assign_mentions!
+    @current_mentions.each do |mention|
+      mention.save if mention.new_record?
+    end
+
+    # If previous mentions are no longer contained in the text, convert them
+    # to silent mentions, since withdrawing access from someone who already
+    # received a notification might be more confusing
+    removed_mentions = @previous_mentions - @current_mentions
+
+    Mention.where(id: removed_mentions.map(&:id)).update_all(silent: true) unless removed_mentions.empty?
   end
 
-  def activitypub_json
-    return @activitypub_json if defined?(@activitypub_json)
-    payload = ActiveModelSerializers::SerializableResource.new(
-      @status,
-      serializer: ActivityPub::ActivitySerializer,
-      adapter: ActivityPub::Adapter
-    ).as_json
-    @activitypub_json = Oj.dump(@status.distributable? ? ActivityPub::LinkedDataSignature.new(payload).sign!(@status.account) : payload)
-  end
-
-  def resolve_account_service
-    ResolveAccountService.new
+  def mention_undeliverable?(mentioned_account)
+    mentioned_account.nil? || (!mentioned_account.local? && !mentioned_account.activitypub?)
   end
 end

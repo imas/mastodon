@@ -12,7 +12,7 @@ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 sudo apt-add-repository 'deb https://dl.yarnpkg.com/debian/ stable main'
 
 # Add repo for NodeJS
-curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
 
 # Add firewall rule to redirect 80 to PORT and save
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port #{ENV["PORT"]}
@@ -33,18 +33,19 @@ sudo apt-get install \
   redis-tools \
   postgresql \
   postgresql-contrib \
-  protobuf-compiler \
   yarn \
   libicu-dev \
   libidn11-dev \
-  libprotobuf-dev \
   libreadline-dev \
   libpam0g-dev \
   -y
 
 # Install rvm
 read RUBY_VERSION < .ruby-version
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
+curl -sSL https://rvm.io/mpapis.asc | gpg --import
+curl -sSL https://rvm.io/pkuczynski.asc | gpg --import
+
 curl -sSL https://raw.githubusercontent.com/rvm/rvm/stable/binscripts/rvm-installer | bash -s stable --ruby=$RUBY_VERSION
 source /home/vagrant/.rvm/scripts/rvm
 
@@ -61,10 +62,12 @@ bundle install
 yarn install
 
 # Build Mastodon
+export RAILS_ENV=development 
 export $(cat ".env.vagrant" | xargs)
 bundle exec rails db:setup
 
 # Configure automatic loading of environment variable
+echo 'export RAILS_ENV=development' >> ~/.bash_profile
 echo 'export $(cat "/vagrant/.env.vagrant" | xargs)' >> ~/.bash_profile
 
 SCRIPT
@@ -80,7 +83,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/bionic64"
 
   config.vm.provider :virtualbox do |vb|
     vb.name = "mastodon"

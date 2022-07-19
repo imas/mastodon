@@ -1,25 +1,28 @@
+require 'devise/strategies/authenticatable'
+
 Warden::Manager.after_set_user except: :fetch do |user, warden|
-  if user.session_active?(warden.cookies.signed['_session_id'] || warden.raw_session['auth_id'])
-    session_id = warden.cookies.signed['_session_id'] || warden.raw_session['auth_id']
-  else
-    session_id = user.activate_session(warden.request)
-  end
+  session_id = warden.cookies.signed['_session_id'] || warden.raw_session['auth_id']
+  session_id = user.activate_session(warden.request) unless user.session_activations.active?(session_id)
 
   warden.cookies.signed['_session_id'] = {
     value: session_id,
     expires: 1.year.from_now,
     httponly: true,
-    secure: (Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true'),
+    same_site: :lax,
   }
 end
 
 Warden::Manager.after_fetch do |user, warden|
-  if user.session_active?(warden.cookies.signed['_session_id'] || warden.raw_session['auth_id'])
+  session_id = warden.cookies.signed['_session_id'] || warden.raw_session['auth_id']
+
+  if session_id && (session = user.session_activations.find_by(session_id: session_id))
+    session.update(ip: warden.request.remote_ip) if session.ip != warden.request.remote_ip
+
     warden.cookies.signed['_session_id'] = {
-      value: warden.cookies.signed['_session_id'] || warden.raw_session['auth_id'],
+      value: session_id,
       expires: 1.year.from_now,
       httponly: true,
-      secure: (Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true'),
+      same_site: :lax,
     }
   else
     warden.logout
@@ -53,6 +56,8 @@ module Devise
   @@ldap_base = nil
   mattr_accessor :ldap_uid
   @@ldap_uid = nil
+  mattr_accessor :ldap_mail
+  @@ldap_mail = nil
   mattr_accessor :ldap_bind_dn
   @@ldap_bind_dn = nil
   mattr_accessor :ldap_password
@@ -61,18 +66,55 @@ module Devise
   @@ldap_tls_no_verify = false
   mattr_accessor :ldap_search_filter
   @@ldap_search_filter = nil
+  mattr_accessor :ldap_uid_conversion_enabled
+  @@ldap_uid_conversion_enabled = false
+  mattr_accessor :ldap_uid_conversion_search
+  @@ldap_uid_conversion_search = nil
+  mattr_accessor :ldap_uid_conversion_replace
+  @@ldap_uid_conversion_replace = nil
 
-  class Strategies::PamAuthenticatable
-    def valid?
-      super && ::Devise.pam_authentication
+  module Strategies
+    class PamAuthenticatable
+      def valid?
+        super && ::Devise.pam_authentication
+      end
+    end
+
+    class SessionActivationRememberable < Authenticatable
+      def valid?
+        @session_cookie = nil
+        session_cookie.present?
+      end
+
+      def authenticate!
+        resource = SessionActivation.find_by(session_id: session_cookie)&.user
+
+        unless resource
+          cookies.delete('_session_id')
+          return pass
+        end
+
+        if validate(resource)
+          success!(resource)
+        end
+      end
+
+      private
+
+      def session_cookie
+        @session_cookie ||= cookies.signed['_session_id']
+      end
     end
   end
 end
 
+Warden::Strategies.add(:session_activation_rememberable, Devise::Strategies::SessionActivationRememberable)
+
 Devise.setup do |config|
   config.warden do |manager|
-    manager.default_strategies(scope: :user).unshift :ldap_authenticatable if Devise.ldap_authentication
-    manager.default_strategies(scope: :user).unshift :pam_authenticatable  if Devise.pam_authentication
+    manager.default_strategies(scope: :user).unshift :two_factor_ldap_authenticatable if Devise.ldap_authentication
+    manager.default_strategies(scope: :user).unshift :two_factor_pam_authenticatable  if Devise.pam_authentication
+    manager.default_strategies(scope: :user).unshift :session_activation_rememberable
     manager.default_strategies(scope: :user).unshift :two_factor_authenticatable
     manager.default_strategies(scope: :user).unshift :two_factor_backupable
   end
@@ -221,7 +263,7 @@ Devise.setup do |config|
 
   # Options to be passed to the created cookie. For instance, you can set
   # secure: true in order to force SSL only cookies.
-  config.rememberable_options = { secure: true }
+  config.rememberable_options = {}
 
   # ==> Configuration for :validatable
   # Range for password length.
@@ -363,7 +405,11 @@ Devise.setup do |config|
     config.ldap_bind_dn        = ENV.fetch('LDAP_BIND_DN')
     config.ldap_password       = ENV.fetch('LDAP_PASSWORD')
     config.ldap_uid            = ENV.fetch('LDAP_UID', 'cn')
+    config.ldap_mail           = ENV.fetch('LDAP_MAIL', 'mail')
     config.ldap_tls_no_verify  = ENV['LDAP_TLS_NO_VERIFY'] == 'true'
-    config.ldap_search_filter  = ENV.fetch('LDAP_SEARCH_FILTER', '%{uid}=%{email}')
+    config.ldap_search_filter  = ENV.fetch('LDAP_SEARCH_FILTER', '(|(%{uid}=%{email})(%{mail}=%{email}))')
+    config.ldap_uid_conversion_enabled  = ENV['LDAP_UID_CONVERSION_ENABLED'] == 'true'
+    config.ldap_uid_conversion_search   = ENV.fetch('LDAP_UID_CONVERSION_SEARCH', '.,- ')
+    config.ldap_uid_conversion_replace  = ENV.fetch('LDAP_UID_CONVERSION_REPLACE', '_')
   end
 end

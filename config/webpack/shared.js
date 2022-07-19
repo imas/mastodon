@@ -6,7 +6,8 @@ const { sync } = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
 const extname = require('path-complete-extname');
-const { env, settings, themes, output, loadersDir } = require('./configuration.js');
+const { env, settings, themes, output } = require('./configuration');
+const rules = require('./rules');
 const localePackPaths = require('./generateLocalePacks');
 
 const extensionGlob = `**/*{${settings.extensions.join(',')}}*`;
@@ -29,12 +30,14 @@ module.exports = {
     Object.keys(themes).reduce((themePaths, name) => {
       themePaths[name] = resolve(join(settings.source_path, themes[name]));
       return themePaths;
-    }, {})
+    }, {}),
   ),
 
   output: {
-    filename: '[name].js',
-    chunkFilename: '[name].js',
+    filename: 'js/[name]-[chunkhash].js',
+    chunkFilename: 'js/[name]-[chunkhash].chunk.js',
+    hotUpdateChunkFilename: 'js/[id]-[hash].hot-update.js',
+    hashFunction: 'sha256',
     path: output.path,
     publicPath: output.publicPath,
   },
@@ -60,7 +63,7 @@ module.exports = {
   },
 
   module: {
-    rules: sync(join(loadersDir, '*.js')).map(loader => require(loader)),
+    rules: Object.keys(rules).map(key => rules[key]),
   },
 
   plugins: [
@@ -70,14 +73,18 @@ module.exports = {
         // temporary fix for https://github.com/ReactTraining/react-router/issues/5576
         // to reduce bundle size
         resource.request = resource.request.replace(/^history/, 'history/es');
-      }
+      },
     ),
     new MiniCssExtractPlugin({
-      filename: env.NODE_ENV === 'production' ? '[name]-[contenthash].css' : '[name].css',
+      filename: 'css/[name]-[contenthash:8].css',
+      chunkFilename: 'css/[name]-[contenthash:8].chunk.css',
     }),
     new AssetsManifestPlugin({
-      publicPath: true,
+      integrity: true,
+      integrityHashes: ['sha256'],
+      entrypoints: true,
       writeToDisk: true,
+      publicPath: true,
     }),
   ],
 

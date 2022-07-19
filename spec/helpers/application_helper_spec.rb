@@ -59,17 +59,10 @@ describe ApplicationHelper do
     end
   end
 
-  describe 'favicon_path' do
-    it 'returns /favicon.ico on production enviromnent' do
-      expect(Rails.env).to receive(:production?).and_return(true)
-      expect(helper.favicon_path).to eq '/favicon.ico'
-    end
-  end
-
   describe 'open_registrations?' do
     it 'returns true when open for registrations' do
       without_partial_double_verification do
-        expect(Setting).to receive(:open_registrations).and_return(true)
+        expect(Setting).to receive(:registrations_mode).and_return('open')
       end
 
       expect(helper.open_registrations?).to eq true
@@ -77,7 +70,7 @@ describe ApplicationHelper do
 
     it 'returns false when closed for registrations' do
       without_partial_double_verification do
-        expect(Setting).to receive(:open_registrations).and_return(false)
+        expect(Setting).to receive(:registrations_mode).and_return('none')
       end
 
       expect(helper.open_registrations?).to eq false

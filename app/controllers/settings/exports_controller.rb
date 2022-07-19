@@ -2,10 +2,10 @@
 
 class Settings::ExportsController < Settings::BaseController
   include Authorization
+  include Redisable
+  include Lockable
 
-  layout 'admin'
-
-  before_action :authenticate_user!
+  skip_before_action :require_functional!
 
   def show
     @export  = Export.new(current_account)
@@ -13,9 +13,13 @@ class Settings::ExportsController < Settings::BaseController
   end
 
   def create
-    authorize :backup, :create?
+    backup = nil
 
-    backup = current_user.backups.create!
+    with_lock("backup:#{current_user.id}") do
+      authorize :backup, :create?
+      backup = current_user.backups.create!
+    end
+
     BackupWorker.perform_async(backup.id)
 
     redirect_to settings_export_path

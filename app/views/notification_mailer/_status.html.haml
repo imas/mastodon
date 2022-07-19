@@ -1,4 +1,5 @@
 - i ||= 0
+- highlighted ||= false
 
 %table.email-table{ cellspacing: 0, cellpadding: 0, dir: 'ltr' }
   %tbody
@@ -14,7 +15,7 @@
                       %table.column{ cellspacing: 0, cellpadding: 0 }
                         %tbody
                           %tr
-                            %td.column-cell.padded.status
+                            %td.column-cell.padded.status{ class: highlighted ? 'status--highlighted' : '' }
                               %table.status-header{ cellspacing: 0, cellpadding: 0 }
                                 %tbody
                                   %tr
@@ -22,15 +23,23 @@
                                       = image_tag full_asset_url(status.account.avatar.url), alt:''
                                     %td{ align: 'left' }
                                       %bdi= display_name(status.account)
-                                      = "@#{status.account.acct}"
+                                      = "@#{status.account.pretty_acct}"
 
                               - if status.spoiler_text?
-                                %div{ dir: rtl_status?(status) ? 'rtl' : 'ltr' }
+                                %div.auto-dir
                                   %p
-                                    = Formatter.instance.format_spoiler(status)
+                                    = status.spoiler_text
 
-                              %div{ dir: rtl_status?(status) ? 'rtl' : 'ltr' }
-                                = Formatter.instance.format(status)
+                              %div.auto-dir
+                                = status_content_format(status)
+
+                                - if status.ordered_media_attachments.size > 0
+                                  %p
+                                    - status.ordered_media_attachments.each do |a|
+                                      - if status.local?
+                                        = link_to full_asset_url(a.file.url(:original)), full_asset_url(a.file.url(:original))
+                                      - else
+                                        = link_to a.remote_url, a.remote_url
 
                               %p.status-footer
                                 = link_to l(status.created_at), web_url("statuses/#{status.id}")

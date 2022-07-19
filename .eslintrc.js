@@ -12,7 +12,7 @@ module.exports = {
     ATTACHMENT_HOST: false,
   },
 
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
 
   plugins: [
     'react',
@@ -27,7 +27,7 @@ module.exports = {
       experimentalObjectRestSpread: true,
       jsx: true,
     },
-    ecmaVersion: 2018,
+    ecmaVersion: 2021,
   },
 
   settings: {
@@ -41,6 +41,11 @@ module.exports = {
       'node_modules',
       '\\.(css|scss|json)$',
     ],
+    'import/resolver': {
+      node: {
+        paths: ['app/javascript'],
+      },
+    },
   },
 
   rules: {
@@ -74,6 +79,11 @@ module.exports = {
     'no-irregular-whitespace': 'error',
     'no-mixed-spaces-and-tabs': 'warn',
     'no-nested-ternary': 'warn',
+    'no-restricted-properties': [
+      'error',
+      { property: 'substring', message: 'Use .slice instead of .substring.' },
+      { property: 'substr', message: 'Use .slice instead of .substr.' },
+    ],
     'no-trailing-spaces': 'warn',
     'no-undef': 'error',
     'no-unreachable': 'error',
@@ -194,6 +204,11 @@ module.exports = {
     'import/no-unresolved': 'error',
     'import/no-webpack-loader-syntax': 'error',
 
-    'promise/catch-or-return': 'error',
+    'promise/catch-or-return': [
+      'error',
+      {
+        allowFinally: true,
+      },
+    ],
   },
 };

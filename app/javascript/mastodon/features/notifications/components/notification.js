@@ -1,12 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusContainer from '../../../containers/status_container';
-import AccountContainer from '../../../containers/account_container';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import Permalink from '../../../components/permalink';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { HotKeys } from 'react-hotkeys';
+import PropTypes from 'prop-types';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { me } from 'mastodon/initial_state';
+import StatusContainer from 'mastodon/containers/status_container';
+import AccountContainer from 'mastodon/containers/account_container';
+import Report from './report';
+import FollowRequestContainer from '../containers/follow_request_container';
+import Icon from 'mastodon/components/icon';
+import Permalink from 'mastodon/components/permalink';
+import classNames from 'classnames';
+
+const messages = defineMessages({
+  favourite: { id: 'notification.favourite', defaultMessage: '{name} favourited your status' },
+  follow: { id: 'notification.follow', defaultMessage: '{name} followed you' },
+  ownPoll: { id: 'notification.own_poll', defaultMessage: 'Your poll has ended' },
+  poll: { id: 'notification.poll', defaultMessage: 'A poll you have voted in has ended' },
+  reblog: { id: 'notification.reblog', defaultMessage: '{name} boosted your status' },
+  status: { id: 'notification.status', defaultMessage: '{name} just posted' },
+  update: { id: 'notification.update', defaultMessage: '{name} edited a post' },
+  adminSignUp: { id: 'notification.admin.sign_up', defaultMessage: '{name} signed up' },
+  adminReport: { id: 'notification.admin.report', defaultMessage: '{name} reported {target}' },
+});
 
 const notificationForScreenReader = (intl, message, timestamp) => {
   const output = [message];
@@ -32,12 +49,13 @@ class Notification extends ImmutablePureComponent {
     onFavourite: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
     onToggleHidden: PropTypes.func.isRequired,
-    status: PropTypes.option,
+    status: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
     getScrollPosition: PropTypes.func,
     updateScrollBottom: PropTypes.func,
     cacheMediaWidth: PropTypes.func,
     cachedMediaWidth: PropTypes.number,
+    unread: PropTypes.bool,
   };
 
   handleMoveUp = () => {
@@ -54,7 +72,7 @@ class Notification extends ImmutablePureComponent {
     const { notification } = this.props;
 
     if (notification.get('status')) {
-      this.context.router.history.push(`/statuses/${notification.get('status')}`);
+      this.context.router.history.push(`/@${notification.getIn(['status', 'account', 'acct'])}/${notification.get('status')}`);
     } else {
       this.handleOpenProfile();
     }
@@ -62,7 +80,7 @@ class Notification extends ImmutablePureComponent {
 
   handleOpenProfile = () => {
     const { notification } = this.props;
-    this.context.router.history.push(`/accounts/${notification.getIn(['account', 'id'])}`);
+    this.context.router.history.push(`/@${notification.getIn(['account', 'acct'])}`);
   }
 
   handleMention = e => {
@@ -102,14 +120,14 @@ class Notification extends ImmutablePureComponent {
   }
 
   renderFollow (notification, account, link) {
-    const { intl } = this.props;
+    const { intl, unread } = this.props;
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-follow focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow', defaultMessage: '{name} followed you' }, { name: account.get('acct') }), notification.get('created_at'))}>
+        <div className={classNames('notification notification-follow focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.follow, { name: account.get('acct') }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
-              <i className='fa fa-fw fa-user-plus' />
+              <Icon id='user-plus' fixedWidth />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -117,7 +135,29 @@ class Notification extends ImmutablePureComponent {
             </span>
           </div>
 
-          <AccountContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
+          <AccountContainer id={account.get('id')} hidden={this.props.hidden} />
+        </div>
+      </HotKeys>
+    );
+  }
+
+  renderFollowRequest (notification, account, link) {
+    const { intl, unread } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-follow-request focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow_request', defaultMessage: '{name} has requested to follow you' }, { name: account.get('acct') }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='user' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.follow_request' defaultMessage='{name} has requested to follow you' values={{ name: link }} />
+            </span>
+          </div>
+
+          <FollowRequestContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
         </div>
       </HotKeys>
     );
@@ -136,19 +176,20 @@ class Notification extends ImmutablePureComponent {
         updateScrollBottom={this.props.updateScrollBottom}
         cachedMediaWidth={this.props.cachedMediaWidth}
         cacheMediaWidth={this.props.cacheMediaWidth}
+        unread={this.props.unread}
       />
     );
   }
 
   renderFavourite (notification, link) {
-    const { intl } = this.props;
+    const { intl, unread } = this.props;
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-favourite focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.favourite', defaultMessage: '{name} favourited your status' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+        <div className={classNames('notification notification-favourite focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.favourite, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
-              <i className='fa fa-fw fa-star star-icon' />
+              <Icon id='star' className='star-icon' fixedWidth />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -173,14 +214,14 @@ class Notification extends ImmutablePureComponent {
   }
 
   renderReblog (notification, link) {
-    const { intl } = this.props;
+    const { intl, unread } = this.props;
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-reblog focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.reblog', defaultMessage: '{name} boosted your status' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+        <div className={classNames('notification notification-reblog focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.reblog, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
-              <i className='fa fa-fw fa-retweet' />
+              <Icon id='retweet' fixedWidth />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -204,21 +245,183 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderStatus (notification, link) {
+    const { intl, unread } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-status focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.status, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='home' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.status' defaultMessage='{name} just posted' values={{ name: link }} />
+            </span>
+          </div>
+
+          <StatusContainer
+            id={notification.get('status')}
+            account={notification.get('account')}
+            muted
+            withDismiss
+            hidden={this.props.hidden}
+            getScrollPosition={this.props.getScrollPosition}
+            updateScrollBottom={this.props.updateScrollBottom}
+            cachedMediaWidth={this.props.cachedMediaWidth}
+            cacheMediaWidth={this.props.cacheMediaWidth}
+          />
+        </div>
+      </HotKeys>
+    );
+  }
+
+  renderUpdate (notification, link) {
+    const { intl, unread } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-update focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.update, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='pencil' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.update' defaultMessage='{name} edited a post' values={{ name: link }} />
+            </span>
+          </div>
+
+          <StatusContainer
+            id={notification.get('status')}
+            account={notification.get('account')}
+            muted
+            withDismiss
+            hidden={this.props.hidden}
+            getScrollPosition={this.props.getScrollPosition}
+            updateScrollBottom={this.props.updateScrollBottom}
+            cachedMediaWidth={this.props.cachedMediaWidth}
+            cacheMediaWidth={this.props.cacheMediaWidth}
+          />
+        </div>
+      </HotKeys>
+    );
+  }
+
+  renderPoll (notification, account) {
+    const { intl, unread } = this.props;
+    const ownPoll  = me === account.get('id');
+    const message  = ownPoll ? intl.formatMessage(messages.ownPoll) : intl.formatMessage(messages.poll);
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-poll focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, message, notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='tasks' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              {ownPoll ? (
+                <FormattedMessage id='notification.own_poll' defaultMessage='Your poll has ended' />
+              ) : (
+                <FormattedMessage id='notification.poll' defaultMessage='A poll you have voted in has ended' />
+              )}
+            </span>
+          </div>
+
+          <StatusContainer
+            id={notification.get('status')}
+            account={account}
+            muted
+            withDismiss
+            hidden={this.props.hidden}
+            getScrollPosition={this.props.getScrollPosition}
+            updateScrollBottom={this.props.updateScrollBottom}
+            cachedMediaWidth={this.props.cachedMediaWidth}
+            cacheMediaWidth={this.props.cacheMediaWidth}
+          />
+        </div>
+      </HotKeys>
+    );
+  }
+
+  renderAdminSignUp (notification, account, link) {
+    const { intl, unread } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-admin-sign-up focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.adminSignUp, { name: account.get('acct') }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='user-plus' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.admin.sign_up' defaultMessage='{name} signed up' values={{ name: link }} />
+            </span>
+          </div>
+
+          <AccountContainer id={account.get('id')} hidden={this.props.hidden} />
+        </div>
+      </HotKeys>
+    );
+  }
+
+  renderAdminReport (notification, account, link) {
+    const { intl, unread, report } = this.props;
+
+    const targetAccount = report.get('target_account');
+    const targetDisplayNameHtml = { __html: targetAccount.get('display_name_html') };
+    const targetLink = <bdi><Permalink className='notification__display-name' href={targetAccount.get('url')} title={targetAccount.get('acct')} to={`/@${targetAccount.get('acct')}`} dangerouslySetInnerHTML={targetDisplayNameHtml} /></bdi>;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-admin-report focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.adminReport, { name: account.get('acct'), target: notification.getIn(['report', 'target_account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='flag' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.admin.report' defaultMessage='{name} reported {target}' values={{ name: link, target: targetLink }} />
+            </span>
+          </div>
+
+          <Report account={account} report={notification.get('report')} hidden={this.props.hidden} />
+        </div>
+      </HotKeys>
+    );
+  }
+
   render () {
     const { notification } = this.props;
     const account          = notification.get('account');
     const displayNameHtml  = { __html: account.get('display_name_html') };
-    const link             = <bdi><Permalink className='notification__display-name' href={account.get('url')} title={account.get('acct')} to={`/accounts/${account.get('id')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
+    const link             = <bdi><Permalink className='notification__display-name' href={account.get('url')} title={account.get('acct')} to={`/@${account.get('acct')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
 
     switch(notification.get('type')) {
     case 'follow':
       return this.renderFollow(notification, account, link);
+    case 'follow_request':
+      return this.renderFollowRequest(notification, account, link);
     case 'mention':
       return this.renderMention(notification);
     case 'favourite':
       return this.renderFavourite(notification, link);
     case 'reblog':
       return this.renderReblog(notification, link);
+    case 'status':
+      return this.renderStatus(notification, link);
+    case 'update':
+      return this.renderUpdate(notification, link);
+    case 'poll':
+      return this.renderPoll(notification, account);
+    case 'admin.sign_up':
+      return this.renderAdminSignUp(notification, account, link);
+    case 'admin.report':
+      return this.renderAdminReport(notification, account, link);
     }
 
     return null;

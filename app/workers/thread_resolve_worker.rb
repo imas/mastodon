@@ -2,12 +2,9 @@
 
 class ThreadResolveWorker
   include Sidekiq::Worker
+  include ExponentialBackoff
 
   sidekiq_options queue: 'pull', retry: 3
-
-  sidekiq_retry_in do |count|
-    15 + 10 * (count**4) + rand(10 * (count**4))
-  end
 
   def perform(child_status_id, parent_url)
     child_status  = Status.find(child_status_id)
@@ -17,5 +14,7 @@ class ThreadResolveWorker
 
     child_status.thread = parent_status
     child_status.save!
+  rescue ActiveRecord::RecordNotFound
+    true
   end
 end

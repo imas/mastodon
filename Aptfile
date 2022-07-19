@@ -4,11 +4,8 @@ libicu-dev
 libidn11
 libidn11-dev
 libpq-dev
-libprotobuf-dev
-libssl-dev
 libxdamage1
 libxfixes3
-protobuf-compiler
 zlib1g-dev
 libcairo2
 libcroco3
@@ -23,7 +20,7 @@ libpixman-1-0
 librsvg2-2
 libthai-data
 libthai0
-libvpx5
+libvpx[5-9]
 libxcb-render0
 libxcb-shm0
 libxrender1

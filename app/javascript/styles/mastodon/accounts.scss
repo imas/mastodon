@@ -68,12 +68,17 @@
         margin: 0;
         border-radius: 4px;
         background: darken($ui-base-color, 8%);
+        object-fit: cover;
       }
     }
 
     .display-name {
       margin-left: 15px;
       text-align: left;
+
+      i[data-hidden] {
+        display: none;
+      }
 
       strong {
         font-size: 15px;
@@ -196,7 +201,8 @@
   }
 }
 
-.account-role {
+.account-role,
+.simple_form .recommended {
   display: inline-block;
   padding: 4px 6px;
   cursor: default;
@@ -222,6 +228,7 @@
 }
 
 .account__header__fields {
+  max-width: 100vw;
   padding: 0;
   margin: 15px -15px -15px;
   border: 0 none;
@@ -286,5 +293,83 @@
 
   dl:last-child {
     border-bottom: 0;
+  }
+}
+
+.directory__tag .trends__item__current {
+  width: auto;
+}
+
+.pending-account {
+  &__header {
+    color: $darker-text-color;
+
+    a {
+      color: $ui-secondary-color;
+      text-decoration: none;
+
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+
+    strong {
+      color: $primary-text-color;
+      font-weight: 700;
+    }
+  }
+
+  &__body {
+    margin-top: 10px;
+  }
+}
+
+.batch-table__row--muted {
+  color: lighten($ui-base-color, 26%);
+}
+
+.batch-table__row--muted .pending-account__header,
+.batch-table__row--muted .accounts-table,
+.batch-table__row--muted .name-tag {
+  &,
+  a,
+  strong {
+    color: lighten($ui-base-color, 26%);
+  }
+}
+
+.batch-table__row--muted .name-tag .avatar {
+  opacity: 0.5;
+}
+
+.batch-table__row--muted .accounts-table {
+  tbody td.accounts-table__extra,
+  &__count,
+  &__count small {
+    color: lighten($ui-base-color, 26%);
+  }
+}
+
+.batch-table__row--attention {
+  color: $gold-star;
+}
+
+.batch-table__row--attention .pending-account__header,
+.batch-table__row--attention .accounts-table,
+.batch-table__row--attention .name-tag {
+  &,
+  a,
+  strong {
+    color: $gold-star;
+  }
+}
+
+.batch-table__row--attention .accounts-table {
+  tbody td.accounts-table__extra,
+  &__count,
+  &__count small {
+    color: $gold-star;
   }
 }

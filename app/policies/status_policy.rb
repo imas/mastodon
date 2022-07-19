@@ -8,16 +8,18 @@ class StatusPolicy < ApplicationPolicy
   end
 
   def index?
-    staff?
+    role.can?(:manage_reports, :manage_users)
   end
 
   def show?
+    return false if author.suspended?
+
     if requires_mention?
       owned? || mention_exists?
     elsif private?
       owned? || following_author? || mention_exists?
     else
-      current_account.nil? || !author_blocking?
+      current_account.nil? || (!author_blocking? && !author_blocking_domain?)
     end
   end
 
@@ -30,13 +32,17 @@ class StatusPolicy < ApplicationPolicy
   end
 
   def destroy?
-    staff? || owned?
+    role.can?(:manage_reports) || owned?
   end
 
   alias unreblog? destroy?
 
   def update?
-    staff?
+    role.can?(:manage_reports) || owned?
+  end
+
+  def review?
+    role.can?(:manage_taxonomies)
   end
 
   private
@@ -61,6 +67,12 @@ class StatusPolicy < ApplicationPolicy
     else
       record.mentions.where(account: current_account).exists?
     end
+  end
+
+  def author_blocking_domain?
+    return false if current_account.nil? || current_account.domain.nil?
+
+    author.domain_blocking?(current_account.domain)
   end
 
   def blocking_author?

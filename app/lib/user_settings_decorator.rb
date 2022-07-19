@@ -27,11 +27,18 @@ class UserSettingsDecorator
     user.settings['display_media']       = display_media_preference if change?('setting_display_media')
     user.settings['expand_spoilers']     = expand_spoilers_preference if change?('setting_expand_spoilers')
     user.settings['reduce_motion']       = reduce_motion_preference if change?('setting_reduce_motion')
+    user.settings['disable_swiping']     = disable_swiping_preference if change?('setting_disable_swiping')
     user.settings['system_font_ui']      = system_font_ui_preference if change?('setting_system_font_ui')
     user.settings['noindex']             = noindex_preference if change?('setting_noindex')
     user.settings['theme']               = theme_preference if change?('setting_theme')
-    user.settings['hide_network']        = hide_network_preference if change?('setting_hide_network')
     user.settings['aggregate_reblogs']   = aggregate_reblogs_preference if change?('setting_aggregate_reblogs')
+    user.settings['show_application']    = show_application_preference if change?('setting_show_application')
+    user.settings['advanced_layout']     = advanced_layout_preference if change?('setting_advanced_layout')
+    user.settings['use_blurhash']        = use_blurhash_preference if change?('setting_use_blurhash')
+    user.settings['use_pending_items']   = use_pending_items_preference if change?('setting_use_pending_items')
+    user.settings['trends']              = trends_preference if change?('setting_trends')
+    user.settings['crop_images']         = crop_images_preference if change?('setting_crop_images')
+    user.settings['always_send_emails']  = always_send_emails_preference if change?('setting_always_send_emails')
   end
 
   def merged_notification_emails
@@ -82,12 +89,16 @@ class UserSettingsDecorator
     boolean_cast_setting 'setting_reduce_motion'
   end
 
+  def disable_swiping_preference
+    boolean_cast_setting 'setting_disable_swiping'
+  end
+
   def noindex_preference
     boolean_cast_setting 'setting_noindex'
   end
 
-  def hide_network_preference
-    boolean_cast_setting 'setting_hide_network'
+  def show_application_preference
+    boolean_cast_setting 'setting_show_application'
   end
 
   def theme_preference
@@ -100,6 +111,30 @@ class UserSettingsDecorator
 
   def aggregate_reblogs_preference
     boolean_cast_setting 'setting_aggregate_reblogs'
+  end
+
+  def advanced_layout_preference
+    boolean_cast_setting 'setting_advanced_layout'
+  end
+
+  def use_blurhash_preference
+    boolean_cast_setting 'setting_use_blurhash'
+  end
+
+  def use_pending_items_preference
+    boolean_cast_setting 'setting_use_pending_items'
+  end
+
+  def trends_preference
+    boolean_cast_setting 'setting_trends'
+  end
+
+  def crop_images_preference
+    boolean_cast_setting 'setting_crop_images'
+  end
+
+  def always_send_emails_preference
+    boolean_cast_setting 'setting_always_send_emails'
   end
 
   def boolean_cast_setting(key)

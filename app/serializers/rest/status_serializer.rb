@@ -1,26 +1,34 @@
 # frozen_string_literal: true
 
 class REST::StatusSerializer < ActiveModel::Serializer
+  include FormattingHelper
+
   attributes :id, :created_at, :in_reply_to_id, :in_reply_to_account_id,
              :sensitive, :spoiler_text, :visibility, :language,
-             :uri, :content, :url, :replies_count, :reblogs_count,
-             :favourites_count
+             :uri, :url, :replies_count, :reblogs_count,
+             :favourites_count, :edited_at
 
   attribute :favourited, if: :current_user?
   attribute :reblogged, if: :current_user?
   attribute :muted, if: :current_user?
+  attribute :bookmarked, if: :current_user?
   attribute :pinned, if: :pinnable?
+  has_many :filtered, serializer: REST::FilterResultSerializer, if: :current_user?
+
+  attribute :content, unless: :source_requested?
+  attribute :text, if: :source_requested?
 
   belongs_to :reblog, serializer: REST::StatusSerializer
-  belongs_to :application
+  belongs_to :application, if: :show_application?
   belongs_to :account, serializer: REST::AccountSerializer
 
-  has_many :media_attachments, serializer: REST::MediaAttachmentSerializer
+  has_many :ordered_media_attachments, key: :media_attachments, serializer: REST::MediaAttachmentSerializer
   has_many :ordered_mentions, key: :mentions
   has_many :tags
   has_many :emojis, serializer: REST::CustomEmojiSerializer
 
   has_one :preview_card, key: :card, serializer: REST::PreviewCardSerializer
+  has_one :preloadable_poll, key: :poll, serializer: REST::PollSerializer
 
   def id
     object.id.to_s
@@ -38,6 +46,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
     !current_user.nil?
   end
 
+  def show_application?
+    object.account.user_shows_application? || (current_user? && current_user.account_id == object.account_id)
+  end
+
   def visibility
     # This visibility is masked behind "private"
     # to avoid API changes because there are no
@@ -49,16 +61,24 @@ class REST::StatusSerializer < ActiveModel::Serializer
     end
   end
 
+  def sensitive
+    if current_user? && current_user.account_id == object.account_id
+      object.sensitive
+    else
+      object.account.sensitized? || object.sensitive
+    end
+  end
+
   def uri
-    OStatus::TagManager.instance.uri_for(object)
+    ActivityPub::TagManager.instance.uri_for(object)
   end
 
   def content
-    Formatter.instance.format(object)
+    status_content_format(object)
   end
 
   def url
-    TagManager.instance.url_for(object)
+    ActivityPub::TagManager.instance.url_for(object)
   end
 
   def favourited
@@ -85,6 +105,14 @@ class REST::StatusSerializer < ActiveModel::Serializer
     end
   end
 
+  def bookmarked
+    if instance_options && instance_options[:relationships]
+      instance_options[:relationships].bookmarks_map[object.id] || false
+    else
+      current_user.account.bookmarked?(object)
+    end
+  end
+
   def pinned
     if instance_options && instance_options[:relationships]
       instance_options[:relationships].pins_map[object.id] || false
@@ -93,11 +121,23 @@ class REST::StatusSerializer < ActiveModel::Serializer
     end
   end
 
+  def filtered
+    if instance_options && instance_options[:relationships]
+      instance_options[:relationships].filters_map[object.id] || []
+    else
+      current_user.account.status_matches_filters(object)
+    end
+  end
+
   def pinnable?
     current_user? &&
       current_user.account_id == object.account_id &&
       !object.reblog? &&
-      %w(public unlisted).include?(object.visibility)
+      %w(public unlisted private).include?(object.visibility)
+  end
+
+  def source_requested?
+    instance_options[:source_requested]
   end
 
   def ordered_mentions
@@ -106,6 +146,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   class ApplicationSerializer < ActiveModel::Serializer
     attributes :name, :website
+
+    def website
+      object.website.presence
+    end
   end
 
   class MentionSerializer < ActiveModel::Serializer
@@ -120,11 +164,11 @@ class REST::StatusSerializer < ActiveModel::Serializer
     end
 
     def url
-      TagManager.instance.url_for(object.account)
+      ActivityPub::TagManager.instance.url_for(object.account)
     end
 
     def acct
-      object.account_acct
+      object.account.pretty_acct
     end
   end
 

@@ -90,6 +90,10 @@ export function FavouritedStatuses () {
   return import(/* webpackChunkName: "features/favourited_statuses" */'../../favourited_statuses');
 }
 
+export function BookmarkedStatuses () {
+  return import(/* webpackChunkName: "features/bookmarked_statuses" */'../../bookmarked_statuses');
+}
+
 export function Blocks () {
   return import(/* webpackChunkName: "features/blocks" */'../../blocks');
 }
@@ -104,6 +108,10 @@ export function Mutes () {
 
 export function MuteModal () {
   return import(/* webpackChunkName: "modals/mute_modal" */'../components/mute_modal');
+}
+
+export function BlockModal () {
+  return import(/* webpackChunkName: "modals/block_modal" */'../components/block_modal');
 }
 
 export function ReportModal () {
@@ -128,4 +136,28 @@ export function ListEditor () {
 
 export function ListAdder () {
   return import(/*webpackChunkName: "features/list_adder" */'../../list_adder');
+}
+
+export function Tesseract () {
+  return import(/*webpackChunkName: "tesseract" */'tesseract.js');
+}
+
+export function Audio () {
+  return import(/* webpackChunkName: "features/audio" */'../../audio');
+}
+
+export function Directory () {
+  return import(/* webpackChunkName: "features/directory" */'../../directory');
+}
+
+export function FollowRecommendations () {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+}
+
+export function CompareHistoryModal () {
+  return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare_history_modal');
+}
+
+export function Explore () {
+  return import(/* webpackChunkName: "features/explore" */'../../explore');
 }

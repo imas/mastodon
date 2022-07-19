@@ -1,67 +1,8 @@
 # frozen_string_literal: true
 
 module SettingsHelper
-  HUMAN_LOCALES = {
-    en: 'English',
-    ar: 'العربية',
-    ast: 'l\'asturianu',
-    bg: 'Български',
-    ca: 'Català',
-    co: 'Corsu',
-    cs: 'Čeština',
-    cy: 'Cymraeg',
-    da: 'Dansk',
-    de: 'Deutsch',
-    el: 'Ελληνικά',
-    eo: 'Esperanto',
-    es: 'Español',
-    eu: 'Euskara',
-    fa: 'فارسی',
-    fi: 'Suomi',
-    fr: 'Français',
-    gl: 'Galego',
-    he: 'עברית',
-    hr: 'Hrvatski',
-    hu: 'Magyar',
-    hy: 'Հայերեն',
-    id: 'Bahasa Indonesia',
-    io: 'Ido',
-    it: 'Italiano',
-    ja: '日本語',
-    ka: 'ქართული',
-    ko: '한국어',
-    ml: 'മലയാളം',
-    nl: 'Nederlands',
-    no: 'Norsk',
-    oc: 'Occitan',
-    pl: 'Polszczyzna',
-    pt: 'Português',
-    'pt-BR': 'Português do Brasil',
-    ro: 'Limba română',
-    ru: 'Русский',
-    sk: 'Slovenčina',
-    sl: 'Slovenščina',
-    sr: 'Српски',
-    'sr-Latn': 'Srpski (latinica)',
-    sv: 'Svenska',
-    ta: 'தமிழ்',
-    te: 'తెలుగు',
-    th: 'ภาษาไทย',
-    tr: 'Türkçe',
-    uk: 'Українська',
-    zh: '中文',
-    'zh-CN': '简体中文',
-    'zh-HK': '繁體中文（香港）',
-    'zh-TW': '繁體中文（臺灣）',
-    'ja-IM': '日本語(im@s)',
-  }.freeze
-
-  def human_locale(locale)
-    HUMAN_LOCALES[locale]
-  end
-
   def filterable_languages
-    LanguageDetector.instance.language_names.select(&HUMAN_LOCALES.method(:key?))
+    LanguagesHelper::SUPPORTED_LOCALES.keys
   end
 
   def hash_to_object(hash)
@@ -77,6 +18,23 @@ module SettingsHelper
       'tablet'
     else
       'desktop'
+    end
+  end
+
+  def compact_account_link_to(account)
+    return if account.nil?
+
+    link_to ActivityPub::TagManager.instance.url_for(account), class: 'name-tag', title: account.acct do
+      safe_join([image_tag(account.avatar.url, width: 15, height: 15, alt: display_name(account), class: 'avatar'), content_tag(:span, account.acct, class: 'username')], ' ')
+    end
+  end
+
+  def picture_hint(hint, picture)
+    if picture.original_filename.nil?
+      hint
+    else
+      link = link_to t('generic.delete'), settings_profile_picture_path(picture.name.to_s), data: { method: :delete }
+      safe_join([hint, link], '<br/>'.html_safe)
     end
   end
 end

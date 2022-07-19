@@ -1,46 +1,83 @@
 require 'rails_helper'
 
 RSpec.describe SuspendAccountService, type: :service do
-  describe '#call' do
+  shared_examples 'common behavior' do
+    let!(:local_follower) { Fabricate(:user, current_sign_in_at: 1.hour.ago).account }
+    let!(:list)           { Fabricate(:list, account: local_follower) }
+
+    subject { described_class.new.call(account) }
+
     before do
-      stub_request(:post, "https://alice.com/inbox").to_return(status: 201)
-      stub_request(:post, "https://bob.com/inbox").to_return(status: 201)
+      allow(FeedManager.instance).to receive(:unmerge_from_home).and_return(nil)
+      allow(FeedManager.instance).to receive(:unmerge_from_list).and_return(nil)
+
+      local_follower.follow!(account)
+      list.accounts << account
     end
 
-    subject do
-      -> { described_class.new.call(account) }
+    it "unmerges from local followers' feeds" do
+      subject
+      expect(FeedManager.instance).to have_received(:unmerge_from_home).with(account, local_follower)
+      expect(FeedManager.instance).to have_received(:unmerge_from_list).with(account, list)
     end
 
-    let!(:account) { Fabricate(:account) }
-    let!(:status) { Fabricate(:status, account: account) }
-    let!(:media_attachment) { Fabricate(:media_attachment, account: account) }
-    let!(:notification) { Fabricate(:notification, account: account) }
-    let!(:favourite) { Fabricate(:favourite, account: account) }
-    let!(:active_relationship) { Fabricate(:follow, account: account) }
-    let!(:passive_relationship) { Fabricate(:follow, target_account: account) }
-    let!(:subscription) { Fabricate(:subscription, account: account) }
-    let!(:remote_alice) { Fabricate(:account, inbox_url: 'https://alice.com/inbox', protocol: :activitypub) }
-    let!(:remote_bob) { Fabricate(:account, inbox_url: 'https://bob.com/inbox', protocol: :activitypub) }
+    it 'marks account as suspended' do
+      expect { subject }.to change { account.suspended? }.from(false).to(true)
+    end
+  end
 
-    it 'deletes associated records' do
-      is_expected.to change {
-        [
-          account.statuses,
-          account.media_attachments,
-          account.stream_entries,
-          account.notifications,
-          account.favourites,
-          account.active_relationships,
-          account.passive_relationships,
-          account.subscriptions
-        ].map(&:count)
-      }.from([1, 1, 1, 1, 1, 1, 1, 1]).to([0, 0, 0, 0, 0, 0, 0, 0])
+  describe 'suspending a local account' do
+    def match_update_actor_request(req, account)
+      json = JSON.parse(req.body)
+      actor_id = ActivityPub::TagManager.instance.uri_for(account)
+      json['type'] == 'Update' && json['actor'] == actor_id && json['object']['id'] == actor_id && json['object']['suspended']
     end
 
-    it 'sends a delete actor activity to all known inboxes' do
-      subject.call
-      expect(a_request(:post, "https://alice.com/inbox")).to have_been_made.once
-      expect(a_request(:post, "https://bob.com/inbox")).to have_been_made.once
+    before do
+      stub_request(:post, 'https://alice.com/inbox').to_return(status: 201)
+      stub_request(:post, 'https://bob.com/inbox').to_return(status: 201)
+    end
+
+    include_examples 'common behavior' do
+      let!(:account)         { Fabricate(:account) }
+      let!(:remote_follower) { Fabricate(:account, uri: 'https://alice.com', inbox_url: 'https://alice.com/inbox', protocol: :activitypub) }
+      let!(:remote_reporter) { Fabricate(:account, uri: 'https://bob.com', inbox_url: 'https://bob.com/inbox', protocol: :activitypub) }
+      let!(:report)          { Fabricate(:report, account: remote_reporter, target_account: account) }
+
+      before do
+        remote_follower.follow!(account)
+      end
+
+      it 'sends an update actor to followers and reporters' do
+        subject
+        expect(a_request(:post, remote_follower.inbox_url).with { |req| match_update_actor_request(req, account) }).to have_been_made.once
+        expect(a_request(:post, remote_reporter.inbox_url).with { |req| match_update_actor_request(req, account) }).to have_been_made.once
+      end
+    end
+  end
+
+  describe 'suspending a remote account' do
+    def match_reject_follow_request(req, account, followee)
+      json = JSON.parse(req.body)
+      json['type'] == 'Reject' && json['actor'] == ActivityPub::TagManager.instance.uri_for(followee) && json['object']['actor'] == account.uri
+    end
+
+    before do
+      stub_request(:post, 'https://bob.com/inbox').to_return(status: 201)
+    end
+
+    include_examples 'common behavior' do
+      let!(:account)        { Fabricate(:account, domain: 'bob.com', uri: 'https://bob.com', inbox_url: 'https://bob.com/inbox', protocol: :activitypub) }
+      let!(:local_followee) { Fabricate(:account) }
+
+      before do
+        account.follow!(local_followee)
+      end
+
+      it 'sends a reject follow' do
+        subject
+        expect(a_request(:post, account.inbox_url).with { |req| match_reject_follow_request(req, account, local_followee) }).to have_been_made.once
+      end
     end
   end
 end

@@ -6,7 +6,7 @@ require 'pundit/rspec'
 RSpec.describe StatusPolicy, type: :model do
   subject { described_class }
 
-  let(:admin) { Fabricate(:user, admin: true) }
+  let(:admin) { Fabricate(:user, role: UserRole.find_by(name: 'Admin')) }
   let(:alice) { Fabricate(:account, username: 'alice') }
   let(:bob) { Fabricate(:account, username: 'bob') }
   let(:status) { Fabricate(:status, account: alice) }
@@ -125,13 +125,27 @@ RSpec.describe StatusPolicy, type: :model do
     end
   end
 
-  permissions :index?, :update? do
+  permissions :index? do
     it 'grants access if staff' do
       expect(subject).to permit(admin.account)
     end
 
     it 'denies access unless staff' do
       expect(subject).to_not permit(alice)
+    end
+  end
+
+  permissions :update? do
+    it 'grants access if staff' do
+      expect(subject).to permit(admin.account, status)
+    end
+
+    it 'grants access if owner' do
+      expect(subject).to permit(status.account, status)
+    end
+
+    it 'denies access unless staff' do
+      expect(subject).to_not permit(bob, status)
     end
   end
 end

@@ -2,8 +2,21 @@
 
 module Admin
   class ActionLogsController < BaseController
+    before_action :set_action_logs
+
     def index
-      @action_logs = Admin::ActionLog.page(params[:page])
+      authorize :audit_log, :index?
+      @auditable_accounts = Account.where(id: Admin::ActionLog.reorder(nil).select('distinct account_id')).select(:id, :username)
+    end
+
+    private
+
+    def set_action_logs
+      @action_logs = Admin::ActionLogFilter.new(filter_params).results.page(params[:page])
+    end
+
+    def filter_params
+      params.slice(:page, *Admin::ActionLogFilter::KEYS).permit(:page, *Admin::ActionLogFilter::KEYS)
     end
   end
 end

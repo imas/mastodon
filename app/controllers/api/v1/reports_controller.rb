@@ -4,15 +4,13 @@ class Api::V1::ReportsController < Api::BaseController
   before_action -> { doorkeeper_authorize! :write, :'write:reports' }, only: [:create]
   before_action :require_user!
 
-  respond_to :json
+  override_rate_limit_headers :create, family: :reports
 
   def create
     @report = ReportService.new.call(
       current_account,
       reported_account,
-      status_ids: reported_status_ids,
-      comment: report_params[:comment],
-      forward: report_params[:forward]
+      report_params
     )
 
     render json: @report, serializer: REST::ReportSerializer
@@ -20,19 +18,11 @@ class Api::V1::ReportsController < Api::BaseController
 
   private
 
-  def reported_status_ids
-    reported_account.statuses.find(status_ids).pluck(:id)
-  end
-
-  def status_ids
-    Array(report_params[:status_ids])
-  end
-
   def reported_account
     Account.find(report_params[:account_id])
   end
 
   def report_params
-    params.permit(:account_id, :comment, :forward, status_ids: [])
+    params.permit(:account_id, :comment, :category, :forward, status_ids: [], rule_ids: [])
   end
 end

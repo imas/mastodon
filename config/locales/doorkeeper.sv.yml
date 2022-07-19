@@ -25,7 +25,7 @@ sv:
         edit: Redigera
         submit: Skicka
       confirmations:
-        destroy: Äre du säker?
+        destroy: Är du säker?
       edit:
         title: Redigera applikation
       form:
@@ -37,7 +37,8 @@ sv:
       index:
         application: Applikation
         callback_url: Återkalls URL
-        delete: Ta bort
+        delete: Radera
+        empty: Du har inga program.
         name: Namn
         new: Ny applikation
         scopes: Omfattning
@@ -59,8 +60,7 @@ sv:
       error:
         title: Ett fel har uppstått
       new:
-        able_to: Det kommer att kunna
-        prompt: Applikation %{client_name} begär tillgång till ditt konto
+        review_permissions: Förhandsgranska behörigheter
         title: Godkännande krävs
       show:
         title: Kopiera denna behörighetskod och klistra in den i programmet.
@@ -70,10 +70,11 @@ sv:
       confirmations:
         revoke: Är du säker?
       index:
-        application: Applikation
-        created_at: Auktoriserad
-        date_format: "%Y-%m-%d %H:%M:%S"
-        scopes: Omfattning
+        authorized_at: Auktoriserades %{date}
+        last_used_at: Användes senast %{date}
+        never_used: Aldrig använd
+        scopes: Behörigheter
+        superapp: Internt
         title: Dina behöriga ansökningar
     errors:
       messages:
@@ -82,7 +83,10 @@ sv:
         invalid_client: Klientautentisering misslyckades på grund av okänd klient, ingen klientautentisering inkluderad eller icke godkänd autentiseringsmetod.
         invalid_grant: Det beviljade godkännandetillskottet är ogiltigt, upphört, återkallat, matchar inte den omdirigering URI som användes i auktorisationsförfrågan eller har utfärdats till en annan klient.
         invalid_redirect_uri: Den omdirigerade uri är inte giltig.
-        invalid_request: Förfrågan saknar en obligatorisk parameter, innehåller ett icke-stödt parametervärde eller är annars felaktigt.
+        invalid_request:
+          missing_param: 'Nödvändig parameter saknas: %{value}.'
+          request_not_authorized: Begäran måste godkännas. Den nödvändiga parametern för att godkänna begärandet saknas eller är ogiltig.
+          unknown: Förfrågningen saknar en nödvändig parameter, inkluderar en ett parametervärde som inte stöds, eller är annars felaktigt utformad.
         invalid_resource_owner: De angivna resursägarnas referenser är inte giltiga, eller resursägare kan inte hittas
         invalid_scope: Det begärda räckvidden är ogiltigt, okänt eller felaktigt.
         invalid_token:
@@ -106,6 +110,26 @@ sv:
       authorized_applications:
         destroy:
           notice: Applikation återkallas.
+    grouped_scopes:
+      title:
+        accounts: Konton
+        admin/accounts: Administrering av konton
+        admin/all: Alla administrativa funktioner
+        admin/reports: Administrering av rapporter
+        all: Allting
+        blocks: Blockeringar
+        bookmarks: Bokmärken
+        conversations: Konversationer
+        crypto: Ände-till-ände-kryptering
+        favourites: Favoriter
+        follow: Relationer
+        follows: Följer
+        lists: Listor
+        notifications: Aviseringar
+        push: Push-aviseringar
+        reports: Rapporter
+        search: Sök
+        statuses: Inlägg
     layouts:
       admin:
         nav:
@@ -114,7 +138,37 @@ sv:
       application:
         title: OAuth-behörighet krävs
     scopes:
+      admin:read: läs all data på servern
+      admin:read:accounts: läs känslig information från alla konton
+      admin:read:reports: läs känslig information från alla rapporter och rapporterade konton
+      admin:write: ändra all data på servern
+      admin:write:accounts: utför alla aktiviteter för moderering på konton
+      admin:write:reports: utför alla aktiviteter för moderering i rapporter
       follow: följa, blockera, ta bort blockerade och sluta följa konton
-      push: ta emot push aviseringar för ditt konto
+      push: ta emot push-aviseringar för ditt konto
       read: läsa dina kontodata
+      read:accounts: se kontoinformation
+      read:blocks: se dina blockeringar
+      read:bookmarks: se dina bokmärken
+      read:favourites: se dina favoriter
+      read:filters: se dina filter
+      read:follows: se vem du följer
+      read:lists: se dina listor
+      read:mutes: se dina tystningar
+      read:notifications: se dina aviseringar
+      read:reports: se dina rapporter
+      read:search: sök å dina vägnar
+      read:statuses: se alla statusar
       write: posta åt dig
+      write:accounts: ändra din profil
+      write:blocks: blockera konton och domäner
+      write:bookmarks: bokmärkesstatusar
+      write:favourites: favoritmarkera statusar
+      write:filters: skapa filter
+      write:follows: följ människor
+      write:lists: skapa listor
+      write:media: ladda upp mediafiler
+      write:mutes: tysta människor och konversationer
+      write:notifications: rensa dina aviseringar
+      write:reports: rapportera andra människor
+      write:statuses: publicera statusar

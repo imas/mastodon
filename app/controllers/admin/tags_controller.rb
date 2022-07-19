@@ -2,43 +2,34 @@
 
 module Admin
   class TagsController < BaseController
-    before_action :set_tags, only: :index
-    before_action :set_tag, except: :index
-    before_action :set_filter_params
+    before_action :set_tag
 
-    def index
-      authorize :tag, :index?
+    def show
+      authorize @tag, :show?
+
+      @time_period = (6.days.ago.to_date...Time.now.utc.to_date)
     end
 
-    def hide
-      authorize @tag, :hide?
-      @tag.account_tag_stat.update!(hidden: true)
-      redirect_to admin_tags_path(@filter_params)
-    end
+    def update
+      authorize @tag, :update?
 
-    def unhide
-      authorize @tag, :unhide?
-      @tag.account_tag_stat.update!(hidden: false)
-      redirect_to admin_tags_path(@filter_params)
+      if @tag.update(tag_params.merge(reviewed_at: Time.now.utc))
+        redirect_to admin_tag_path(@tag.id), notice: I18n.t('admin.tags.updated_msg')
+      else
+        @time_period = (6.days.ago.to_date...Time.now.utc.to_date)
+
+        render :show
+      end
     end
 
     private
-
-    def set_tags
-      @tags = Tag.discoverable
-      @tags.merge!(Tag.hidden) if filter_params[:hidden]
-    end
 
     def set_tag
       @tag = Tag.find(params[:id])
     end
 
-    def set_filter_params
-      @filter_params = filter_params.to_hash.symbolize_keys
-    end
-
-    def filter_params
-      params.permit(:hidden)
+    def tag_params
+      params.require(:tag).permit(:name, :display_name, :trendable, :usable, :listable)
     end
   end
 end

@@ -2,15 +2,39 @@
 ja:
   activerecord:
     attributes:
+      poll:
+        expires_at: 期限
+        options: 項目
       user:
+        agreement: サービス契約
         email: メールアドレス
+        locale: ロケール
+        password: パスワード
+      user/account:
+        username: ユーザー名
+      user/invite_request:
+        text: 理由
     errors:
       models:
         account:
           attributes:
             username:
-              invalid: アルファベット・数値・アンダーバー(_)で入力してください
+              invalid: アルファベット・数字・アンダーバーの組み合わせで入力してください
+              reserved: は予約されています
+        admin/webhook:
+          attributes:
+            url:
+              invalid: は無効なURLです
+        doorkeeper/application:
+          attributes:
+            website:
+              invalid: は無効なURLです
         status:
           attributes:
             reblog:
-              taken: のブーストはすでに存在します
+              taken: は既にブーストされています
+        user:
+          attributes:
+            email:
+              blocked: は禁止されているメールプロバイダを使用しています
+              unreachable: は存在しないようです

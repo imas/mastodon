@@ -12,6 +12,7 @@ RSpec.describe ActivityPub::Activity::Announce do
       type: 'Announce',
       actor: 'https://example.com/actor',
       object: object_json,
+      to: 'http://example.com/followers',
     }.with_indifferent_access
   end
 
@@ -57,12 +58,13 @@ RSpec.describe ActivityPub::Activity::Announce do
         end
       end
 
-      context 'self-boost of a previously unknown status with missing attributedTo' do
+      context 'self-boost of a previously unknown status with correct attributedTo' do
         let(:object_json) do
           {
             id: 'https://example.com/actor#bar',
             type: 'Note',
             content: 'Lorem ipsum',
+            attributedTo: 'https://example.com/actor',
             to: 'http://example.com/followers',
           }
         end
@@ -72,14 +74,18 @@ RSpec.describe ActivityPub::Activity::Announce do
         end
       end
 
-      context 'self-boost of a previously unknown status with correct attributedTo' do
+      context 'self-boost of a previously unknown status with correct attributedTo, inlined Collection in audience' do
         let(:object_json) do
           {
             id: 'https://example.com/actor#bar',
             type: 'Note',
             content: 'Lorem ipsum',
             attributedTo: 'https://example.com/actor',
-            to: 'http://example.com/followers',
+            to: {
+              'type': 'OrderedCollection',
+              'id': 'http://example.com/followers',
+              'first': 'http://example.com/followers?page=true',
+            }
           }
         end
 
@@ -107,7 +113,13 @@ RSpec.describe ActivityPub::Activity::Announce do
       let!(:relay_account) { Fabricate(:account, inbox_url: 'https://relay.example.com/inbox') }
       let!(:relay) { Fabricate(:relay, inbox_url: 'https://relay.example.com/inbox') }
 
+      let(:object_json) { 'https://example.com/actor/hello-world' }
+
       subject { described_class.new(json, sender, relayed_through_account: relay_account) }
+
+      before do
+        stub_request(:get, 'https://example.com/actor/hello-world').to_return(body: Oj.dump(unknown_object_json))
+      end
 
       context 'and the relay is enabled' do
         before do
@@ -115,17 +127,9 @@ RSpec.describe ActivityPub::Activity::Announce do
           subject.perform
         end
 
-        let(:object_json) do
-          {
-            id: 'https://example.com/actor#bar',
-            type: 'Note',
-            content: 'Lorem ipsum',
-            to: 'http://example.com/followers',
-          }
-        end
-
-        it 'creates a reblog by sender of status' do
-          expect(sender.statuses.count).to eq 2
+        it 'fetches the remote status' do
+          expect(a_request(:get, 'https://example.com/actor/hello-world')).to have_been_made
+          expect(Status.find_by(uri: 'https://example.com/actor/hello-world').text).to eq 'Hello world'
         end
       end
 
@@ -134,13 +138,9 @@ RSpec.describe ActivityPub::Activity::Announce do
           subject.perform
         end
 
-        let(:object_json) do
-          {
-            id: 'https://example.com/actor#bar',
-            type: 'Note',
-            content: 'Lorem ipsum',
-            to: 'http://example.com/followers',
-          }
+        it 'does not fetch the remote status' do
+          expect(a_request(:get, 'https://example.com/actor/hello-world')).not_to have_been_made
+          expect(Status.find_by(uri: 'https://example.com/actor/hello-world')).to be_nil
         end
 
         it 'does not create anything' do
@@ -160,6 +160,7 @@ RSpec.describe ActivityPub::Activity::Announce do
           type: 'Note',
           content: 'Lorem ipsum',
           to: 'http://example.com/followers',
+          attributedTo: 'https://example.com/actor',
         }
       end
 

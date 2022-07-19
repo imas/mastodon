@@ -38,6 +38,7 @@ nl:
         application: Toepassing
         callback_url: Callback-URL
         delete: Verwijderen
+        empty: Je hebt geen toepassingen geconfigureerd.
         name: Naam
         new: Nieuwe toepassing
         scopes: Toestemmingen
@@ -59,8 +60,8 @@ nl:
       error:
         title: Er is een fout opgetreden
       new:
-        able_to: Deze toepassing zal in staat zijn om
-        prompt: "%{client_name} autoriseren om jouw account te gebruiken"
+        prompt_html: "%{client_name} heeft toestemming nodig om toegang te krijgen tot jouw account. Het betreft een third-party-toepassing.<strong>Als je dit niet vertrouwt, moet je geen toestemming verlenen.</strong>"
+        review_permissions: Toestemmingen beoordelen
         title: Autorisatie vereist
       show:
         title: Kopieer deze autorisatiecode en plak het in de toepassing.
@@ -70,10 +71,11 @@ nl:
       confirmations:
         revoke: Weet je het zeker?
       index:
-        application: Toepassing
-        created_at: Aangemaakt op
-        date_format: "%d-%m-%Y %H:%M:%S"
+        authorized_at: Toestemming verleent op %{date}
+        last_used_at: Voor het laatst gebruikt op %{date}
+        never_used: Nooit gebruikt
         scopes: Toestemmingen
+        superapp: Intern
         title: Jouw geautoriseerde toepassingen
     errors:
       messages:
@@ -82,7 +84,10 @@ nl:
         invalid_client: Clientverificatie is mislukt door een onbekende client, ontbrekende client-authenticatie of een niet ondersteunde authenticatie-methode.
         invalid_grant: De verstrekte autorisatie is ongeldig, verlopen, ingetrokken, komt niet overeen met de redirect-URI die is opgegeven of werd uitgegeven aan een andere client.
         invalid_redirect_uri: De opgegeven redirect-URI is ongeldig.
-        invalid_request: Het verzoek mist een vereiste parameter, bevat een niet ondersteunde parameterwaarde of is anderszins onjuist.
+        invalid_request:
+          missing_param: 'Ontbrekende vereiste parameter: %{value}.'
+          request_not_authorized: Het verzoek moet worden geautoriseerd. De vereiste parameter voor het autorisatieverzoek ontbreekt of is ongeldig.
+          unknown: Het verzoek mist een vereiste parameter, bevat een niet ondersteunde parameterwaarde of is op een andere manier onjuist.
         invalid_resource_owner: De verstrekte resource-eigenaargegevens zijn ongeldig of de resource-eigenaar kan niet worden gevonden
         invalid_scope: De opgevraagde toestemming is ongeldig, onbekend of onjuist.
         invalid_token:
@@ -106,33 +111,69 @@ nl:
       authorized_applications:
         destroy:
           notice: Toepassing ingetrokken.
+    grouped_scopes:
+      access:
+        read: Alleen leestoegang
+        read/write: Lees- en schrijftoegang
+        write: Alleen schrijftoegang
+      title:
+        accounts: Accounts
+        admin/accounts: Accountbeheer
+        admin/all: Alle beheerfuncties
+        admin/reports: Rapportagebeheer
+        all: Alles
+        blocks: Blokkeren
+        bookmarks: Bladwijzers
+        conversations: Gesprekken
+        crypto: End-to-end-encryptie
+        favourites: Favorieten
+        filters: Filters
+        follow: Relaties
+        follows: Volgend
+        lists: Lijsten
+        media: Mediabijlagen
+        mutes: Negeren
+        notifications: Meldingen
+        push: Pushmeldingen
+        reports: Rapportages
+        search: Zoeken
+        statuses: Berichten
     layouts:
       admin:
         nav:
           applications: Toepassingen
-          home: Home
           oauth2_provider: OAuth2-provider
       application:
         title: OAuth-autorisatie vereist
     scopes:
+      admin:read: alle gegevens op de server lezen
+      admin:read:accounts: gevoelige informatie van alle accounts lezen
+      admin:read:reports: gevoelige informatie van alle rapportages en gerapporteerde accounts lezen
+      admin:write: wijzig alle gegevens op de server
+      admin:write:accounts: moderatieacties op accounts uitvoeren
+      admin:write:reports: moderatieacties op rapportages uitvoeren
+      crypto: end-to-end-encryptie gebruiken
       follow: relaties tussen accounts bewerken
-      push: ontvang jouw pushmeldingen
+      push: jouw pushmeldingen ontvangen
       read: alle gegevens van jouw account lezen
-      read:accounts: zie informatie accounts
-      read:blocks: zie jouw geblokkeerde gebruikers
-      read:favourites: zie jouw favorieten
-      read:filters: zie jouw filters
-      read:follows: zie de accounts die jij volgt
-      read:lists: zie jouw lijsten
-      read:mutes: zie jouw genegeerde gebruikers
-      read:notifications: zie jouw meldingen
-      read:reports: zie jouw gerapporteerde toots
+      read:accounts: informatie accounts bekijken
+      read:blocks: jouw geblokkeerde gebruikers bekijken
+      read:bookmarks: jouw bladwijzers bekijken
+      read:favourites: jouw favorieten bekijken
+      read:filters: jouw filters bekijken
+      read:follows: de accounts die jij volgt bekijken
+      read:lists: jouw lijsten bekijken
+      read:mutes: jouw genegeerde gebruikers bekijken
+      read:notifications: jouw meldingen bekijken
+      read:reports: jouw gerapporteerde berichten bekijken
       read:search: namens jou zoeken
-      read:statuses: zie alle toots
+      read:statuses: alle berichten bekijken
       write: alle gegevens van jouw account bewerken
       write:accounts: jouw profiel bewerken
       write:blocks: accounts en domeinen blokkeren
-      write:favourites: toots als favoriet markeren
+      write:bookmarks: berichten aan bladwijzers toevoegen
+      write:conversations: gespreken negeren en verwijderen
+      write:favourites: berichten als favoriet markeren
       write:filters: filters aanmaken
       write:follows: mensen volgen
       write:lists: lijsten aanmaken
@@ -140,4 +181,4 @@ nl:
       write:mutes: mensen en gesprekken negeren
       write:notifications: meldingen verwijderen
       write:reports: andere mensen rapporteren
-      write:statuses: toots publiceren
+      write:statuses: berichten plaatsen

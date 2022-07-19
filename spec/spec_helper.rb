@@ -12,6 +12,7 @@ end
 gc_counter = -1
 
 RSpec.configure do |config|
+  config.example_status_persistence_file_path = "tmp/rspec/examples.txt"
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
@@ -27,6 +28,7 @@ RSpec.configure do |config|
   end
 
   config.before :suite do
+    Rails.application.load_seed
     Chewy.strategy(:bypass)
   end
 
@@ -54,4 +56,11 @@ end
 
 def json_str_to_hash(str)
   JSON.parse(str, symbolize_names: true)
+end
+
+def expect_push_bulk_to_match(klass, matcher)
+  expect(Sidekiq::Client).to receive(:push_bulk).with(hash_including({
+    "class" => klass,
+    "args" => matcher
+  }))
 end

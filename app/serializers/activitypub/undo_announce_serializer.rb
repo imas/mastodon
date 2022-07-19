@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class ActivityPub::UndoAnnounceSerializer < ActiveModel::Serializer
+class ActivityPub::UndoAnnounceSerializer < ActivityPub::Serializer
   attributes :id, :type, :actor, :to
 
-  has_one :object, serializer: ActivityPub::ActivitySerializer
+  has_one :virtual_object, key: :object, serializer: ActivityPub::ActivitySerializer
 
   def id
     [ActivityPub::TagManager.instance.uri_for(object.account), '#announces/', object.id, '/undo'].join
@@ -19,5 +19,9 @@ class ActivityPub::UndoAnnounceSerializer < ActiveModel::Serializer
 
   def to
     [ActivityPub::TagManager::COLLECTIONS[:public]]
+  end
+
+  def virtual_object
+    ActivityPub::ActivityPresenter.from_status(object, allow_inlining: false)
   end
 end

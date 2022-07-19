@@ -8,8 +8,11 @@ import resizeImage from '../utils/resize_image';
 import { importFetchedAccounts } from './importer';
 import { updateTimeline } from './timelines';
 import { showAlertForError } from './alerts';
+import { showAlert } from './alerts';
+import { openModal } from './modal';
+import { defineMessages } from 'react-intl';
 
-let cancelFetchComposeSuggestionsAccounts;
+let cancelFetchComposeSuggestionsAccounts, cancelFetchComposeSuggestionsTags;
 
 export const COMPOSE_CHANGE          = 'COMPOSE_CHANGE';
 export const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST';
@@ -26,9 +29,15 @@ export const COMPOSE_UPLOAD_FAIL     = 'COMPOSE_UPLOAD_FAIL';
 export const COMPOSE_UPLOAD_PROGRESS = 'COMPOSE_UPLOAD_PROGRESS';
 export const COMPOSE_UPLOAD_UNDO     = 'COMPOSE_UPLOAD_UNDO';
 
+export const THUMBNAIL_UPLOAD_REQUEST  = 'THUMBNAIL_UPLOAD_REQUEST';
+export const THUMBNAIL_UPLOAD_SUCCESS  = 'THUMBNAIL_UPLOAD_SUCCESS';
+export const THUMBNAIL_UPLOAD_FAIL     = 'THUMBNAIL_UPLOAD_FAIL';
+export const THUMBNAIL_UPLOAD_PROGRESS = 'THUMBNAIL_UPLOAD_PROGRESS';
+
 export const COMPOSE_SUGGESTIONS_CLEAR = 'COMPOSE_SUGGESTIONS_CLEAR';
 export const COMPOSE_SUGGESTIONS_READY = 'COMPOSE_SUGGESTIONS_READY';
 export const COMPOSE_SUGGESTION_SELECT = 'COMPOSE_SUGGESTION_SELECT';
+export const COMPOSE_SUGGESTION_IGNORE = 'COMPOSE_SUGGESTION_IGNORE';
 export const COMPOSE_SUGGESTION_TAGS_UPDATE = 'COMPOSE_SUGGESTION_TAGS_UPDATE';
 
 export const COMPOSE_TAG_HISTORY_UPDATE = 'COMPOSE_TAG_HISTORY_UPDATE';
@@ -36,18 +45,54 @@ export const COMPOSE_TAG_HISTORY_UPDATE = 'COMPOSE_TAG_HISTORY_UPDATE';
 export const COMPOSE_MOUNT   = 'COMPOSE_MOUNT';
 export const COMPOSE_UNMOUNT = 'COMPOSE_UNMOUNT';
 
-export const COMPOSE_SENSITIVITY_CHANGE = 'COMPOSE_SENSITIVITY_CHANGE';
-export const COMPOSE_SPOILERNESS_CHANGE = 'COMPOSE_SPOILERNESS_CHANGE';
+export const COMPOSE_SENSITIVITY_CHANGE  = 'COMPOSE_SENSITIVITY_CHANGE';
+export const COMPOSE_SPOILERNESS_CHANGE  = 'COMPOSE_SPOILERNESS_CHANGE';
 export const COMPOSE_SPOILER_TEXT_CHANGE = 'COMPOSE_SPOILER_TEXT_CHANGE';
-export const COMPOSE_VISIBILITY_CHANGE  = 'COMPOSE_VISIBILITY_CHANGE';
-export const COMPOSE_LISTABILITY_CHANGE = 'COMPOSE_LISTABILITY_CHANGE';
-export const COMPOSE_COMPOSING_CHANGE = 'COMPOSE_COMPOSING_CHANGE';
+export const COMPOSE_VISIBILITY_CHANGE   = 'COMPOSE_VISIBILITY_CHANGE';
+export const COMPOSE_COMPOSING_CHANGE    = 'COMPOSE_COMPOSING_CHANGE';
+export const COMPOSE_LANGUAGE_CHANGE     = 'COMPOSE_LANGUAGE_CHANGE';
 
 export const COMPOSE_EMOJI_INSERT = 'COMPOSE_EMOJI_INSERT';
 
 export const COMPOSE_UPLOAD_CHANGE_REQUEST     = 'COMPOSE_UPLOAD_UPDATE_REQUEST';
 export const COMPOSE_UPLOAD_CHANGE_SUCCESS     = 'COMPOSE_UPLOAD_UPDATE_SUCCESS';
 export const COMPOSE_UPLOAD_CHANGE_FAIL        = 'COMPOSE_UPLOAD_UPDATE_FAIL';
+
+export const COMPOSE_POLL_ADD             = 'COMPOSE_POLL_ADD';
+export const COMPOSE_POLL_REMOVE          = 'COMPOSE_POLL_REMOVE';
+export const COMPOSE_POLL_OPTION_ADD      = 'COMPOSE_POLL_OPTION_ADD';
+export const COMPOSE_POLL_OPTION_CHANGE   = 'COMPOSE_POLL_OPTION_CHANGE';
+export const COMPOSE_POLL_OPTION_REMOVE   = 'COMPOSE_POLL_OPTION_REMOVE';
+export const COMPOSE_POLL_SETTINGS_CHANGE = 'COMPOSE_POLL_SETTINGS_CHANGE';
+
+export const INIT_MEDIA_EDIT_MODAL = 'INIT_MEDIA_EDIT_MODAL';
+
+export const COMPOSE_CHANGE_MEDIA_DESCRIPTION = 'COMPOSE_CHANGE_MEDIA_DESCRIPTION';
+export const COMPOSE_CHANGE_MEDIA_FOCUS       = 'COMPOSE_CHANGE_MEDIA_FOCUS';
+
+export const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS';
+
+const messages = defineMessages({
+  uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
+  uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
+});
+
+const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
+
+export const ensureComposeIsVisible = (getState, routerHistory) => {
+  if (!getState().getIn(['compose', 'mounted']) && window.innerWidth < COMPOSE_PANEL_BREAKPOINT) {
+    routerHistory.push('/publish');
+  }
+};
+
+export function setComposeToStatus(status, text, spoiler_text) {
+  return{
+    type: COMPOSE_SET_STATUS,
+    status,
+    text,
+    spoiler_text,
+  };
+};
 
 export function changeCompose(text) {
   return {
@@ -63,9 +108,7 @@ export function replyCompose(status, routerHistory) {
       status: status,
     });
 
-    if (!getState().getIn(['compose', 'mounted'])) {
-      routerHistory.push('/statuses/new');
-    }
+    ensureComposeIsVisible(getState, routerHistory);
   };
 };
 
@@ -88,9 +131,7 @@ export function mentionCompose(account, routerHistory) {
       account: account,
     });
 
-    if (!getState().getIn(['compose', 'mounted'])) {
-      routerHistory.push('/statuses/new');
-    }
+    ensureComposeIsVisible(getState, routerHistory);
   };
 };
 
@@ -101,16 +142,15 @@ export function directCompose(account, routerHistory) {
       account: account,
     });
 
-    if (!getState().getIn(['compose', 'mounted'])) {
-      routerHistory.push('/statuses/new');
-    }
+    ensureComposeIsVisible(getState, routerHistory);
   };
 };
 
 export function submitCompose(routerHistory) {
   return function (dispatch, getState) {
-    const status = getState().getIn(['compose', 'text'], '');
-    const media  = getState().getIn(['compose', 'media_attachments']);
+    const status   = getState().getIn(['compose', 'text'], '');
+    const media    = getState().getIn(['compose', 'media_attachments']);
+    const statusId = getState().getIn(['compose', 'id'], null);
 
     if ((!status || !status.length) && media.size === 0) {
       return;
@@ -118,21 +158,24 @@ export function submitCompose(routerHistory) {
 
     dispatch(submitComposeRequest());
 
-    api(getState).post('/api/v1/statuses', {
-      status,
-      in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
-      media_ids: media.map(item => item.get('id')),
-      sensitive: getState().getIn(['compose', 'sensitive']),
-      spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
-      visibility: getState().getIn(['compose', 'privacy']),
-    }, {
+    api(getState).request({
+      url: statusId === null ? '/api/v1/statuses' : `/api/v1/statuses/${statusId}`,
+      method: statusId === null ? 'post' : 'put',
+      data: {
+        status,
+        in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
+        media_ids: media.map(item => item.get('id')),
+        sensitive: getState().getIn(['compose', 'sensitive']),
+        spoiler_text: getState().getIn(['compose', 'spoiler']) ? getState().getIn(['compose', 'spoiler_text'], '') : '',
+        visibility: getState().getIn(['compose', 'privacy']),
+        poll: getState().getIn(['compose', 'poll'], null),
+        language: getState().getIn(['compose', 'language']),
+      },
       headers: {
         'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
       },
     }).then(function (response) {
-      if (response.data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
-        routerHistory.push('/timelines/direct');
-      } else if (routerHistory && routerHistory.location.pathname === '/statuses/new' && window.history.state) {
+      if (routerHistory && (routerHistory.location.pathname === '/publish' || routerHistory.location.pathname === '/statuses/new') && window.history.state) {
         routerHistory.goBack();
       }
 
@@ -141,20 +184,22 @@ export function submitCompose(routerHistory) {
 
       // To make the app more responsive, immediately push the status
       // into the columns
-
       const insertIfOnline = timelineId => {
-        if (getState().getIn(['timelines', timelineId, 'items', 0]) !== null) {
+        const timeline = getState().getIn(['timelines', timelineId]);
+
+        if (timeline && timeline.get('items').size > 0 && timeline.getIn(['items', 0]) !== null && timeline.get('online')) {
           dispatch(updateTimeline(timelineId, { ...response.data }));
         }
       };
 
-      if (response.data.visibility !== 'direct') {
+      if (statusId === null && response.data.visibility !== 'direct') {
         insertIfOnline('home');
       }
 
-      if (response.data.in_reply_to_id === null && response.data.visibility === 'public') {
+      if (statusId === null && response.data.in_reply_to_id === null && response.data.visibility === 'public') {
         insertIfOnline('community');
         insertIfOnline('public');
+        insertIfOnline(`account:${response.data.account.id}`);
       }
     }).catch(function (error) {
       dispatch(submitComposeFail(error));
@@ -184,20 +229,132 @@ export function submitComposeFail(error) {
 
 export function uploadCompose(files) {
   return function (dispatch, getState) {
-    if (getState().getIn(['compose', 'media_attachments']).size > 3) {
+    const uploadLimit = 4;
+    const media  = getState().getIn(['compose', 'media_attachments']);
+    const pending  = getState().getIn(['compose', 'pending_media_attachments']);
+    const progress = new Array(files.length).fill(0);
+    let total = Array.from(files).reduce((a, v) => a + v.size, 0);
+
+    if (files.length + media.size + pending > uploadLimit) {
+      dispatch(showAlert(undefined, messages.uploadErrorLimit));
+      return;
+    }
+
+    if (getState().getIn(['compose', 'poll'])) {
+      dispatch(showAlert(undefined, messages.uploadErrorPoll));
       return;
     }
 
     dispatch(uploadComposeRequest());
 
-    resizeImage(files[0]).then(file => {
-      const data = new FormData();
-      data.append('file', file);
+    for (const [i, f] of Array.from(files).entries()) {
+      if (media.size + i > 3) break;
 
-      return api(getState).post('/api/v1/media', data, {
-        onUploadProgress: ({ loaded, total }) => dispatch(uploadComposeProgress(loaded, total)),
-      }).then(({ data }) => dispatch(uploadComposeSuccess(data)));
-    }).catch(error => dispatch(uploadComposeFail(error)));
+      resizeImage(f).then(file => {
+        const data = new FormData();
+        data.append('file', file);
+        // Account for disparity in size of original image and resized data
+        total += file.size - f.size;
+
+        return api(getState).post('/api/v2/media', data, {
+          onUploadProgress: function({ loaded }){
+            progress[i] = loaded;
+            dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
+          },
+        }).then(({ status, data }) => {
+          // If server-side processing of the media attachment has not completed yet,
+          // poll the server until it is, before showing the media attachment as uploaded
+
+          if (status === 200) {
+            dispatch(uploadComposeSuccess(data, f));
+          } else if (status === 202) {
+            let tryCount = 1;
+            const poll = () => {
+              api(getState).get(`/api/v1/media/${data.id}`).then(response => {
+                if (response.status === 200) {
+                  dispatch(uploadComposeSuccess(response.data, f));
+                } else if (response.status === 206) {
+                  let retryAfter = (Math.log2(tryCount) || 1) * 1000;
+                  tryCount += 1;
+                  setTimeout(() => poll(), retryAfter);
+                }
+              }).catch(error => dispatch(uploadComposeFail(error)));
+            };
+
+            poll();
+          }
+        });
+      }).catch(error => dispatch(uploadComposeFail(error)));
+    };
+  };
+};
+
+export const uploadThumbnail = (id, file) => (dispatch, getState) => {
+  dispatch(uploadThumbnailRequest());
+
+  const total = file.size;
+  const data = new FormData();
+
+  data.append('thumbnail', file);
+
+  api(getState).put(`/api/v1/media/${id}`, data, {
+    onUploadProgress: ({ loaded }) => {
+      dispatch(uploadThumbnailProgress(loaded, total));
+    },
+  }).then(({ data }) => {
+    dispatch(uploadThumbnailSuccess(data));
+  }).catch(error => {
+    dispatch(uploadThumbnailFail(id, error));
+  });
+};
+
+export const uploadThumbnailRequest = () => ({
+  type: THUMBNAIL_UPLOAD_REQUEST,
+  skipLoading: true,
+});
+
+export const uploadThumbnailProgress = (loaded, total) => ({
+  type: THUMBNAIL_UPLOAD_PROGRESS,
+  loaded,
+  total,
+  skipLoading: true,
+});
+
+export const uploadThumbnailSuccess = media => ({
+  type: THUMBNAIL_UPLOAD_SUCCESS,
+  media,
+  skipLoading: true,
+});
+
+export const uploadThumbnailFail = error => ({
+  type: THUMBNAIL_UPLOAD_FAIL,
+  error,
+  skipLoading: true,
+});
+
+export function initMediaEditModal(id) {
+  return dispatch => {
+    dispatch({
+      type: INIT_MEDIA_EDIT_MODAL,
+      id,
+    });
+
+    dispatch(openModal('FOCAL_POINT', { id }));
+  };
+};
+
+export function onChangeMediaDescription(description) {
+  return {
+    type: COMPOSE_CHANGE_MEDIA_DESCRIPTION,
+    description,
+  };
+};
+
+export function onChangeMediaFocus(focusX, focusY) {
+  return {
+    type: COMPOSE_CHANGE_MEDIA_FOCUS,
+    focusX,
+    focusY,
   };
 };
 
@@ -219,6 +376,7 @@ export function changeUploadComposeRequest() {
     skipLoading: true,
   };
 };
+
 export function changeUploadComposeSuccess(media) {
   return {
     type: COMPOSE_UPLOAD_CHANGE_SUCCESS,
@@ -250,10 +408,11 @@ export function uploadComposeProgress(loaded, total) {
   };
 };
 
-export function uploadComposeSuccess(media) {
+export function uploadComposeSuccess(media, file) {
   return {
     type: COMPOSE_UPLOAD_SUCCESS,
     media: media,
+    file: file,
     skipLoading: true,
   };
 };
@@ -286,10 +445,12 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => 
   if (cancelFetchComposeSuggestionsAccounts) {
     cancelFetchComposeSuggestionsAccounts();
   }
+
   api(getState).get('/api/v1/accounts/search', {
     cancelToken: new CancelToken(cancel => {
       cancelFetchComposeSuggestionsAccounts = cancel;
     }),
+
     params: {
       q: token.slice(1),
       resolve: false,
@@ -310,9 +471,33 @@ const fetchComposeSuggestionsEmojis = (dispatch, getState, token) => {
   dispatch(readyComposeSuggestionsEmojis(token, results));
 };
 
-const fetchComposeSuggestionsTags = (dispatch, getState, token) => {
+const fetchComposeSuggestionsTags = throttle((dispatch, getState, token) => {
+  if (cancelFetchComposeSuggestionsTags) {
+    cancelFetchComposeSuggestionsTags();
+  }
+
   dispatch(updateSuggestionTags(token));
-};
+
+  api(getState).get('/api/v2/search', {
+    cancelToken: new CancelToken(cancel => {
+      cancelFetchComposeSuggestionsTags = cancel;
+    }),
+
+    params: {
+      type: 'hashtags',
+      q: token.slice(1),
+      resolve: false,
+      limit: 4,
+      exclude_unreviewed: true,
+    },
+  }).then(({ data }) => {
+    dispatch(readyComposeSuggestionsTags(token, data.hashtags));
+  }).catch(error => {
+    if (!isCancel(error)) {
+      dispatch(showAlertForError(error));
+    }
+  });
+}, 200, { leading: true, trailing: true });
 
 export function fetchComposeSuggestions(token) {
   return (dispatch, getState) => {
@@ -346,29 +531,48 @@ export function readyComposeSuggestionsAccounts(token, accounts) {
   };
 };
 
-export function selectComposeSuggestion(position, token, suggestion) {
+export const readyComposeSuggestionsTags = (token, tags) => ({
+  type: COMPOSE_SUGGESTIONS_READY,
+  token,
+  tags,
+});
+
+export function selectComposeSuggestion(position, token, suggestion, path) {
   return (dispatch, getState) => {
     let completion, startPosition;
 
-    if (typeof suggestion === 'object' && suggestion.id) {
+    if (suggestion.type === 'emoji') {
       completion    = suggestion.native || suggestion.colons;
       startPosition = position - 1;
 
       dispatch(useEmoji(suggestion));
-    } else if (suggestion[0] === '#') {
-      completion    = suggestion;
+    } else if (suggestion.type === 'hashtag') {
+      completion    = `#${suggestion.name}`;
       startPosition = position - 1;
-    } else {
-      completion    = getState().getIn(['accounts', suggestion, 'acct']);
+    } else if (suggestion.type === 'account') {
+      completion    = getState().getIn(['accounts', suggestion.id, 'acct']);
       startPosition = position;
     }
 
-    dispatch({
-      type: COMPOSE_SUGGESTION_SELECT,
-      position: startPosition,
-      token,
-      completion,
-    });
+    // We don't want to replace hashtags that vary only in case due to accessibility, but we need to fire off an event so that
+    // the suggestions are dismissed and the cursor moves forward.
+    if (suggestion.type !== 'hashtag' || token.slice(1).localeCompare(suggestion.name, undefined, { sensitivity: 'accent' }) !== 0) {
+      dispatch({
+        type: COMPOSE_SUGGESTION_SELECT,
+        position: startPosition,
+        token,
+        completion,
+        path,
+      });
+    } else {
+      dispatch({
+        type: COMPOSE_SUGGESTION_IGNORE,
+        position: startPosition,
+        token,
+        completion,
+        path,
+      });
+    }
   };
 };
 
@@ -402,7 +606,20 @@ function insertIntoTagHistory(recognizedTags, text) {
     const state = getState();
     const oldHistory = state.getIn(['compose', 'tagHistory']);
     const me = state.getIn(['meta', 'me']);
-    const names = recognizedTags.map(tag => text.match(new RegExp(`#${tag.name}`, 'i'))[0].slice(1));
+
+    // FIXME: Matching input hashtags with recognized hashtags has become more
+    // complicated because of new normalization rules, it's no longer just
+    // a case sensitivity issue
+    const names = recognizedTags.map(tag => {
+      const matches = text.match(new RegExp(`#${tag.name}`, 'i'));
+
+      if (matches && matches.length > 0) {
+        return matches[0].slice(1);
+      } else {
+        return tag.name;
+      }
+    });
+
     const intersectedOldHistory = oldHistory.filter(name => names.findIndex(newName => newName.toLowerCase() === name.toLowerCase()) === -1);
 
     names.push(...intersectedOldHistory.toJS());
@@ -431,6 +648,11 @@ export function changeComposeSensitivity() {
     type: COMPOSE_SENSITIVITY_CHANGE,
   };
 };
+
+export const changeComposeLanguage = language => ({
+  type: COMPOSE_LANGUAGE_CHANGE,
+  language,
+});
 
 export function changeComposeSpoilerness() {
   return {
@@ -466,4 +688,46 @@ export function changeComposing(value) {
     type: COMPOSE_COMPOSING_CHANGE,
     value,
   };
-}
+};
+
+export function addPoll() {
+  return {
+    type: COMPOSE_POLL_ADD,
+  };
+};
+
+export function removePoll() {
+  return {
+    type: COMPOSE_POLL_REMOVE,
+  };
+};
+
+export function addPollOption(title) {
+  return {
+    type: COMPOSE_POLL_OPTION_ADD,
+    title,
+  };
+};
+
+export function changePollOption(index, title) {
+  return {
+    type: COMPOSE_POLL_OPTION_CHANGE,
+    index,
+    title,
+  };
+};
+
+export function removePollOption(index) {
+  return {
+    type: COMPOSE_POLL_OPTION_REMOVE,
+    index,
+  };
+};
+
+export function changePollSettings(expiresIn, isMultiple) {
+  return {
+    type: COMPOSE_POLL_SETTINGS_CHANGE,
+    expiresIn,
+    isMultiple,
+  };
+};

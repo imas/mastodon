@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'csv'
 
 class Export
@@ -8,16 +9,32 @@ class Export
     @account = account
   end
 
+  def to_bookmarks_csv
+    CSV.generate do |csv|
+      account.bookmarks.includes(:status).reorder(id: :desc).each do |bookmark|
+        csv << [ActivityPub::TagManager.instance.uri_for(bookmark.status)]
+      end
+    end
+  end
+
   def to_blocked_accounts_csv
     to_csv account.blocking.select(:username, :domain)
   end
 
   def to_muted_accounts_csv
-    to_csv account.muting.select(:username, :domain)
+    CSV.generate(headers: ['Account address', 'Hide notifications'], write_headers: true) do |csv|
+      account.mute_relationships.includes(:target_account).reorder(id: :desc).each do |mute|
+        csv << [acct(mute.target_account), mute.hide_notifications]
+      end
+    end
   end
 
   def to_following_accounts_csv
-    to_csv account.following.select(:username, :domain)
+    CSV.generate(headers: ['Account address', 'Show boosts'], write_headers: true) do |csv|
+      account.active_relationships.includes(:target_account).reorder(id: :desc).each do |follow|
+        csv << [acct(follow.target_account), follow.show_reblogs]
+      end
+    end
   end
 
   def to_lists_csv
@@ -44,6 +61,10 @@ class Export
 
   def total_statuses
     account.statuses_count
+  end
+
+  def total_bookmarks
+    account.bookmarks.count
   end
 
   def total_follows

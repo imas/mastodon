@@ -1,38 +1,20 @@
 # frozen_string_literal: true
 
-require 'tty-command'
 require 'tty-prompt'
 
 namespace :mastodon do
-  namespace :migrate do
-    desc 'migrate AccountConversation'
-    task accountConversation: :environment do
-      migrated  = 0
-      Status.unscoped.local.where(visibility: :direct).includes(:account, mentions: :account).find_in_batches do |statuses|
-        statuses.each do |status|
-          AccountConversation.add_status(status.account, status)
-        end
-
-        migrated += statuses.length
-        puts "Migrated #{migrated} rows"
-      end
-  
-      puts
-      Notification.joins(mention: :status).where(activity_type: 'Mention', statuses: { visibility: :direct }).includes(:account, mention: { status: [:account, mentions: :account] }).find_in_batches do |notifications|
-        notifications.each do |notification|
-          AccountConversation.add_status(notification.account, notification.target_status)
-        end
-
-        migrated += notifications.length
-        puts "Migrated #{migrated} rows"
-      end  
-    end
-  end
-
   desc 'Configure the instance for production use'
   task :setup do
     prompt = TTY::Prompt.new
     env    = {}
+
+    # When the application code gets loaded, it runs `lib/mastodon/redis_configuration.rb`.
+    # This happens before application environment configuration and sets REDIS_URL etc.
+    # These variables are then used even when REDIS_HOST etc. are changed, so clear them
+    # out so they don't interfer with our new configuration.
+    ENV.delete('REDIS_URL')
+    ENV.delete('CACHE_REDIS_URL')
+    ENV.delete('SIDEKIQ_REDIS_URL')
 
     begin
       prompt.say('Your instance is identified by its domain name. Changing it afterward will break things.')
@@ -160,7 +142,7 @@ namespace :mastodon do
       prompt.say "\n"
 
       if prompt.yes?('Do you want to store uploaded files on the cloud?', default: false)
-        case prompt.select('Provider', ['Amazon S3', 'Wasabi', 'Minio'])
+        case prompt.select('Provider', ['Amazon S3', 'Wasabi', 'Minio', 'Google Cloud Storage'])
         when 'Amazon S3'
           env['S3_ENABLED']  = 'true'
           env['S3_PROTOCOL'] = 'https'
@@ -239,6 +221,34 @@ namespace :mastodon do
           end
 
           env['AWS_SECRET_ACCESS_KEY'] = prompt.ask('Minio secret key:') do |q|
+            q.required true
+            q.modify :strip
+          end
+        when 'Google Cloud Storage'
+          env['S3_ENABLED']             = 'true'
+          env['S3_PROTOCOL']            = 'https'
+          env['S3_HOSTNAME']            = 'storage.googleapis.com'
+          env['S3_ENDPOINT']            = 'https://storage.googleapis.com'
+          env['S3_MULTIPART_THRESHOLD'] = 50.megabytes
+
+          env['S3_BUCKET'] = prompt.ask('GCS bucket name:') do |q|
+            q.required true
+            q.default "files.#{env['LOCAL_DOMAIN']}"
+            q.modify :strip
+          end
+
+          env['S3_REGION'] = prompt.ask('GCS region:') do |q|
+            q.required true
+            q.default 'us-west1'
+            q.modify :strip
+          end
+
+          env['AWS_ACCESS_KEY_ID'] = prompt.ask('GCS access key:') do |q|
+            q.required true
+            q.modify :strip
+          end
+
+          env['AWS_SECRET_ACCESS_KEY'] = prompt.ask('GCS secret key:') do |q|
             q.required true
             q.modify :strip
           end
@@ -331,14 +341,36 @@ namespace :mastodon do
       prompt.say 'This configuration will be written to .env.production'
 
       if prompt.yes?('Save configuration?')
-        cmd = TTY::Command.new(printer: :quiet)
+        incompatible_syntax = false
 
-        File.write(Rails.root.join('.env.production'), "# Generated with mastodon:setup on #{Time.now.utc}\n\n" + env.each_pair.map { |key, value| "#{key}=#{value}" }.join("\n") + "\n")
+        env_contents = env.each_pair.map do |key, value|
+          if value.is_a?(String) && value =~ /[\s\#\\"]/
+            incompatible_syntax = true
+
+            if value =~ /[']/
+              value = value.to_s.gsub(/[\\"\$]/) { |x| "\\#{x}" }
+              "#{key}=\"#{value}\""
+            else
+              "#{key}='#{value}'"
+            end
+          else
+            "#{key}=#{value}"
+          end
+        end.join("\n")
+
+        generated_header = "# Generated with mastodon:setup on #{Time.now.utc}\n\n".dup
+
+        if incompatible_syntax
+          generated_header << "# Some variables in this file will be interpreted differently whether you are\n"
+          generated_header << "# using docker-compose or not.\n\n"
+        end
+
+        File.write(Rails.root.join('.env.production'), "#{generated_header}#{env_contents}\n")
 
         if using_docker
           prompt.ok 'Below is your configuration, save it to an .env.production file outside Docker:'
           prompt.say "\n"
-          prompt.say File.read(Rails.root.join('.env.production'))
+          prompt.say "#{generated_header}#{env.each_pair.map { |key, value| "#{key}=#{value}" }.join("\n")}"
           prompt.say "\n"
           prompt.ok 'It is also saved within this container so you can proceed with this wizard.'
         end
@@ -351,25 +383,27 @@ namespace :mastodon do
           prompt.say 'Running `RAILS_ENV=production rails db:setup` ...'
           prompt.say "\n\n"
 
-          if cmd.run!({ RAILS_ENV: 'production', SAFETY_ASSURED: 1 }, :rails, 'db:setup').failure?
+          if !system(env.transform_values(&:to_s).merge({ 'RAILS_ENV' => 'production', 'SAFETY_ASSURED' => '1' }), 'rails db:setup')
             prompt.error 'That failed! Perhaps your configuration is not right'
           else
             prompt.ok 'Done!'
           end
         end
 
-        prompt.say "\n"
-        prompt.say 'The final step is compiling CSS/JS assets.'
-        prompt.say 'This may take a while and consume a lot of RAM.'
+        unless using_docker
+          prompt.say "\n"
+          prompt.say 'The final step is compiling CSS/JS assets.'
+          prompt.say 'This may take a while and consume a lot of RAM.'
 
-        if prompt.yes?('Compile the assets now?')
-          prompt.say 'Running `RAILS_ENV=production rails assets:precompile` ...'
-          prompt.say "\n\n"
+          if prompt.yes?('Compile the assets now?')
+            prompt.say 'Running `RAILS_ENV=production rails assets:precompile` ...'
+            prompt.say "\n\n"
 
-          if cmd.run!({ RAILS_ENV: 'production' }, :rails, 'assets:precompile').failure?
-            prompt.error 'That failed! Maybe you need swap space?'
-          else
-            prompt.say 'Done!'
+            if !system(env.transform_values(&:to_s).merge({ 'RAILS_ENV' => 'production' }), 'rails assets:precompile')
+              prompt.error 'That failed! Maybe you need swap space?'
+            else
+              prompt.say 'Done!'
+            end
           end
         end
 
@@ -399,7 +433,7 @@ namespace :mastodon do
 
           password = SecureRandom.hex(16)
 
-          user = User.new(admin: true, email: email, password: password, confirmed_at: Time.now.utc, account_attributes: { username: username })
+          user = User.new(admin: true, email: email, password: password, confirmed_at: Time.now.utc, account_attributes: { username: username }, bypass_invite_request_check: true)
           user.save(validate: false)
 
           prompt.ok "You can login with the password: #{password}"
@@ -415,7 +449,7 @@ namespace :mastodon do
 
   namespace :webpush do
     desc 'Generate VAPID key'
-    task generate_vapid_key: :environment do
+    task :generate_vapid_key do
       vapid_key = Webpush.generate_key
       puts "VAPID_PRIVATE_KEY=#{vapid_key.private_key}"
       puts "VAPID_PUBLIC_KEY=#{vapid_key.public_key}"

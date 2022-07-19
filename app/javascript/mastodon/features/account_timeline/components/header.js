@@ -2,8 +2,6 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import InnerHeader from '../../account/components/header';
-import ActionBar from '../../account/components/action_bar';
-import MissingIndicator from '../../../components/missing_indicator';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import MovedNote from './moved_note';
 import { FormattedMessage } from 'react-intl';
@@ -25,6 +23,8 @@ export default class Header extends ImmutablePureComponent {
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     hideTabs: PropTypes.bool,
+    domain: PropTypes.string.isRequired,
+    hidden: PropTypes.bool,
   };
 
   static contextTypes = {
@@ -55,6 +55,10 @@ export default class Header extends ImmutablePureComponent {
     this.props.onReblogToggle(this.props.account);
   }
 
+  handleNotifyToggle = () => {
+    this.props.onNotifyToggle(this.props.account);
+  }
+
   handleMute = () => {
     this.props.onMute(this.props.account);
   }
@@ -83,42 +87,45 @@ export default class Header extends ImmutablePureComponent {
     this.props.onAddToList(this.props.account);
   }
 
+  handleEditAccountNote = () => {
+    this.props.onEditAccountNote(this.props.account);
+  }
+
   render () {
-    const { account, hideTabs } = this.props;
+    const { account, hidden, hideTabs } = this.props;
 
     if (account === null) {
-      return <MissingIndicator />;
+      return null;
     }
 
     return (
       <div className='account-timeline__header'>
-        {account.get('moved') && <MovedNote from={account} to={account.get('moved')} />}
+        {(!hidden && account.get('moved')) && <MovedNote from={account} to={account.get('moved')} />}
 
         <InnerHeader
           account={account}
           onFollow={this.handleFollow}
           onBlock={this.handleBlock}
-        />
-
-        <ActionBar
-          account={account}
-          onBlock={this.handleBlock}
           onMention={this.handleMention}
           onDirect={this.handleDirect}
           onReblogToggle={this.handleReblogToggle}
+          onNotifyToggle={this.handleNotifyToggle}
           onReport={this.handleReport}
           onMute={this.handleMute}
           onBlockDomain={this.handleBlockDomain}
           onUnblockDomain={this.handleUnblockDomain}
           onEndorseToggle={this.handleEndorseToggle}
           onAddToList={this.handleAddToList}
+          onEditAccountNote={this.handleEditAccountNote}
+          domain={this.props.domain}
+          hidden={hidden}
         />
 
-        {!hideTabs && (
+        {!(hideTabs || hidden) && (
           <div className='account__section-headline'>
-            <NavLink exact to={`/accounts/${account.get('id')}`}><FormattedMessage id='account.posts' defaultMessage='Toots' /></NavLink>
-            <NavLink exact to={`/accounts/${account.get('id')}/with_replies`}><FormattedMessage id='account.posts_with_replies' defaultMessage='Toots and replies' /></NavLink>
-            <NavLink exact to={`/accounts/${account.get('id')}/media`}><FormattedMessage id='account.media' defaultMessage='Media' /></NavLink>
+            <NavLink exact to={`/@${account.get('acct')}`}><FormattedMessage id='account.posts' defaultMessage='Posts' /></NavLink>
+            <NavLink exact to={`/@${account.get('acct')}/with_replies`}><FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' /></NavLink>
+            <NavLink exact to={`/@${account.get('acct')}/media`}><FormattedMessage id='account.media' defaultMessage='Media' /></NavLink>
           </div>
         )}
       </div>

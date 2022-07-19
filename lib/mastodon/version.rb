@@ -5,48 +5,44 @@ module Mastodon
     module_function
 
     def major
-      2
+      3
     end
 
     def minor
-      7
+      5
     end
 
     def patch
-      4
-    end
-
-    def pre
-      nil
+      3
     end
 
     def flags
       ''
     end
 
+    def suffix
+      ''
+    end
+
     def to_a
-      [major, minor, patch, pre].compact
+      [major, minor, patch].compact
     end
 
     def to_s
-      [to_a.join('.'), flags].join
+      [to_a.join('.'), flags, suffix].join
     end
 
     def repository
-      'imas/mastodon'
+      ENV.fetch('GITHUB_REPOSITORY', 'mastodon/mastodon')
     end
 
     def source_base_url
-      "https://github.com/#{repository}"
-    end
-
-    def source_link_title
-      source_url.sub('https://github.com/', '')
+      ENV.fetch('SOURCE_BASE_URL', "https://github.com/#{repository}")
     end
 
     # specify git tag or commit hash here
     def source_tag
-      nil
+      ENV.fetch('SOURCE_TAG', nil)
     end
 
     def source_url

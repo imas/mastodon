@@ -74,7 +74,7 @@ function search(value, { emojisToShowFilter, maxResults, include, exclude, custo
       return [emojisList['-1']];
     }
 
-    let values = value.toLowerCase().split(/[\s|,|\-|_]+/),
+    let values = value.toLowerCase().split(/[\s|,\-_]+/),
       allResults = [];
 
     if (values.length > 2) {
@@ -124,7 +124,7 @@ function search(value, { emojisToShowFilter, maxResults, include, exclude, custo
           for (let id in aPool) {
             let emoji = aPool[id],
               { search } = emoji,
-              sub = value.substr(0, length),
+              sub = value.slice(0, length),
               subIndex = search.indexOf(sub);
 
             if (subIndex !== -1) {

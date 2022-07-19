@@ -4,10 +4,22 @@ class ManifestSerializer < ActiveModel::Serializer
   include RoutingHelper
   include ActionView::Helpers::TextHelper
 
-  attributes :name, :short_name, :description,
+  ICON_SIZES = %w(
+    36
+    48
+    72
+    96
+    144
+    192
+    256
+    384
+    512
+  ).freeze
+
+  attributes :name, :short_name,
              :icons, :theme_color, :background_color,
              :display, :start_url, :scope,
-             :share_target
+             :share_target, :shortcuts
 
   def name
     object.site_title
@@ -17,22 +29,18 @@ class ManifestSerializer < ActiveModel::Serializer
     object.site_title
   end
 
-  def description
-    strip_tags(object.site_description.presence || I18n.t('about.about_mastodon_html'))
-  end
-
   def icons
-    [
+    ICON_SIZES.map do |size|
       {
-        src: '/android-chrome-192x192.png',
-        sizes: '192x192',
+        src: full_pack_url("media/icons/android-chrome-#{size}x#{size}.png"),
+        sizes: "#{size}x#{size}",
         type: 'image/png',
-      },
-    ]
+      }
+    end
   end
 
   def theme_color
-    '#282c37'
+    '#6364FF'
   end
 
   def background_color
@@ -44,14 +52,37 @@ class ManifestSerializer < ActiveModel::Serializer
   end
 
   def start_url
-    '/web/timelines/home'
+    '/web/home'
   end
 
   def scope
-    root_url
+    '/'
   end
 
   def share_target
-    { url_template: 'share?title={title}&text={text}&url={url}' }
+    {
+      url_template: 'share?title={title}&text={text}&url={url}',
+      action: 'share',
+      method: 'GET',
+      enctype: 'application/x-www-form-urlencoded',
+      params: {
+        title: 'title',
+        text: 'text',
+        url: 'url',
+      },
+    }
+  end
+
+  def shortcuts
+    [
+      {
+        name: 'Compose new post',
+        url: '/web/publish',
+      },
+      {
+        name: 'Notifications',
+        url: '/web/notifications',
+      },
+    ]
   end
 end

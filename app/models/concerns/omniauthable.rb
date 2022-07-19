@@ -4,14 +4,16 @@ module Omniauthable
   extend ActiveSupport::Concern
 
   TEMP_EMAIL_PREFIX = 'change@me'
-  TEMP_EMAIL_REGEX = /\Achange@me/
+  TEMP_EMAIL_REGEX  = /\A#{TEMP_EMAIL_PREFIX}/.freeze
 
   included do
+    devise :omniauthable
+
     def omniauth_providers
       Devise.omniauth_configs.keys
     end
 
-    def email_verified?
+    def email_present?
       email && email !~ TEMP_EMAIL_REGEX
     end
   end
@@ -26,8 +28,8 @@ module Omniauthable
       # to prevent the identity being locked with accidentally created accounts.
       # Note that this may leave zombie accounts (with no associated identity) which
       # can be cleaned up at a later date.
-      user = signed_in_resource || identity.user
-      user = create_for_oauth(auth) if user.nil?
+      user   = signed_in_resource || identity.user
+      user ||= create_for_oauth(auth)
 
       if identity.user.nil?
         identity.user = user
@@ -38,35 +40,37 @@ module Omniauthable
     end
 
     def create_for_oauth(auth)
-      # Check if the user exists with provided email if the provider gives us a
-      # verified email.  If no verified email was provided or the user already
-      # exists, we assign a temporary email and ask the user to verify it on
-      # the next step via Auth::ConfirmationsController.finish_signup
+      # Check if the user exists with provided email. If no email was provided,
+      # we assign a temporary email and ask the user to verify it on
+      # the next step via Auth::SetupController.show
 
-      user = User.new(user_params_from_auth(auth))
-      user.account.avatar_remote_url = auth.info.image if auth.info.image =~ /\A#{URI.regexp(%w(http https))}\z/
-      user.skip_confirmation!
+      strategy          = Devise.omniauth_configs[auth.provider.to_sym].strategy
+      assume_verified   = strategy&.security&.assume_email_is_verified
+      email_is_verified = auth.info.verified || auth.info.verified_email || auth.info.email_verified || assume_verified
+      email             = auth.info.verified_email || auth.info.email
+
+      user = User.find_by(email: email) if email_is_verified
+
+      return user unless user.nil?
+
+      user = User.new(user_params_from_auth(email, auth))
+
+      user.account.avatar_remote_url = auth.info.image if /\A#{URI::DEFAULT_PARSER.make_regexp(%w(http https))}\z/.match?(auth.info.image)
+      user.skip_confirmation! if email_is_verified
       user.save!
       user
     end
 
     private
 
-    def user_params_from_auth(auth)
-      strategy          = Devise.omniauth_configs[auth.provider.to_sym].strategy
-      assume_verified   = strategy.try(:security).try(:assume_email_is_verified)
-      email_is_verified = auth.info.verified || auth.info.verified_email || assume_verified
-      email             = auth.info.verified_email || auth.info.email
-      email             = email_is_verified && !User.exists?(email: auth.info.email) && email
-      display_name      = auth.info.full_name || [auth.info.first_name, auth.info.last_name].join(' ')
-
+    def user_params_from_auth(email, auth)
       {
         email: email || "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
-        password: Devise.friendly_token[0, 20],
         agreement: true,
+        external: true,
         account_attributes: {
-          username: ensure_unique_username(auth.uid),
-          display_name: display_name,
+          username: ensure_unique_username(ensure_valid_username(auth.uid)),
+          display_name: auth.info.full_name || auth.info.name || [auth.info.first_name, auth.info.last_name].join(' '),
         },
       }
     end
@@ -75,12 +79,19 @@ module Omniauthable
       username = starting_username
       i        = 0
 
-      while Account.exists?(username: username)
+      while Account.exists?(username: username, domain: nil)
         i       += 1
         username = "#{starting_username}_#{i}"
       end
 
       username
+    end
+
+    def ensure_valid_username(starting_username)
+      starting_username = starting_username.split('@')[0]
+      temp_username = starting_username.gsub(/[^a-z0-9_]+/i, '')
+      validated_username = temp_username.truncate(30, omission: '')
+      validated_username
     end
   end
 end

@@ -1,16 +1,9 @@
 ---
 ja-IM:
   activerecord:
-    attributes:
-      user:
-        email: メールアドレス
     errors:
       models:
-        account:
-          attributes:
-            username:
-              invalid: アルファベット・数値・アンダーバー(_)で入力してください
         status:
           attributes:
             reblog:
-              taken: のわかるわはすでに存在します
+              taken: は既にわかるわしています

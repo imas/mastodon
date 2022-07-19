@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Icon from 'mastodon/components/icon';
 
 const tooltips = defineMessages({
   mentions: { id: 'notifications.filter.mentions', defaultMessage: 'Mentions' },
   favourites: { id: 'notifications.filter.favourites', defaultMessage: 'Favourites' },
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Boosts' },
+  polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
+  statuses: { id: 'notifications.filter.statuses', defaultMessage: 'Updates from people you follow' },
 });
 
 export default @injectIntl
@@ -62,28 +65,42 @@ class FilterBar extends React.PureComponent {
           onClick={this.onClick('mention')}
           title={intl.formatMessage(tooltips.mentions)}
         >
-          <i className='fa fa-fw fa-at' />
+          <Icon id='reply-all' fixedWidth />
         </button>
         <button
           className={selectedFilter === 'favourite' ? 'active' : ''}
           onClick={this.onClick('favourite')}
           title={intl.formatMessage(tooltips.favourites)}
         >
-          <i className='fa fa-fw fa-star' />
+          <Icon id='star' fixedWidth />
         </button>
         <button
           className={selectedFilter === 'reblog' ? 'active' : ''}
           onClick={this.onClick('reblog')}
           title={intl.formatMessage(tooltips.boosts)}
         >
-          <i className='fa fa-fw fa-retweet' />
+          <Icon id='retweet' fixedWidth />
+        </button>
+        <button
+          className={selectedFilter === 'poll' ? 'active' : ''}
+          onClick={this.onClick('poll')}
+          title={intl.formatMessage(tooltips.polls)}
+        >
+          <Icon id='tasks' fixedWidth />
+        </button>
+        <button
+          className={selectedFilter === 'status' ? 'active' : ''}
+          onClick={this.onClick('status')}
+          title={intl.formatMessage(tooltips.statuses)}
+        >
+          <Icon id='home' fixedWidth />
         </button>
         <button
           className={selectedFilter === 'follow' ? 'active' : ''}
           onClick={this.onClick('follow')}
           title={intl.formatMessage(tooltips.follows)}
         >
-          <i className='fa fa-fw fa-user-plus' />
+          <Icon id='user-plus' fixedWidth />
         </button>
       </div>
     );

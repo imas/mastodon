@@ -12,10 +12,9 @@ require 'capybara/rspec'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 ActiveRecord::Migration.maintain_test_schema!
-WebMock.disable_net_connect!
-Redis.current = Redis::Namespace.new("mastodon_test#{ENV['TEST_ENV_NUMBER']}", redis: Redis.current)
+WebMock.disable_net_connect!(allow: Chewy.settings[:host])
 Sidekiq::Testing.inline!
-Sidekiq::Logging.logger = nil
+Sidekiq.logger = nil
 
 Devise::Test::ControllerHelpers.module_eval do
   alias_method :original_sign_in, :sign_in
@@ -44,6 +43,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :view
   config.include Paperclip::Shoulda::Matchers
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include Redisable
 
   config.before :each, type: :feature do
     https = ENV['LOCAL_HTTPS'] == 'true'
@@ -60,15 +60,15 @@ RSpec.configure do |config|
 
   config.after :each do
     Rails.cache.clear
-
-    keys = Redis.current.keys
-    Redis.current.del(keys) if keys.any?
+    redis.del(redis.keys)
   end
 end
 
 RSpec::Sidekiq.configure do |config|
   config.warn_when_jobs_not_processed_by_sidekiq = false
 end
+
+RSpec::Matchers.define_negated_matcher :not_change, :change
 
 def request_fixture(name)
   File.read(Rails.root.join('spec', 'fixtures', 'requests', name))
