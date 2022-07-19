@@ -27,7 +27,6 @@ class Favourites extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    shouldUpdateScroll: PropTypes.func,
     accountIds: ImmutablePropTypes.list,
     multiColumn: PropTypes.bool,
     intl: PropTypes.object.isRequired,
@@ -50,7 +49,7 @@ class Favourites extends ImmutablePureComponent {
   }
 
   render () {
-    const { intl, shouldUpdateScroll, accountIds, multiColumn } = this.props;
+    const { intl, accountIds, multiColumn } = this.props;
 
     if (!accountIds) {
       return (
@@ -60,7 +59,7 @@ class Favourites extends ImmutablePureComponent {
       );
     }
 
-    const emptyMessage = <FormattedMessage id='empty_column.favourites' defaultMessage='No one has favourited this toot yet. When someone does, they will show up here.' />;
+    const emptyMessage = <FormattedMessage id='empty_column.favourites' defaultMessage='No one has favourited this post yet. When someone does, they will show up here.' />;
 
     return (
       <Column bindToDocument={!multiColumn}>
@@ -74,7 +73,6 @@ class Favourites extends ImmutablePureComponent {
 
         <ScrollableList
           scrollKey='favourites'
-          shouldUpdateScroll={shouldUpdateScroll}
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}
         >

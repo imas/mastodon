@@ -42,6 +42,14 @@ export function normalizeAccount(account) {
   return account;
 }
 
+export function normalizeFilterResult(result) {
+  const normalResult = { ...result };
+
+  normalResult.filter = normalResult.filter.id;
+
+  return normalResult;
+}
+
 export function normalizeStatus(status, normalOldStatus) {
   const normalStatus   = { ...status };
   normalStatus.account = status.account.id;
@@ -54,9 +62,14 @@ export function normalizeStatus(status, normalOldStatus) {
     normalStatus.poll = status.poll.id;
   }
 
-  // Only calculate these values when status first encountered
-  // Otherwise keep the ones already in the reducer
-  if (normalOldStatus) {
+  if (status.filtered) {
+    normalStatus.filtered = status.filtered.map(normalizeFilterResult);
+  }
+
+  // Only calculate these values when status first encountered and
+  // when the underlying values change. Otherwise keep the ones
+  // already in the reducer
+  if (normalOldStatus && normalOldStatus.get('content') === normalStatus.content && normalOldStatus.get('spoiler_text') === normalStatus.spoiler_text) {
     normalStatus.search_index = normalOldStatus.get('search_index');
     normalStatus.contentHtml = normalOldStatus.get('contentHtml');
     normalStatus.spoilerHtml = normalOldStatus.get('spoilerHtml');
@@ -71,7 +84,7 @@ export function normalizeStatus(status, normalOldStatus) {
     }
 
     const spoilerText   = normalStatus.spoiler_text || '';
-    const searchContent = ([spoilerText, status.content].concat((status.poll && status.poll.options) ? status.poll.options.map(option => option.title) : [])).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+    const searchContent = ([spoilerText, status.content].concat((status.poll && status.poll.options) ? status.poll.options.map(option => option.title) : [])).concat(status.media_attachments.map(att => att.description)).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
     const emojiMap      = makeEmojiMap(normalStatus);
 
     normalStatus.search_index = domParser.parseFromString(searchContent, 'text/html').documentElement.textContent;

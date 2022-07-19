@@ -19,7 +19,6 @@ class DirectTimeline extends React.PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    shouldUpdateScroll: PropTypes.func,
     columnId: PropTypes.string,
     intl: PropTypes.object.isRequired,
     hasUnread: PropTypes.bool,
@@ -71,13 +70,13 @@ class DirectTimeline extends React.PureComponent {
   }
 
   render () {
-    const { intl, hasUnread, columnId, multiColumn, shouldUpdateScroll } = this.props;
+    const { intl, hasUnread, columnId, multiColumn } = this.props;
     const pinned = !!columnId;
 
     return (
       <Column bindToDocument={!multiColumn} ref={this.setRef} label={intl.formatMessage(messages.title)}>
         <ColumnHeader
-          icon='envelope'
+          icon='at'
           active={hasUnread}
           title={intl.formatMessage(messages.title)}
           onPin={this.handlePin}
@@ -92,8 +91,8 @@ class DirectTimeline extends React.PureComponent {
           scrollKey={`direct_timeline-${columnId}`}
           timelineId='direct'
           onLoadMore={this.handleLoadMore}
+          prepend={<div className='follow_requests-unlocked_explanation'><span><FormattedMessage id='compose_form.encryption_warning' defaultMessage='Posts on Mastodon are not end-to-end encrypted. Do not share any dangerous information over Mastodon.' /> <a href='/terms' target='_blank'><FormattedMessage id='compose_form.direct_message_warning_learn_more' defaultMessage='Learn more' /></a></span></div>}
           emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
-          shouldUpdateScroll={shouldUpdateScroll}
         />
       </Column>
     );

@@ -6,7 +6,7 @@ es-MX:
         expires_at: Vencimiento
         options: Opciones
       user:
-        agreement: Acuerdo de Servicio
+        agreement: Contrato de servicio
         email: Dirección de correo electrónico
         locale: Idioma
         password: Contraseña
@@ -21,6 +21,14 @@ es-MX:
             username:
               invalid: solo puede contener letras, números y guiones bajos
               reserved: está reservado
+        admin/webhook:
+          attributes:
+            url:
+              invalid: no es una URL válida
+        doorkeeper/application:
+          attributes:
+            website:
+              invalid: no es una URL válida
         status:
           attributes:
             reblog:

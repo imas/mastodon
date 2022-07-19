@@ -75,9 +75,81 @@
       {
         "defaultMessage": "Unmute notifications from @{name}",
         "id": "account.unmute_notifications"
+      },
+      {
+        "defaultMessage": "Mute @{name}",
+        "id": "account.mute"
+      },
+      {
+        "defaultMessage": "Block @{name}",
+        "id": "account.block"
       }
     ],
     "path": "app/javascript/mastodon/components/account.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Other",
+        "id": "report.categories.other"
+      },
+      {
+        "defaultMessage": "Spam",
+        "id": "report.categories.spam"
+      },
+      {
+        "defaultMessage": "Content violates one or more server rules",
+        "id": "report.categories.violation"
+      }
+    ],
+    "path": "app/javascript/mastodon/components/admin/ReportReasonSelector.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Loading...",
+        "id": "loading_indicator.label"
+      },
+      {
+        "defaultMessage": "Sign-up month",
+        "id": "admin.dashboard.retention.cohort"
+      },
+      {
+        "defaultMessage": "New users",
+        "id": "admin.dashboard.retention.cohort_size"
+      },
+      {
+        "defaultMessage": "Average",
+        "id": "admin.dashboard.retention.average"
+      },
+      {
+        "defaultMessage": "User retention rate by day after sign-up",
+        "id": "admin.dashboard.daily_retention"
+      },
+      {
+        "defaultMessage": "User retention rate by month after sign-up",
+        "id": "admin.dashboard.monthly_retention"
+      }
+    ],
+    "path": "app/javascript/mastodon/components/admin/Retention.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Trending now",
+        "id": "trends.trending_now"
+      }
+    ],
+    "path": "app/javascript/mastodon/components/admin/Trends.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "(unprocessed)",
+        "id": "attachments_list.unprocessed"
+      }
+    ],
+    "path": "app/javascript/mastodon/components/attachment_list.json"
   },
   {
     "descriptors": [
@@ -142,7 +214,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "{count, plural, one {{counter} Toot} other {{counter} Toots}}",
+        "defaultMessage": "{count, plural, one {{counter} Post} other {{counter} Posts}}",
         "id": "account.statuses_counter"
       },
       {
@@ -164,6 +236,27 @@
       }
     ],
     "path": "app/javascript/mastodon/components/domain.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Edited {count, plural, one {{count} time} other {{count} times}}",
+        "id": "status.edited_x_times"
+      },
+      {
+        "defaultMessage": "{name} created {date}",
+        "id": "status.history.created"
+      },
+      {
+        "defaultMessage": "{name} edited {date}",
+        "id": "status.history.edited"
+      },
+      {
+        "defaultMessage": "Edited {date}",
+        "id": "status.edited"
+      }
+    ],
+    "path": "app/javascript/mastodon/components/edited_timestamp/index.json"
   },
   {
     "descriptors": [
@@ -233,15 +326,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Loading...",
-        "id": "loading_indicator.label"
-      }
-    ],
-    "path": "app/javascript/mastodon/components/loading_indicator.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "{number, plural, one {Hide image} other {Hide images}}",
         "id": "media_gallery.toggle_visible"
       },
@@ -290,8 +374,11 @@
       },
       {
         "defaultMessage": "You voted for this answer",
-        "description": "Tooltip of the \"voted\" checkmark in polls",
         "id": "poll.voted"
+      },
+      {
+        "defaultMessage": "{votes, plural, one {# vote} other {# votes}}",
+        "id": "poll.votes"
       },
       {
         "defaultMessage": "{count, plural, one {# person} other {# people}}",
@@ -336,20 +423,40 @@
         "id": "relative_time.just_now"
       },
       {
+        "defaultMessage": "just now",
+        "id": "relative_time.full.just_now"
+      },
+      {
         "defaultMessage": "{number}s",
         "id": "relative_time.seconds"
+      },
+      {
+        "defaultMessage": "{number, plural, one {# second} other {# seconds}} ago",
+        "id": "relative_time.full.seconds"
       },
       {
         "defaultMessage": "{number}m",
         "id": "relative_time.minutes"
       },
       {
+        "defaultMessage": "{number, plural, one {# minute} other {# minutes}} ago",
+        "id": "relative_time.full.minutes"
+      },
+      {
         "defaultMessage": "{number}h",
         "id": "relative_time.hours"
       },
       {
+        "defaultMessage": "{number, plural, one {# hour} other {# hours}} ago",
+        "id": "relative_time.full.hours"
+      },
+      {
         "defaultMessage": "{number}d",
         "id": "relative_time.days"
+      },
+      {
+        "defaultMessage": "{number, plural, one {# day} other {# days}} ago",
+        "id": "relative_time.full.days"
       },
       {
         "defaultMessage": "Moments remaining",
@@ -400,6 +507,10 @@
       {
         "defaultMessage": "Delete & re-draft",
         "id": "status.redraft"
+      },
+      {
+        "defaultMessage": "Edit",
+        "id": "status.edit"
       },
       {
         "defaultMessage": "Direct message @{name}",
@@ -502,6 +613,10 @@
         "id": "status.copy"
       },
       {
+        "defaultMessage": "Hide toot",
+        "id": "status.hide"
+      },
+      {
         "defaultMessage": "Block domain {domain}",
         "id": "account.block_domain"
       },
@@ -556,15 +671,23 @@
         "id": "privacy.private.short"
       },
       {
-        "defaultMessage": "Direct",
+        "defaultMessage": "Mentioned people only",
         "id": "privacy.direct.short"
+      },
+      {
+        "defaultMessage": "Edited {date}",
+        "id": "status.edited"
       },
       {
         "defaultMessage": "Filtered",
         "id": "status.filtered"
       },
       {
-        "defaultMessage": "Pinned toot",
+        "defaultMessage": "Show anyway",
+        "id": "status.show_filter_reason"
+      },
+      {
+        "defaultMessage": "Pinned post",
         "id": "status.pinned"
       },
       {
@@ -666,11 +789,11 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Toots",
+        "defaultMessage": "Posts",
         "id": "account.posts"
       },
       {
-        "defaultMessage": "Toots and replies",
+        "defaultMessage": "Posts and replies",
         "id": "account.posts_with_replies"
       },
       {
@@ -679,6 +802,19 @@
       }
     ],
     "path": "app/javascript/mastodon/features/account_timeline/components/header.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "This profile has been hidden by the moderators of your server.",
+        "id": "limited_account_hint.title"
+      },
+      {
+        "defaultMessage": "Show profile anyway",
+        "id": "limited_account_hint.action"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/account_timeline/components/limited_account_hint.json"
   },
   {
     "descriptors": [
@@ -713,7 +849,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Older toots",
+        "defaultMessage": "Older posts",
         "id": "timeline_hint.resources.statuses"
       },
       {
@@ -725,7 +861,7 @@
         "id": "empty_column.account_unavailable"
       },
       {
-        "defaultMessage": "No toots here!",
+        "defaultMessage": "No posts found",
         "id": "empty_column.account_timeline"
       }
     ],
@@ -839,7 +975,7 @@
         "id": "account.disable_notifications"
       },
       {
-        "defaultMessage": "Pinned toots",
+        "defaultMessage": "Pinned posts",
         "id": "navigation_bar.pins"
       },
       {
@@ -962,7 +1098,7 @@
         "id": "column.bookmarks"
       },
       {
-        "defaultMessage": "You don't have any bookmarked toots yet. When you bookmark one, it will show up here.",
+        "defaultMessage": "You don't have any bookmarked posts yet. When you bookmark one, it will show up here.",
         "id": "empty_column.bookmarked_statuses"
       }
     ],
@@ -997,7 +1133,7 @@
         "id": "account.edit_profile"
       },
       {
-        "defaultMessage": "Pinned toots",
+        "defaultMessage": "Pinned posts",
         "id": "navigation_bar.pins"
       },
       {
@@ -1054,12 +1190,16 @@
         "id": "compose_form.spoiler_placeholder"
       },
       {
-        "defaultMessage": "Toot",
+        "defaultMessage": "Publish",
         "id": "compose_form.publish"
       },
       {
         "defaultMessage": "{publish}!",
         "id": "compose_form.publish_loud"
+      },
+      {
+        "defaultMessage": "Save changes",
+        "id": "compose_form.save_changes"
       }
     ],
     "path": "app/javascript/mastodon/features/compose/components/compose_form.json"
@@ -1137,6 +1277,23 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Change language",
+        "id": "compose.language.change"
+      },
+      {
+        "defaultMessage": "Search languages...",
+        "id": "compose.language.search"
+      },
+      {
+        "defaultMessage": "Clear",
+        "id": "emoji_button.clear"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/compose/components/language_dropdown.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Edit profile",
         "id": "navigation_bar.edit_profile"
       }
@@ -1204,7 +1361,7 @@
         "id": "privacy.public.short"
       },
       {
-        "defaultMessage": "Visible for all, shown in public timelines",
+        "defaultMessage": "Visible for all",
         "id": "privacy.public.long"
       },
       {
@@ -1212,11 +1369,11 @@
         "id": "privacy.unlisted.short"
       },
       {
-        "defaultMessage": "Visible for all, but not in public timelines",
+        "defaultMessage": "Visible for all, but opted-out of discovery features",
         "id": "privacy.unlisted.long"
       },
       {
-        "defaultMessage": "Followers-only",
+        "defaultMessage": "Followers only",
         "id": "privacy.private.short"
       },
       {
@@ -1224,7 +1381,7 @@
         "id": "privacy.private.long"
       },
       {
-        "defaultMessage": "Direct",
+        "defaultMessage": "Mentioned people only",
         "id": "privacy.direct.short"
       },
       {
@@ -1262,11 +1419,11 @@
         "id": "search_results.accounts"
       },
       {
-        "defaultMessage": "Toots",
+        "defaultMessage": "Posts",
         "id": "search_results.statuses"
       },
       {
-        "defaultMessage": "Searching toots by their content is not enabled on this Mastodon server.",
+        "defaultMessage": "Searching posts by their content is not enabled on this Mastodon server.",
         "id": "search_results.statuses_fts_disabled"
       },
       {
@@ -1340,6 +1497,10 @@
       {
         "defaultMessage": "Edit",
         "id": "upload_form.edit"
+      },
+      {
+        "defaultMessage": "No description added",
+        "id": "upload_form.description_missing"
       }
     ],
     "path": "app/javascript/mastodon/features/compose/components/upload.json"
@@ -1398,12 +1559,12 @@
         "id": "compose_form.lock_disclaimer.lock"
       },
       {
-        "defaultMessage": "This toot won't be listed under any hashtag as it is unlisted. Only public toots can be searched by hashtag.",
+        "defaultMessage": "This post won't be listed under any hashtag as it is unlisted. Only public posts can be searched by hashtag.",
         "id": "compose_form.hashtag_warning"
       },
       {
-        "defaultMessage": "This toot will only be sent to all the mentioned users.",
-        "id": "compose_form.direct_message_warning"
+        "defaultMessage": "Posts on Mastodon are not end-to-end encrypted. Do not share any dangerous information over Mastodon.",
+        "id": "compose_form.encryption_warning"
       },
       {
         "defaultMessage": "Learn more",
@@ -1443,7 +1604,7 @@
         "id": "navigation_bar.logout"
       },
       {
-        "defaultMessage": "Compose new toot",
+        "defaultMessage": "Compose new post",
         "id": "navigation_bar.compose"
       },
       {
@@ -1514,6 +1675,14 @@
         "id": "column.direct"
       },
       {
+        "defaultMessage": "Posts on Mastodon are not end-to-end encrypted. Do not share any dangerous information over Mastodon.",
+        "id": "compose_form.encryption_warning"
+      },
+      {
+        "defaultMessage": "Learn more",
+        "id": "compose_form.direct_message_warning_learn_more"
+      },
+      {
         "defaultMessage": "You don't have any direct messages yet. When you send or receive one, it will show up here.",
         "id": "empty_column.direct"
       }
@@ -1523,35 +1692,43 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Follow",
-        "id": "account.follow"
-      },
-      {
         "defaultMessage": "Unfollow",
         "id": "account.unfollow"
       },
       {
-        "defaultMessage": "Awaiting approval",
+        "defaultMessage": "Follow",
+        "id": "account.follow"
+      },
+      {
+        "defaultMessage": "Cancel follow request",
+        "id": "account.cancel_follow_request"
+      },
+      {
+        "defaultMessage": "Awaiting approval. Click to cancel follow request",
         "id": "account.requested"
       },
       {
-        "defaultMessage": "Unblock @{name}",
-        "id": "account.unblock"
+        "defaultMessage": "Unblock",
+        "id": "account.unblock_short"
       },
       {
-        "defaultMessage": "Unmute @{name}",
-        "id": "account.unmute"
+        "defaultMessage": "Unmute",
+        "id": "account.unmute_short"
       },
       {
         "defaultMessage": "Unfollow",
         "id": "confirmations.unfollow.confirm"
       },
       {
+        "defaultMessage": "Edit profile",
+        "id": "account.edit_profile"
+      },
+      {
         "defaultMessage": "Are you sure you want to unfollow {name}?",
         "id": "confirmations.unfollow.message"
       },
       {
-        "defaultMessage": "Toots",
+        "defaultMessage": "Posts",
         "id": "account.posts"
       },
       {
@@ -1559,12 +1736,8 @@
         "id": "account.followers"
       },
       {
-        "defaultMessage": "Never",
-        "id": "account.never_active"
-      },
-      {
-        "defaultMessage": "Last active",
-        "id": "account.last_status"
+        "defaultMessage": "Following",
+        "id": "account.following"
       }
     ],
     "path": "app/javascript/mastodon/features/directory/components/account_card.json"
@@ -1614,11 +1787,74 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Explore",
+        "id": "explore.title"
+      },
+      {
+        "defaultMessage": "Search results",
+        "id": "explore.search_results"
+      },
+      {
+        "defaultMessage": "Posts",
+        "id": "explore.trending_statuses"
+      },
+      {
+        "defaultMessage": "Hashtags",
+        "id": "explore.trending_tags"
+      },
+      {
+        "defaultMessage": "News",
+        "id": "explore.trending_links"
+      },
+      {
+        "defaultMessage": "For you",
+        "id": "explore.suggested_follows"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/explore/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Could not find anything for these search terms",
+        "id": "search_results.nothing_found"
+      },
+      {
+        "defaultMessage": "All",
+        "id": "search_results.all"
+      },
+      {
+        "defaultMessage": "People",
+        "id": "search_results.accounts"
+      },
+      {
+        "defaultMessage": "Hashtags",
+        "id": "search_results.hashtags"
+      },
+      {
+        "defaultMessage": "Posts",
+        "id": "search_results.statuses"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/explore/results.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Nothing is trending right now. Check back later!",
+        "id": "empty_column.explore_statuses"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/explore/statuses.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Favourites",
         "id": "column.favourites"
       },
       {
-        "defaultMessage": "You don't have any favourite toots yet. When you favourite one, it will show up here.",
+        "defaultMessage": "You don't have any favourite posts yet. When you favourite one, it will show up here.",
         "id": "empty_column.favourited_statuses"
       }
     ],
@@ -1631,7 +1867,7 @@
         "id": "refresh"
       },
       {
-        "defaultMessage": "No one has favourited this toot yet. When someone does, they will show up here.",
+        "defaultMessage": "No one has favourited this post yet. When someone does, they will show up here.",
         "id": "empty_column.favourites"
       }
     ],
@@ -1708,6 +1944,10 @@
         "id": "timeline_hint.resources.followers"
       },
       {
+        "defaultMessage": "Account suspended",
+        "id": "empty_column.account_suspended"
+      },
+      {
         "defaultMessage": "Profile unavailable",
         "id": "empty_column.account_unavailable"
       },
@@ -1723,6 +1963,10 @@
       {
         "defaultMessage": "Follows",
         "id": "timeline_hint.resources.follows"
+      },
+      {
+        "defaultMessage": "Account suspended",
+        "id": "empty_column.account_suspended"
       },
       {
         "defaultMessage": "Profile unavailable",
@@ -1788,6 +2032,10 @@
         "id": "navigation_bar.community_timeline"
       },
       {
+        "defaultMessage": "Explore",
+        "id": "navigation_bar.explore"
+      },
+      {
         "defaultMessage": "Direct messages",
         "id": "navigation_bar.direct"
       },
@@ -1820,7 +2068,7 @@
         "id": "navigation_bar.mutes"
       },
       {
-        "defaultMessage": "Pinned toots",
+        "defaultMessage": "Pinned posts",
         "id": "navigation_bar.pins"
       },
       {
@@ -1842,10 +2090,6 @@
       {
         "defaultMessage": "Getting started",
         "id": "getting_started.heading"
-      },
-      {
-        "defaultMessage": "Profile directory",
-        "id": "getting_started.directory"
       }
     ],
     "path": "app/javascript/mastodon/features/getting_started/index.json"
@@ -2013,7 +2257,7 @@
         "id": "keyboard_shortcuts.compose"
       },
       {
-        "defaultMessage": "to start a brand new toot",
+        "defaultMessage": "to start a brand new post",
         "id": "keyboard_shortcuts.toot"
       },
       {
@@ -2061,7 +2305,7 @@
         "id": "keyboard_shortcuts.favourites"
       },
       {
-        "defaultMessage": "to open pinned toots list",
+        "defaultMessage": "to open pinned posts list",
         "id": "keyboard_shortcuts.pinned"
       },
       {
@@ -2227,8 +2471,12 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Show",
-        "id": "notifications.column_settings.filter_bar.show"
+        "defaultMessage": "Highlight unread notifications",
+        "id": "notifications.column_settings.unread_notifications.highlight"
+      },
+      {
+        "defaultMessage": "Show filter bar",
+        "id": "notifications.column_settings.filter_bar.show_bar"
       },
       {
         "defaultMessage": "Display all categories",
@@ -2259,8 +2507,8 @@
         "id": "notifications.permission_required"
       },
       {
-        "defaultMessage": "Unread notification markers",
-        "id": "notifications.column_settings.unread_markers.category"
+        "defaultMessage": "Unread notifications",
+        "id": "notifications.column_settings.unread_notifications.category"
       },
       {
         "defaultMessage": "Quick filter bar",
@@ -2291,8 +2539,20 @@
         "id": "notifications.column_settings.poll"
       },
       {
-        "defaultMessage": "New toots:",
+        "defaultMessage": "New posts:",
         "id": "notifications.column_settings.status"
+      },
+      {
+        "defaultMessage": "Edits:",
+        "id": "notifications.column_settings.update"
+      },
+      {
+        "defaultMessage": "New sign-ups:",
+        "id": "notifications.column_settings.admin.sign_up"
+      },
+      {
+        "defaultMessage": "New reports:",
+        "id": "notifications.column_settings.admin.report"
       }
     ],
     "path": "app/javascript/mastodon/features/notifications/components/column_settings.json"
@@ -2379,6 +2639,18 @@
         "id": "notification.status"
       },
       {
+        "defaultMessage": "{name} edited a post",
+        "id": "notification.update"
+      },
+      {
+        "defaultMessage": "{name} signed up",
+        "id": "notification.admin.sign_up"
+      },
+      {
+        "defaultMessage": "{name} reported {target}",
+        "id": "notification.admin.report"
+      },
+      {
         "defaultMessage": "{name} has requested to follow you",
         "id": "notification.follow_request"
       }
@@ -2405,6 +2677,31 @@
       }
     ],
     "path": "app/javascript/mastodon/features/notifications/components/notifications_permission_banner.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Open report",
+        "id": "report_notification.open"
+      },
+      {
+        "defaultMessage": "Other",
+        "id": "report_notification.categories.other"
+      },
+      {
+        "defaultMessage": "Spam",
+        "id": "report_notification.categories.spam"
+      },
+      {
+        "defaultMessage": "Rule violation",
+        "id": "report_notification.categories.violation"
+      },
+      {
+        "defaultMessage": "{count, plural, one {{count} post} other {{count} posts}} attached",
+        "id": "report_notification.attached_statuses"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/notifications/components/report.json"
   },
   {
     "descriptors": [
@@ -2497,7 +2794,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Pinned toot",
+        "defaultMessage": "Pinned post",
         "id": "column.pins"
       }
     ],
@@ -2536,11 +2833,196 @@
         "id": "refresh"
       },
       {
-        "defaultMessage": "No one has boosted this toot yet. When someone does, they will show up here.",
+        "defaultMessage": "No one has boosted this post yet. When someone does, they will show up here.",
         "id": "status.reblogs.empty"
       }
     ],
     "path": "app/javascript/mastodon/features/reblogs/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "I don't like it",
+        "id": "report.reasons.dislike"
+      },
+      {
+        "defaultMessage": "It is not something you want to see",
+        "id": "report.reasons.dislike_description"
+      },
+      {
+        "defaultMessage": "It's spam",
+        "id": "report.reasons.spam"
+      },
+      {
+        "defaultMessage": "Malicious links, fake engagement, or repetitive replies",
+        "id": "report.reasons.spam_description"
+      },
+      {
+        "defaultMessage": "It violates server rules",
+        "id": "report.reasons.violation"
+      },
+      {
+        "defaultMessage": "You are aware that it breaks specific rules",
+        "id": "report.reasons.violation_description"
+      },
+      {
+        "defaultMessage": "It's something else",
+        "id": "report.reasons.other"
+      },
+      {
+        "defaultMessage": "The issue does not fit into other categories",
+        "id": "report.reasons.other_description"
+      },
+      {
+        "defaultMessage": "post",
+        "id": "report.category.title_status"
+      },
+      {
+        "defaultMessage": "profile",
+        "id": "report.category.title_account"
+      },
+      {
+        "defaultMessage": "Tell us what's going on with this {type}",
+        "id": "report.category.title"
+      },
+      {
+        "defaultMessage": "Choose the best match",
+        "id": "report.category.subtitle"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "report.next"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/report/category.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Type or paste additional comments",
+        "id": "report.placeholder"
+      },
+      {
+        "defaultMessage": "Is there anything else you think we should know?",
+        "id": "report.comment.title"
+      },
+      {
+        "defaultMessage": "The account is from another server. Send an anonymized copy of the report there as well?",
+        "id": "report.forward_hint"
+      },
+      {
+        "defaultMessage": "Forward to {target}",
+        "id": "report.forward"
+      },
+      {
+        "defaultMessage": "Submit report",
+        "id": "report.submit"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/report/comment.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Which rules are being violated?",
+        "id": "report.rules.title"
+      },
+      {
+        "defaultMessage": "Select all that apply",
+        "id": "report.rules.subtitle"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "report.next"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/report/rules.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Are there any posts that back up this report?",
+        "id": "report.statuses.title"
+      },
+      {
+        "defaultMessage": "Select all that apply",
+        "id": "report.statuses.subtitle"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "report.next"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/report/statuses.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Thanks for reporting, we'll look into this.",
+        "id": "report.thanks.title_actionable"
+      },
+      {
+        "defaultMessage": "Don't want to see this?",
+        "id": "report.thanks.title"
+      },
+      {
+        "defaultMessage": "While we review this, you can take action against @{name}:",
+        "id": "report.thanks.take_action_actionable"
+      },
+      {
+        "defaultMessage": "Here are your options for controlling what you see on Mastodon:",
+        "id": "report.thanks.take_action"
+      },
+      {
+        "defaultMessage": "Unfollow @{name}",
+        "id": "report.unfollow"
+      },
+      {
+        "defaultMessage": "You are following this account. To not see their posts in your home feed anymore, unfollow them.",
+        "id": "report.unfollow_explanation"
+      },
+      {
+        "defaultMessage": "Unfollow",
+        "id": "account.unfollow"
+      },
+      {
+        "defaultMessage": "Mute @{name}",
+        "id": "account.mute"
+      },
+      {
+        "defaultMessage": "You will not see their posts. They can still follow you and see your posts and will not know that they are muted.",
+        "id": "report.mute_explanation"
+      },
+      {
+        "defaultMessage": "Mute",
+        "id": "report.mute"
+      },
+      {
+        "defaultMessage": "Muted",
+        "id": "account.muted"
+      },
+      {
+        "defaultMessage": "Block @{name}",
+        "id": "account.block"
+      },
+      {
+        "defaultMessage": "You will not see their posts. They will not be able to see your posts or follow you. They will be able to tell that they are blocked.",
+        "id": "report.block_explanation"
+      },
+      {
+        "defaultMessage": "Block",
+        "id": "report.block"
+      },
+      {
+        "defaultMessage": "Blocked",
+        "id": "account.blocked"
+      },
+      {
+        "defaultMessage": "Done",
+        "id": "report.close"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/report/thanks.json"
   },
   {
     "descriptors": [
@@ -2551,6 +3033,10 @@
       {
         "defaultMessage": "Delete & re-draft",
         "id": "status.redraft"
+      },
+      {
+        "defaultMessage": "Edit",
+        "id": "status.edit"
       },
       {
         "defaultMessage": "Direct message @{name}",
@@ -2858,11 +3344,24 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Toot",
+        "defaultMessage": "Publish",
         "id": "compose_form.publish"
       }
     ],
     "path": "app/javascript/mastodon/features/ui/components/columns_area.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "{name} created {date}",
+        "id": "status.history.created"
+      },
+      {
+        "defaultMessage": "{name} edited {date}",
+        "id": "status.history.edited"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/ui/components/compare_history_modal.json"
   },
   {
     "descriptors": [
@@ -2905,12 +3404,24 @@
         "id": "upload_modal.apply"
       },
       {
+        "defaultMessage": "Applying…",
+        "id": "upload_modal.applying"
+      },
+      {
         "defaultMessage": "A quick brown fox jumps over the lazy dog",
         "id": "upload_modal.description_placeholder"
       },
       {
         "defaultMessage": "Choose image",
         "id": "upload_modal.choose_image"
+      },
+      {
+        "defaultMessage": "You have unsaved changes to the media description or preview, discard them anyway?",
+        "id": "confirmations.discard_edit_media.message"
+      },
+      {
+        "defaultMessage": "Discard",
+        "id": "confirmations.discard_edit_media.confirm"
       },
       {
         "defaultMessage": "Describe for people with hearing loss",
@@ -2989,6 +3500,10 @@
       {
         "defaultMessage": "About this server",
         "id": "navigation_bar.info"
+      },
+      {
+        "defaultMessage": "Profile directory",
+        "id": "getting_started.directory"
       },
       {
         "defaultMessage": "Mobile apps",
@@ -3090,6 +3605,10 @@
         "id": "tabs_bar.notifications"
       },
       {
+        "defaultMessage": "Explore",
+        "id": "explore.title"
+      },
+      {
         "defaultMessage": "Local",
         "id": "tabs_bar.local_timeline"
       },
@@ -3114,10 +3633,6 @@
         "id": "navigation_bar.lists"
       },
       {
-        "defaultMessage": "Profile directory",
-        "id": "getting_started.directory"
-      },
-      {
         "defaultMessage": "Preferences",
         "id": "navigation_bar.preferences"
       },
@@ -3135,28 +3650,8 @@
         "id": "lightbox.close"
       },
       {
-        "defaultMessage": "Additional comments",
-        "id": "report.placeholder"
-      },
-      {
-        "defaultMessage": "Submit",
-        "id": "report.submit"
-      },
-      {
         "defaultMessage": "Report {target}",
         "id": "report.target"
-      },
-      {
-        "defaultMessage": "The report will be sent to your server moderators. You can provide an explanation of why you are reporting this account below:",
-        "id": "report.hint"
-      },
-      {
-        "defaultMessage": "The account is from another server. Send an anonymized copy of the report there as well?",
-        "id": "report.forward_hint"
-      },
-      {
-        "defaultMessage": "Forward to {target}",
-        "id": "report.forward"
       }
     ],
     "path": "app/javascript/mastodon/features/ui/components/report_modal.json"

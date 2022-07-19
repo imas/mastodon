@@ -8,7 +8,7 @@
 .landing
   .landing__brand
     = link_to root_url, class: 'brand' do
-      = svg_logo_full
+      = logo_as_symbol(:wordmark)
       %span.brand__tagline=t 'about.tagline'
 
   .landing__grid
@@ -46,11 +46,14 @@
 
     .landing__grid__column.landing__grid__column-login
       .box-widget
-        = render 'login'
+        - if current_user.present?
+          = render 'logged_in'
+        - else
+          = render 'login'
 
       .hero-widget
         .hero-widget__img
-          = image_tag @instance_presenter.hero&.file&.url || @instance_presenter.thumbnail&.file&.url || asset_pack_path('media/images/preview.jpg'), alt: @instance_presenter.site_title
+          = image_tag @instance_presenter.hero&.file&.url || @instance_presenter.thumbnail&.file&.url || asset_pack_path('media/images/preview.png'), alt: @instance_presenter.site_title
 
         .hero-widget__text
           %p
@@ -70,10 +73,10 @@
 
             .hero-widget__counters__wrapper
               .hero-widget__counter
-                %strong= number_to_human @instance_presenter.user_count, strip_insignificant_zeros: true
+                %strong= friendly_number_to_human @instance_presenter.user_count
                 %span= t 'about.user_count_after', count: @instance_presenter.user_count
               .hero-widget__counter
-                %strong= number_to_human @instance_presenter.active_user_count, strip_insignificant_zeros: true
+                %strong= friendly_number_to_human @instance_presenter.active_user_count
                 %span
                   = t 'about.active_count_after'
                   %abbr{ title: t('about.active_footnote') } *

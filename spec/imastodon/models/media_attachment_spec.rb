@@ -14,9 +14,9 @@ RSpec.describe MediaAttachment, type: :model do
     end
 
     it 'sets meta' do
-      expect(media.file.meta["original"]["width"]).to eq 1280
-      expect(media.file.meta["original"]["height"]).to eq 720
-      expect(media.file.meta["original"]["aspect"]).to eq 1.7777777777777777
+      expect(media.file.meta['original']['width']).to eq 1280
+      expect(media.file.meta['original']['height']).to eq 720
+      expect(media.file.meta['original']['aspect']).to eq 1.7777777777777777
     end
   end
 
@@ -33,9 +33,9 @@ RSpec.describe MediaAttachment, type: :model do
     end
 
     it 'sets meta' do
-      expect(media.file.meta["original"]["width"]).to eq 1920
-      expect(media.file.meta["original"]["height"]).to eq 1080
-      expect(media.file.meta["original"]["aspect"]).to eq 1.7777777777777777
+      expect(media.file.meta['original']['width']).to eq 1920
+      expect(media.file.meta['original']['height']).to eq 1080
+      expect(media.file.meta['original']['aspect']).to eq 1.7777777777777777
     end
   end
 
@@ -52,9 +52,9 @@ RSpec.describe MediaAttachment, type: :model do
     end
 
     it 'sets meta' do
-      expect(media.file.meta["original"]["width"]).to eq 1920
-      expect(media.file.meta["original"]["height"]).to eq 1080
-      expect(media.file.meta["original"]["aspect"]).to eq 1.7777777777777777
+      expect(media.file.meta['original']['width']).to eq 1920
+      expect(media.file.meta['original']['height']).to eq 1080
+      expect(media.file.meta['original']['aspect']).to eq 1.7777777777777777
     end
   end
 end

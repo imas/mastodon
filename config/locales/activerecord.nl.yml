@@ -21,10 +21,18 @@ nl:
             username:
               invalid: alleen letters, nummers en underscores
               reserved: gereserveerd
+        admin/webhook:
+          attributes:
+            url:
+              invalid: is een ongeldige URL
+        doorkeeper/application:
+          attributes:
+            website:
+              invalid: is een ongeldige URL
         status:
           attributes:
             reblog:
-              taken: van toot bestaat al
+              taken: van bericht bestaat al
         user:
           attributes:
             email:

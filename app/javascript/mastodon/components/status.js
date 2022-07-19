@@ -57,7 +57,8 @@ const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
   unlisted_short: { id: 'privacy.unlisted.short', defaultMessage: 'Unlisted' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers-only' },
-  direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
+  direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
+  edited: { id: 'status.edited', defaultMessage: 'Edited {date}' },
 });
 
 export default @injectIntl
@@ -70,7 +71,6 @@ class Status extends ImmutablePureComponent {
   static propTypes = {
     status: ImmutablePropTypes.map,
     account: ImmutablePropTypes.map,
-    otherAccounts: ImmutablePropTypes.list,
     onClick: PropTypes.func,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
@@ -118,6 +118,7 @@ class Status extends ImmutablePureComponent {
   state = {
     showMedia: defaultMediaVisibility(this.props.status),
     statusId: undefined,
+    forceFilter: undefined,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -135,42 +136,32 @@ class Status extends ImmutablePureComponent {
     this.setState({ showMedia: !this.state.showMedia });
   }
 
-  handleClick = () => {
-    if (this.props.onClick) {
-      this.props.onClick();
+  handleClick = e => {
+    if (e && (e.button !== 0 || e.ctrlKey || e.metaKey)) {
       return;
     }
 
-    if (!this.context.router) {
-      return;
-    }
-
-    const { status } = this.props;
-    this.context.router.history.push(`/statuses/${status.getIn(['reblog', 'id'], status.get('id'))}`);
-  }
-
-  handleExpandClick = (e) => {
-    if (this.props.onClick) {
-      this.props.onClick();
-      return;
-    }
-
-    if (e.button === 0) {
-      if (!this.context.router) {
-        return;
-      }
-
-      const { status } = this.props;
-      this.context.router.history.push(`/statuses/${status.getIn(['reblog', 'id'], status.get('id'))}`);
-    }
-  }
-
-  handleAccountClick = (e) => {
-    if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-      const id = e.currentTarget.getAttribute('data-id');
+    if (e) {
       e.preventDefault();
-      this.context.router.history.push(`/accounts/${id}`);
     }
+
+    this.handleHotkeyOpen();
+  }
+
+  handlePrependAccountClick = e => {
+    this.handleAccountClick(e, false);
+  }
+
+  handleAccountClick = (e, proper = true) => {
+    if (e && (e.button !== 0 || e.ctrlKey || e.metaKey))  {
+      return;
+    }
+
+    if (e) {
+      e.preventDefault();
+    }
+
+    this._openProfile(proper);
   }
 
   handleExpandedToggle = () => {
@@ -243,11 +234,34 @@ class Status extends ImmutablePureComponent {
   }
 
   handleHotkeyOpen = () => {
-    this.context.router.history.push(`/statuses/${this._properStatus().get('id')}`);
+    if (this.props.onClick) {
+      this.props.onClick();
+      return;
+    }
+
+    const { router } = this.context;
+    const status = this._properStatus();
+
+    if (!router) {
+      return;
+    }
+
+    router.history.push(`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`);
   }
 
   handleHotkeyOpenProfile = () => {
-    this.context.router.history.push(`/accounts/${this._properStatus().getIn(['account', 'id'])}`);
+    this._openProfile();
+  }
+
+  _openProfile = (proper = true) => {
+    const { router } = this.context;
+    const status = proper ? this._properStatus() : this.props.status;
+
+    if (!router) {
+      return;
+    }
+
+    router.history.push(`/@${status.getIn(['account', 'acct'])}`);
   }
 
   handleHotkeyMoveUp = e => {
@@ -264,6 +278,15 @@ class Status extends ImmutablePureComponent {
 
   handleHotkeyToggleSensitive = () => {
     this.handleToggleMediaVisibility();
+  }
+
+  handleUnfilterClick = e => {
+    this.setState({ forceFilter: false });
+    e.preventDefault();
+  }
+
+  handleFilterClick = () => {
+    this.setState({ forceFilter: true });
   }
 
   _properStatus () {
@@ -284,7 +307,7 @@ class Status extends ImmutablePureComponent {
     let media = null;
     let statusAvatar, prepend, rebloggedByText;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, scrollKey, pictureInPicture } = this.props;
+    const { intl, hidden, featured, unread, showThread, scrollKey, pictureInPicture } = this.props;
 
     let { status, account, ...other } = this.props;
 
@@ -310,14 +333,15 @@ class Status extends ImmutablePureComponent {
       return (
         <HotKeys handlers={handlers}>
           <div ref={this.handleRef} className={classNames('status__wrapper', { focusable: !this.props.muted })} tabIndex='0'>
-            {status.getIn(['account', 'display_name']) || status.getIn(['account', 'username'])}
-            {status.get('content')}
+            <span>{status.getIn(['account', 'display_name']) || status.getIn(['account', 'username'])}</span>
+            <span>{status.get('content')}</span>
           </div>
         </HotKeys>
       );
     }
 
-    if (status.get('filtered') || status.getIn(['reblog', 'filtered'])) {
+    const matchedFilters = status.get('matched_filters');
+    if (this.state.forceFilter === undefined ? matchedFilters : this.state.forceFilter) {
       const minHandlers = this.props.muted ? {} : {
         moveUp: this.handleHotkeyMoveUp,
         moveDown: this.handleHotkeyMoveDown,
@@ -326,7 +350,11 @@ class Status extends ImmutablePureComponent {
       return (
         <HotKeys handlers={minHandlers}>
           <div className='status__wrapper status__wrapper--filtered focusable' tabIndex='0' ref={this.handleRef}>
-            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
+            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {matchedFilters.join(', ')}.
+            {' '}
+            <button className='status__wrapper--filtered__button' onClick={this.handleUnfilterClick}>
+              <FormattedMessage id='status.show_filter_reason' defaultMessage='Show anyway' />
+            </button>
           </div>
         </HotKeys>
       );
@@ -336,7 +364,7 @@ class Status extends ImmutablePureComponent {
       prepend = (
         <div className='status__prepend'>
           <div className='status__prepend-icon-wrapper'><Icon id='thumb-tack' className='status__prepend-icon' fixedWidth /></div>
-          <FormattedMessage id='status.pinned' defaultMessage='Pinned toot' />
+          <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
         </div>
       );
     } else if (status.get('reblog', null) !== null && typeof status.get('reblog') === 'object') {
@@ -345,7 +373,7 @@ class Status extends ImmutablePureComponent {
       prepend = (
         <div className='status__prepend'>
           <div className='status__prepend-icon-wrapper'><Icon id='retweet' className='status__prepend-icon' fixedWidth /></div>
-          <FormattedMessage id='status.reblogged_by' defaultMessage='{name} boosted' values={{ name: <a onClick={this.handleAccountClick} data-id={status.getIn(['account', 'id'])} href={status.getIn(['account', 'url'])} className='status__display-name muted'><bdi><strong dangerouslySetInnerHTML={display_name_html} /></bdi></a> }} />
+          <FormattedMessage id='status.reblogged_by' defaultMessage='{name} boosted' values={{ name: <a onClick={this.handlePrependAccountClick} data-id={status.getIn(['account', 'id'])} href={status.getIn(['account', 'url'])} className='status__display-name muted'><bdi><strong dangerouslySetInnerHTML={display_name_html} /></bdi></a> }} />
         </div>
       );
 
@@ -443,11 +471,10 @@ class Status extends ImmutablePureComponent {
       );
     }
 
-    if (otherAccounts && otherAccounts.size > 0) {
-      statusAvatar = <AvatarComposite accounts={otherAccounts} size={48} />;
+    if (account ==  null && status.get('visibility') === 'public') {
+      <AvatarOverlayIcon account={status.get('account')} visibility={status.get('visibility')} />
     } else if (account === undefined || account === null) {
-      statusAvatar = status.get('visibility') === 'public' ? <Avatar account={status.get('account')} size={48} />
-                                                           : <AvatarOverlayIcon account={status.get('account')} visibility={status.get('visibility')} />
+      statusAvatar = <Avatar account={status.get('account')} size={48} />;
     } else {
       statusAvatar = <AvatarOverlay account={status.get('account')} friend={account} />;
     }
@@ -456,7 +483,7 @@ class Status extends ImmutablePureComponent {
       'public': { icon: 'globe', text: intl.formatMessage(messages.public_short) },
       'unlisted': { icon: 'unlock', text: intl.formatMessage(messages.unlisted_short) },
       'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
-      'direct': { icon: 'envelope', text: intl.formatMessage(messages.direct_short) },
+      'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
     const visibilityIcon = visibilityIconInfo[status.get('visibility')];
@@ -467,19 +494,20 @@ class Status extends ImmutablePureComponent {
           {prepend}
 
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
-            <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
+            <div className='status__expand' onClick={this.handleClick} role='presentation' />
+
             <div className='status__info'>
-              <a href={status.get('url')} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
+              <a onClick={this.handleClick} href={status.get('url')} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
                 <span className='status__visibility-icon'><Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></span>
-                <RelativeTimestamp timestamp={status.get('created_at')} />
+                <RelativeTimestamp timestamp={status.get('created_at')} />{status.get('edited_at') && <abbr title={intl.formatMessage(messages.edited, { date: intl.formatDate(status.get('edited_at'), { hour12: false, year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) })}> *</abbr>}
               </a>
 
-              <a onClick={this.handleAccountClick} data-id={status.getIn(['account', 'id'])} href={status.getIn(['account', 'url'])} title={status.getIn(['account', 'acct'])} className='status__display-name' target='_blank' rel='noopener noreferrer'>
+              <a onClick={this.handleAccountClick} href={status.getIn(['account', 'url'])} title={status.getIn(['account', 'acct'])} className='status__display-name' target='_blank' rel='noopener noreferrer'>
                 <div className='status__avatar'>
                   {statusAvatar}
                 </div>
 
-                <DisplayName account={status.get('account')} others={otherAccounts} />
+                <DisplayName account={status.get('account')} />
               </a>
             </div>
 
@@ -487,7 +515,7 @@ class Status extends ImmutablePureComponent {
 
             {media}
 
-            <StatusActionBar scrollKey={scrollKey} status={status} account={account} {...other} />
+            <StatusActionBar scrollKey={scrollKey} status={status} account={account} onFilter={matchedFilters && this.handleFilterClick} {...other} />
           </div>
         </div>
       </HotKeys>

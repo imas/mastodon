@@ -28,7 +28,7 @@ class AccountsController < ApplicationController
           return
         end
 
-        @pinned_statuses = cache_collection(@account.pinned_statuses, Status) if show_pinned_statuses?
+        @pinned_statuses = cached_filtered_status_pins if show_pinned_statuses?
         @statuses        = cached_filtered_status_page
         @rss_url         = rss_url
 
@@ -44,7 +44,6 @@ class AccountsController < ApplicationController
         limit     = params[:limit].present? ? [params[:limit].to_i, PAGE_SIZE_MAX].min : PAGE_SIZE
         @statuses = filtered_statuses.without_reblogs.limit(limit)
         @statuses = cache_collection(@statuses, Status)
-        render xml: RSS::AccountSerializer.render(@account, @statuses, params[:tag])
       end
 
       format.json do
@@ -62,6 +61,10 @@ class AccountsController < ApplicationController
 
   def show_pinned_statuses?
     [replies_requested?, media_requested?, tag_requested?, params[:max_id].present?, params[:min_id].present?].none?
+  end
+
+  def filtered_pinned_statuses
+    @account.pinned_statuses.where(visibility: [:public, :unlisted])
   end
 
   def filtered_statuses
@@ -140,6 +143,13 @@ class AccountsController < ApplicationController
 
   def tag_requested?
     request.path.split('.').first.end_with?(Addressable::URI.parse("/tagged/#{params[:tag]}").normalize)
+  end
+
+  def cached_filtered_status_pins
+    cache_collection(
+      filtered_pinned_statuses,
+      Status
+    )
   end
 
   def cached_filtered_status_page

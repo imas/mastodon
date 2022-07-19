@@ -81,6 +81,9 @@ module AccountInteractions
     has_many :following, -> { order('follows.id desc') }, through: :active_relationships,  source: :target_account
     has_many :followers, -> { order('follows.id desc') }, through: :passive_relationships, source: :account
 
+    # Account notes
+    has_many :account_notes, dependent: :destroy
+
     # Block relationships
     has_many :block_relationships, class_name: 'Block', foreign_key: 'account_id', dependent: :destroy
     has_many :blocking, -> { order('blocks.id desc') }, through: :block_relationships, source: :target_account
@@ -192,6 +195,10 @@ module AccountInteractions
     !following_anyone?
   end
 
+  def followed_by?(other_account)
+    other_account.following?(self)
+  end
+
   def blocking?(other_account)
     block_relationships.where(target_account: other_account).exists?
   end
@@ -240,6 +247,19 @@ module AccountInteractions
     account_pins.where(target_account: account).exists?
   end
 
+  def status_matches_filters(status)
+    active_filters = CustomFilter.cached_filters_for(id)
+
+    filter_matches = active_filters.filter_map do |filter, rules|
+      next if rules[:keywords].blank?
+
+      match = rules[:keywords].match(status.proper.searchable_text)
+      FilterResultPresenter.new(filter: filter, keyword_matches: [match.to_s]) unless match.nil?
+    end
+
+    filter_matches
+  end
+
   def followers_for_local_distribution
     followers.local
              .joins(:user)
@@ -251,10 +271,13 @@ module AccountInteractions
          .where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago)
   end
 
-  def remote_followers_hash(url_prefix)
-    Rails.cache.fetch("followers_hash:#{id}:#{url_prefix}") do
+  def remote_followers_hash(url)
+    url_prefix = url[Account::URL_PREFIX_RE]
+    return if url_prefix.blank?
+
+    Rails.cache.fetch("followers_hash:#{id}:#{url_prefix}/") do
       digest = "\x00" * 32
-      followers.where(Account.arel_table[:uri].matches(url_prefix + '%', false, true)).pluck_each(:uri) do |uri|
+      followers.where(Account.arel_table[:uri].matches("#{Account.sanitize_sql_like(url_prefix)}/%", false, true)).or(followers.where(uri: url_prefix)).pluck_each(:uri) do |uri|
         Xorcist.xor!(digest, Digest::SHA256.digest(uri))
       end
       digest.unpack('H*')[0]

@@ -5,7 +5,7 @@ import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Hashtag from '../../../components/hashtag';
+import { ImmutableHashtag as Hashtag } from '../../../components/hashtag';
 import Icon from 'mastodon/components/icon';
 import { searchEnabled } from '../../../initial_state';
 import LoadMore from 'mastodon/components/load_more';
@@ -91,7 +91,7 @@ class SearchResults extends ImmutablePureComponent {
       count   += results.get('statuses').size;
       statuses = (
         <div className='search-results__section'>
-          <h5><Icon id='quote-right' fixedWidth /><FormattedMessage id='search_results.statuses' defaultMessage='Toots' /></h5>
+          <h5><Icon id='quote-right' fixedWidth /><FormattedMessage id='search_results.statuses' defaultMessage='Posts' /></h5>
 
           {results.get('statuses').map(statusId => <StatusContainer key={statusId} id={statusId} />)}
 
@@ -101,10 +101,10 @@ class SearchResults extends ImmutablePureComponent {
     } else if(results.get('statuses') && results.get('statuses').size === 0 && !searchEnabled && !(searchTerm.startsWith('@') || searchTerm.startsWith('#') || searchTerm.includes(' '))) {
       statuses = (
         <div className='search-results__section'>
-          <h5><Icon id='quote-right' fixedWidth /><FormattedMessage id='search_results.statuses' defaultMessage='Toots' /></h5>
+          <h5><Icon id='quote-right' fixedWidth /><FormattedMessage id='search_results.statuses' defaultMessage='Posts' /></h5>
 
           <div className='search-results__info'>
-            <FormattedMessage id='search_results.statuses_fts_disabled' defaultMessage='Searching toots by their content is not enabled on this Mastodon server.' />
+            <FormattedMessage id='search_results.statuses_fts_disabled' defaultMessage='Searching posts by their content is not enabled on this Mastodon server.' />
           </div>
         </div>
       );

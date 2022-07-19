@@ -4,6 +4,7 @@ import loadPolyfills from '../mastodon/load_polyfills';
 import ready from '../mastodon/ready';
 import { start } from '../mastodon/common';
 import loadKeyboardExtensions from '../mastodon/load_keyboard_extensions';
+import 'cocoon-js-vanilla';
 
 start();
 
@@ -120,7 +121,9 @@ function main() {
     delegate(document, '#registration_user_password_confirmation,#registration_user_password', 'input', () => {
       const password = document.getElementById('registration_user_password');
       const confirmation = document.getElementById('registration_user_password_confirmation');
-      if (password.value && password.value !== confirmation.value) {
+      if (confirmation.value && confirmation.value.length > password.maxLength) {
+        confirmation.setCustomValidity((new IntlMessageFormat(messages['password_confirmation.exceeds_maxlength'] || 'Password confirmation exceeds the maximum password length', locale)).format());
+      } else if (password.value && password.value !== confirmation.value) {
         confirmation.setCustomValidity((new IntlMessageFormat(messages['password_confirmation.mismatching'] || 'Password confirmation does not match', locale)).format());
       } else {
         confirmation.setCustomValidity('');
@@ -132,7 +135,9 @@ function main() {
       const confirmation = document.getElementById('user_password_confirmation');
       if (!confirmation) return;
 
-      if (password.value && password.value !== confirmation.value) {
+      if (confirmation.value && confirmation.value.length > password.maxLength) {
+        confirmation.setCustomValidity((new IntlMessageFormat(messages['password_confirmation.exceeds_maxlength'] || 'Password confirmation exceeds the maximum password length', locale)).format());
+      } else if (password.value && password.value !== confirmation.value) {
         confirmation.setCustomValidity((new IntlMessageFormat(messages['password_confirmation.mismatching'] || 'Password confirmation does not match', locale)).format());
       } else {
         confirmation.setCustomValidity('');
@@ -272,13 +277,7 @@ function main() {
   });
 
   delegate(document, '.sidebar__toggle__icon', 'click', () => {
-    const target = document.querySelector('.sidebar ul');
-
-    if (target.style.display === 'block') {
-      target.style.display = 'none';
-    } else {
-      target.style.display = 'block';
-    }
+    document.querySelector('.sidebar ul').classList.toggle('visible');
   });
 
   // Empty the honeypot fields in JS in case something like an extension

@@ -4,7 +4,7 @@ RSpec.describe Admin::DomainBlocksController, type: :controller do
   render_views
 
   before do
-    sign_in Fabricate(:user, admin: true), scope: :user
+    sign_in Fabricate(:user, role: UserRole.find_by(name: 'Admin')), scope: :user
   end
 
   describe 'GET #new' do
@@ -12,15 +12,6 @@ RSpec.describe Admin::DomainBlocksController, type: :controller do
       get :new
 
       expect(assigns(:domain_block)).to be_instance_of(DomainBlock)
-      expect(response).to have_http_status(200)
-    end
-  end
-
-  describe 'GET #show' do
-    it 'returns http success' do
-      domain_block = Fabricate(:domain_block)
-      get :show, params: { id: domain_block.id }
-
       expect(response).to have_http_status(200)
     end
   end
