@@ -39,10 +39,13 @@ class FanOutOnWriteService < BaseService
     notify_about_update! if update?
 
     case @status.visibility.to_sym
-    when :public, :private, :unlisted
+    when :public, :unlisted
       deliver_to_all_followers!
       deliver_to_lists!
       deliver_to_hashtag_streams_authorized_channel!
+    when :private
+      deliver_to_all_followers!
+      deliver_to_lists!
     when :limited
       deliver_to_mentioned_followers!
     else
