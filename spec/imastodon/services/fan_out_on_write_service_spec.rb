@@ -88,6 +88,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
       it_behaves_like 'tagTLのauthorizedチャンネルに配信される'
     end
 
+    context 'private' do
+      let(:visibility) { :private }
+      it_behaves_like 'LTLに配信されない'
+      it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+      it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
+    end
+
+    context 'direct' do
+      let(:visibility) { :direct }
+      it_behaves_like 'LTLに配信されない'
+      it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+      it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
+    end
+
     context 'メンションが含まれる投稿' do
       let(:body) { '@tachibana ヘイヘーイ。 そこのカノジョー、一緒にブラデリカしないかーい？ #hoge #fuga #nyowa' }
 
@@ -104,6 +118,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
         it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
         it_behaves_like 'tagTLのauthorizedチャンネルに配信される'
       end
+
+      context 'private' do
+        let(:visibility) { :private }
+        it_behaves_like 'LTLに配信されない'
+        it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+        it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
+      end
+  
+      context 'direct' do
+        let(:visibility) { :direct }
+        it_behaves_like 'LTLに配信されない'
+        it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+        it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
+      end
     end
 
     context '自分以外の投稿へのin_reply_toが設定されている投稿' do
@@ -118,6 +146,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
       context 'unlisted' do
         let(:visibility) { :unlisted }
+        it_behaves_like 'LTLに配信されない'
+        it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+        it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
+      end
+
+      context 'private' do
+        let(:visibility) { :private }
+        it_behaves_like 'LTLに配信されない'
+        it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+        it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
+      end
+  
+      context 'direct' do
+        let(:visibility) { :direct }
         it_behaves_like 'LTLに配信されない'
         it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
         it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
@@ -139,6 +181,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
         it_behaves_like 'LTLに配信されない'
         it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
         it_behaves_like 'tagTLのauthorizedチャンネルに配信される'
+      end
+
+      context 'private' do
+        let(:visibility) { :private }
+        it_behaves_like 'LTLに配信されない'
+        it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+        it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
+      end
+  
+      context 'direct' do
+        let(:visibility) { :direct }
+        it_behaves_like 'LTLに配信されない'
+        it_behaves_like 'tagTLのunauthorizedチャンネルに配信されない'
+        it_behaves_like 'tagTLのauthorizedチャンネルに配信されない'
       end
     end
   end
