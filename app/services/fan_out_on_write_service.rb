@@ -14,6 +14,7 @@ class FanOutOnWriteService < BaseService
     @options   = options
 
     check_race_condition!
+    warm_payload_cache!
 
     fan_out_to_local_recipients!
     fan_out_to_public_recipients! if broadcastable?
@@ -40,10 +41,13 @@ class FanOutOnWriteService < BaseService
     notify_about_update! if update?
 
     case @status.visibility.to_sym
-    when :public, :private, :unlisted
+    when :public, :unlisted
       deliver_to_all_followers!
       deliver_to_lists!
       deliver_to_hashtag_streams_authorized_channel!
+    when :private
+      deliver_to_all_followers!
+      deliver_to_lists!
     when :limited
       deliver_to_mentioned_followers!
     else
@@ -145,11 +149,19 @@ class FanOutOnWriteService < BaseService
     AccountConversation.add_status(@account, @status) unless update?
   end
 
+  def warm_payload_cache!
+    Rails.cache.write("fan-out/#{@status.id}", rendered_status)
+  end
+
   def anonymous_payload
     @anonymous_payload ||= Oj.dump(
       event: update? ? :'status.update' : :update,
-      payload: InlineRenderer.render(@status, nil, :status)
+      payload: rendered_status
     )
+  end
+
+  def rendered_status
+    @rendered_status ||= InlineRenderer.render(@status, nil, :status)
   end
 
   def update?
