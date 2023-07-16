@@ -246,29 +246,37 @@ class StatusContent extends React.PureComponent {
     );
 
     if (status.get('spoiler_text').length > 0) {
-      let mentionsPlaceholder = '';
+      let placeholder = '';
 
       const mentionLinks = status.get('mentions').map(item => (
         <Link to={`/@${item.get('acct')}`} key={item.get('id')} className='status-link mention'>
           @<span>{item.get('username')}</span>
         </Link>
-      )).reduce((aggregate, item) => [...aggregate, item, ' '], []);
+      ));
+
+      const tagLinks = status.get('tags').map(item => (
+        <Link to={`/tags/${item.get('name')}`} href={item.get('url')} key={item.get('name')} className='status-link tag'>
+          #<span>{item.get('name')}</span>
+        </Link>
+      ));
+
+      const links = [mentionLinks, tagLinks].flatMap(item => item.toArray()).flatMap(item => [item, ' ']);
 
       const toggleText = hidden ? <FormattedMessage id='status.show_more' defaultMessage='Show more' /> : <FormattedMessage id='status.show_less' defaultMessage='Show less' />;
 
       if (hidden) {
-        mentionsPlaceholder = <div>{mentionLinks}</div>;
+        placeholder = <div>{links}</div>;
       }
 
       return (
         <div className={classNames} ref={this.setRef} tabIndex='0' onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-          <p style={{ marginBottom: hidden && status.get('mentions').isEmpty() ? '0px' : null }}>
+          <p style={{ marginBottom: hidden && !links.length ? '0px' : null }}>
             <span dangerouslySetInnerHTML={spoilerContent} className='translate' lang={lang} />
             {' '}
             <button type='button' className={`status__content__spoiler-link ${hidden ? 'status__content__spoiler-link--show-more' : 'status__content__spoiler-link--show-less'}`} onClick={this.handleSpoilerClick} aria-expanded={!hidden}>{toggleText}</button>
           </p>
 
-          {mentionsPlaceholder}
+          {placeholder}
 
           <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''} translate`} lang={lang} dangerouslySetInnerHTML={content} />
 

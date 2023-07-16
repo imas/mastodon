@@ -896,7 +896,8 @@ body > [data-popper-placement] {
       }
     }
 
-    &.mention {
+    &.mention,
+    &.tag {
       &:hover {
         text-decoration: none;
 
