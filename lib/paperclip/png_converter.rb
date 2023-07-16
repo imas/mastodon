@@ -9,7 +9,7 @@ module Paperclip
 
       if opaque == 'true'
         basename = File.basename(file.path, File.extname(file.path))
-        dst_name = basename << ".jpg"
+        dst_name = basename << '.jpeg'
 
         dst = Paperclip::TempfileFactory.new.generate(dst_name)
 
