@@ -3,21 +3,32 @@ on:
   push:
     branches-ignore:
       - 'dependabot/**'
+      - 'renovate/**'
     paths:
       - 'package.json'
       - 'yarn.lock'
+      - 'tsconfig.json'
+      - '.nvmrc'
       - '.prettier*'
       - '.eslint*'
       - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.ts'
+      - '**/*.tsx'
       - '.github/workflows/lint-js.yml'
 
   pull_request:
     paths:
       - 'package.json'
       - 'yarn.lock'
+      - 'tsconfig.json'
+      - '.nvmrc'
       - '.prettier*'
       - '.eslint*'
       - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.ts'
+      - '**/*.tsx'
       - '.github/workflows/lint-js.yml'
 
 jobs:
@@ -32,9 +43,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
+          node-version-file: '.nvmrc'
 
       - name: Install all yarn packages
         run: yarn --frozen-lockfile
 
       - name: ESLint
-        run: yarn test:lint:js
+        run: yarn lint:js --max-warnings 0
+
+      - name: Typecheck
+        run: yarn typecheck

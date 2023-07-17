@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import FavouriteToggle from '../components/favourite_toggle';
+
 import { addFavouriteTags, removeFavouriteTags } from '../../../actions/favourite_tags';
+import FavouriteToggle from '../components/favourite_toggle';
 
 const mapStateToProps = (state, { tag }) => ({
   isRegistered: state.getIn(['favourite_tags', 'tags']).some(t => t.get('name') === tag),

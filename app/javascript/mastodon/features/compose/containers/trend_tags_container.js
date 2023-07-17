@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
-import TrendTags from '../components/trend_tags';
+
 import { refreshTrendTags,
   refreshTrendTagsHistory,
   toggleTrendTags,
 } from '../../../actions/trend_tags';
+import TrendTags from '../components/trend_tags';
 
 const mapStateToProps = state => {
   return {
