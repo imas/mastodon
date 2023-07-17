@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import FavouriteTags from '../components/favourite_tags';
+
 import { refreshFavouriteTags, toggleFavouriteTags, lockTagCompose } from '../../../actions/favourite_tags';
+import FavouriteTags from '../components/favourite_tags';
 
 const mapStateToProps = state => {
   return {

@@ -1,7 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import Motion from '../features/ui/util/optional_motion';
+import React from 'react';
+
 import spring from 'react-motion/lib/spring';
+
+import Motion from '../features/ui/util/optional_motion';
+
 
 const Foldable = ({ fullHeight, minHeight, isVisible, children }) => (
   <Motion defaultStyle={{ height: isVisible ? fullHeight : minHeight }} style={{ height: spring(!isVisible ? minHeight : fullHeight) }}>

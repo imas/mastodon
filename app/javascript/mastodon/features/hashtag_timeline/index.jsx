@@ -17,12 +17,12 @@ import { fetchHashtag, followHashtag, unfollowHashtag } from 'mastodon/actions/t
 import { expandHashtagTimeline, clearTimeline } from 'mastodon/actions/timelines';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
-import FavouriteToggleContainer from './containers/favourite_toggle_container';
 import { Icon }  from 'mastodon/components/icon';
 
 import StatusListContainer from '../ui/containers/status_list_container';
 
 import ColumnSettingsContainer from './containers/column_settings_container';
+import FavouriteToggleContainer from './containers/favourite_toggle_container';
 
 const messages = defineMessages({
   followHashtag: { id: 'hashtag.follow', defaultMessage: 'Follow hashtag' },

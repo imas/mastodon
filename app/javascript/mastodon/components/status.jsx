@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
@@ -519,10 +520,10 @@ class Status extends ImmutablePureComponent {
       );
     }
 
-    // eslint-disable-next-line eqeqeq
+     
     if (account ==  null && status.get('visibility') === 'public') {
       statusAvatar = <Avatar account={status.get('account')} size={46} />;
-    // eslint-disable-next-line eqeqeq
+     
     } else if (account ==  null) {
       statusAvatar = <AvatarOverlayIcon account={status.get('account')} visibility={status.get('visibility')} />;
     } else {

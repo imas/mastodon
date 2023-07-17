@@ -22,6 +22,9 @@
 .autosuggest-textarea__suggestions,
 .status__content a,
 .reply-indicator__content a,
-.activity-stream .status.light .status__content a.status__content__spoiler-link {
+.activity-stream
+  .status.light
+  .status__content
+  a.status__content__spoiler-link {
   color: lighten($classic-secondary-color, 10%);
 }

@@ -1,7 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '../../../components/button';
+import React from 'react';
+
 import { defineMessages, injectIntl } from 'react-intl';
+
+import Button from '../../../components/button';
+
 
 const messages = defineMessages({
   add_favourite_tags_public: { id: 'tag.add_favourite.public', defaultMessage: 'add in the favourite tags (Public)' },

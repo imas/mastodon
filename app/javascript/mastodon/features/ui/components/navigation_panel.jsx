@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { WordmarkLogo } from 'mastodon/components/logo';
 import NavigationPortal from 'mastodon/components/navigation_portal';
+import TrendTagsContainer from 'mastodon/features/compose/containers/trend_tags_container';
 import { timelinePreview, trendsEnabled } from 'mastodon/initial_state';
 import { transientSingleColumn } from 'mastodon/is_mobile';
 
@@ -14,7 +15,6 @@ import ColumnLink from './column_link';
 import DisabledAccountBanner from './disabled_account_banner';
 import FollowRequestsColumnLink from './follow_requests_column_link';
 import ListPanel from './list_panel';
-import TrendTagsContainer from 'mastodon/features/compose/containers/trend_tags_container';
 import NotificationsCounterIcon from './notifications_counter_icon';
 import SignInBanner from './sign_in_banner';
 

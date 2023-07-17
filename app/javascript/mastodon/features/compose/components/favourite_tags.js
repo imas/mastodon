@@ -1,9 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+
+import { injectIntl, defineMessages } from 'react-intl';
+
 import { List as ImmutableList } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import Link from 'react-router-dom/Link';
-import PropTypes from 'prop-types';
-import { injectIntl, defineMessages } from 'react-intl';
+
 import FoldButton from '../../../components/fold_button';
 import Foldable from '../../../components/foldable';
 

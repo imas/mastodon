@@ -1,5 +1,6 @@
-import { FAVOURITE_TAGS_SUCCESS, TOGGLE_FAVOURITE_TAGS } from '../actions/favourite_tags';
 import Immutable from 'immutable';
+
+import { FAVOURITE_TAGS_SUCCESS, TOGGLE_FAVOURITE_TAGS } from '../actions/favourite_tags';
 
 const initialState = Immutable.Map({
   tags: Immutable.List(),
