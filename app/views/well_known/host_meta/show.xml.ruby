@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 doc = Ox::Document.new(version: '1.0')
 
 doc << Ox::Element.new('XRD').tap do |xrd|
@@ -9,4 +11,4 @@ doc << Ox::Element.new('XRD').tap do |xrd|
   end
 end
 
-('<?xml version="1.0" encoding="UTF-8"?>' + Ox.dump(doc, effort: :tolerant)).force_encoding('UTF-8')
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>#{Ox.dump(doc, effort: :tolerant)}".force_encoding('UTF-8')
