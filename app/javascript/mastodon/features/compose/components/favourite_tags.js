@@ -45,7 +45,7 @@ class FavouriteTags extends React.PureComponent {
       const icon = icons.concat().reverse().find(icon => nextState.lockedVisibility.includes(icon.key));
       this.execLockTag(
         nextState.lockedTag.join(' '),
-        typeof icon === 'undefined' ? '' : icon.key
+        typeof icon === 'undefined' ? '' : icon.key,
       );
     }
   }
