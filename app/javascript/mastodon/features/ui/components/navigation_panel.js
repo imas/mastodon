@@ -27,7 +27,7 @@ const messages = defineMessages({
   followsAndFollowers: { id: 'navigation_bar.follows_and_followers', defaultMessage: 'Follows and followers' },
   about: { id: 'navigation_bar.about', defaultMessage: 'About' },
   search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
-  faq: { id: 'navigation_bar.faq', defaultMessage: 'FAQ'}
+  faq: { id: 'navigation_bar.faq', defaultMessage: 'FAQ' },
 });
 
 export default @injectIntl
@@ -93,7 +93,7 @@ class NavigationPanel extends React.Component {
             <hr />
 
             <ColumnLink transparent href='/settings/preferences' icon='cog' text={intl.formatMessage(messages.preferences)} />
-            <ColumnLink transparent href='https://faq.imastodon.net/getting-started/' icon='question' text={intl.formatMessage(messages.faq)} targetWindow="_blank" />
+            <ColumnLink transparent href='https://faq.imastodon.net/getting-started/' icon='question' text={intl.formatMessage(messages.faq)} targetWindow='_blank' />
 
             <hr />
 
@@ -108,7 +108,7 @@ class NavigationPanel extends React.Component {
 
         <NavigationPortal />
 
-        
+
       </div>
     );
   }

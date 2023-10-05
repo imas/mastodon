@@ -11,6 +11,7 @@ const icons = {
 };
 
 export default class AvatarOverlayIcon extends React.PureComponent {
+
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
     visibility: PropTypes.string.isRequired,
@@ -23,7 +24,7 @@ export default class AvatarOverlayIcon extends React.PureComponent {
 
   render() {
     const { account, visibility, animate } = this.props;
-    const icon = icons[visibility]
+    const icon = icons[visibility];
 
     const baseStyle = {
       backgroundImage: `url(${account.get(animate ? 'avatar' : 'avatar_static')})`,
@@ -36,4 +37,5 @@ export default class AvatarOverlayIcon extends React.PureComponent {
       </div>
     );
   }
+
 }

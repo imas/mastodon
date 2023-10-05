@@ -1,6 +1,6 @@
 import { TREND_TAGS_SUCCESS,
   TREND_TAGS_HISTORY_SUCCESS,
-  TOGGLE_TREND_TAGS
+  TOGGLE_TREND_TAGS,
 } from '../actions/trend_tags';
 import Immutable from 'immutable';
 
