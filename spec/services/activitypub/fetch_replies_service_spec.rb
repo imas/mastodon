@@ -32,6 +32,18 @@ RSpec.describe ActivityPub::FetchRepliesService, type: :service do
 
   describe '#call' do
     context 'when the payload is a Collection with inlined replies' do
+      context 'when there is a single reply, with the array compacted away' do
+        let(:items) { 'http://example.com/self-reply-1' }
+
+        it 'queues the expected worker' do
+          allow(FetchReplyWorker).to receive(:push_bulk)
+
+          subject.call(status, payload)
+
+          expect(FetchReplyWorker).to have_received(:push_bulk).with(['http://example.com/self-reply-1'])
+        end
+      end
+
       context 'when passing the collection itself' do
         it 'spawns workers for up to 5 replies on the same server' do
           expect(FetchReplyWorker).to receive(:push_bulk).with(['http://example.com/self-reply-1', 'http://example.com/self-reply-2', 'http://example.com/self-reply-3', 'http://example.com/self-reply-4', 'http://example.com/self-reply-5'])
@@ -41,7 +53,7 @@ RSpec.describe ActivityPub::FetchRepliesService, type: :service do
 
       context 'when passing the URL to the collection' do
         before do
-          stub_request(:get, collection_uri).to_return(status: 200, body: Oj.dump(payload))
+          stub_request(:get, collection_uri).to_return(status: 200, body: Oj.dump(payload), headers: { 'Content-Type': 'application/activity+json' })
         end
 
         it 'spawns workers for up to 5 replies on the same server' do
@@ -70,7 +82,7 @@ RSpec.describe ActivityPub::FetchRepliesService, type: :service do
 
       context 'when passing the URL to the collection' do
         before do
-          stub_request(:get, collection_uri).to_return(status: 200, body: Oj.dump(payload))
+          stub_request(:get, collection_uri).to_return(status: 200, body: Oj.dump(payload), headers: { 'Content-Type': 'application/activity+json' })
         end
 
         it 'spawns workers for up to 5 replies on the same server' do
@@ -103,7 +115,7 @@ RSpec.describe ActivityPub::FetchRepliesService, type: :service do
 
       context 'when passing the URL to the collection' do
         before do
-          stub_request(:get, collection_uri).to_return(status: 200, body: Oj.dump(payload))
+          stub_request(:get, collection_uri).to_return(status: 200, body: Oj.dump(payload), headers: { 'Content-Type': 'application/activity+json' })
         end
 
         it 'spawns workers for up to 5 replies on the same server' do
