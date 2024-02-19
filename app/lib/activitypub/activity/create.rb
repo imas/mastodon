@@ -83,7 +83,14 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     ApplicationRecord.transaction do
       @status = Status.create!(@params)
       attach_tags(@status)
+
+      if seems_spam?
+        @status = nil
+        raise ActiveRecord::Rollback
+      end
     end
+
+    return if @status.nil?
 
     resolve_thread(@status)
     fetch_replies(@status)
@@ -425,5 +432,15 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   rescue ActiveRecord::StaleObjectError
     poll.reload
     retry
+  end
+
+  SPAM_FILTER_MINIMUM_FOLLOWERS = ENV.fetch('SPAM_FILTER_MINIMUM_FOLLOWERS', 2).to_i
+  SPAM_FILTER_MINIMUM_CREATE_DAYS = ENV.fetch('SPAM_FILTER_MINIMUM_CREATE_DAYS', 2).to_i
+  SPAM_FILTER_MINIMUM_MENTIONS = ENV.fetch('SPAM_FILTER_MINIMUM_MENTIONS', 2).to_i
+  def seems_spam?
+    !@status.account.local? &&
+      @status.account.followers_count <= SPAM_FILTER_MINIMUM_FOLLOWERS &&
+      SPAM_FILTER_MINIMUM_CREATE_DAYS.day.ago <= @status.account.created_at &&
+      SPAM_FILTER_MINIMUM_MENTIONS <= @mentions.count
   end
 end
