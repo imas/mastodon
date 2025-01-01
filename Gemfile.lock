@@ -469,7 +469,7 @@ GEM
     pastel (0.8.0)
       tty-color (~> 0.5)
     pg (1.4.6)
-    pghero (3.1.0)
+    pghero (3.4.0)
       activerecord (>= 6)
     pkg-config (1.5.1)
     posix-spawn (0.3.15)
@@ -891,7 +891,7 @@ DEPENDENCIES
   xorcist (~> 1.1)
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 3.0.6p216
 
 BUNDLED WITH
    2.1.4
