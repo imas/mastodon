@@ -13,7 +13,7 @@ describe Api::V1::Timelines::TagController, type: :controller do
     end
 
     context 'with a user context' do
-      let(:token) { Fabricate(:accessible_access_token, resource_owner_id: user.id) }
+      let(:token) { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: [:read]) }
 
       describe 'GET #show' do
         before do
@@ -31,14 +31,20 @@ describe Api::V1::Timelines::TagController, type: :controller do
     end
 
     context 'without a user context' do
-      let(:token) { Fabricate(:accessible_access_token, resource_owner_id: nil) }
+      let(:token) { Fabricate(:accessible_access_token, resource_owner_id: nil, scopes: [:read]) }
+
+      before do
+        PostStatusService.new.call(user.account, text: 'It is a public #test')
+        PostStatusService.new.call(user.account, text: 'It is a unlisted #test', visibility: 'unlisted')
+      end
 
       describe 'GET #show' do
         it 'returns http success' do
           get :show, params: { id: 'test' }
           expect(response).to have_http_status(200)
-          expect(response.headers['Link']).to be_nil
-          expect(JSON.parse(response.body).length).to eq(0)
+          expect(response.headers['Link'].links.size).to eq(2)
+          expect(JSON.parse(response.body).length).to eq(1)
+          expect(JSON.parse(response.body).first["content"]).to include('It is a public')
         end
       end
     end
