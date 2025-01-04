@@ -8,6 +8,7 @@ class FanOutOnWriteService < BaseService
   # @param [Hash] options
   # @option options [Boolean] update
   # @option options [Array<Integer>] silenced_account_ids
+  # @option options [Boolean] skip_notifications
   def call(status, options = {})
     @status    = status
     @account   = status.account
@@ -37,8 +38,11 @@ class FanOutOnWriteService < BaseService
 
   def fan_out_to_local_recipients!
     deliver_to_self!
-    notify_mentioned_accounts!
-    notify_about_update! if update?
+
+    unless @options[:skip_notifications]
+      notify_mentioned_accounts!
+      notify_about_update! if update?
+    end
 
     case @status.visibility.to_sym
     when :public, :unlisted
@@ -94,7 +98,7 @@ class FanOutOnWriteService < BaseService
   end
 
   def deliver_to_hashtag_followers!
-    TagFollow.where(tag_id: @status.tags.map(&:id)).select(:id, :account_id).reorder(nil).find_in_batches do |follows|
+    TagFollow.for_local_distribution.where(tag_id: @status.tags.map(&:id)).select(:id, :account_id).reorder(nil).find_in_batches do |follows|
       FeedInsertWorker.push_bulk(follows) do |follow|
         [@status.id, follow.account_id, 'tags', { 'update' => update? }]
       end

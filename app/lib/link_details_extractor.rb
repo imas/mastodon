@@ -36,7 +36,9 @@ class LinkDetailsExtractor
     end
 
     def language
-      json['inLanguage']
+      lang = json['inLanguage']
+      lang = lang.first if lang.is_a?(Array)
+      lang.is_a?(Hash) ? (lang['alternateName'] || lang['name']) : lang
     end
 
     def type
@@ -263,14 +265,19 @@ class LinkDetailsExtractor
   end
 
   def document
-    @document ||= Nokogiri::HTML(@html, nil, encoding)
+    @document ||= detect_encoding_and_parse_document
   end
 
-  def encoding
-    @encoding ||= begin
-      guess = detector.detect(@html, @html_charset)
-      guess&.fetch(:confidence, 0).to_i > 60 ? guess&.fetch(:encoding, nil) : nil
+  def detect_encoding_and_parse_document
+    [detect_encoding, nil, @html_charset, 'UTF-8'].uniq.each do |encoding|
+      document = Nokogiri::HTML(@html, nil, encoding)
+      return document if document.to_s.valid_encoding?
     end
+  end
+
+  def detect_encoding
+    guess = detector.detect(@html, @html_charset)
+    guess&.fetch(:confidence, 0).to_i > 60 ? guess&.fetch(:encoding, nil) : nil
   end
 
   def detector

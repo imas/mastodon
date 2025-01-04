@@ -18,6 +18,17 @@ RSpec.describe NotifyService, type: :service do
     expect { subject }.to_not change(Notification, :count)
   end
 
+  context 'when the sender is a local moderator' do
+    let(:sender) { Fabricate(:user, role: UserRole.find_by(name: 'Admin')).account }
+    let(:type) { :mention }
+    let(:activity) { Fabricate(:mention, account: recipient, status: Fabricate(:status, account: sender)) }
+
+    it 'does notify when the sender is blocked' do
+      recipient.block!(sender)
+      expect { subject }.to change(Notification, :count).by(1)
+    end
+  end
+
   it 'does not notify when sender is muted with hide_notifications' do
     recipient.mute!(sender, notifications: true)
     expect { subject }.to_not change(Notification, :count)
@@ -76,10 +87,10 @@ RSpec.describe NotifyService, type: :service do
       end
 
       context 'when the message chain is initiated by recipient, but without a mention to the sender, even if the sender sends multiple messages in a row' do
-        let(:reply_to) { Fabricate(:status, account: recipient) }
-        let!(:mention) { Fabricate(:mention, account: sender, status: reply_to) }
-        let(:dummy_reply) { Fabricate(:status, account: sender, visibility: :direct, thread: reply_to) }
-        let(:activity) { Fabricate(:mention, account: recipient, status: Fabricate(:status, account: sender, visibility: :direct, thread: dummy_reply)) }
+        let(:public_status) { Fabricate(:status, account: recipient) }
+        let(:intermediate_reply) { Fabricate(:status, account: sender, thread: public_status, visibility: :direct) }
+        let!(:intermediate_mention) { Fabricate(:mention, account: sender, status: intermediate_reply) }
+        let(:activity) { Fabricate(:mention, account: recipient, status: Fabricate(:status, account: sender, visibility: :direct, thread: intermediate_reply)) }
 
         it 'does not notify' do
           expect { subject }.to_not change(Notification, :count)

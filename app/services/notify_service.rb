@@ -71,21 +71,23 @@ class NotifyService < BaseService
           LEFT JOIN mentions m ON m.silent = FALSE AND m.account_id = :sender_id AND m.status_id = s.id
           WHERE s.id = :id
         UNION ALL
-          SELECT s.id, s.in_reply_to_id, m.id, st.path || s.id, st.depth + 1
-          FROM ancestors st
-          JOIN statuses s ON s.id = st.in_reply_to_id
-          LEFT JOIN mentions m ON m.silent = FALSE AND m.account_id = :sender_id AND m.status_id = s.id
-          WHERE st.mention_id IS NULL AND NOT s.id = ANY(path) AND st.depth < :depth_limit
+          SELECT s.id, s.in_reply_to_id, m.id, ancestors.path || s.id, ancestors.depth + 1
+          FROM ancestors
+          JOIN statuses s ON s.id = ancestors.in_reply_to_id
+          /* early exit if we already have a mention matching our requirements */
+          LEFT JOIN mentions m ON m.silent = FALSE AND m.account_id = :sender_id AND m.status_id = s.id AND s.account_id = :recipient_id
+          WHERE ancestors.mention_id IS NULL AND NOT s.id = ANY(path) AND ancestors.depth < :depth_limit
       )
       SELECT COUNT(*)
-      FROM ancestors st
-      JOIN statuses s ON s.id = st.id
-      WHERE st.mention_id IS NOT NULL AND s.visibility = 3
+      FROM ancestors
+      JOIN statuses s ON s.id = ancestors.id
+      WHERE ancestors.mention_id IS NOT NULL AND s.account_id = :recipient_id AND s.visibility = 3
     SQL
   end
 
   def from_staff?
-    @notification.from_account.local? && @notification.from_account.user.present? && @notification.from_account.user_role&.overrides?(@recipient.user_role)
+    sender = @notification.from_account
+    sender.local? && sender.user.present? && sender.user_role&.overrides?(@recipient.user_role) && sender.user_role&.highlighted? && sender.user_role&.can?(*UserRole::Flags::CATEGORIES[:moderation].map(&:to_sym))
   end
 
   def optional_non_following_and_direct?

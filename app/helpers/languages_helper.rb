@@ -161,7 +161,7 @@ module LanguagesHelper
     th: ['Thai', 'ไทย'].freeze,
     ti: ['Tigrinya', 'ትግርኛ'].freeze,
     tk: ['Turkmen', 'Türkmen'].freeze,
-    tl: ['Tagalog', 'Wikang Tagalog'].freeze,
+    tl: ['Tagalog', 'Tagalog'].freeze,
     tn: ['Tswana', 'Setswana'].freeze,
     to: ['Tonga', 'faka Tonga'].freeze,
     tr: ['Turkish', 'Türkçe'].freeze,
@@ -255,6 +255,7 @@ module LanguagesHelper
 
   def valid_locale_or_nil(str)
     return if str.blank?
+    return str if valid_locale?(str)
 
     code, = str.to_s.split(/[_-]/) # Strip out the region from e.g. en_US or ja-JP
 

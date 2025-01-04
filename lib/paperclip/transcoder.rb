@@ -43,7 +43,8 @@ module Paperclip
         unless eligible_to_passthrough?(metadata)
           size_limit_in_bits = MediaAttachment::VIDEO_LIMIT * 8
           desired_bitrate = (metadata.width * metadata.height * 30 * BITS_PER_PIXEL).floor
-          maximum_bitrate = (size_limit_in_bits / metadata.duration).floor - 192_000 # Leave some space for the audio stream
+          duration = [metadata.duration, 1].max
+          maximum_bitrate = (size_limit_in_bits / duration).floor - 192_000 # Leave some space for the audio stream
           bitrate = [desired_bitrate, maximum_bitrate].min
 
           @output_options['b:v']     = bitrate
@@ -60,7 +61,7 @@ module Paperclip
       command_arguments, interpolations = prepare_command(destination)
 
       begin
-        command = Terrapin::CommandLine.new('ffmpeg', command_arguments.join(' '), logger: Paperclip.logger)
+        command = Terrapin::CommandLine.new(Rails.configuration.x.ffmpeg_binary, command_arguments.join(' '), logger: Paperclip.logger)
         command.run(interpolations)
       rescue Terrapin::ExitStatusError => e
         raise Paperclip::Error, "Error while transcoding #{@basename}: #{e}"

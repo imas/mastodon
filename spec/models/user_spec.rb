@@ -27,12 +27,6 @@ RSpec.describe User do
       expect(user).to model_have_error_on_field(:account)
     end
 
-    it 'is invalid without a valid locale' do
-      user = Fabricate.build(:user, locale: 'toto')
-      user.valid?
-      expect(user).to model_have_error_on_field(:locale)
-    end
-
     it 'is invalid without a valid email' do
       user = Fabricate.build(:user, email: 'john@')
       user.valid?
@@ -43,6 +37,24 @@ RSpec.describe User do
       user = Fabricate.build(:user, email: 'invalid-email')
       user.save(validate: false)
       expect(user.valid?).to be true
+    end
+
+    it 'is valid with a localhost e-mail address' do
+      user = Fabricate.build(:user, email: 'admin@localhost')
+      user.valid?
+      expect(user.valid?).to be true
+    end
+
+    it 'cleans out invalid locale' do
+      user = Fabricate.build(:user, locale: 'toto')
+      expect(user.valid?).to be true
+      expect(user.locale).to be_nil
+    end
+
+    it 'cleans out invalid timezone' do
+      user = Fabricate.build(:user, time_zone: 'toto')
+      expect(user.valid?).to be true
+      expect(user.time_zone).to be_nil
     end
 
     it 'cleans out empty string from languages' do
@@ -69,12 +81,36 @@ RSpec.describe User do
       end
     end
 
-    describe 'inactive' do
-      it 'returns a relation of inactive users' do
-        specified = Fabricate(:user, current_sign_in_at: 15.days.ago)
-        Fabricate(:user, current_sign_in_at: 6.days.ago)
+    describe 'signed_in_recently' do
+      it 'returns a relation of users who have signed in during the recent period' do
+        recent_sign_in_user = Fabricate(:user, current_sign_in_at: within_duration_window_days.ago)
+        Fabricate(:user, current_sign_in_at: exceed_duration_window_days.ago)
 
-        expect(described_class.inactive).to contain_exactly(specified)
+        expect(described_class.signed_in_recently)
+          .to contain_exactly(recent_sign_in_user)
+      end
+    end
+
+    describe 'not_signed_in_recently' do
+      it 'returns a relation of users who have not signed in during the recent period' do
+        no_recent_sign_in_user = Fabricate(:user, current_sign_in_at: exceed_duration_window_days.ago)
+        Fabricate(:user, current_sign_in_at: within_duration_window_days.ago)
+
+        expect(described_class.not_signed_in_recently)
+          .to contain_exactly(no_recent_sign_in_user)
+      end
+    end
+
+    describe 'account_not_suspended' do
+      it 'returns with linked accounts that are not suspended' do
+        suspended_account = Fabricate(:account, suspended_at: 10.days.ago)
+        non_suspended_account = Fabricate(:account, suspended_at: nil)
+        suspended_user = Fabricate(:user, account: suspended_account)
+        non_suspended_user = Fabricate(:user, account: non_suspended_account)
+
+        expect(described_class.account_not_suspended)
+          .to include(non_suspended_user)
+          .and not_include(suspended_user)
       end
     end
 
@@ -98,6 +134,14 @@ RSpec.describe User do
 
         expect(described_class.matches_ip('2160:2160::/32')).to contain_exactly(user1)
       end
+    end
+
+    def exceed_duration_window_days
+      described_class::ACTIVE_DURATION + 2.days
+    end
+
+    def within_duration_window_days
+      described_class::ACTIVE_DURATION - 2.days
     end
   end
 
@@ -432,7 +476,10 @@ RSpec.describe User do
     let!(:access_token) { Fabricate(:access_token, resource_owner_id: user.id) }
     let!(:web_push_subscription) { Fabricate(:web_push_subscription, access_token: access_token) }
 
+    let(:redis_pipeline_stub) { instance_double(Redis::Namespace, publish: nil) }
+
     before do
+      allow(redis).to receive(:pipelined).and_yield(redis_pipeline_stub)
       user.reset_password!
     end
 
@@ -446,6 +493,10 @@ RSpec.describe User do
 
     it 'revokes all access tokens' do
       expect(Doorkeeper::AccessToken.active_for(user).count).to eq 0
+    end
+
+    it 'revokes streaming access for all access tokens' do
+      expect(redis_pipeline_stub).to have_received(:publish).with("timeline:access_token:#{access_token.id}", Oj.dump(event: :kill)).once
     end
 
     it 'removes push subscriptions' do

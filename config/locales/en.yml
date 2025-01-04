@@ -768,6 +768,7 @@ en:
         disabled: To no one
         users: To logged-in local users
       registrations:
+        moderation_recommandation: Please make sure you have an adequate and reactive moderation team before you open registrations to everyone!
         preamble: Control who can create an account on your server.
         title: Registrations
       registrations_mode:
@@ -775,6 +776,7 @@ en:
           approved: Approval required for sign up
           none: Nobody can sign up
           open: Anyone can sign up
+        warning_hint: We recommend using “Approval required for sign up” unless you are confident your moderation team can handle spam and malicious registrations in a timely fashion.
       security:
         authorized_fetch: Require authentication from federated servers
         authorized_fetch_hint: Requiring authentication from federated servers enables stricter enforcement of both user-level and server-level blocks. However, this comes at the cost of a performance penalty, reduces the reach of your replies, and may introduce compatibility issues with some federated services. In addition, this will not prevent dedicated actors from fetching your public posts and accounts.
@@ -860,6 +862,9 @@ en:
         message_html: You haven't defined any server rules.
       sidekiq_process_check:
         message_html: No Sidekiq process running for the %{value} queue(s). Please review your Sidekiq configuration
+      software_version_check:
+        action: See available updates
+        message_html: A Mastodon update is available.
       software_version_critical_check:
         action: See available updates
         message_html: A critical Mastodon update is available, please update as quickly as possible.
@@ -967,6 +972,9 @@ en:
       title: Webhooks
       webhook: Webhook
   admin_mailer:
+    auto_close_registrations:
+      body: Due to a lack of recent moderator activity, registrations on %{instance} have been automatically switched to requiring manual review, to prevent %{instance} from being used as a platform for potential bad actors. You can switch it back to open registrations at any time.
+      subject: Registrations for %{instance} have been automatically switched to requiring approval
     new_appeal:
       actions:
         delete_statuses: to delete their posts
@@ -1843,6 +1851,7 @@ en:
     go_to_sso_account_settings: Go to your identity provider's account settings
     invalid_otp_token: Invalid two-factor code
     otp_lost_help_html: If you lost access to both, you may get in touch with %{email}
+    rate_limited: Too many authentication attempts, try again later.
     seamless_external_login: You are logged in via an external service, so password and e-mail settings are not available.
     signed_in_as: 'Signed in as:'
   verification:
