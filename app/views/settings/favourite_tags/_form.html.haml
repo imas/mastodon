@@ -1,7 +1,6 @@
 = simple_form_for [:settings, favourite_tag] do |f|
   = render 'shared/error_messages', object: favourite_tag
-  = f.simple_fields_for :tag do |ff|
-    = ff.input :name, placeholder: t('favourite_tags.name_of_tag')
+  = f.input :name, placeholder: t('favourite_tags.name_of_tag')
   = f.input :visibility,
     label: t('simple_form.labels.defaults.setting_default_privacy'),
     collection: Status.visibilities.keys[0..1],

@@ -3,33 +3,42 @@
 class Settings::FavouriteTagsController < Settings::BaseController
   layout 'admin'
   before_action :authenticate_user!
-  before_action :set_account
-  before_action :set_favourite_tags, only: [:index, :create]
-  before_action :set_favourite_tag, only: [:edit, :update, :destroy]
 
   def index
-    @favourite_tag = FavouriteTag.new(tag: Tag.new, visibility: FavouriteTag.visibilities[:public])
+    @favourite_tags = current_account.favourite_tags.with_order
+    @favourite_tag = FavouriteTag.new(visibility: FavouriteTag.visibilities[:public])
   end
 
   def edit
-    @favourite_tag
+    @favourite_tag = current_account.favourite_tags.find(params[:id])
   end
 
   def create
-    name = tag_params[:name].delete_prefix('#')
-    tag = Tag.find_or_initialize_by(name: name)
-    @favourite_tag = FavouriteTag.new(account: @account, tag: tag, visibility: favourite_tag_params[:visibility], order: favourite_tag_params[:order])
+    @favourite_tag = FavouriteTag.new(
+      account: current_account,
+      name: create_params[:name].delete_prefix('#'),
+      order: create_params[:order],
+      visibility: create_params[:visibility]
+    )
+
     if @favourite_tag.save
       redirect_to settings_favourite_tags_path, notice: I18n.t('generic.changes_saved_msg')
     else
+      @favourite_tags = current_account.favourite_tags.with_order
       render :index
     end
   end
 
   def update
-    name = tag_params[:name].delete_prefix('#')
-    tag = Tag.find_or_initialize_by(name: name)
-    if @favourite_tag.update(tag: tag, visibility: favourite_tag_params[:visibility], order: favourite_tag_params[:order])
+    @favourite_tag = current_account.favourite_tags.find(params[:id])
+
+    @favourite_tag.update(
+      name: update_params[:name].delete_prefix('#'),
+      order: update_params[:order],
+      visibility: update_params[:visibility]
+    )
+
+    if @favourite_tag.save
       redirect_to settings_favourite_tags_path, notice: I18n.t('generic.changes_saved_msg')
     else
       render :edit
@@ -37,29 +46,21 @@ class Settings::FavouriteTagsController < Settings::BaseController
   end
 
   def destroy
-    @favourite_tag.destroy
+    current_account.favourite_tags.destroy(params[:id])
     redirect_to settings_favourite_tags_path
   end
 
   private
 
-  def tag_params
-    params.require(:favourite_tag).require(:tag_attributes).permit(:id, :name)
+  def create_params
+    params.require(:favourite_tag).permit(:name, :visibility, :order)
   end
 
-  def favourite_tag_params
-    params.require(:favourite_tag).permit(:visibility, :order, { tag_attributes: [:id, :name] })
+  def update_params
+    params.require(:favourite_tag).permit(:name, :visibility, :order)
   end
 
-  def set_account
-    @account = current_user.account
-  end
-
-  def set_favourite_tag
-    @favourite_tag = @account.favourite_tags.find(params[:id])
-  end
-
-  def set_favourite_tags
-    @favourite_tags = @account.favourite_tags.with_order.includes(:tag)
+  def current_account
+    current_user.account
   end
 end

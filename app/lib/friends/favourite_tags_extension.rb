@@ -17,7 +17,7 @@ module Friends
 
       def add_default_favourite_tag
         DEFAULT_TAGS.each_with_index do |tag_name, i|
-          favourite_tags.create!(visibility: 'unlisted', tag: Tag.find_or_create_by!(name: HashtagNormalizer.new.normalize(tag_name)), order: (DEFAULT_TAGS.length - i))
+          favourite_tags.create!(visibility: 'unlisted', name: tag_name, order: (DEFAULT_TAGS.length - i))
         end
       end
     end

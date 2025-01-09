@@ -129,6 +129,10 @@ RSpec/FilePath:
     - 'spec/config/initializers/rack_attack_spec.rb' # namespaces usually have separate folder
     - 'spec/lib/sanitize_config_spec.rb' # namespaces usually have separate folder
 
+RSpec/LetSetup:
+  Exclude:
+    - spec/imastodon/**/*
+
 # Reason:
 # https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecnamedsubject
 RSpec/NamedSubject:

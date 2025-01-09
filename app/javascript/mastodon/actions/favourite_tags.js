@@ -15,7 +15,7 @@ export function refreshFavouriteTags() {
 export function addFavouriteTags(tag, visibility) {
   return (dispatch, getState) => {
     api(getState).post('/api/v1/favourite_tags', {
-      tag: tag,
+      name: tag,
       visibility: visibility,
     }).then(() => {
       dispatch(refreshFavouriteTags());
@@ -23,9 +23,9 @@ export function addFavouriteTags(tag, visibility) {
   };
 }
 
-export function removeFavouriteTags(tag) {
+export function removeFavouriteTags(id) {
   return (dispatch, getState) => {
-    api(getState).delete(`/api/v1/favourite_tags/${tag}`).then(() => {
+    api(getState).delete(`/api/v1/favourite_tags/${id}`).then(() => {
       dispatch(refreshFavouriteTags());
     }).catch(() => {});
   };

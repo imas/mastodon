@@ -4,7 +4,8 @@ import { addFavouriteTags, removeFavouriteTags } from '../../../actions/favourit
 import FavouriteToggle from '../components/favourite_toggle';
 
 const mapStateToProps = (state, { tag }) => ({
-  isRegistered: state.getIn(['favourite_tags', 'tags']).some(t => t.get('name') === tag),
+  publicId: state.getIn(['favourite_tags', 'tags']).find(t => t.get('name') === tag && t.get('visibility') === 'public')?.get('id'),
+  unlistedId: state.getIn(['favourite_tags', 'tags']).find(t => t.get('name') === tag && t.get('visibility') === 'unlisted')?.get('id'),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -13,8 +14,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addFavouriteTags(tag, visibility));
   },
 
-  removeFavouriteTags (tag) {
-    dispatch(removeFavouriteTags(tag));
+  removeFavouriteTags (id) {
+    dispatch(removeFavouriteTags(id));
   },
 
 });
