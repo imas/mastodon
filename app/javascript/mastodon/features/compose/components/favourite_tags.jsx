@@ -42,7 +42,7 @@ class FavouriteTags extends React.PureComponent {
     this.props.refreshFavouriteTags();
   }
 
-  componentWillUpdate (nextProps, nextState) {
+  UNSAFE_componentWillUpdate (nextProps, nextState) {
     // タグ操作に変更があった場合
     if (!this.state.lockedTag.equals(nextState.lockedTag)) {
       const icon = icons.concat().reverse().find(icon => nextState.lockedVisibility.includes(icon.key));

@@ -15,7 +15,7 @@
 #
 
 class FavouriteTag < ApplicationRecord
-  enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3 }, _suffix: :visibility
+  enum :visibility, { public: 0, unlisted: 1, private: 2, direct: 3 }, suffix: :visibility
 
   belongs_to :account, optional: false
   belongs_to :tag, optional: true
