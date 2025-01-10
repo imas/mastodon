@@ -41,12 +41,12 @@ class FavouriteToggle extends React.PureComponent {
   };
 
   removePublic = () => {
-    this.removeFavouriteTags(this.props.publicId)
-  }
+    this.removeFavouriteTags(this.props.publicId);
+  };
 
   removeUnlisted = () => {
-    this.removeFavouriteTags(this.props.unlistedId)
-  }
+    this.removeFavouriteTags(this.props.unlistedId);
+  };
 
   render () {
     const { intl, unlistedId, publicId } = this.props;
@@ -56,11 +56,11 @@ class FavouriteToggle extends React.PureComponent {
         <div className='column-settings__row'>
           {
             publicId != null ? <Button className='favourite-tags__remove-button-in-column' text={intl.formatMessage(messages.remove_favourite_tags_public)} onClick={this.removePublic} block />
-                             : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_public)} onClick={this.addPublic} block />
+              : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_public)} onClick={this.addPublic} block />
           }
           {
             unlistedId != null ? <Button className='favourite-tags__remove-button-in-column' text={intl.formatMessage(messages.remove_favourite_tags_unlisted)} onClick={this.removeUnlisted} block />
-                             : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_unlisted)} onClick={this.addUnlisted} block />
+              : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_unlisted)} onClick={this.addUnlisted} block />
           }
         </div>
       </div>
