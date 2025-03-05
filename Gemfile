@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '>= 3.0.0'
+ruby '>= 3.1.0'
 
 gem 'puma', '~> 6.3'
 gem 'rails', '~> 7.0'
@@ -60,7 +60,7 @@ gem 'idn-ruby', require: 'idn'
 gem 'kaminari', '~> 1.2'
 gem 'link_header', '~> 0.0'
 gem 'mime-types', '~> 3.5.0', require: 'mime/types/columnar'
-gem 'nokogiri', '~> 1.15'
+gem 'nokogiri', '~> 1.17'
 gem 'nsa'
 gem 'oj', '~> 3.14'
 gem 'ox', '~> 2.14'
