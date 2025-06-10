@@ -205,3 +205,7 @@ gem 'rubyzip', '~> 2.3'
 gem 'hcaptcha', '~> 7.1'
 
 gem 'mail', '~> 2.8'
+
+group :imastodon do
+  gem 'aws-sdk-ssm', '~> 1.157'
+end

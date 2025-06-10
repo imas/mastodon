@@ -11,6 +11,7 @@ About what is Mastodon, see [tootsuite/mastodon](https://github.com/tootsuite/ma
 
 - 未収載タグ付き投稿のタグ TL への表示
 - お気に入りタグ機能
+- 環境変数をAWSのパラメータストアから展開できる
 
 ## 開発用 docker-compose ファイル
 

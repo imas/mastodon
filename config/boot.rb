@@ -8,4 +8,5 @@ end
 ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
 
 require 'bundler/setup' # Set up gems listed in the Gemfile.
+require_relative 'extract_env_vars' # Load environment variables from AWS Parameter Store.
 require 'bootsnap/setup' # Speed up boot time by caching expensive operations.
