@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.2.24] - 2025-08-05
+
+### Security
+
+- Update dependencies
+- Fix incorrect rate-limit handling [GHSA-84ch-6436-c7mg](https://github.com/mastodon/mastodon/security/advisories/GHSA-84ch-6436-c7mg)
+
+### Fixed
+
+- Fix race condition caused by ActiveRecord query cache in `Create` critical path (#35662 by @ClearlyClaire)
+- Fix WebUI crashing for accounts with `null` URL (#35651 by @ClearlyClaire)
+
+## [4.2.23] - 2025-07-23
+
+### Security
+
+- Updated dependencies
+
+## [4.2.22] - 2025-07-02
+
+### Changed
+
+- Change passthrough video processing to emit `moov` atom at start of video (#34726 by @ClearlyClaire)
+
+### Fixed
+
+- Fix `NoMethodError` in edge case of emoji cache handling (#34749 by @dariusk)
+- Fix error when viewing statuses to deleted replies in moderation view (#32986 by @ClearlyClaire)
+- Fix search operators sometimes getting lost (#35190 by @ClearlyClaire)
+- Fix handling of remote attachments with multiple media types (#34996 by @ClearlyClaire)
+- Fix inconsistent filtering of silenced accounts for other silenced accounts (#34863 by @ClearlyClaire)
+- Fix handling of inlined `featured` collections in ActivityPub actor objects (#34789 and #34811 by @ClearlyClaire)
+- Fix admin dashboard crash on specific Elasticsearch connection errors (#34683 by @ClearlyClaire)
+- Fix OIDC account creation failing for long display names (#34639 by @defnull)
+- Fix `/share` not using server-set characters limit (#33459 by @kescherCode)
+- Fix wrong video dimensions for some rotated videos (#33008 and #33261 by @Gargron and @tribela)
+
 ## [4.2.21] - 2025-05-06
 
 ### Security
