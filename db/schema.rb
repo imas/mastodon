@@ -1308,8 +1308,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_030426) do
   add_foreign_key "mentions", "statuses", on_delete: :cascade
   add_foreign_key "mutes", "accounts", column: "target_account_id", name: "fk_eecff219ea", on_delete: :cascade
   add_foreign_key "mutes", "accounts", name: "fk_b8d8daf315", on_delete: :cascade
-  add_foreign_key "notification_permissions", "accounts"
-  add_foreign_key "notification_permissions", "accounts", column: "from_account_id"
+  add_foreign_key "notification_permissions", "accounts", column: "from_account_id", on_delete: :cascade
+  add_foreign_key "notification_permissions", "accounts", on_delete: :cascade
   add_foreign_key "notification_policies", "accounts", on_delete: :cascade
   add_foreign_key "notification_requests", "accounts", column: "from_account_id", on_delete: :cascade
   add_foreign_key "notification_requests", "accounts", on_delete: :cascade
