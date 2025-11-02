@@ -2,6 +2,292 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.14] - 2025-10-13
+
+### Security
+
+- Update dependencies `rack` and `uri`
+- Fix streaming server connection not being closed on user suspension (by @ThisIsMissEm, [GHSA-r2fh-jr9c-9pxh](https://github.com/mastodon/mastodon/security/advisories/GHSA-r2fh-jr9c-9pxh))
+- Fix password change through admin CLI not invalidating existing sessions and access tokens (by @ThisIsMissEm, [GHSA-f3q3-rmf7-9655](https://github.com/mastodon/mastodon/security/advisories/GHSA-f3q3-rmf7-9655))
+- Fix streaming server allowing access to public timelines even without the `read` or `read:statuses` OAuth scopes (by @ThisIsMissEm, [GHSA-7gwh-mw97-qjgp](https://github.com/mastodon/mastodon/security/advisories/GHSA-7gwh-mw97-qjgp))
+
+### Fixed
+
+- Fix redirect to external object when URL is missing or malformed (#36347 by @ClearlyClaire)
+
+## [4.3.13] - 2025-09-23
+
+### Security
+
+- Update dependencies
+
+### Fixed
+
+- Fix processing of out-of-order `Update` as implicit updates (#36190 by @ClearlyClaire)
+- Fix getting `Create` and `Update` out of order (#36176 by @ClearlyClaire)
+
+## [4.3.12] - 2025-09-16
+
+### Security
+
+- Update dependencies
+
+### Fixed
+
+- Fix processing of remote edited statuses with new media and no text (#35970 by @unfokus)
+- Fix “Edit” and “Delete & Redraft” on a poll not inserting empty option (#35892 by @ClearlyClaire)
+- Fix self-destruct scheduler behavior on some Redis setups (#35823 by @ClearlyClaire)
+
+## [4.3.11] - 2025-08-05
+
+### Security
+
+- Update dependencies
+- Fix incorrect rate-limit handling [GHSA-84ch-6436-c7mg](https://github.com/mastodon/mastodon/security/advisories/GHSA-84ch-6436-c7mg)
+
+### Fixed
+
+- Fix race condition caused by ActiveRecord query cache in `Create` critical path (#35662 by @ClearlyClaire)
+- Fix WebUI crashing for accounts with `null` URL (#35651 by @ClearlyClaire)
+- Fix friends-of-friends recommendations suggesting already-requested accounts (#35604 by @ClearlyClaire)
+
+## [4.3.10] - 2025-07-23
+
+### Security
+
+- Updated dependencies
+
+## [4.3.9] - 2025-07-02
+
+### Changed
+
+- Change passthrough video processing to emit `moov` atom at start of video (#34726 by @ClearlyClaire)
+
+### Fixed
+
+- Fix `NoMethodError` in edge case of emoji cache handling (#34749 by @dariusk)
+- Fix error when viewing statuses to deleted replies in moderation view (#32986 by @ClearlyClaire)
+- Fix search operators sometimes getting lost (#35190 by @ClearlyClaire)
+- Fix “Alt text” button submitting form in moderation interface (#35147 by @ClearlyClaire)
+- Fix handling of remote attachments with multiple media types (#34996 by @ClearlyClaire)
+- Fix blocked accounts not being automatically removed from trending statuses (#34891 by @ClearlyClaire)
+- Fix inconsistent filtering of silenced accounts for other silenced accounts (#34863 by @ClearlyClaire)
+- Fix handling of inlined `featured` collections in ActivityPub actor objects (#34789 and #34811 by @ClearlyClaire)
+- Fix admin dashboard crash on specific Elasticsearch connection errors (#34683 by @ClearlyClaire)
+- Fix OIDC account creation failing for long display names (#34639 by @defnull)
+- Fix `/share` not using server-set characters limit (#33459 by @kescherCode)
+- Fix wrong video dimensions for some rotated videos (#33008 and #33261 by @Gargron and @tribela)
+- Fix missing autofocus on boost modal (#32953 by @tribela)
+
+## [4.3.8] - 2025-05-06
+
+### Security
+
+- Update dependencies
+- Check scheme on account, profile, and media URLs ([GHSA-x2rc-v5wx-g3m5](https://github.com/mastodon/mastodon/security/advisories/GHSA-x2rc-v5wx-g3m5))
+
+### Added
+
+- Add warning for REDIS_NAMESPACE deprecation at startup (#34581 by @ClearlyClaire)
+- Add built-in context for interaction policies (#34574 by @ClearlyClaire)
+
+### Changed
+
+- Change activity distribution error handling to skip retrying for deleted accounts (#33617 by @ClearlyClaire)
+
+### Removed
+
+- Remove double-query for signed query strings (#34610 by @ClearlyClaire)
+
+### Fixed
+
+- Fix incorrect redirect in response to unauthenticated API requests in limited federation mode (#34549 by @ClearlyClaire)
+- Fix sign-up e-mail confirmation page reloading on error or redirect (#34548 by @ClearlyClaire)
+
+## [4.3.7] - 2025-04-02
+
+### Added
+
+- Add delay to profile updates to debounce them (#34137 by @ClearlyClaire)
+- Add support for paginating partial collections in `SynchronizeFollowersService` (#34272 and #34277 by @ClearlyClaire)
+
+### Changed
+
+- Change account suspensions to be federated to recently-followed accounts as well (#34294 by @ClearlyClaire)
+- Change `AccountReachFinder` to consider statuses based on suspension date (#32805 and #34291 by @ClearlyClaire and @mjankowski)
+- Change user archive signed URL TTL from 10 seconds to 1 hour (#34254 by @ClearlyClaire)
+
+### Fixed
+
+- Fix static version of animated PNG emojis not being properly extracted (#34337 by @ClearlyClaire)
+- Fix filters not applying in detailed view, favourites and bookmarks (#34259 and #34260 by @ClearlyClaire)
+- Fix handling of malformed/unusual HTML (#34201 by @ClearlyClaire)
+- Fix `CacheBuster` being queued for missing media attachments (#34253 by @ClearlyClaire)
+- Fix incorrect URL being used when cache busting (#34189 by @ClearlyClaire)
+- Fix streaming server refusing unix socket path in `DATABASE_URL` (#34091 by @ClearlyClaire)
+- Fix “x” hotkey not working on boosted filtered posts (#33758 by @ClearlyClaire)
+
+## [4.3.6] - 2025-03-13
+
+### Security
+
+- Update dependency `omniauth-saml`
+- Update dependency `rack`
+
+### Fixed
+
+- Fix Stoplight errors when using `REDIS_NAMESPACE` (#34126 by @ClearlyClaire)
+
+## [4.3.5] - 2025-03-10
+
+### Changed
+
+- Change hashtag suggestion to prefer personal history capitalization (#34070 by @ClearlyClaire)
+
+### Fixed
+
+- Fix processing errors for some HEIF images from iOS 18 (#34086 by @renchap)
+- Fix streaming server not filtering unknown-language posts from public timelines (#33774 by @ClearlyClaire)
+- Fix preview cards under Content Warnings not being shown in detailed statuses (#34068 by @ClearlyClaire)
+- Fix username and display name being hidden on narrow screens in moderation interface (#33064 by @ClearlyClaire)
+
+## [4.3.4] - 2025-02-27
+
+### Security
+
+- Update dependencies
+- Change HTML sanitization to remove unusable and unused `embed` tag (#34021 by @ClearlyClaire, [GHSA-mq2m-hr29-8gqf](https://github.com/mastodon/mastodon/security/advisories/GHSA-mq2m-hr29-8gqf))
+- Fix rate-limit on sign-up email verification ([GHSA-v39f-c9jj-8w7h](https://github.com/mastodon/mastodon/security/advisories/GHSA-v39f-c9jj-8w7h))
+- Fix improper disclosure of domain blocks to unverified users ([GHSA-94h4-fj37-c825](https://github.com/mastodon/mastodon/security/advisories/GHSA-94h4-fj37-c825))
+
+### Changed
+
+- Change preview cards to be shown when Content Warnings are expanded (#33827 by @ClearlyClaire)
+- Change warnings against changing encryption secrets to be even more noticeable (#33631 by @ClearlyClaire)
+- Change `mastodon:setup` to prevent overwriting already-configured servers (#33603, #33616, and #33684 by @ClearlyClaire and @mjankowski)
+- Change notifications from moderators to not be filtered (#32974 and #33654 by @ClearlyClaire and @mjankowski)
+
+### Fixed
+
+- Fix `GET /api/v2/notifications/:id` and `POST /api/v2/notifications/:id/dismiss` for ungrouped notifications (#33990 by @ClearlyClaire)
+- Fix issue with some versions of libvips on some systems (#33853 by @kleisauke)
+- Fix handling of duplicate mentions in incoming status `Update` (#33911 by @ClearlyClaire)
+- Fix inefficiencies in timeline generation (#33839 and #33842 by @ClearlyClaire)
+- Fix emoji rewrite adding unnecessary curft to the DOM for most emoji (#33818 by @ClearlyClaire)
+- Fix `tootctl feeds build` not building list timelines (#33783 by @ClearlyClaire)
+- Fix flaky test in `/api/v2/notifications` tests (#33773 by @ClearlyClaire)
+- Fix incorrect signature after HTTP redirect (#33757 and #33769 by @ClearlyClaire)
+- Fix polls not being validated on edition (#33755 by @ClearlyClaire)
+- Fix media preview height in compose form when 3 or more images are attached (#33571 by @ClearlyClaire)
+- Fix preview card sizing in “Author attribution” in profile settings (#33482 by @ClearlyClaire)
+- Fix processing of incoming notifications for unfilterable types (#33429 by @ClearlyClaire)
+- Fix featured tags for remote accounts not being kept up to date (#33372, #33406, and #33425 by @ClearlyClaire and @mjankowski)
+- Fix notification polling showing a loading bar in web UI (#32960 by @Gargron)
+- Fix accounts table long display name (#29316 by @WebCoder49)
+- Fix exclusive lists interfering with notifications (#28162 by @ShadowJonathan)
+
+## [4.3.3] - 2025-01-16
+
+### Security
+
+- Fix insufficient validation of account URIs ([GHSA-5wxh-3p65-r4g6](https://github.com/mastodon/mastodon/security/advisories/GHSA-5wxh-3p65-r4g6))
+- Update dependencies
+
+### Fixed
+
+- Fix `libyaml` missing from `Dockerfile` build stage (#33591 by @vmstan)
+- Fix incorrect notification settings migration for non-followers (#33348 by @ClearlyClaire)
+- Fix down clause for notification policy v2 migrations (#33340 by @jesseplusplus)
+- Fix error decrementing status count when `FeaturedTags#last_status_at` is `nil` (#33320 by @ClearlyClaire)
+- Fix last paginated notification group only including data on a single notification (#33271 by @ClearlyClaire)
+- Fix processing of mentions for post edits with an existing corresponding silent mention (#33227 by @ClearlyClaire)
+- Fix deletion of unconfirmed users with Webauthn set (#33186 by @ClearlyClaire)
+- Fix empty authors preview card serialization (#33151, #33466 by @mjankowski and @ClearlyClaire)
+
+## [4.3.2] - 2024-12-03
+
+### Added
+
+- Add `tootctl feeds vacuum` (#33065 by @ClearlyClaire)
+- Add error message when user tries to follow their own account (#31910 by @lenikadali)
+- Add client_secret_expires_at to OAuth Applications (#30317 by @ThisIsMissEm)
+
+### Changed
+
+- Change design of Content Warnings and filters (#32543 by @ClearlyClaire)
+
+### Fixed
+
+- Fix processing incoming post edits with mentions to unresolvable accounts (#33129 by @ClearlyClaire)
+- Fix error when including multiple instances of `embed.js` (#33107 by @YKWeyer)
+- Fix inactive users' timelines being backfilled on follow and unsuspend (#33094 by @ClearlyClaire)
+- Fix direct inbox delivery pushing posts into inactive followers' timelines (#33067 by @ClearlyClaire)
+- Fix `TagFollow` records not being correctly handled in account operations (#33063 by @ClearlyClaire)
+- Fix pushing hashtag-followed posts to feeds of inactive users (#33018 by @Gargron)
+- Fix duplicate notifications in notification groups when using slow mode (#33014 by @ClearlyClaire)
+- Fix posts made in the future being allowed to trend (#32996 by @ClearlyClaire)
+- Fix uploading higher-than-wide GIF profile picture with libvips enabled (#32911 by @ClearlyClaire)
+- Fix domain attribution field having autocorrect and autocapitalize enabled (#32903 by @ClearlyClaire)
+- Fix titles being escaped twice (#32889 by @ClearlyClaire)
+- Fix list creation limit check (#32869 by @ClearlyClaire)
+- Fix error in `tootctl email_domain_blocks` when supplying `--with-dns-records` (#32863 by @mjankowski)
+- Fix `min_id` and `max_id` causing error in search API (#32857 by @Gargron)
+- Fix inefficiencies when processing removal of posts that use featured tags (#32787 by @ClearlyClaire)
+- Fix alt-text pop-in not using the translated description (#32766 by @ClearlyClaire)
+- Fix preview cards with long titles erroneously causing layout changes (#32678 by @ClearlyClaire)
+- Fix embed modal layout on mobile (#32641 by @DismalShadowX)
+- Fix and improve batch attachment deletion handling when using OpenStack Swift (#32637 by @hugogameiro)
+- Fix blocks not being applied on link timeline (#32625 by @tribela)
+- Fix follow counters being incorrectly changed (#32622 by @oneiros)
+- Fix 'unknown' media attachment type rendering (#32613 and #32713 by @ThisIsMissEm and @renatolond)
+- Fix tl language native name (#32606 by @seav)
+
+### Security
+
+- Update dependencies
+
+## [4.3.1] - 2024-10-21
+
+### Added
+
+- Add more explicit explanations about author attribution and `fediverse:creator` (#32383 by @ClearlyClaire)
+- Add ability to group follow notifications in WebUI, can be disabled in the column settings (#32520 by @renchap)
+- Add back a 6 hours mute duration option (#32522 by @renchap)
+- Add note about not changing ActiveRecord encryption secrets once they are set (#32413, #32476, #32512, and #32537 by @ClearlyClaire and @mjankowski)
+
+### Changed
+
+- Change translation feature to translate to selected regional variant (e.g. pt-BR) if available (#32428 by @c960657)
+
+### Removed
+
+- Remove ability to get embed code for remote posts (#32578 by @ClearlyClaire)\
+  Getting the embed code is only reliable for local posts.\
+  It never worked for non-Mastodon servers, and stopped working correctly with the changes made in 4.3.0.\
+  We have therefore decided to remove the menu entry while we investigate solutions.
+
+### Fixed
+
+- Fix follow recommendation moderation page default language when using regional variant (#32580 by @ClearlyClaire)
+- Fix column-settings spacing in local timeline in advanced view (#32567 by @lindwurm)
+- Fix broken i18n in text welcome mailer tags area (#32571 by @mjankowski)
+- Fix missing or incorrect cache-control headers for Streaming server (#32551 by @ThisIsMissEm)
+- Fix only the first paragraph being displayed in some notifications (#32348 by @ClearlyClaire)
+- Fix reblog icons on account media view (#32506 by @tribela)
+- Fix Content-Security-Policy not allowing OpenStack SWIFT object storage URI (#32439 by @kenkiku1021)
+- Fix back arrow pointing to the incorrect direction in RTL languages (#32485 by @renchap)
+- Fix streaming server using `REDIS_USERNAME` instead of `REDIS_USER` (#32493 by @ThisIsMissEm)
+- Fix follow recommendation carrousel scrolling on RTL layouts (#32462 and #32505 by @ClearlyClaire)
+- Fix follow recommendation suppressions not applying immediately (#32392 by @ClearlyClaire)
+- Fix language of push notifications (#32415 by @ClearlyClaire)
+- Fix mute duration not being shown in list of muted accounts in web UI (#32388 by @ClearlyClaire)
+- Fix “Mark every notification as read” not updating the read marker if scrolled down (#32385 by @ClearlyClaire)
+- Fix “Mention” appearing for otherwise filtered posts (#32356 by @ClearlyClaire)
+- Fix notification requests from suspended accounts still being listed (#32354 by @ClearlyClaire)
+- Fix list edition modal styling (#32358 and #32367 by @ClearlyClaire and @vmstan)
+- Fix 4 columns barely not fitting on 1920px screen (#32361 by @ClearlyClaire)
+- Fix icon alignment in applications list (#32293 by @mjankowski)
+
 ## [4.3.0] - 2024-10-08
 
 The following changelog entries focus on changes visible to users, administrators, client developers or federated software developers, but there has also been a lot of code modernization, refactoring, and tooling work, in particular by @mjankowski.
@@ -51,7 +337,7 @@ The following changelog entries focus on changes visible to users, administrator
 - **Add notifications of severed relationships** (#27511, #29665, #29668, #29670, #29700, #29714, #29712, and #29731 by @ClearlyClaire and @Gargron)\
   Notify local users when they lose relationships as a result of a local moderator blocking a remote account or server, allowing the affected user to retrieve the list of broken relationships.\
   Note that this does not notify remote users.\
-  This adds the `severed_relationships` notification type to the REST API and streaming, with a new [`relationship_severance_event` attribute](https://docs.joinmastodon.org/entities/Notification/#relationship_severance_event).
+  This adds the `severed_relationships` notification type to the REST API and streaming, with a new [`event` attribute](https://docs.joinmastodon.org/entities/Notification/#relationship_severance_event).
 - **Add hover cards in web UI** (#30754, #30864, #30850, #30879, #30928, #30949, #30948, #30931, and #31300 by @ClearlyClaire, @Gargron, and @renchap)\
   Hovering over an avatar or username will now display a hover card with the first two lines of the user's description and their first two profile fields.\
   This can be disabled in the “Animations and accessibility” section of the preferences.
@@ -67,7 +353,7 @@ The following changelog entries focus on changes visible to users, administrator
   ```html
   <meta name="fediverse:creator" content="username@domain" />
   ```
-  On the API side, this is represented by a new `authors` attribute to the `PreviewCard` entity: https://docs.joinmastodon.org/entities/PreviewCard/#authors\
+  On the API side, this is represented by a new `authors` attribute to the `PreviewCard` entity: https://docs.joinmastodon.org/entities/PreviewCard/#authors \
   Users can allow arbitrary domains to use `fediverse:creator` to credit them by visiting `/settings/verification`.\
   This is federated as a new `attributionDomains` property in the `http://joinmastodon.org/ns` namespace, containing an array of domain names: https://docs.joinmastodon.org/spec/activitypub/#properties-used-1
 - **Add in-app notifications for moderation actions and warnings** (#30065, #30082, and #30081 by @ClearlyClaire)\

@@ -3,7 +3,7 @@ nl:
   simple_form:
     hints:
       account:
-        attribution_domains_as_text: Beschermt tegen onjuiste attributies.
+        attribution_domains_as_text: Eén per regel. Beschermt tegen ongeldige attributies.
         discoverable: Jouw openbare berichten kunnen worden uitgelicht op verschillende plekken binnen Mastodon en jouw account kan worden aanbevolen aan andere gebruikers.
         display_name: Jouw volledige naam of een leuke bijnaam.
         fields: Jouw website, persoonlijke voornaamwoorden, leeftijd, alles wat je maar kwijt wilt.
@@ -144,7 +144,7 @@ nl:
         url: Waar gebeurtenissen naartoe worden verzonden
     labels:
       account:
-        attribution_domains_as_text: Alleen bepaalde websites toestaan
+        attribution_domains_as_text: Websites die jou credit mogen geven
         discoverable: Jouw account en berichten laten uitlichten door Mastodon
         fields:
           name: Label
@@ -209,11 +209,11 @@ nl:
         setting_always_send_emails: Altijd e-mailmeldingen verzenden
         setting_auto_play_gif: Geanimeerde GIF's automatisch afspelen
         setting_boost_modal: Vraag voor het boosten van een bericht een bevestiging
-        setting_default_language: Taal van jouw berichten
-        setting_default_privacy: Zichtbaarheid van nieuwe berichten
+        setting_default_language: Taal van berichten
+        setting_default_privacy: Privacy voor nieuwe berichten
         setting_default_sensitive: Media altijd als gevoelig markeren
         setting_delete_modal: Vraag voor het verwijderen van een bericht een bevestiging
-        setting_disable_hover_cards: Profielvoorbeelden door eroverheen te zweven uitschakelen
+        setting_disable_hover_cards: Hover-kaarten met profielvoorbeelden uitschakelen
         setting_disable_swiping: Swipebewegingen uitschakelen
         setting_display_media: Mediaweergave
         setting_display_media_default: Standaard
@@ -268,7 +268,7 @@ nl:
         site_title: Servernaam
         status_page_url: URL van statuspagina
         theme: Standaardthema
-        thumbnail: Serverthumbnail
+        thumbnail: Server-miniatuur
         timeline_preview: Toegang tot de openbare tijdlijnen zonder in te loggen toestaan
         trendable_by_default: Trends goedkeuren zonder voorafgaande beoordeling
         trends: Trends inschakelen

@@ -23,6 +23,7 @@ ro:
       one: Postare
       other: De Postări
     posts_tab_heading: Postări
+    self_follow_error: Urmărirea propriului cont nu este permisă
   admin:
     account_actions:
       action: Efectuează acțiunea
@@ -429,6 +430,8 @@ ro:
       discovery:
         follow_recommendations: Urmează recomandările
         profile_directory: Catalogul de profiluri
+    statuses:
+      title: Postări cont
   aliases:
     add_new: Creează un alias
     created_msg: A fost creat cu succes un alias nou. Acum puteţi iniţia mutarea din vechiul cont.
@@ -465,11 +468,16 @@ ro:
     migrate_account: Transfer către un alt cont
     migrate_account_html: Dacă dorești să redirecționezi acest cont către un altul, poți <a href="%{path}">configura asta aici</a>.
     or_log_in_with: Sau conectează-te cu
+    privacy_policy_agreement_html: Am citit și sunt de acord cu <a href="%{privacy_policy_path}" target="_blank">Politica de confidențialitate</a>
     register: Înregistrare
     registration_closed: "%{instance} nu acceptă membri noi"
     reset_password: Resetare parolă
     security: Securitate
     set_new_password: Setează o nouă parolă
+    setup:
+      email_settings_hint_html: Faceți clic pe link-ul pe care vi l-am trimis pentru a verifica %{email}. Vom aștepta chiar aici.
+    sign_up:
+      preamble: Cu un cont pe acest server Mastodon, veți putea urmări orice altă persoană din rețea, indiferent de locul unde este găzduit contul lor.
     status:
       account_status: Starea contului
       redirecting_to: Contul dvs. este inactiv deoarece în prezent se redirecționează către %{acct}.
@@ -546,6 +554,20 @@ ro:
     modes:
       overwrite: Suprascrie
       overwrite_long: Înlocuiţi înregistrările curente cu cele noi
+    overwrite_preambles:
+      blocking_html: Sunteți pe cale să <strong>înlocuiți lista cu conturi blocate</strong> cu până la <strong>%{total_items} conturi</strong> din <strong>%{filename}</strong>.
+      bookmarks_html: Sunteți pe cale să <strong>înlocuiți marcajele</strong> cu până la <strong>%{total_items} postări</strong> din <strong>%{filename}</strong>.
+      domain_blocking_html: Sunteți pe cale să <strong>înlocuiți lista cu domenii blocate</strong> cu până la <strong>%{total_items} domenii</strong> din <strong>%{filename}</strong>.
+      following_html: Sunteți pe cale să <strong>urmăriți</strong> până la <strong>%{total_items} conturi</strong> din <strong>%{filename}</strong> și să <strong>nu mai urmăriți pe altcineva</strong>.
+      lists_html: Sunteți pe cale să <strong>înlocuiți listele</strong> cu conținut din <strong>%{filename}</strong>. Până la <strong>%{total_items} conturi</strong> vor fi adăugate la listele noi.
+      muting_html: Sunteți pe cale să <strong>înlocuiți lista cu conturi amuțite</strong> cu până la <strong>%{total_items} conturi</strong> din <strong>%{filename}</strong>.
+    preambles:
+      blocking_html: Sunteți pe cale să <strong>blocați</strong> până la <strong>%{total_items} conturi</strong> din <strong>%{filename}</strong>.
+      bookmarks_html: Sunteți pe cale să adăugați până la <strong>%{total_items} postări</strong> din <strong>%{filename}</strong> în <strong>marcajele dvs</strong>.
+      domain_blocking_html: Sunteți pe cale să <strong>blocați</strong> până la <strong>%{total_items} domenii</strong> din <strong>%{filename}</strong>.
+      following_html: Sunteți pe cale să <strong>urmăriți</strong> până la <strong>%{total_items} conturi</strong> din <strong>%{filename}</strong>.
+      lists_html: Sunteți pe cale să adăugați până la <strong>%{total_items} conturi</strong> din <strong>%{filename}</strong> în <strong>listele dvs</strong>. Vor fi create liste noi dacă nu există nicio listă la care să adăugați.
+      muting_html: Sunteți pe cale să <strong>amuțiți</strong> până la <strong>%{total_items} conturi</strong> din <strong>%{filename}</strong>.
     preface: Puteți importa date pe care le-ați exportat de pe un alt server, cum ar fi o listă a persoanelor pe care le urmăriți sau blocați.
     success: Datele dvs. au fost încărcate cu succes și vor fi procesate acum în timp util
     types:

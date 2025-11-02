@@ -15,6 +15,12 @@ ar:
       user/invite_request:
         text: الغرض
     errors:
+      attributes:
+        domain:
+          invalid: ليس بإسم نطاق صالح
+      messages:
+        invalid_domain_on_line: "%{value} ليس إسم نطاق صالح"
+        too_many_lines: تجاوز الحد الأقصى وهو %{limit} سطر
       models:
         account:
           attributes:

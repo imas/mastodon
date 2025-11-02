@@ -3,7 +3,7 @@ gl:
   simple_form:
     hints:
       account:
-        attribution_domains_as_text: Protéxete de falsas atribucións.
+        attribution_domains_as_text: Un por liña. Protéxete das atribucións falsas.
         discoverable: As túas publicacións públicas e perfil poden mostrarse ou recomendarse en varias zonas de Mastodon e o teu perfil ser suxerido a outras usuarias.
         display_name: O teu nome completo ou un nome divertido.
         fields: Páxina web, pronome, idade, o que ti queiras.
@@ -94,7 +94,7 @@ gl:
         site_contact_username: De que xeito se pode contactar contigo en Mastodon.
         site_extended_description: Calquera información adicional que poida ser útil para visitantes e usuarias. Pode utilizarse sintaxe Markdown.
         site_short_description: Breve descrición que axuda a identificar de xeito único o teu servidor. Quen o xestiona, a quen vai dirixido?
-        site_terms: Escribe a túa propia política de privacidade ou usa o valor por defecto. Podes usar sintaxe Markdow.
+        site_terms: Escribe a túa propia directiva de privacidade ou usa o valor por defecto. Podes usar sintaxe Markdown.
         site_title: De que xeito se pode referir o teu servidor ademáis do seu nome de dominio.
         status_page_url: URL dunha páxina onde se pode ver o estado deste servidor cando non está a funcionar
         theme: Decorado que verán visitantes e novas usuarias.
@@ -144,7 +144,7 @@ gl:
         url: A onde se enviarán os eventos
     labels:
       account:
-        attribution_domains_as_text: Permitir só os sitios web indicados
+        attribution_domains_as_text: Sitios web que poden acreditarte
         discoverable: Perfil destacado e publicacións nos algoritmos de descubrimento
         fields:
           name: Etiqueta
@@ -190,7 +190,7 @@ gl:
         current_password: Contrasinal actual
         data: Datos
         display_name: Nome mostrado
-        email: Enderezo de email
+        email: Enderezo de correo
         expires_in: Caduca tras
         fields: Metadatos do perfil
         header: Cabeceira
@@ -264,10 +264,10 @@ gl:
         site_contact_username: Nome do contacto
         site_extended_description: Descrición ampla
         site_short_description: Descrición do servidor
-        site_terms: Política de Privacidade
+        site_terms: Directiva de Privacidade
         site_title: Nome do servidor
         status_page_url: URL da páxina do estado
-        theme: Decorado por defecto
+        theme: Decorado predeterminado
         thumbnail: Icona do servidor
         timeline_preview: Permitir acceso á cronoloxía pública sen autenticación
         trendable_by_default: Permitir tendencias sen aprobación previa

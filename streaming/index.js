@@ -78,16 +78,6 @@ const parseJSON = (json, req) => {
   }
 };
 
-const PUBLIC_CHANNELS = [
-  'public',
-  'public:media',
-  'public:local',
-  'public:local:media',
-  'public:remote',
-  'public:remote:media',
-  'hashtag',
-  'hashtag:local',
-];
 
 // Used for priming the counters/gauges for the various metrics that are
 // per-channel
@@ -97,7 +87,14 @@ const CHANNEL_NAMES = [
   'user:notification',
   'list',
   'direct',
-  ...PUBLIC_CHANNELS
+  'public',
+  'public:media',
+  'public:local',
+  'public:local:media',
+  'public:remote',
+  'public:remote:media',
+  'hashtag',
+  'hashtag:local'
 ];
 
 const startServer = async () => {
@@ -235,7 +232,7 @@ const startServer = async () => {
   app.get('/favicon.ico', (_req, res) => res.status(404).end());
 
   app.get('/api/v1/streaming/health', (_req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.writeHead(200, { 'Content-Type': 'text/plain', 'Cache-Control': 'private, no-store' });
     res.end('OK');
   });
 
@@ -354,7 +351,7 @@ const startServer = async () => {
    * @returns {Promise<ResolvedAccount>}
    */
   const accountFromToken = async (token, req) => {
-    const result = await pgPool.query('SELECT oauth_access_tokens.id, oauth_access_tokens.resource_owner_id, users.account_id, users.chosen_languages, oauth_access_tokens.scopes FROM oauth_access_tokens INNER JOIN users ON oauth_access_tokens.resource_owner_id = users.id WHERE oauth_access_tokens.token = $1 AND oauth_access_tokens.revoked_at IS NULL LIMIT 1', [token]);
+    const result = await pgPool.query('SELECT oauth_access_tokens.id, oauth_access_tokens.resource_owner_id, users.account_id, users.chosen_languages, oauth_access_tokens.scopes FROM oauth_access_tokens INNER JOIN users ON oauth_access_tokens.resource_owner_id = users.id INNER JOIN accounts ON accounts.id = users.account_id WHERE oauth_access_tokens.token = $1 AND oauth_access_tokens.revoked_at IS NULL AND users.disabled IS FALSE AND accounts.suspended_at IS NULL LIMIT 1', [token]);
 
     if (result.rows.length === 0) {
       throw new AuthenticationError('Invalid access token');
@@ -432,12 +429,6 @@ const startServer = async () => {
    */
   const checkScopes = (req, logger, channelName) => new Promise((resolve, reject) => {
     logger.debug(`Checking OAuth scopes for ${channelName}`);
-
-    // When accessing public channels, no scopes are needed
-    if (channelName && PUBLIC_CHANNELS.includes(channelName)) {
-      resolve();
-      return;
-    }
 
     // The `read` scope has the highest priority, if the token has it
     // then it can access all streams
@@ -651,7 +642,7 @@ const startServer = async () => {
       // filtering of statuses:
 
       // Filter based on language:
-      if (Array.isArray(req.chosenLanguages) && payload.language !== null && req.chosenLanguages.indexOf(payload.language) === -1) {
+      if (Array.isArray(req.chosenLanguages) && req.chosenLanguages.indexOf(payload.language) === -1) {
         log.debug(`Message ${payload.id} filtered by language (${payload.language})`);
         return;
       }
@@ -858,7 +849,7 @@ const startServer = async () => {
     }
 
     res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Cache-Control', 'private, no-store');
     res.setHeader('Transfer-Encoding', 'chunked');
 
     res.write(':)\n');
