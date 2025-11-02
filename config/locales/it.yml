@@ -578,6 +578,13 @@ it:
         all: Tutto
         limited: Limitato
         title: Moderazione
+      moderation_notes:
+        create: Aggiungi Nota di Moderazione
+        created_msg: Nota di moderazione dell'istanza creata con successo!
+        description_html: Visualizza e lascia note per altri moderatori e per il futuro te
+        destroyed_msg: Nota di moderazione dell'istanza eliminata con successo!
+        placeholder: Informazioni su questa istanza, azioni compiute, o qualsiasi cosa possa aiutarti a moderare questa istanza in futuro.
+        title: Note di Moderazione
       private_comment: Commento privato
       public_comment: Commento pubblico
       purge: Ripulisci
@@ -1701,6 +1708,7 @@ it:
       self_vote: Non puoi votare nei tuoi sondaggi
       too_few_options: deve avere più di un elemento
       too_many_options: non può contenere più di %{max} elementi
+    vote: Vota
   preferences:
     other: Altro
     posting_defaults: Predefinite di pubblicazione
@@ -1870,12 +1878,12 @@ it:
       ownership: Non puoi fissare in cima un post di qualcun altro
       reblog: Un toot condiviso non può essere fissato in cima
     quote_policies:
-      followers: Seguaci e utenti menzionati
-      nobody: Solo gli utenti menzionati
-      public: Tutti
+      followers: Solo i seguaci
+      nobody: Solo io
+      public: Chiunque
     title: '%{name}: "%{quote}"'
     visibilities:
-      direct: Diretto
+      direct: Menzione privata
       private: Mostra solo ai tuoi seguaci
       private_long: Mostra solo ai seguaci
       public: Pubblico
