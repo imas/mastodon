@@ -35,9 +35,23 @@ RSpec.describe Api::ErrorHandling do
       Stoplight::Error::RedLight => 503,
     }.each do |error, code|
       it "Handles error class of #{error}" do
+        # アイマストドンがaws-sdk-ssmを使っているためロード順の関係でこれが必要
+        # aws-sdkの本物のSeahorse::Client::NetworkingErrorクラスは第一引数が必要
+        # 本家はs3が有効な場合にのみaws-sdk-s3をrequireし、そうでない場合は単にStandardErrorを継承したダミーの
+        # Seahorse::Client::NetworkingErrorクラスを定義しているため、s3有効でないテスト環境下では
+        # https://github.com/mastodon/mastodon/blob/03210085b7481568cc507f088144aaf1dae73c88/spec/controllers/concerns/api/error_handling_spec.rb
+        # のモックで成立するが、アイマストドンはaws-sdk-ssmを常に使っているためs3有効でないテスト環境下でも
+        # 本物のSeahorse::Client::NetworkingErrorクラスが常にロードされるため、下記のように引数付きでインスタンス化する必要がある。
+        exception_instance = if error.name == 'Seahorse::Client::NetworkingError'
+                               # Seahorse::Client::NetworkingError requires an Error object
+                               error.new(StandardError.new('test error'))
+                             else
+                               error.new
+                             end
+
         allow(FakeService)
           .to receive(:new)
-          .and_raise(error)
+          .and_raise(exception_instance)
 
         get :failure
 
