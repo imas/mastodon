@@ -34,6 +34,8 @@
   &__right {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
   }
 
   &__icon {
@@ -41,14 +43,17 @@
     color: $white;
     border: 0;
     padding: 0;
-    margin-right: 8px;
     text-align: center;
     width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
   }
 
   &__fold__icon {
-    position: absolute;
-    right: 14px;
+    display: flex;
+    align-items: center;
   }
 }
 

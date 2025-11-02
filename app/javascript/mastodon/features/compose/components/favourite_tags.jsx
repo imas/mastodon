@@ -121,11 +121,9 @@ class FavouriteTags extends React.PureComponent {
             <span>{intl.formatMessage(messages.favourite_tags)}</span>
           </div>
           <div className='compose__extra__header__right'>
-            <div className='compose__extra__header__icon'>
-              <a href='/settings/favourite_tags'>
-                <Icon id='setting_icon' icon={SettingIcon} className='compose__extra__header__icon' />
-              </a>
-            </div>
+            <a href='/settings/favourite_tags' className='compose__extra__header__icon'>
+              <Icon id='setting_icon' icon={SettingIcon} className='compose__extra__header__icon' />
+            </a>
             <div className='compose__extra__header__fold__icon'>
               <FoldButton title={intl.formatMessage(messages.toggle_visible)} icon='caret-up' onClick={onToggle} size={20} animate active={visible} />
             </div>

@@ -1,14 +1,36 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import { PureComponent } from 'react';
 
 import classNames from 'classnames';
 
-import spring from 'react-motion/lib/spring';
+import { Icon } from '@/mastodon/components/icon';
+import ArrowDropDownIcon from '@/material-icons/400-24px/arrow_drop_down.svg?react';
 
-import Motion from '../features/ui/util/optional_motion';
+export default class FoldButton extends PureComponent {
 
-import { IconButton } from './icon_button';
+  static propTypes = {
+    active: PropTypes.bool,
+    activeStyle: PropTypes.object,
+    animate: PropTypes.bool,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
+    expanded: PropTypes.bool,
+    inverted: PropTypes.bool,
+    onClick: PropTypes.func,
+    overlay: PropTypes.bool,
+    pressed: PropTypes.bool,
+    size: PropTypes.number,
+    style: PropTypes.object,
+    tabIndex: PropTypes.number,
+    title: PropTypes.string,
+  };
 
-export default class FoldButton extends IconButton {
+  handleClick = (e) => {
+    e.preventDefault();
+    if (!this.props.disabled && this.props.onClick) {
+      this.props.onClick(e);
+    }
+  };
 
   render () {
     const style = {
@@ -26,7 +48,6 @@ export default class FoldButton extends IconButton {
       className,
       disabled,
       expanded,
-      icon,
       inverted,
       overlay,
       pressed,
@@ -41,42 +62,26 @@ export default class FoldButton extends IconButton {
       overlayed: overlay,
     });
 
-    if (!animate) {
-      // Perf optimization: avoid unnecessary <Motion> components unless
-      // we actually need to animate.
-      return (
-        <button
-          aria-label={title}
-          aria-pressed={pressed}
-          aria-expanded={expanded}
-          title={title}
-          className={classes}
-          onClick={this.handleClick}
-          style={style}
-          tabIndex={tabIndex}
-        >
-          <i className={`fa fa-fw fa-${icon}`} aria-hidden='true' />
-        </button>
-      );
-    }
+    const iconStyle = animate ? {
+      transform: `rotate(${active ? 180 : 0}deg)`,
+      transition: 'transform 300ms ease-in-out'
+    } : {
+      transform: `rotate(${active ? 180 : 0}deg)`
+    };
 
     return (
-      <Motion defaultStyle={{ rotate: this.props.active ? 180 : 0 }} style={{ rotate: this.props.animate ? spring(this.props.active ? 0 : 180) : 0 }}>
-        {({ rotate }) =>
-          (<button
-            aria-label={title}
-            aria-pressed={pressed}
-            aria-expanded={expanded}
-            title={title}
-            className={classes}
-            onClick={this.handleClick}
-            style={style}
-            tabIndex={tabIndex}
-          >
-            <i style={{ transform: `rotate(${rotate}deg)` }} className={`fa fa-fw fa-${icon}`} aria-hidden='true' />
-          </button>)
-        }
-      </Motion>
+      <button
+        aria-label={title}
+        aria-pressed={pressed}
+        aria-expanded={expanded}
+        title={title}
+        className={classes}
+        onClick={this.handleClick}
+        style={style}
+        tabIndex={tabIndex}
+      >
+        <Icon id='down' icon={ArrowDropDownIcon} className='compose__extra__header__icon' style={iconStyle} />
+      </button>
     );
   }
 
