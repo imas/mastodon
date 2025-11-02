@@ -19,6 +19,7 @@ th:
     posts:
       other: โพสต์
     posts_tab_heading: โพสต์
+    self_follow_error: ไม่อนุญาตการติดตามบัญชีของคุณเอง
   admin:
     account_actions:
       action: ทำการกระทำ
@@ -1054,7 +1055,7 @@ th:
     salutation: "%{name},"
     settings: 'เปลี่ยนการกำหนดลักษณะอีเมล: %{link}'
     unsubscribe: เลิกบอกรับ
-    view: 'มุมมอง:'
+    view: 'ดู:'
     view_profile: ดูโปรไฟล์
     view_status: ดูโพสต์
   applications:
@@ -1147,9 +1148,11 @@ th:
     use_security_key: ใช้กุญแจความปลอดภัย
   author_attribution:
     example_title: ข้อความตัวอย่าง
-    hint_html: ควบคุมวิธีที่ให้เครดิตแก่คุณเมื่อมีการแบ่งปันลิงก์ใน Mastodon
+    hint_html: คุณกำลังเขียนข่าวหรือบทความบล็อกภายนอก Mastodon หรือไม่? ควบคุมวิธีที่คุณได้รับเครดิตเมื่อมีการแบ่งปันข่าวหรือบทความบล็อกใน Mastodon
+    instructions: 'ตรวจสอบให้แน่ใจว่าโค้ดนี้อยู่ใน HTML ของบทความของคุณ:'
     more_from_html: เพิ่มเติมจาก %{name}
     s_blog: บล็อกของ %{name}
+    then_instructions: จากนั้น เพิ่มชื่อโดเมนของการเผยแพร่ในช่องด้านล่าง
     title: การระบุแหล่งที่มาผู้สร้าง
   challenge:
     confirm: ดำเนินการต่อ
@@ -1589,7 +1592,7 @@ th:
     last_active: ใช้งานล่าสุด
     most_recent: ล่าสุด
     moved: ย้ายแล้ว
-    mutual: ร่วมกัน
+    mutual: คนที่มีร่วมกัน
     primary: หลัก
     relationship: ความสัมพันธ์
     remove_selected_domains: เอาผู้ติดตามทั้งหมดออกจากโดเมนที่เลือก

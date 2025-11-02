@@ -331,7 +331,7 @@ class Status extends ImmutablePureComponent {
     const { onToggleHidden } = this.props;
     const status = this._properStatus();
 
-    if (status.get('matched_filters')) {
+    if (this.props.status.get('matched_filters')) {
       const expandedBecauseOfCW = !status.get('hidden') || status.get('spoiler_text').length === 0;
       const expandedBecauseOfFilter = this.state.showDespiteFilter;
 
@@ -450,7 +450,7 @@ class Status extends ImmutablePureComponent {
     } else if (status.get('media_attachments').size > 0) {
       const language = status.getIn(['translation', 'language']) || status.get('language');
 
-      if (['image', 'gifv'].includes(status.getIn(['media_attachments', 0, 'type'])) || status.get('media_attachments').size > 1) {
+      if (['image', 'gifv', 'unknown'].includes(status.getIn(['media_attachments', 0, 'type'])) || status.get('media_attachments').size > 1) {
         media = (
           <Bundle fetchComponent={MediaGallery} loading={this.renderLoadingMediaGallery}>
             {Component => (
@@ -521,7 +521,7 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       }
-    } else if (status.get('spoiler_text').length === 0 && status.get('card')) {
+    } else if (status.get('card')) {
       media = (
         <Card
           onOpenMedia={this.handleOpenMedia}

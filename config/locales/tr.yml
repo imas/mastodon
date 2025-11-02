@@ -1,7 +1,7 @@
 ---
 tr:
   about:
-    about_mastodon_html: Mastodon <em>ücretsiz ve açık kaynaklı</em> bir sosyal ağdır. <em>Merkezi olmayan</em> yapısı sayesinde diğer ticari sosyal platformların aksine iletişimininizin tek bir firmada tutulmasının/yönetilmesinin önüne geçer. Güvendiğiniz bir sunucuyu seçerek oradaki kişilerle etkileşimde bulunabilirsiniz. Herkes kendi Mastodon sunucusunu kurabilir ve sorunsuz bir şekilde Mastodon <em>sosyal ağına</em> dahil edebilir!
+    about_mastodon_html: 'Geleceğin sosyal ağı: Reklam yok, kurumsal gözetim yok, etik tasarım ve merkeziyetsizlik! Mastodon ile verilerinizin sahibi olun!'
     contact_missing: Ayarlanmadı
     contact_unavailable: Bulunamadı
     hosted_on: Mastodon %{domain} üzerinde barındırılıyor
@@ -21,6 +21,7 @@ tr:
       one: Gönderi
       other: Gönderiler
     posts_tab_heading: Gönderiler
+    self_follow_error: Kendi hesabınızı takip etmenize izin yok
   admin:
     account_actions:
       action: Eylemi gerçekleştir
@@ -1165,9 +1166,11 @@ tr:
     use_security_key: Güvenlik anahtarını kullan
   author_attribution:
     example_title: Örnek metin
-    hint_html: Mastodon'da bağlantılar paylaşıldığında nasıl tanınmak istediğinizi denetleyin.
+    hint_html: Mastodon dışında haber veya günlük yazıları mı yazıyorsunuz? Bu yazılar Mastodon'da paylaşıldığında size nasıl atıf yapılacağını denetleyin.
+    instructions: 'Bu kodun yazınızın HTML''sinde olduğundan emin olun:'
     more_from_html: "%{name} kişisinden daha fazlası"
     s_blog: "%{name} kişisinin Günlüğü"
+    then_instructions: Daha sonra, yayının alan adını aşağıda sahaya girin.
     title: Yazar atıfı
   challenge:
     confirm: Devam et
@@ -1440,7 +1443,7 @@ tr:
       password: parola
       sign_in_token: e-posta güvenlik kodu
       webauthn: güvenlik anahtarları
-    description_html: Eğer tanımadığınız bir faaliyet görüyorsanız, parolanızı değiştirmeyi ve iki aşamalı kimlik doğrulamayı etkinleştirmeyi düşünün.
+    description_html: Eğer tanımadığınız bir faaliyet görürseniz, parolanızı değiştirmeyi ve iki aşamalı kimlik doğrulamayı etkinleştirmeyi değerlendirin.
     empty: Kimlik doğrulama geçmişi yok
     failed_sign_in_html: "%{method} yöntemiyle %{ip} (%{browser}) adresinden başarısız oturum açma girişimi"
     successful_sign_in_html: "%{method} yöntemiyle %{ip} (%{browser}) adresinden başarılı oturum açma"

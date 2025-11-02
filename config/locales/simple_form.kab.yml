@@ -18,7 +18,7 @@ kab:
         bot: Smekti-d wiyaḍ dakken amiḍan-a ixeddem s wudem amezwer tigawin tiwurmanin yernu ur yezmir ara ad yettwaɛass
         email: Ad n-teṭṭfeḍ imayl i usentem
         irreversible: Tisuffaɣ i tessazedgeḍ ad ttwakksent i lebda, ula ma tekkseḍ imsizdeg-nni ar zdat
-        locale: Tutlayt n ugrudem, imaylen d walɣuten yettudemren
+        locale: Tutlayt n ugrudem, imaylen d yilɣa yettudemren
         password: Seqdec ma drus 8 n yisekkilen
         setting_always_send_emails: S umata, ilɣa s yimayl ur d-ttwaceyyεen ara mi ara tesseqdaceḍ Mastodon s wudem urmid
         setting_display_media_default: Ffer imidyaten yettwacreḍ d infariyen
@@ -27,6 +27,8 @@ kab:
         username: Tzemreḍ ad tesqedceḍ isekkilen, uṭṭunen akked yijerriden n wadda
       featured_tag:
         name: 'Ha-t-an kra seg ihacṭagen i tesseqdaceḍ ussan-a ineggura maḍi :'
+      form_challenge:
+        current_password: Tkecmeḍ ɣer temnaḍt taɣellsant
       imports:
         data: Afaylu CSV id yusan seg uqeddac-nniḍen n Maṣṭudun
       invite_request:
@@ -41,9 +43,9 @@ kab:
           name: Tabzimt
           value: Agbur
       account_alias:
-        acct: Tansa n umiḍan aqbur
+        acct: Asulay n umiḍan aqbur
       account_migration:
-        acct: Tansa n umiḍan amaynut
+        acct: Asulay n umiḍan amaynut
       account_warning_preset:
         title: Azwel
       admin_account_action:
@@ -94,6 +96,7 @@ kab:
         setting_display_media_show_all: Sken-iten-id akk
         setting_hide_network: Ffer azetta-k·m inmetti
         setting_theme: Asental n wesmel
+        setting_trends: Sken-d inezzaɣ n wass-a
         setting_use_pending_items: Askar aleɣwayan
         sign_in_token_attempt: Tangalt n tɣellist
         title: Azwel
@@ -104,6 +107,7 @@ kab:
       featured_tag:
         name: Ahacṭag
       form_admin_settings:
+        app_icon: Tignit n usnas
         custom_css: CSS udmawan
         profile_directory: Rmed akaram n imaγnuten
         site_contact_email: Imayl n unermas
@@ -113,9 +117,10 @@ kab:
         status_page_url: URL n uusebter n waddaden
         theme: Asentel amezwer
         thumbnail: Tanfult n uqeddac
+        trends: Rmed inezzaɣ
       interactions:
-        must_be_follower: Ssewḥel alɣuten sɣur wid akked tid ur yellin ara d imeḍfaren-ik·im
-        must_be_following: Ssewḥel alɣuten sɣur wid akked tid ur tettḍafareḍ ara
+        must_be_follower: Ssewḥel ilɣa sɣur wid akk d tid ur yellin ara d imeḍfaren-ik·im
+        must_be_following: Ssewḥel ilɣa sɣur wid akked tid ur tettḍafareḍ ara
         must_be_following_dm: Sewḥel iznan usriden sɣur wid akked tid ur tettḍafareḍ ara
       invite:
         comment: Awennit

@@ -1,5 +1,90 @@
 ---
 tok:
+  about:
+    about_mastodon_html: ilo Mastodon li pona ale. sitelen esun li lon ala. kulupu suli li lawa ala e sina. jan lawa li wan taso ala. jan pali li wile ike ala. sina taso li ken lawa e sona sina.
+    contact_missing: lon ala
+    contact_unavailable: sona ala
+    hosted_on: ma %{domain} la lipu Mastodon
+    title: sona suli
+  accounts:
+    followers:
+      other: jan ni li kute e sina
+    following: sina kute e jan ni
+    instance_actor_flash: sijelo ni li lon ala, li jan wan taso ala, li kulupu jan. ona li pona e nasin pi lawa mute. jan lawa o weka ala e sijelo ni.
+    last_active: tenpo poka
+    link_verified_on: "%{date} la mi sona e ni: jan seme li jo e lipu ni"
+    nothing_here: ijo ala li lon ni a!
+    pin_errors:
+      following: sina wile toki e pona jan la, sina o kute e ona
+    posts:
+      other: toki suli
+    posts_tab_heading: toki suli
+    self_follow_error: sina ken ala kute e sina
   admin:
+    account_actions:
+      action: o ijo
+      already_silenced: jan ni li jo e ken lili lon tenpo ni.
     accounts:
+      approve: o wile
       are_you_sure: ni li pona ala pona?
+      avatar: sitelen
+      change_email:
+        current_email: nimi poki lon
+        label: o ante e nimi
+        new_email: nimi poki wile sin
+        submit: o ante e nimi
+        title: o ante e nimi pi poki lipu tawa sijelo %{username}
+      delete: o weka e sona
+      deleted: jan li weka e ni
+      demote: o lili e ken
+      domain: ma
+      edit: ante toki
+      email: nimi pi poki lipu
+      invite_request_text: nasin kama
+      ip: nanpa IP
+      joined: tenpo kama
+      location:
+        all: ale
+        local: poka
+        remote: weka
+        title: ma seme
+      moderation:
+        title: lawa seme
+      moderation_notes: lipu sona lawa
+      most_recent_activity: kepeken pi tenpo poka
+      most_recent_ip: nanpa IP pi tenpo poka
+      search: o alasa
+      statuses: lipu toki
+      username: nimi sijelo
+    dashboard:
+      top_languages: toki pi kepeken suli
+      top_servers: ma pi toki suli
+    follow_recommendations:
+      language: toki seme
+      status: nasin
+    instances:
+      dashboard:
+        instance_languages_dimension: toki pi kepeken suli
+    reports:
+      are_you_sure: sina wile ala wile?
+    statuses:
+      title: toki suli pi jan ni
+    tags:
+      search: o alasa
+  imports:
+    overwrite_preambles:
+      blocking_html: "<strong>jan %{total_items}</strong> li lon lipu <strong>%{filename}</strong>. sina wile ala lukin e toki jan la, sina ni la <strong>kulupu pi lukin ala li kama</strong> kulupu lipu."
+      bookmarks_html: "<strong>toki %{total_items}</strong> li lon lipu <strong>%{filename}</strong>. toki li suli tawa sina la, sina ni la <strong>kulupu pi toki suli li kama</strong> kulupu lipu."
+      domain_blocking_html: "<strong>ma %{total_items}</strong> li lon lipu <strong>%{filename}</strong>. sina wile ala lukin e toki tan ma la, sina ni la <strong>kulupu pi lukin ala li kama</strong> kulupu lipu."
+      following_html: "<strong>jan %{total_items}</strong> li lon lipu <strong>%{filename}</strong>. sina wile <strong>kute</strong> e jan la, sina ni la <strong>kulupu kute li kama</strong> kulupu lipu."
+      lists_html: "<strong>jan %{total_items}</strong> li lon lipu <strong>%{filename}</strong>. sina jo e kulupu jan. sina ni la <strong>kulupu sina li weka</strong>, sina kama jo e kulupu lipu."
+  privacy:
+    search: o alasa
+  scheduled_statuses:
+    too_soon: tenpo ni o tenpo kama
+  statuses:
+    visibilities:
+      public_long: ale li ken lukin e ni
+  user_mailer:
+    welcome:
+      share_action: o pana

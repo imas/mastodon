@@ -1,22 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
-import { toServerSideType } from 'mastodon/utils/filters';
-
 import { me } from '../initial_state';
 
+import { getFilters } from './filters';
+
 export { makeGetAccount } from "./accounts";
-
-const getFilters = createSelector([state => state.get('filters'), (_, { contextType }) => contextType], (filters, contextType) => {
-  if (!contextType) {
-    return null;
-  }
-
-  const now = new Date();
-  const serverSideType = toServerSideType(contextType);
-
-  return filters.filter(filter => filter.get('context').includes(serverSideType) && (filter.get('expires_at') === null || filter.get('expires_at') > now));
-});
 
 export const makeGetStatus = () => {
   return createSelector(
@@ -26,9 +15,10 @@ export const makeGetStatus = () => {
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', id, 'account'])]),
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', state.getIn(['statuses', id, 'reblog']), 'account'])]),
       getFilters,
+      (_, { contextType }) => ['detailed', 'bookmarks', 'favourites'].includes(contextType),
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, filters) => {
+    (statusBase, statusReblog, accountBase, accountReblog, filters, warnInsteadOfHide) => {
       if (!statusBase || statusBase.get('isLoading')) {
         return null;
       }
@@ -42,7 +32,7 @@ export const makeGetStatus = () => {
       let filtered = false;
       if ((accountReblog || accountBase).get('id') !== me && filters) {
         let filterResults = statusReblog?.get('filtered') || statusBase.get('filtered') || ImmutableList();
-        if (filterResults.some((result) => filters.getIn([result.get('filter'), 'filter_action']) === 'hide')) {
+        if (!warnInsteadOfHide && filterResults.some((result) => filters.getIn([result.get('filter'), 'filter_action']) === 'hide')) {
           return null;
         }
         filterResults = filterResults.filter(result => filters.has(result.get('filter')));

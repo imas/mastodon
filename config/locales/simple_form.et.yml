@@ -3,7 +3,7 @@ et:
   simple_form:
     hints:
       account:
-        attribution_domains_as_text: Kaitseb valede omistuste eest.
+        attribution_domains_as_text: Üks rea peal. See kaitseb pahatahtlike viidete eest.
         discoverable: Su profiili ja avalikke postitusi võidakse Mastodoni erinevates piirkondades esile tõsta või soovitada ning su profiili soovitada teistele kasutajatele.
         display_name: Su täisnimi või naljanimi.
         fields: Su koduleht, sugu, vanus. Mistahes, mida soovid.
@@ -20,7 +20,7 @@ et:
         title: Valikuline. Ei ole nähtav saajale
       admin_account_action:
         include_statuses: Kasutaja näeb, millised postitused on põhjustanud moderaatori otsuse või hoiatuse
-        send_email_notification: Konto omanik saab selgituse selle kohta, mis juhtus nende kontoga
+        send_email_notification: Kasutajakonto omanik saab selgituse selle kohta, mis juhtus tema kontoga
         text_html: Valikuline. On võimalik kasutada postituse süntaksi. On võimalik <a href="%{path}">lisada hoiatuste eelseadistusi</a> säästmaks aega
         type_html: Vali, mida teha kasutajaga <strong>%{acct}</strong>
         types:
@@ -48,7 +48,7 @@ et:
         digest: Saadetakse ainult pärast pikka tegevusetuse perioodi ja ainult siis, kui on saadetud otsesõnumeid
         email: Sulle saadetakse e-posti teel kinnituskiri
         header: WEBP, PNG, GIF või JPG. Kõige rohkem %{size}. Vähendatakse %{dimensions} pikslini
-        inbox_url: Kopeeri soovitud vahendaja avalehe URL
+        inbox_url: Kopeeri soovitud sõnumivahendusserveri avalehe võrguaadress
         irreversible: Filtreeritud postitused kaovad taastamatult, isegi kui filter on hiljem eemaldatud
         locale: Kasutajaliidese, e-kirjade ja tõuketeadete keel
         password: Vajalik on vähemalt 8 märki
@@ -79,14 +79,14 @@ et:
       form_admin_settings:
         activity_api_enabled: Kohalike postituste, aktiivsete kasutajate ja uute registreerumistr arv nädala kaupa grupeeritult
         app_icon: WEBP, PNG, GIF või JPG. Asendab mobiilsel seadmel äpi vaikeikooni kohandatud ikooniga.
-        backups_retention_period: Kasutajatel on võimalus genereerida oma postitustest hiljem allalaaditav arhiiv. Kui määrata positiivne arv, kustutatakse serveri talletusruumist need arhiivid määratud arvu päevade järel automaatselt.
+        backups_retention_period: Kasutajatel on võimalus genereerida oma postitustest hiljem allalaaditav arhiiv. Kui määrad positiivse arvu, siis kustutatakse need arhiivid serveri andmeruumist määratud arvu päevade järel automaatselt.
         bootstrap_timeline_accounts: Need kasutajad kinnitatakse uute kasutajate jälgimissoovituste esiritta.
         closed_registrations_message: Kuvatakse, kui liitumised pole võimalikud
         content_cache_retention_period: Kõik teiste serverite postitused (sealhulgas jagamised ja vastused) kustutatakse pärast määratud arvu päevade möödumist, sõltumata, kuidas kohalik kasutaja on nende postitustega interakteerunud. Hõlmatud on ka postitused, mille kohalik kasutaja on märkinud järjehoidjaks või lemmikuks. Ka eri instantside kasutajate vahelised privaatsed mainimised kaovad ja neid on võimatu taastada. See seadistus on mõeldud eriotstarbeliste instantside jaoks ja rikub paljude kasutajate ootusi, kui seda rakendatakse üldotstarbelise kasutuse puhul.
         custom_css: Mastodoni veebiliideses on võimalik kasutada kohandatud stiile.
         favicon: WEBP, PNG, GIF või JPG. Asendab Mastodoni vaike- favicon ikooni kohandatud ikooniga.
         mascot: Asendab kohandatud veebiliidese illustratsiooni.
-        media_cache_retention_period: Kaugkasutajate tehtud postituste meediafailid salvestatakse teie serveri vahemällu. Kui see seadistus on seatud positiivsele väärtusele, kustutatakse meediumifailid määratud päevade möödumisel. Kui meediaandmeid küsitakse pärast nende kustutamist, laaditakse need uuesti alla, kui lähtesisu on veel saadaval. Kuna on olemas piirangud, kui tihti tohivad lingikaardid kolmandatelt saitidelt andmeid pärida, on soovitatav määrata väärtuseks vähemalt 14. Vastasel juhul ei uuendata linkide eelvaatekaarte nõudmise korral enne seda aega.
+        media_cache_retention_period: Kaugkasutajate tehtud postituste meediafailid salvestatakse sinu koduserveri vahemällu. Kui see seadistus on seatud positiivsele väärtusele, kustutatakse meediumifailid määratud päevade möödumisel. Kui meediaandmeid küsitakse pärast nende kustutamist, laaditakse need uuesti alla, kui lähtesisu on veel saadaval. Kuna on olemas piirangud, kui tihti tohivad lingikaardid kolmandatelt saitidelt andmeid pärida, on soovitatav määrata väärtuseks vähemalt 14. Vastasel juhul ei uuendata linkide eelvaatekaarte nõudmise korral enne seda aega.
         peers_api_enabled: Domeeninimede loetelu, mida see server on Fediversumis kohanud. Mitte mingeid andmeid selle serveri födereerumise kohta antud serverite pole, vaid üksnes info, et sellest serverist ollakse teadlik. Seda kasutavad teenused, mis koguvad üldist födereerumise statistikat.
         profile_directory: Kasutajate kataloog kuvab nimekirja kasutajatest, kes on seda lubanud.
         require_invite_text: Kui liitumisi on tarvis kinnitada, oleks "Miks soovid liituda?" vastus vajalik
@@ -144,7 +144,7 @@ et:
         url: Kuhu sündmused saadetakse
     labels:
       account:
-        attribution_domains_as_text: Luba vaid kindlad veebilehed
+        attribution_domains_as_text: Sinule viidata lubatud veebilehed
         discoverable: Tõsta postitused ja profiil avastamise algoritmides esile
         fields:
           name: Nimetus
@@ -195,7 +195,7 @@ et:
         fields: Veebiviited
         header: Päis
         honeypot: "%{label} (ära sisesta)"
-        inbox_url: Vahendaja sisendkausta URL
+        inbox_url: Sõnumivahendusserveri sisendkausta võrguaadress
         irreversible: Kustuta selle asemel, et peita
         locale: Kasutajaliidese keel
         max_uses: Maksimum kasutajate arv

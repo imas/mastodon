@@ -21,6 +21,7 @@ nl:
       one: Toot
       other: Berichten
     posts_tab_heading: Berichten
+    self_follow_error: Het volgen van je eigen account is niet toegestaan
   admin:
     account_actions:
       action: Actie uitvoeren
@@ -637,7 +638,7 @@ nl:
         delete: Verwijderen
         placeholder: Beschrijf welke maatregelen zijn genomen of andere gerelateerde opmerkingen...
         title: Opmerkingen
-      notes_description_html: Bekijk en laat opmerkingen achter voor andere moderatoren en voor jouw toekomstige zelf
+      notes_description_html: Opmerkingen bekijken, en voor jezelf en andere moderatoren achterlaten
       processed_msg: 'Rapportage #%{id} succesvol afgehandeld'
       quick_actions_description_html: 'Neem een snelle maatregel of scroll naar beneden om de gerapporteerde inhoud te bekijken:'
       remote_user_placeholder: de externe gebruiker van %{instance}
@@ -1165,9 +1166,11 @@ nl:
     use_security_key: Beveiligingssleutel gebruiken
   author_attribution:
     example_title: Voorbeeldtekst
-    hint_html: Bepaal hoe we je vermelden, wanneer jouw links op Mastodon worden gedeeld.
+    hint_html: Schrijf je nieuws- of blogartikelen buiten Mastodon? Bepaal hoe je geattribueerd wordt als deze gedeeld worden op Mastodon.
+    instructions: 'Zorg ervoor dat deze code in de HTML van je artikel zit:'
     more_from_html: Meer van %{name}
     s_blog: De weblog van %{name}
+    then_instructions: Voeg vervolgens de domeinnaam van de publicatie toe in het onderstaande veld.
     title: Auteur-attributie
   challenge:
     confirm: Doorgaan
@@ -1581,7 +1584,7 @@ nl:
       too_many_options: kan niet meer dan %{max} items bevatten
   preferences:
     other: Overig
-    posting_defaults: Standaardinstellingen voor berichten
+    posting_defaults: Instellingen voor berichten
     public_timelines: Openbare tijdlijnen
   privacy:
     hint_html: "<strong>Hoe wil je dat jouw profiel en berichten kunnen worden gevonden?</strong> Een verscheidenheid aan functies in Mastodon kunnen je helpen om een groter publiek te bereiken als ze zijn ingeschakeld. Neem rustig de tijd om deze instellingen te bekijken, om er zo zeker van te zijn dat ze aan jouw wensen voldoen."
@@ -1903,9 +1906,9 @@ nl:
       feature_action: Meer informatie
       feature_audience: Mastodon biedt je een unieke mogelijkheid om je publiek te beheren zonder tussenpersonen. Mastodon, geïmplementeerd in jouw eigen infrastructuur, stelt je in staat om elke andere Mastodon-server online te volgen en door hen gevolgd te worden, en staat onder controle van niemand, behalve die van jou.
       feature_audience_title: Bouw jouw publiek in vertrouwen op
-      feature_control: Je weet zelf het beste wat je op jouw tijdlijn wilt zien. Geen algoritmen of advertenties om je tijd te verspillen. Volg iedereen op elke Mastodon-server vanaf één account en ontvang hun berichten in chronologische volgorde, en maak jouw hoekje op het internet een beetje meer zoals jezelf.
+      feature_control: Je weet zelf het beste wat je op jouw starttijdlijn wilt zien. Geen algoritmen of advertenties om je tijd te verspillen. Volg iedereen op elke Mastodon-server vanaf één account en ontvang hun berichten in chronologische volgorde, en maak jouw hoekje op het internet een beetje meer zoals jezelf.
       feature_control_title: Houd controle over je eigen tijdlijn
-      feature_creativity: Mastodon ondersteunt audio-, video- en fotoberichten, toegankelijkheidsbeschrijvingen, peilingen, inhoudswaarschuwingen, geanimeerde profielfoto's, aangepaste lokale emoji's, controle over het bijwerken van thumbnails en meer, om je te helpen jezelf online uit te drukken. Of je nu jouw kunst, jouw muziek of jouw podcast publiceert, Mastodon staat voor je klaar.
+      feature_creativity: Mastodon ondersteunt audio-, video- en fotoberichten, toegankelijkheidsbeschrijvingen, peilingen, inhoudswaarschuwingen, geanimeerde profielfoto's, aangepaste lokale emoji's, controle over het bijwerken van miniaturen en meer, om je te helpen jezelf online uit te drukken. Of je nu jouw kunst, jouw muziek of jouw podcast publiceert, Mastodon staat voor je klaar.
       feature_creativity_title: Ongeëvenaarde creativiteit
       feature_moderation: Mastodon legt de besluitvorming weer in jouw handen. Elke server creëert diens eigen regels en voorschriften, die lokaal worden gehandhaafd en niet van bovenaf zoals sociale media van bedrijven, waardoor het het meest flexibel is in het reageren op de behoeften van verschillende groepen mensen. Word lid van een server met de regels waarmee je akkoord gaat, of host jouw eigen.
       feature_moderation_title: Moderatie zoals het hoort

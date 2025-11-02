@@ -21,6 +21,7 @@ ca:
       one: Tut
       other: Tuts
     posts_tab_heading: Tuts
+    self_follow_error: No es permet seguir el compte propi
   admin:
     account_actions:
       action: Realitza l'acció
@@ -741,7 +742,7 @@ ca:
     rules:
       add_new: Afegir norma
       delete: Elimina
-      description_html: Tot i que molts diuen que han llegit les normes i estan d'acord amb els termes del servei, normalment no les llegeixen fins que surgeix un problema. <strong>Fes que sigui més fàcil veure les normes del teu servidor d'una ullada proporcionant-les en una llista de punts.</strong> Intenta mantenir les normes individuals curtes i senzilles però sense dividir-les en massa parts separades.
+      description_html: Tot i que molts diuen que han llegit les normes i estan d'acord amb les condicions de servei, normalment no les llegeixen fins que surgeix un problema. <strong>Fes que sigui més fàcil veure les normes del teu servidor d'una ullada proporcionant-les en una llista de punts.</strong> Intenta mantenir les normes individuals curtes i senzilles però sense dividir-les en massa parts separades.
       edit: Edita la norma
       empty: Encara no s'han definit les normes del servidor.
       title: Normes del servidor
@@ -1165,9 +1166,11 @@ ca:
     use_security_key: Usa clau de seguretat
   author_attribution:
     example_title: Text d'exemple
-    hint_html: Controleu com se us acredita quan els enllaços es comparteixen a Mastodon.
+    hint_html: Escriviu notícies o un blog fora de Mastodon? Controleu quin crèdit rebeu quan es comparteixen aquí.
+    instructions: 'Assegureu-vos que aquest codi és a l''HTML de l''article:'
     more_from_html: Més de %{name}
     s_blog: Blog de %{name}
+    then_instructions: Després, afegiu el nom del domini de la publicació aquí sota.
     title: Atribució d'autor
   challenge:
     confirm: Continua
@@ -1209,7 +1212,7 @@ ca:
       email_contact_html: Si encara no arriba, podeu enviar un correu-e a <a href="mailto:%{email}">%{email}</a> per a demanar ajuda
       email_reconfirmation_html: Si no rebeu el correu electrònic de confirmació <a href="%{path}">, podeu tornar-lo a demanar</a>
       irreversible: No seràs capaç de restaurar o reactivar el teu compte
-      more_details_html: Per a més detalls, llegeix la <a href="%{terms_path}">política de privadesa</a>.
+      more_details_html: Per a més detalls, llegeix la <a href="%{terms_path}">política de privacitat</a>.
       username_available: El teu nom d'usuari esdevindrà altre cop disponible
       username_unavailable: El teu nom d'usuari quedarà inutilitzable
   disputes:
@@ -1580,7 +1583,7 @@ ca:
       too_few_options: ha de tenir més d'una opció
       too_many_options: no pot contenir més de %{max} opcions
   preferences:
-    other: Altre
+    other: Altres
     posting_defaults: Valors per defecte de publicació
     public_timelines: Línies de temps públiques
   privacy:

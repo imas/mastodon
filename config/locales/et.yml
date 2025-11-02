@@ -1,11 +1,11 @@
 ---
 et:
   about:
-    about_mastodon_html: 'Tuleviku sotsiaalvõrgustik: Reklaamivaba, korporatiivse järelvalveta, eetiline kujundus ning detsentraliseeritus! Oma enda andmeid Mastodonis!'
+    about_mastodon_html: 'Tuleviku sotsiaalvõrgustik: Reklaamivaba, korporatiivse järelvalveta, eetiline kujundus ning detsentraliseeritus! Mastodonis omad sa enda andmeid ka päriselt!'
     contact_missing: Määramata
     contact_unavailable: Pole saadaval
-    hosted_on: Mastodon majutatud %{domain}-is
-    title: Teave
+    hosted_on: Mastodoni teenus serveris %{domain}
+    title: Veebirakenduse teave
   accounts:
     followers:
       one: Jälgija
@@ -21,6 +21,7 @@ et:
       one: Postitus
       other: Postitused
     posts_tab_heading: Postitused
+    self_follow_error: Omaenda konto jälgimine ei ole lubatud
   admin:
     account_actions:
       action: Täida tegevus
@@ -39,7 +40,7 @@ et:
       avatar: Profiilipilt
       by_domain: Domeen
       change_email:
-        changed_msg: E-postiaadress vahetatud!
+        changed_msg: E-posti aadress vahetatud!
         current_email: Praegune e-postiaadress
         label: Muuda e-posti aadressi
         new_email: Uus е-posti aadress
@@ -156,8 +157,8 @@ et:
       suspension_irreversible: Selle konto andmed on taastamatult kustutatud. Konto taastamisel on see taas kasutatav, aga eelmisi andmeid pole võimalik taastada.
       suspension_reversible_hint_html: Konto on lukustatud ja andmed kustutatakse täielikult %{date}. Seni on võimalik kontot täielikult taastada. Soovi korral on võimalik allpool kõik konto andmed kustutada koheselt.
       title: Kontod
-      unblock_email: Luba e-postiaadress
-      unblocked_email_msg: Kasutaja %{username} e-postiaadress lubatud
+      unblock_email: Lõpeta e-posti aadressi blokeerimine
+      unblocked_email_msg: Kasutaja %{username} e-posti aadressi blokeerimine on lõpetatud
       unconfirmed_email: Kinnitamata e-post
       undo_sensitized: Eemalda tundliku sisu märge
       undo_silenced: Võta vaigistus tagasi
@@ -220,7 +221,7 @@ et:
         silence_account: Vaigistas konto
         suspend_account: Konto kustutamine
         unassigned_report: Määras teavituse maha
-        unblock_email_account: Luba e-postiaadress
+        unblock_email_account: Lõpeta e-posti aadressi blokeerimine
         unsensitive_account: Pole tundliku sisuga konto
         unsilence_account: Konto vaigistus eemaldati
         unsuspend_account: Konto taastamine
@@ -235,9 +236,9 @@ et:
         approve_appeal_html: "%{name} kiitis heaks modereerimise otsuse vaidlustuse %{target} poolt"
         approve_user_html: "%{name} kiitis heaks registreerimise %{target} poolt"
         assigned_to_self_report_html: "%{name} määras raporti %{target} endale"
-        change_email_user_html: "%{name} muutis kasutaja %{target} e-postiaadressi"
+        change_email_user_html: "%{name} muutis kasutaja %{target} e-posti aadressi"
         change_role_user_html: "%{name} muutis %{target} rolli"
-        confirm_user_html: "%{name} kinnitas kasutaja %{target} e-postiaadressi"
+        confirm_user_html: "%{name} kinnitas kasutaja %{target} e-posti aadressi"
         create_account_warning_html: "%{name} saatis %{target} hoiatuse"
         create_announcement_html: "%{name} lõi uue teate %{target}"
         create_canonical_email_block_html: "%{name} blokeeris e-posti räsiga %{target}"
@@ -280,7 +281,7 @@ et:
         silence_account_html: "%{name} piiras %{target} konto"
         suspend_account_html: "%{name} kustutas %{target} konto"
         unassigned_report_html: "%{name} tühistas raporti %{target} määrangu"
-        unblock_email_account_html: "%{name} lubas %{target} e-postiaadressi"
+        unblock_email_account_html: "%{name} lõpetas kasutaja %{target} e-posti aadressi blokeerimise"
         unsensitive_account_html: "%{name} eemaldas %{target} meedia tundliku sisu märke"
         unsilence_account_html: "%{name} eemaldas %{target} konto piirangu"
         unsuspend_account_html: "%{name} taastas %{target} konto"
@@ -334,7 +335,7 @@ et:
       enabled_msg: Selle emotikoni lubamine õnnestus
       image_hint: PNG või GIF suurusega kuni %{size}
       list: Loend
-      listed: Nimekirjastatud
+      listed: Loetletud
       new:
         title: Lisa uus emotikon
       no_emoji_selected: Emotikone ei muudetud, kuna ühtegi polnud valitud
@@ -344,13 +345,13 @@ et:
       shortcode_hint: Vähemalt 2 tähemärki, ainult tähted, numbrid ja alakriipsud
       title: Emotikonid
       uncategorized: Kategoriseerimata
-      unlist: Kirjendamata
-      unlisted: Kirjendamata
+      unlist: Loetlemata
+      unlisted: Ajajooneväline
       update_failed_msg: Ei saanud seda emotikoni uuendada
       updated_msg: Emotikoni uuendamine õnnestus!
       upload: Lae üles
     dashboard:
-      active_users: aktiivsed kasutajad
+      active_users: aktiivseid kasutajaid
       interactions: interaktsioonid
       media_storage: Meedia hoidla
       new_users: uued kasutajad
@@ -570,7 +571,7 @@ et:
     relationships:
       title: "%{acct}-i suhted"
     relays:
-      add_new: Lisa uus vahendaja
+      add_new: Lisa uus sõnumivahendusserver
       delete: Kustuta
       description_html: "<strong>Födereerumisvahendaja</strong> on vahendav server, mis kannab üle suures koguses avalikke postitusi nende serverite vahel, mis on sellega liitunud ja edastavad sellele oma postitusi. <strong>See aitab väikestel ja keskmistel serveritel avastada födiversumi sellist sisu</strong>, mis muidu eeldaks kohalikelt kasutajatelt nende serverite kasutajate jälgitavaks märkimist."
       disable: Keela
@@ -578,13 +579,13 @@ et:
       enable: Luba
       enable_hint: Kui lubatud, siis server tellib sellelt vahendajalt kõik avalikud postitused ning hakkab ka enda avalikke postitusi sellele saatma.
       enabled: Lubatud
-      inbox_url: Vahendaja URL
-      pending: Ootab vahendaja nõusolekut
+      inbox_url: Sõnumivahendusserveri võrguaadress
+      pending: Ootan sõnumivahendusserveri kinnitust
       save_and_enable: Salvesta ja luba
       setup: Sea üles vahendav ühendus
-      signatures_not_enabled: Vahendamine ei tööta korrektselt kuniks turvarežiim või lubatud nimekirja režiim on sisse lülitatud
+      signatures_not_enabled: Vahendamine ei tööta korrektselt kui turvarežiim või lubatud nimekirja režiim on sisse lülitatud
       status: Olek
-      title: Vahendajad
+      title: Sõnumivahendusserverid
     report_notes:
       created_msg: Teade edukalt koostatud!
       destroyed_msg: Teade edukalt kustutatud!
@@ -875,6 +876,9 @@ et:
         message_html: Serverireegleid pole defineeritud.
       sidekiq_process_check:
         message_html: Ühtegi Sidekiq protsessi pole %{value} järjekorra jaoks. Sidekiq seadistus vajab üle vaatamist
+      software_version_check:
+        action: Vaata saadaval uuendusi
+        message_html: Mastodoni uuendus on saadaval.
       software_version_critical_check:
         action: Vaata saadaolevaid uuendusi
         message_html: Saadaval on Mastodoni kriitiline uuendus, uuenda nii kiiresti kui võimalik.
@@ -1138,14 +1142,14 @@ et:
     security: Turvalisus
     set_new_password: Uue salasõna määramine
     setup:
-      email_below_hint_html: Kontrolli rämpsposti kausta või taotle uut. Saad oma e-posti aadressi parandada, kui see on vale.
+      email_below_hint_html: Kontrolli rämpsposti kausta või palu uue kirja saatmist. Kui sinu e-posti aadress on vale, siis saad seda parandada.
       email_settings_hint_html: Klõpsa linki, mis saadeti sulle, et kinnitada %{email}. Seni me ootame.
       link_not_received: Kas ei saanud linki?
       new_confirmation_instructions_sent: Saad mõne minuti pärast uue kinnituslingiga e-kirja!
       title: Kontrolli sisendkasti
     sign_in:
-      preamble_html: Logi sisse oma <strong>%{domain}</strong> volitustega. Kui konto asub teises serveris, ei saa siin sisse logida.
-      title: Logi sisse kohta %{domain}
+      preamble_html: Logi sisse oma kasutajakontoga serverisse <strong>%{domain}</strong>. Kui konto asub teises serveris, siis sa ei saa siin sisse logida.
+      title: Logi sisse serverisse %{domain}
     sign_up:
       manual_review: Liitumised kohas %{domain} vaadatakse meie moderaatorite poolt käsitsi läbi. Aitamaks meil sinu taotlust läbi vaadata, kirjuta palun natuke endast ja miks soovid kontot kohas %{domain}.
       preamble: Selle kontoga saad jälgida ja suhelda kõigi teiste kasutajatega erinevates Mastodoni serverites.
@@ -1162,9 +1166,11 @@ et:
     use_security_key: Kasuta turvavõtit
   author_attribution:
     example_title: Näidistekst
-    hint_html: Määra, kuidas sind krediteeritakse, kui linke Mastodonis jagatakse.
+    hint_html: Kirjutad uudiseid või blogisid Mastodonist väljapool? Määra, kuidas sinule viidatakse, kui neid lehti jagatakse Mastodonis.
+    instructions: 'Vaata, et artikli HTML sisus oleks see kood sees:'
     more_from_html: Rohkem kasutajalt %{name}
     s_blog: Kasutaja %{name} blogi
+    then_instructions: Siis lisa avaldaja domeeninimi allolevasse välja.
     title: Autori tunnustamine
   challenge:
     confirm: Jätka
@@ -1202,7 +1208,7 @@ et:
       before: 'Veendu, et saad aru, mida toob plaanitav muudatus kaasa:'
       caches: Teiste serverite poolt talletatud sisu võib jääda kättesaadavaks
       data_removal: Sinu postitused ning kontoandmed kustutatakse jäädavalt
-      email_change_html: Saad <a href="%{path}">muuta oma e-postiaadressi</a> ilma oma kontot kustutamata
+      email_change_html: Saad <a href="%{path}">muuta oma e-posti aadressi</a> ilma oma kontot kustutamata
       email_contact_html: Kui see ikkagi ei saabu, võid abi saamiseks kirjutada <a href="mailto:%{email}">%{email}</a>
       email_reconfirmation_html: Kui sa ei saa kinnituskirja, saad <a href="%{path}">taotleda seda uuesti</a>
       irreversible: Kustutatud kontot ei saa taastada ega uuesti aktiveerida
@@ -1264,7 +1270,7 @@ et:
   exports:
     archive_takeout:
       date: Kuupäev
-      download: Lae alla oma arhiiv
+      download: Laadi alla oma arhiiv
       hint_html: "<strong>Postitustest ja üleslaetud meediast</strong> on võimalik saada koopia. Eksporditud andmed on ActivityPub-formaadis, loetav vastava tarkvara poolt. Koopia saamine on võimalik iga 7 päeva järel."
       in_progress: Loome arhiivi...
       request: Taotle oma arhiivi
@@ -1273,7 +1279,7 @@ et:
     bookmarks: Järjehoidjad
     csv: CSV
     domain_blocks: Domeeni blokeeringud
-    lists: Nimekirjad
+    lists: Loetelud
     mutes: Oled vaigistanud
     storage: Meedia hoidla
   featured_tags:
@@ -1692,6 +1698,7 @@ et:
     delete: Konto kustutamine
     development: Arendus
     edit_profile: Muuda profiili
+    export: Eksport
     featured_tags: Esile toodud sildid
     import: Impordi
     import_and_export: Import / eksport
@@ -1750,7 +1757,7 @@ et:
       private_long: Näevad ainult jälgijad
       public: Avalik
       public_long: Postitused on kõigile näha
-      unlisted: Kirjendamata
+      unlisted: Ajajooneväline
       unlisted_long: Kõigile näha, kuid ei näidata avalikel ajajoontel
   statuses_cleanup:
     enabled: Vanade postituste automaatne kustutamine
@@ -1819,7 +1826,7 @@ et:
     enabled: Kaheastmeline autentimine on lubatud
     enabled_success: Kaheastmeline autentimine lubatud
     generate_recovery_codes: Loo taastekoodid
-    lost_recovery_codes: Taastekoodide abil on võimalik telefoni kaotsimineku puhul kontole siseneda. Taastekoodide puudumisel saab need siin luua. Eelnevad taastekoodid kaotavad kehtivuse.
+    lost_recovery_codes: Taastekoodide abil on võimalik telefoni kaotsimineku puhul kontole sisse logida. Taastekoodide puudumisel saad need siin luua. Eelnevad taastekoodid kaotavad kehtivuse.
     methods: Kaheastmelised meetodid
     otp: Autentimisrakendus
     recovery_codes: Taastekoodide varundamine
@@ -1940,7 +1947,7 @@ et:
     extra_instructions_html: <strong>Soovitus:</strong> Sinu kodulehel olev link võib olla nähtamatu. Oluline osa on <code>rel="me"</code>, mis väldib kasutaja loodud sisuga lehtedel libaisikustamist. Sa saad isegi kasutada lehe HEADER osas silti <code>link</code> sildi <code>a</code> asemel, kuid HTML peab olema kättesaadav ilma JavaScripti käivitamata.
     here_is_how: Siin on, kuidas
     hint_html: "<strong>Oma isiku tuvastamine on Mastodonis kõigi jaoks.</strong> Toetub avatud veebistandarditele, nüüd ja igavesti tasuta. Kõik, mida vajad, on isiklik veebileht, mille järgi inimesed sind tunnevad. Kui lingid oma profiililt sellele veebilehele, kontrollime me, et see veebileht lingib tagasi sinu profiilile ning näitame profiilil visuaalset tähist."
-    instructions_html: Kopeeri ja kleebi allpool olev kood oma lehe HTML lähtekoodi. Seejärel lisa oma kodulehe aadress profiili "Muuda profiili" taabi ühte lisavälja ning salvesta muudatused.
+    instructions_html: Kopeeri ja kleebi allpool olev kood oma lehe HTML lähtekoodi. Seejärel lisa oma kodulehe aadress profiili "Muuda profiili" vahekaardi ühte lisavälja ning salvesta muudatused.
     verification: Kinnitamine
     verified_links: Sinu kontrollitud lingid
     website_verification: Veebilehe kontrollimine
