@@ -1,0 +1,224 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'yaml'
+require 'json'
+require 'pathname'
+
+class LocaleSync
+  LOCALE_DIR = Pathname.new(__dir__).parent.join('config', 'locales')
+  JS_LOCALE_DIR = Pathname.new(__dir__).parent.join('app', 'javascript', 'mastodon', 'locales')
+
+  def initialize
+    @changes_made = false
+  end
+
+  def run
+    puts "ロケールファイルの同期を開始します..."
+    
+    # YAMLファイルの同期
+    sync_yaml_files
+    
+    # JSONファイルの同期
+    sync_json_files
+    
+    if @changes_made
+      puts "\n同期が完了しました。変更されたファイルがあります。"
+    else
+      puts "\n同期が完了しました。変更はありませんでした。"
+    end
+  end
+
+  private
+
+  def sync_yaml_files
+    puts "\nYAMLファイルを同期中..."
+    
+    # YAML形式のロケールファイルを処理
+    yaml_files = [
+      ['ja.yml', 'ja-IM.yml'],
+      ['activerecord.ja.yml', 'activerecord.ja-IM.yml'],
+      ['simple_form.ja.yml', 'simple_form.ja-IM.yml']
+    ]
+
+    yaml_files.each do |ja_file, ja_im_file|
+      sync_yaml_pair(ja_file, ja_im_file)
+    end
+  end
+
+  def sync_json_files
+    puts "\nJSONファイルを同期中..."
+    
+    # JSON形式のロケールファイルを処理
+    sync_json_pair('ja.json', 'ja-IM.json')
+  end
+
+  def sync_yaml_pair(ja_filename, ja_im_filename)
+    ja_path = LOCALE_DIR.join(ja_filename)
+    ja_im_path = LOCALE_DIR.join(ja_im_filename)
+
+    unless ja_path.exist?
+      puts "  警告: #{ja_filename} が見つかりません"
+      return
+    end
+
+    puts "  #{ja_filename} と #{ja_im_filename} を同期中..."
+
+    # YAMLデータを解析
+    ja_data = YAML.load_file(ja_path)
+    ja_im_data = ja_im_path.exist? ? YAML.load_file(ja_im_path) : {}
+
+    # jaの構造をベースにja-IMを更新（順序保持）
+    updated_ja_im = sync_hash_structure_ordered(ja_data, ja_im_data, 'ja', 'ja-IM')
+
+    # ja-IMにのみ存在するキーを削除
+    removed_keys = find_extra_keys(ja_im_data, ja_data, 'ja-IM', 'ja')
+    if removed_keys.any?
+      puts "    削除されるキー: #{removed_keys.join(', ')}"
+      @changes_made = true
+    end
+
+    # ファイルを更新（順序保持）
+    if updated_ja_im != ja_im_data
+      write_ordered_yaml(ja_im_path, updated_ja_im)
+      puts "    #{ja_im_filename} を更新しました"
+      @changes_made = true
+    else
+      puts "    #{ja_im_filename} は変更不要です"
+    end
+  end
+
+  def sync_json_pair(ja_filename, ja_im_filename)
+    ja_path = JS_LOCALE_DIR.join(ja_filename)
+    ja_im_path = JS_LOCALE_DIR.join(ja_im_filename)
+
+    unless ja_path.exist?
+      puts "  警告: #{ja_filename} が見つかりません"
+      return
+    end
+
+    puts "  #{ja_filename} と #{ja_im_filename} を同期中..."
+
+    ja_data = JSON.parse(File.read(ja_path))
+    ja_im_data = ja_im_path.exist? ? JSON.parse(File.read(ja_im_path)) : {}
+
+    # jaの構造をベースにja-IMを更新（順序保持）
+    updated_ja_im = sync_hash_structure_ordered(ja_data, ja_im_data)
+
+    # ja-IMにのみ存在するキーを削除
+    removed_keys = find_extra_keys(ja_im_data, ja_data)
+    if removed_keys.any?
+      puts "    削除されるキー: #{removed_keys.join(', ')}"
+      @changes_made = true
+    end
+
+    # ファイルを更新（順序保持）
+    if updated_ja_im != ja_im_data
+      write_ordered_json(ja_im_path, updated_ja_im)
+      puts "    #{ja_im_filename} を更新しました"
+      @changes_made = true
+    else
+      puts "    #{ja_im_filename} は変更不要です"
+    end
+  end
+
+  # 順序を保持しながらハッシュ構造を同期
+  def sync_hash_structure_ordered(source_hash, target_hash, source_key = nil, target_key = nil)
+    # 結果用のハッシュ（順序保持）
+    result = {}
+    added_keys = []
+
+    # ソースの順序に従ってキーを処理（jaに存在するキーのみ）
+    source_hash.each do |key, value|
+      # ルートレベルでのロケールキー変換（ja -> ja-IM）
+      actual_key = (source_key && target_key && key == source_key) ? target_key : key
+
+      if value.is_a?(Hash)
+        if target_hash[actual_key].is_a?(Hash)
+          result[actual_key] = sync_hash_structure_ordered(value, target_hash[actual_key])
+        else
+          result[actual_key] = copy_hash_structure_ordered(value)
+          added_keys << actual_key
+        end
+      else
+        if target_hash.key?(actual_key)
+          # 既存の値を保持
+          result[actual_key] = target_hash[actual_key]
+        else
+          # 新しい値を追加
+          result[actual_key] = value
+          added_keys << actual_key
+        end
+      end
+    end
+
+    # jaに存在しないキーは削除（追加しない）
+    # この部分を削除することで、jaに存在しないキーは結果に含まれなくなる
+
+    if added_keys.any?
+      puts "    追加されるキー: #{added_keys.join(', ')}"
+      @changes_made = true
+    end
+
+    result
+  end
+
+  # 順序を保持しながらハッシュ構造をコピー
+  def copy_hash_structure_ordered(hash)
+    result = {}
+    hash.each do |key, value|
+      result[key] = value.is_a?(Hash) ? copy_hash_structure_ordered(value) : value
+    end
+    result
+  end
+
+  # 順序を保持してYAMLを書き出し
+  def write_ordered_yaml(path, data)
+    # YAML出力オプションを設定（行の長さ制限を無効化）
+    yaml_output = YAML.dump(data, line_width: -1)
+    
+    # インデントを調整（Mastodonの標準に合わせる）
+    yaml_output = yaml_output.gsub(/^(\s*)([^:\s]+):/, '\1\2:')
+    
+    File.write(path, yaml_output)
+  end
+
+  # 順序を保持してJSONを書き出し
+  def write_ordered_json(path, data)
+    # 2スペースインデントでJSONを整形
+    json_output = JSON.pretty_generate(data, indent: '  ')
+    File.write(path, json_output)
+  end
+
+  def find_extra_keys(target_hash, source_hash, target_locale = nil, source_locale = nil, prefix = "")
+    extra_keys = []
+
+    target_hash.each do |key, value|
+      # ルートレベルでのロケールキー変換を考慮
+      source_key = if prefix.empty? && target_locale && source_locale && key == target_locale
+                     source_locale
+                   else
+                     key
+                   end
+
+      current_path = prefix.empty? ? key.to_s : "#{prefix}.#{key}"
+
+      if value.is_a?(Hash)
+        if source_hash[source_key].is_a?(Hash)
+          extra_keys.concat(find_extra_keys(value, source_hash[source_key], nil, nil, current_path))
+        else
+          extra_keys << current_path
+        end
+      elsif !source_hash.key?(source_key)
+        extra_keys << current_path
+      end
+    end
+
+    extra_keys
+  end
+end
+
+# スクリプトの実行
+if __FILE__ == $0
+  LocaleSync.new.run
+end
