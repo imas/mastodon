@@ -2,30 +2,381 @@
 ja-IM:
   simple_form:
     hints:
+      account:
+        attribution_domains: 1行につき1つずつ入力してください。この設定は関わりのないwebサイトに対して虚偽の帰属表示が行われることを防止する役割があります。
+        discoverable: プロフィールと公開あふぅをMastodonのおすすめやハイライトとしてほかのユーザーに表示することを許可します。
+        display_name: フルネーム、ハンドルネームなど
+        fields: ホームページ、代名詞、年齢など何でも構いません。
+        indexable: "「楽屋」で送信されたあふぅがMastodonの検索結果にヒットするようになります。ここのチェック状態にかかわらず、ほかのユーザーにわかられたりやティンときたあふぅはそのユーザーから検索されることがあります。"
+        note: '自己紹介には #ハッシュタグ や、ほかのアカウントのユーザー名 (@user) を使用できます'
+        show_collections: チェックを入れるとフォローとフォロワーの一覧を誰でも見られるようにします。チェックをはずすとこれらの情報を非公開にできますが、あなたがフォローしているユーザーからは、あなたがフォロワーになっていることがわかります。
+        unlocked: 新しいフォロワーを自動的に承認します。チェックをはずすとフォローリクエストとその承認が必要になり、新しいフォロワーを受け入れるか拒否するかを自分で選べるようになります。
+      account_alias:
+        acct: 引っ越し元のユーザー名@ドメインを指定してください
+      account_migration:
+        acct: 引っ越し先のユーザー名@ドメインを指定してください
+      account_warning_preset:
+        text: URL、ハッシュタグ、メンションなど、あふぅに用いる構文が使用できます
+        title: オプションです。受信者には表示されません。
+      admin_account_action:
+        include_statuses: ユーザーは取られた制限や警告の原因となったあふぅを確認できるようになります
+        send_email_notification: ユーザーは自分のアカウントに何が起こったのか説明を受け取ります
+        text_html: オプションです。あふぅに用いる構文を使うことができます。簡略化のため<a href="%{path}">プリセット警告文を追加</a>することができます
+        type_html: "<strong>%{acct}</strong>さんに対し、何を行うか選択してください"
+        types:
+          disable: ユーザーが自分のアカウントを使用できないようにします。コンテンツを削除したり非表示にすることはありません。
+          none: これを使用すると、他の操作をせずにユーザーに警告を送信できます。
+          sensitive: このユーザーが添付したメディアを強制的に閲覧注意にする
+          silence: ユーザーによる公開あふぅを禁止し、フォローしていない人にあふぅや通知が表示されないようにします。また、このアカウントに対するすべての通報をクローズします。
+          suspend: このアカウントによるすべての活動を禁止し、コンテンツを削除します。この操作は30日以内であれば取り消しが可能です。また、このアカウントに対するすべての通報をクローズします。
+        warning_preset_id: オプションです。プリセット警告文の末尾に任意の文字列を追加することができます
+      announcement:
+        all_day: 有効化すると、対象期間の箇所に日付だけが表示されます
+        ends_at: オプションです。指定すると、お知らせの掲載はその日時で自動的に終了します
+        scheduled_at: お知らせを今すぐ掲載する場合は空欄にしてください
+        starts_at: オプションです。お知らせしたい事柄の期間が決まっている場合に使用します
+        text: あふぅと同じ構文を使用できます。アナウンスが占める画面のスペースに注意してください
+      appeal:
+        text: 一度だけ異議を申し立てることができます
       defaults:
-        fields: 名刺に表として4つまでの項目を表示することができます
-        phrase: あふぅの大文字小文字や閲覧注意に関係なく一致
+        autofollow: 招待から登録した人が自動的にあなたをフォローするようになります
+        avatar: "%{size}までのWEBP、PNG、GIF、JPGが利用可能です。%{dimensions}pxまで縮小されます"
+        bot: このアカウントは主に自動で動作し、人が見ていない可能性があります
+        context: フィルターを適用する対象 (複数選択可)
+        current_password: 現在のアカウントのパスワードを入力してください
+        current_username: 確認のため、現在のアカウントのユーザー名を入力してください
+        digest: 長期間使用していない場合と不在時に返信を受けた場合のみ送信されます
+        email: 確認のメールが送信されます
+        header: "%{size}までのWEBP、PNG、GIF、JPGが利用可能です。%{dimensions}pxまで縮小されます"
+        inbox_url: 使用したいリレーサーバーのトップページからURLをコピーします
+        irreversible: フィルターが後で削除されても、除外されたあふぅは元に戻せなくなります
+        locale: ユーザーインターフェース、メールやプッシュ通知の言語
+        password: 少なくとも8文字は入力してください
+        phrase: あふぅ内容の大文字小文字や閲覧注意に関係なく一致
+        scopes: アプリの API に許可するアクセス権を選択してください。最上位のスコープを選択する場合、個々のスコープを選択する必要はありません。
         setting_aggregate_reblogs: 最近わかるわされたあふぅが新たにわかるわされても表示しません (設定後受信したものにのみ影響)
-        setting_default_language: あふぅの言語は自動的に検出されますが、必ずしも正確とは限りません
+        setting_always_send_emails: 通常、Mastodon からメール通知は行われません。
+        setting_default_sensitive: 早苗さんに見つからないメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
         setting_display_media_default: 早苗さんに見つからないメディアは隠す
         setting_display_media_hide_all: 全てのメディアを常に早苗さんに見つからないようにする
         setting_display_media_show_all: 早苗さんに見つからないメディアも常に表示する
-        setting_hide_network: フォローとフォロワーの情報が名刺から見られないようにします
-        setting_noindex: 公開されている名刺および各あふぅページに影響します
-        setting_show_application: あふぅするのに使用したアプリがあふぅの詳細ビューに表示されるようになります
-        username: あなたのプロデューサー名は %{domain} の中で重複していない必要があります
+        setting_system_scrollbars_ui: Safari/Chromeベースのデスクトップブラウザーでのみ有効です
+        setting_use_blurhash: ぼかしはメディアの色を元に生成されますが、細部は見えにくくなっています
+        setting_use_pending_items: 新着があってもタイムラインを自動的にスクロールしないようにします
+        username: アルファベット大文字と小文字、数字、アンダーバー「_」が使えます
+        whole_word: キーワードまたはフレーズが英数字のみの場合、単語全体と一致する場合のみ適用されるようになります
+      domain_allow:
+        domain: 登録するとこのサーバーからデータを受信したり、このドメインから受信するデータを処理して保存できるようになります
+      email_domain_block:
+        domain: 電子メールアドレスのドメイン名、または使用されるMXレコードを指定できます。新規登録時にチェックされます。
+        with_dns_records: 指定したドメインのDNSレコードを取得し、その結果もメールドメインブロックに登録されます
+      featured_tag:
+        name: 最近使用したハッシュタグ
+      filters:
+        action: あふぅがフィルタに一致したときに実行するアクションを選択
+        actions:
+          blur: メディアは警告して早苗さんに見つからないようにするが、テキストは表示する
+          hide: フィルタに一致したあふぅを完全に非表示にします
+          warn: フィルタに一致したあふぅを非表示にし、フィルタのタイトルを含む警告を表示します
+      form_admin_settings:
+        activity_api_enabled: 週単位でローカルで公開されたあふぅ数、アクティブユーザー数、新規登録者数を表示します
+        app_icon: モバイル端末で表示されるデフォルトのアプリアイコンを独自のアイコンで上書きします。WEBP、PNG、GIF、JPGが利用可能です。
+        backups_retention_period: ユーザーには、後でダウンロードするためにあふぅのアーカイブを生成する機能があります。正の値に設定すると、これらのアーカイブは指定された日数後に自動的にストレージから削除されます。
+        bootstrap_timeline_accounts: これらのアカウントは、新しいユーザー向けのおすすめユーザーの一番上にピン留めされます。
+        closed_registrations_message: アカウント作成を停止している時に表示されます
+        content_cache_retention_period: 他のサーバーからのすべてのあふぅ（わかるわやRe:あふぅを含む）は、指定された日数が経過すると、ローカルユーザーとのやりとりに関係なく削除されます。これには、ローカルユーザーがブックマークやお気に入りとして登録したあふぅも含まれます。異なるサーバーのユーザー間の非公開な返信も失われ、復元することは不可能です。この設定の使用は特別な目的のインスタンスのためのものであり、一般的な目的のサーバーで使用した場合、多くのユーザーの期待を裏切ることになります。
+        custom_css: ウェブ版のMastodonでカスタムスタイルを適用できます。
+        favicon: デフォルトのMastodonのブックマークアイコンを独自のアイコンで上書きします。WEBP、PNG、GIF、JPGが利用可能です。
+        mascot: 上級者向けWebインターフェースのイラストを上書きします。
+        media_cache_retention_period: リモートユーザーがあふぅしたメディアファイルは、あなたのサーバーにキャッシュされます。正の値を設定すると、メディアは指定した日数後に削除されます。削除後にメディアデータが要求された場合、ソースコンテンツがまだ利用可能であれば、再ダウンロードされます。リンクプレビューカードがサードパーティのサイトを更新する頻度に制限があるため、この値を少なくとも14日に設定することをお勧めします。
+        min_age: ユーザーはサインアップ中に生年月日を確認するよう求められます
+        peers_api_enabled: このサーバーが Fediverse で遭遇したドメイン名のリストです。このサーバーが知っているだけで、特定のサーバーと連合しているかのデータは含まれません。これは一般的に Fediverse に関する統計情報を収集するサービスによって使用されます。
+        profile_directory: ディレクトリには、掲載する設定をしたすべてのユーザーが一覧表示されます。
+        require_invite_text: アカウント登録が承認制の場合、登録の際の申請事由の入力を必須にします
+        site_contact_email: 法律またはサポートに関する問い合わせ先
+        site_contact_username: マストドンでの連絡方法
+        site_extended_description: 訪問者やユーザーに役立つかもしれない任意の追加情報。Markdownが使えます。
+        site_short_description: 運営している人や組織、想定しているユーザーなど、サーバーの特徴を説明する短いテキスト
+        site_terms: 独自のプライバシーポリシーを使用するか空白にしてデフォルトのプライバシーポリシーを使用します。Markdownが使えます。
+        site_title: ドメイン名以外でサーバーを参照する方法
+        status_page_url: 障害発生時などにユーザーがサーバーの状態を確認できるページのURL
+        theme: ログインしていない人と新規ユーザーに表示されるテーマ。
+        thumbnail: サーバー情報と共に表示される、アスペクト比が約 2:1 の画像。
+        timeline_preview: ログインしていないユーザーがサーバー上の最新の公開あふぅを閲覧できるようにします。
+        trendable_by_default: トレンドの審査を省略します。トレンドは掲載後でも個別に除外できます。
+        trends: トレンドは、サーバー上で人気を集めているあふぅ、ハッシュタグ、ニュース記事などが表示されます。
+        trends_as_landing_page: ログインしていないユーザーに対して、サーバーの説明の代わりにトレンドコンテンツを表示します。トレンドを有効にする必要があります。
+      form_challenge:
+        current_password: セキュリティ上重要なエリアにアクセスしています
+      imports:
+        data: 他のMastodonサーバーからエクスポートしたCSVファイルを選択して下さい
+      invite_request:
+        text: このサーバーは現在承認制です。申請を承認する際に役立つメッセージを添えてください
+      ip_block:
+        comment: オプションです。このルールを追加した理由の覚え書きにご利用ください。
+        expires_in: IPアドレスは有限のリソースです。複数人で共有されたり変更されることもあります。そのため無期限にIPアドレスをブロックするのは推奨されません。
+        ip: IPv4またはIPv6アドレスを入力してください。CIDR構文を用いて範囲指定でブロックすることもできます。自分自身を締め出さないよう注意してください！
+        severities:
+          no_access: すべてのリソースへのアクセスをブロックします
+          sign_up_block: 新規のアカウント作成はできません
+          sign_up_requires_approval: 承認するまで新規登録が完了しなくなります
+        severity: このIPに対する措置を選択してください
+      rule:
+        hint: ルールについての具体的な説明を追加できます (任意)
+        text: ユーザーのためのルールや要件を記述してください。短くシンプルにしてください。
+      sessions:
+        otp: '携帯電話のアプリで生成された二要素認証コードを入力するか、リカバリーコードを使用してください:'
+        webauthn: USBキーの場合は、必ず挿入し、必要に応じてタップしてください。
+      settings:
+        indexable: プロフィールがGoogleやBingなどの検索結果にヒットするようになります。
+        show_application: 自分で自分のあふぅの送信元アプリを確認することは、ここのチェック状態にかかわらず可能です。
+      tag:
+        name: 視認性向上などのためにアルファベット大文字小文字の変更のみ行うことができます
+      terms_of_service:
+        changelog: Markdown 記法を利用できます。
+        effective_date: 期間は、ユーザーへ通知した日から10日以上30日以下にするのが適当でしょう。
+        text: Markdown 記法を利用できます。
+      terms_of_service_generator:
+        admin_email: 法的通知とは、異議申し立て通知、裁判所命令、削除要請、法執行機関による要請などをいいます。
+        arbitration_address: 上記住所と同じにすることもできます。またはEメールを使用する場合、空白でも構いません。
+        arbitration_website: Webフォームまたは、Eメールを使用する場合は空白でも構いません。
+        choice_of_law: あらゆる請求には都市、地域、領域、または州において施行されている実体法が適用されます。
+        dmca_address: 米国の運営者の場合は、DMCA Designated Agent Directory（DMCA指定代理人ディレクトリ）に登録のある住所を使用してください。申請を行えば記載を私書箱とすることも可能で、その場合はDMCA Designated Agent Post Office Box Waiver Request（DMCA指定代理人の郵便私書箱による免除申請）によって著作権局にメールを送信し、あなたが個人のコンテンツ管理者であって、行った措置に対して報復を受けるおそれがあり、住所を非公開とするために私書箱を使用する必要がある旨を伝えてください。
+        dmca_email: 上で使った「法的通知を受け取るアドレス」と同じでも構いません。
+        domain: あなたの提供するこのオンラインサービスの識別名です。
+        jurisdiction: 運営責任者が居住する国を記載します。企業や他の団体である場合は、その組織の所在国に加えて、市・区・州などの地域を記載します。
+        min_age: お住まいの国や地域の法律によって定められている最低年齢を下回ってはなりません。
       user:
-        chosen_languages: 選択すると、選択した言語のあふぅのみが楽屋に表示されるようになります
+        chosen_languages: 選択すると、選択した言語のあふぅのみが公開タイムラインに表示されるようになります
+        role: そのロールは、ユーザーが持つ権限を制御します。
+      user_role:
+        color: UI 全体でロールの表示に使用される色（16進数RGB形式）
+        highlighted: これによりロールが公開されます。
+        name: ロールのバッジを表示する際の表示名
+        permissions_as_keys: このロールを持つユーザーは次の機能にアクセスできます
+        position: 場合により、より高いロールのユーザーが紛争の解決を決定します。特定のアクションは優先度が低いロールでのみ実行できます。
+      webhook:
+        events: 送信するイベントを選択
+        template: 変数補完を使用して、独自のJSONペイロードを構成できます。デフォルトのJSONを使用する場合は空白のままにします。
+        url: イベントの送信先
     labels:
+      account:
+        attribution_domains: あなたの著者表示を許可するwebサイト
+        discoverable: アカウントを見つけやすくする
+        fields:
+          name: ラベル
+          value: 内容
+        indexable: 公開あふぅを検索できるようにする
+        show_collections: フォローとフォロワーの一覧を開示する
+        unlocked: フォローリクエストを不要にする
+      account_alias:
+        acct: 引っ越し元のユーザー ID
+      account_migration:
+        acct: 引っ越し先のユーザーID
+      account_warning_preset:
+        text: プリセット警告文
+        title: タイトル
+      admin_account_action:
+        include_statuses: 通報されたあふぅをメールに含める
+        send_email_notification: メールでユーザーに通知
+        text: カスタム警告文
+        type: アクション
+        types:
+          disable: ログインを無効化
+          none: 警告を送信
+          sensitive: 閲覧注意
+          silence: サイレンス
+          suspend: 停止
+        warning_preset_id: プリセット警告文を使用
+      announcement:
+        all_day: 終日
+        ends_at: 予定終了日時
+        scheduled_at: 掲載予約日時
+        starts_at: 予定開始日時
+        text: お知らせ
+      appeal:
+        text: この決定を覆すべき理由を説明してください
       defaults:
+        autofollow: 招待から参加後、あなたをフォロー
+        avatar: アイコン
+        bot: これはBOTアカウントです
+        chosen_languages: 表示する言語
+        confirm_new_password: 新しいパスワード（確認用）
+        confirm_password: パスワード（確認用）
+        context: 除外対象
+        current_password: 現在のパスワード
+        data: データ
+        display_name: 表示名
+        email: メールアドレス
+        expires_in: 有効期限
+        fields: プロフィール補足情報
+        header: ヘッダー
+        honeypot: "%{label} (入力しない)"
+        inbox_url: リレーサーバーの inbox URL
+        irreversible: 隠すのではなく除外する
+        locale: 言語
+        max_uses: 使用できる回数
+        new_password: 新しいパスワード
+        note: プロフィール
+        otp_attempt: 二要素認証コード
+        password: パスワード
+        phrase: キーワードまたはフレーズ
+        setting_advanced_layout: 上級者向けUIを有効にする
         setting_aggregate_reblogs: わかるわをまとめる
+        setting_always_send_emails: 常にメール通知を送信する
+        setting_auto_play_gif: アニメーションGIFを自動再生する
         setting_boost_modal: わかるわする前に確認ダイアログを表示する
+        setting_default_language: あふぅする言語
+        setting_default_privacy: あふぅの公開範囲
+        setting_default_quote_policy: 引用できるユーザー
         setting_default_sensitive: メディアを常に早苗さんに見つからないようにする
         setting_delete_modal: あふぅを削除する前に確認ダイアログを表示する
-        setting_expand_spoilers: 閲覧注意としてマークされたあふぅを常に展開する
-        setting_show_application: あふぅの送信に使用したアプリを開示する
+        setting_disable_hover_cards: マウスオーバーでプロフィールをポップアップしない
+        setting_disable_swiping: スワイプでの切り替えを無効にする
+        setting_display_media: メディアの表示
+        setting_display_media_default: 標準
+        setting_display_media_hide_all: 非表示
+        setting_display_media_show_all: 表示
+        setting_expand_spoilers: 早苗さんに見つからないように隠されたあふぅを常に展開する
+        setting_hide_network: 繋がりを隠す
+        setting_quick_boosting: クイックわかるわの有効化
+        setting_reduce_motion: アニメーションの動きを減らす
+        setting_system_font_ui: システムのデフォルトフォントを使う
+        setting_system_scrollbars_ui: システムのデフォルトのスクロールバーを使う
+        setting_theme: サイトテーマ
+        setting_trends: 本日のトレンドタグを表示する
+        setting_unfollow_modal: フォローを解除する前に確認ダイアログを表示する
+        setting_use_blurhash: 非表示のメディアを色付きのぼかしで表示する
+        setting_use_pending_items: 手動更新モード
+        severity: 重大性
+        sign_in_token_attempt: セキュリティコード
+        title: タイトル
+        type: インポートする項目
+        username: ユーザー名
+        username_or_email: ユーザー名またはメールアドレス
+        whole_word: 単語全体にマッチ
+      email_domain_block:
+        with_dns_records: ドメインのMXレコードとIPアドレスを含む
+      featured_tag:
+        name: ハッシュタグ
+      filters:
+        actions:
+          blur: 警告付きでメディアを早苗さんに見つからないようにする
+          hide: 完全に早苗さんに見つからないようにする
+          warn: 警告付きで早苗さんに見つからないようにする
+      form_admin_settings:
+        activity_api_enabled: APIでユーザーアクティビティに関する集計統計を公開する
+        app_icon: アプリアイコン
+        backups_retention_period: ユーザーアーカイブの保持期間
+        bootstrap_timeline_accounts: おすすめユーザーに常に表示するアカウント
+        closed_registrations_message: アカウント作成を停止している時のカスタムメッセージ
+        content_cache_retention_period: リモートコンテンツの保存期間
+        custom_css: カスタムCSS
+        favicon: ブックマークアイコン
+        mascot: カスタムマスコット（レガシー）
+        media_cache_retention_period: メディアキャッシュの保持期間
+        min_age: 最低年齢の要件
+        peers_api_enabled: 発見したサーバーのリストをAPIで公開する
+        profile_directory: プロフィール一覧を有効にする
+        registrations_mode: 新規登録が可能な人
+        require_invite_text: 申請事由の入力を必須にする
+        show_domain_blocks: ドメインブロックを表示
+        show_domain_blocks_rationale: ドメインがブロックされた理由を表示
+        site_contact_email: 連絡先メールアドレス
+        site_contact_username: 連絡先ユーザー名
+        site_extended_description: 詳細説明
+        site_short_description: サーバーの説明
+        site_terms: プライバシーポリシー
+        site_title: サーバーの名前
+        status_page_url: サーバーの状態ページのURL
+        theme: デフォルトテーマ
+        thumbnail: サーバーのサムネイル
+        timeline_preview: 楽屋への未認証のアクセスを許可する
+        trendable_by_default: 審査前のトレンドの掲載を許可する
+        trends: トレンドを有効にする
+        trends_as_landing_page: 新規登録画面にトレンドを表示する
+      interactions:
+        must_be_follower: フォロワー以外からの通知をブロック
+        must_be_following: フォローしていないユーザーからの通知をブロック
+        must_be_following_dm: フォローしていないユーザーからのダイレクトメッセージをブロック
+      invite:
+        comment: コメント
+      invite_request:
+        text: 意気込みをお聞かせください
+      ip_block:
+        comment: コメント
+        ip: IP
+        severities:
+          no_access: ブロック
+          sign_up_block: アカウント作成をブロック
+          sign_up_requires_approval: 登録を制限
+        severity: ルール
       notification_emails:
-        digest: 楽屋からピックアップしてメールで通知する
-        favourite: ティンときた人がいた時にメールで通知する
-        mention: Reあふぅが来た時にメールで通知する
-        reblog: あふぅが同意(わかるわ)された時にメールで通知する
+        appeal: モデレーターの判断に異議申し立てが行われた時
+        digest: タイムラインからピックアップしてメールで通知する
+        favourite: ティンときた時
+        follow: フォローされた時
+        follow_request: フォローリクエストを受けた時
+        mention: Re:あふぅが来た時
+        pending_account: 新しいアカウントの承認が必要な時
+        reblog: あふぅがわかるわされた時
+        report: 新しい通報が送信された時
+        software_updates:
+          all: すべてのアップデートを通知する
+          critical: 緊急のアップデートのみ通知する
+          label: 新しいMastodonバージョンが利用可能になった時
+          none: 通知しない (非推奨)
+          patch: 緊急のアップデートとバグ修正アップデートを通知する
+        trending_tag: 新しいトレンドのレビューをする必要がある時
+      rule:
+        hint: ルールの補足説明
+        text: ルール
+      settings:
+        indexable: 検索エンジンからアクセスできるようにする
+        show_application: あふぅに使ったアプリを開示する
+      tag:
+        listable: 検索とディレクトリへの使用を許可する
+        name: ハッシュタグ
+        trendable: トレンドへの表示を許可する
+        usable: このサーバーのユーザーがタグをつけてあふぅすることを許可する
+      terms_of_service:
+        changelog: 変更箇所
+        effective_date: 適用日
+        text: サービス利用規約
+      terms_of_service_generator:
+        admin_email: 法的通知を受け取るメールアドレス
+        arbitration_address: 仲裁通知の送付先住所
+        arbitration_website: 仲裁通知の送信用ウェブサイト
+        choice_of_law: 準拠法の選択
+        dmca_address: DMCA/著作権通知の送付先住所
+        dmca_email: DMCA/著作権通知の送付先メールアドレス
+        domain: ドメイン
+        jurisdiction: 裁判管轄
+        min_age: 登録可能な最低年齢
+      user:
+        date_of_birth_1i: 日
+        date_of_birth_2i: 月
+        date_of_birth_3i: 年
+        role: ロール
+        time_zone: タイムゾーン
+      user_role:
+        color: バッジの色
+        highlighted: プロフィールにロールのバッジを表示する
+        name: 名前
+        permissions_as_keys: 権限
+        position: 優先度
+      webhook:
+        events: 有効なイベント
+        template: ペイロードテンプレート
+        url: エンドポイントURL
+    'no': いいえ
+    not_recommended: 非推奨
+    overridden: 上書き済み
+    recommended: おすすめ
+    required:
+      mark: "*"
+      text: 必須
+    title:
+      sessions:
+        webauthn: セキュリティキーを使用してサインインする
+    'yes': はい

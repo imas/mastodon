@@ -1,9 +1,77 @@
 ---
 ja-IM:
   activerecord:
+    attributes:
+      poll:
+        expires_at: 期限
+        options: 項目
+      user:
+        agreement: サービス契約
+        email: メールアドレス
+        locale: ロケール
+        password: パスワード
+      user/account:
+        username: ユーザー名
+      user/invite_request:
+        text: 理由
     errors:
+      attributes:
+        domain:
+          invalid: 有効なドメイン名ではありません
+      messages:
+        invalid_domain_on_line: "%{value}は有効なドメイン名ではありません"
       models:
+        account:
+          attributes:
+            fields:
+              fields_with_values_missing_labels: プロフィール補足情報にラベルが入力されていないものがあります
+            username:
+              invalid: アルファベット・数字・アンダーバーの組み合わせで入力してください
+              reserved: は予約されています
+        admin/webhook:
+          attributes:
+            url:
+              invalid: は無効なURLです
+        doorkeeper/application:
+          attributes:
+            website:
+              invalid: は無効なURLです
+        import:
+          attributes:
+            data:
+              malformed: は不正です
+        list_account:
+          attributes:
+            account_id:
+              taken: はすでにリストに存在します
+          must_be_following: フォローされているアカウントでなければなりません
         status:
           attributes:
             reblog:
               taken: は既にわかるわしています
+        terms_of_service:
+          attributes:
+            effective_date:
+              too_soon: 早すぎます、%{date}より後でなくてはなりません
+        user:
+          attributes:
+            date_of_birth:
+              below_limit: 年齢制限を下回っています
+            email:
+              blocked: は禁止されているメールプロバイダを使用しています
+              unreachable: は存在しないようです
+            role_id:
+              elevated: 現在と同じロールには変更できません
+        user_role:
+          attributes:
+            permissions_as_keys:
+              dangerous: 基本ロールにとって安全でない権限を含みます
+              elevated: 現在のロールが所有していない権限は含めることはできません
+              own_role: 現在と同じロールには変更できません
+            position:
+              elevated: 現在と同じロールには変更できません
+              own_role: 現在と同じロールには変更できません
+        webhook:
+          attributes:
+            events:
+              invalid_permissions: あなたが権利を持っていないイベントを含めることはできません
