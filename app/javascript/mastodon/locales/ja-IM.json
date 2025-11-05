@@ -881,7 +881,7 @@
   "status.quote_post_author": "{name} のあふぅ",
   "status.read_more": "もっと見る",
   "status.reblog": "わかるわ",
-  "status.reblog_or_quote": "わかるわか引用",
+  "status.reblog_private": "わかるわ",
   "status.reblogged_by": "{name}さんにわかるわされました",
   "status.reblogs": "{count, plural, one {わかるわ} other {わかるわ}}",
   "status.reblogs.empty": "まだ誰もわかるわしていません。わかられるとここに表示されます。",

@@ -870,7 +870,7 @@ ja-IM:
         report: 通報
       contents: あふぅ内容
       deleted: 削除済み
-      favourites: ティンときた
+      favourites: ティンと来た
       history: 更新履歴
       in_reply_to: Re:あふぅ先
       language: 言語
@@ -1035,13 +1035,13 @@ ja-IM:
         confirm_allow_account: 本当に選択されたアカウントを許可しますか？
         confirm_disallow: 本当に選択されたトゥートを禁止しますか？
         confirm_disallow_account: 本当に選択されたアカウントを禁止しますか？
-        description_html: これらは、このサーバーが知っている、たくさんシェアされ、ティンときたあふぅです。新しいユーザーや久しぶりにアクセスするユーザーがフォローする人を探すのに役立ちます。あなたがあふぅ者を承認し、あふぅ者が許可するまで、表示されることはありません。また、個別のあふぅを許可または拒否することもできます。
+        description_html: これらは、このサーバーが知っている、たくさんシェアされ、ティンと来たあふぅです。新しいユーザーや久しぶりにアクセスするユーザーがフォローする人を探すのに役立ちます。あなたがあふぅ者を承認し、あふぅ者が許可するまで、表示されることはありません。また、個別のあふぅを許可または拒否することもできます。
         disallow: 掲載を拒否
         disallow_account: あふぅ者を拒否
         no_status_selected: 何も選択されていないため、変更されていません
         not_discoverable: あふぅ者は発見可能であることに同意していません
         shared_by:
-          other: "%{friendly_count}回の共有、ティンときた"
+          other: "%{friendly_count}回の共有、ティンと来た"
         title: トレンドあふぅ
       tags:
         current_score: 現在のスコア %{score}
@@ -1139,9 +1139,9 @@ ja-IM:
     remove: エイリアスを削除
   appearance:
     advanced_web_interface: 上級者向けUI
-    advanced_settings: 詳細設定
+    advanced_web_interface_hint: ディスプレイを幅いっぱいまで活用したい場合、上級者向け UI をおすすめします。オフィス、ホワイトボード、ライブステージ、更にはリストやハッシュタグなど、様々な異なるカラムから望む限りの情報を一度に受け取れるような設定が可能になります。
     animations_and_accessibility: アニメーションとアクセシビリティー
-    boosting_preferences_info_html: "<strong>Tip:</strong> 設定に関係なく、<kbd>Shift</kbd> を押しながら %{icon} Boostアイコンを<kbd>クリック</kbd>すると、すぐにわかるわされます。"
+    confirmation_dialogs: 確認ダイアログ
     discovery: 見つける
     localization:
       body: Mastodonは有志によって翻訳されています。
@@ -1552,7 +1552,7 @@ ja-IM:
       confirmation_html: Mastodon (%{domain}) による %{email} 宛の「%{type}」の配信を停止します。再度必要になった場合は<a href="%{settings_path}">メール通知の設定</a>からいつでも再開できます。
       emails:
         notification_emails:
-          favourite: ティンときた通知メール
+          favourite: ティンと来た通知メール
           follow: フォローの通知メール
           follow_request: フォローリクエストの通知メール
           mention: Re:あふぅの通知メール
@@ -1612,9 +1612,9 @@ ja-IM:
       sign_up:
         subject: "%{name}さんがサインアップしました"
     favourite:
-      body: "%{name}さんの頭にティンときた、あなたのあふぅがあります:"
-      subject: "%{name}さんにティンときた登録されました"
-      title: 新たなティンときた登録
+      body: "%{name}さんの頭にティンと来た、あなたのあふぅがあります:"
+      subject: "%{name}さんにティンと来ました"
+      title: 新たなティンと来たあふぅ
     follow:
       body: "%{name}さんにフォローされています！"
       subject: "%{name}さんにフォローされています"
@@ -1865,7 +1865,7 @@ ja-IM:
     ignore_favs: 設定しない
     ignore_reblogs: 設定しない
     interaction_exceptions: インタラクションに基づく例外
-    interaction_exceptions_explanation: ティンときたやわかるわの基準値を一度超えてしまったあふぅは、基準値を下回った後であっても、削除される保証はありません。
+    interaction_exceptions_explanation: ティンと来たやわかるわの基準値を一度超えてしまったあふぅは、基準値を下回った後であっても、削除される保証はありません。
     keep_direct: ダイレクトメッセージを保持
     keep_direct_hint: ダイレクトメッセージを削除せずに残します
     keep_media: メディア付きのあふぅを保持
@@ -1876,8 +1876,8 @@ ja-IM:
     keep_polls_hint: アンケート付きのあふぅを削除せずに残します
     keep_self_bookmark: ブックマークしたあふぅを保持
     keep_self_bookmark_hint: 自分自身でブックマークしたあふぅを削除せずに残します
-    keep_self_fav: ティンときたあふぅを保持
-    keep_self_fav_hint: 自分自身でティンときたあふぅを削除せずに残します
+    keep_self_fav: ティンと来たあふぅを保持
+    keep_self_fav_hint: 自分自身でティンと来たあふぅを削除せずに残します
     min_age:
       '1209600': 2週間
       '15778476': 半年
@@ -1888,8 +1888,8 @@ ja-IM:
       '63113904': 2年
       '7889238': 3ヶ月
     min_age_label: あふぅを保持する期間
-    min_favs: ティンときた基準値
-    min_favs_hint: この数以上、ティンときたあふぅを削除せずに残します。空白にしておくと、ティンときた数に関わらずあふぅを削除します。
+    min_favs: ティンと来た基準値
+    min_favs_hint: この数以上、ティンと来たあふぅを削除せずに残します。空白にしておくと、ティンと来た数に関わらずあふぅを削除します。
     min_reblogs: わかるわの基準値
     min_reblogs_hint: この数以上、わかるわされたあふぅを削除せずに残します。空白にしておくと、わかるわされた数に関わらずあふぅを削除します。
   stream_entries:
