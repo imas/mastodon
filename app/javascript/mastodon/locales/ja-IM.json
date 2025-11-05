@@ -194,7 +194,7 @@
   "compose.saved.body": "変更を保存しました。",
   "compose_form.direct_message_warning_learn_more": "もっと詳しく",
   "compose_form.encryption_warning": "Mastodonのあふぅはエンドツーエンド暗号化に対応していません。安全に送受信されるべき情報をMastodonで共有しないでください。",
-  "compose_form.favourite_tags": "お気に入りタグ",
+  "compose_form.favourite_tags": "スウィーティー☆なタグ",
   "compose_form.hashtag_warning": "このあふぅは公開設定が社内より狭いのでハッシュタグの一覧に表示されません。公開範囲が公開または社内であるあふぅだけがハッシュタグで検索できます。",
   "compose_form.lock_disclaimer": "あなたのアカウントは{locked}になっていません。誰でもあなたをフォローすることができ、私的資料のあふぅを見ることができます。",
   "compose_form.lock_disclaimer.lock": "承認制",
