@@ -79,7 +79,7 @@ fi:
       featured_tag:
         name: 'Tässä muutamia hiljattain käyttämiäsi aihetunnisteita:'
       filters:
-        action: Valitse, mikä toiminto suoritetaan, kun julkaisu vastaa suodatinta
+        action: Valitse, miten toimitaan, kun julkaisu vastaa suodatinta
         actions:
           blur: Piilota media varoituksen taakse piilottamatta itse tekstiä
           hide: Piilota suodatettu sisältö kokonaan, ikään kuin sitä ei olisi olemassa
@@ -88,7 +88,7 @@ fi:
         activity_api_enabled: Paikallisesti julkaistujen julkaisujen, aktiivisten käyttäjien ja rekisteröitymisten viikoittainen määrä
         app_icon: WEBP, PNG, GIF tai JPG. Korvaa oletusarvoisen mobiililaitteiden sovelluskuvakkeen haluamallasi kuvakkeella.
         backups_retention_period: Käyttäjillä on mahdollisuus arkistoida julkaisujaan myöhemmin ladattaviksi. Kun kentän arvo on positiivinen, nämä arkistot poistuvat automaattisesti, kun määritetty määrä päiviä on kulunut.
-        bootstrap_timeline_accounts: Nämä tilit kiinnitetään uusien käyttäjien seurantasuositusten alkuun.
+        bootstrap_timeline_accounts: Nämä tilit kiinnittyvät uusien käyttäjien seurantasuositusten alkuun. Syötä pilkuin eroteltu luettelo tilejä.
         closed_registrations_message: Näkyy, kun rekisteröityminen on suljettu
         content_cache_retention_period: Kaikki muiden palvelinten julkaisut (mukaan lukien tehostukset ja vastaukset) poistuvat, kun määritetty määrä päiviä on kulunut, lukuun ottamatta paikallisen käyttäjän vuorovaikutusta näiden julkaisujen kanssa. Tämä sisältää julkaisut, jotka paikallinen käyttäjä on merkinnyt kirjanmerkiksi tai suosikiksi. Myös yksityismaininnat eri palvelinten käyttäjien välillä menetetään, eikä niitä voi palauttaa. Tämä asetus on tarkoitettu käytettäväksi erityistapauksissa ja rikkoo monia käyttäjien odotuksia, kun sitä sovelletaan yleiskäyttöön.
         custom_css: Voit käyttää mukautettuja tyylejä Mastodonin selainversiossa.
@@ -372,9 +372,7 @@ fi:
         jurisdiction: Lainkäyttöalue
         min_age: Vähimmäisikä
       user:
-        date_of_birth_1i: Päivä
         date_of_birth_2i: Kuukausi
-        date_of_birth_3i: Vuosi
         role: Rooli
         time_zone: Aikavyöhyke
       user_role:

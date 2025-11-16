@@ -74,7 +74,6 @@ fr-CA:
       featured_tag:
         name: 'Voici quelques hashtags que vous avez utilisés récemment :'
       filters:
-        action: Choisir l'action à effectuer quand un message correspond au filtre
         actions:
           blur: Cacher les médias derrière un avertissement, sans cacher le texte
           hide: Cacher complètement le contenu filtré, faire comme s'il n'existait pas
@@ -83,7 +82,6 @@ fr-CA:
         activity_api_enabled: Nombre de messages publiés localement, de comptes actifs et de nouvelles inscriptions par tranche hebdomadaire
         app_icon: WEBP, PNG, GIF ou JPG. Remplace la favicon Mastodon par défaut avec une icône personnalisée.
         backups_retention_period: Les utilisateur·rice·s ont la possibilité de générer des archives de leurs messages pour les télécharger plus tard. Lorsqu'elles sont définies à une valeur positive, ces archives seront automatiquement supprimées de votre stockage après le nombre de jours spécifié.
-        bootstrap_timeline_accounts: Ces comptes seront épinglés en tête de liste des recommandations pour les nouveaux utilisateurs.
         closed_registrations_message: Affiché lorsque les inscriptions sont fermées
         content_cache_retention_period: Tous les messages provenant d'autres serveurs (y compris les partages et les réponses) seront supprimés passé le nombre de jours spécifié, sans tenir compte de l'interaction de l'utilisateur·rice local·e avec ces messages. Cela inclut les messages qu'un·e utilisateur·rice aurait marqué comme signets ou comme favoris. Les mentions privées entre utilisateur·rice·s de différentes instances seront également perdues et impossibles à restaurer. L'utilisation de ce paramètre est destinée à des instances spécifiques et contrevient à de nombreuses attentes des utilisateurs lorsqu'elle est appliquée à des fins d'utilisation ordinaires.
         custom_css: Vous pouvez appliquer des styles personnalisés sur la version Web de Mastodon.
@@ -154,6 +152,8 @@ fr-CA:
         name: Nom public du rôle, si le rôle est configuré pour être affiché avec un badge
         permissions_as_keys: Les utilisateur·rice·s ayant ce rôle auront accès à …
         position: Dans certaines situations, un rôle supérieur peut trancher la résolution d'un conflit. Mais certaines opérations ne peuvent être effectuées que sur des rôles ayant une priorité inférieure
+      username_block:
+        comparison: Veuillez garder à l'esprit le problème de Scunthorpe lors du blocage des correspondances partielles
       webhook:
         events: Sélectionnez les événements à envoyer
         template: Écrivez votre propre bloc JSON avec la possibilité d’utiliser de l’interpolation de variables. Laissez vide pour le bloc JSON par défaut.
@@ -355,9 +355,7 @@ fr-CA:
         jurisdiction: Juridiction
         min_age: Âge minimum
       user:
-        date_of_birth_1i: Jour
         date_of_birth_2i: Mois
-        date_of_birth_3i: Année
         role: Rôle
         time_zone: Fuseau horaire
       user_role:

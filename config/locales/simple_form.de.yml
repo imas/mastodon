@@ -79,7 +79,7 @@ de:
       featured_tag:
         name: 'Hier sind ein paar Hashtags, die du in letzter Zeit am häufigsten verwendet hast:'
       filters:
-        action: Gib an, welche Aktion ausgeführt werden soll, wenn ein Beitrag dem Filter entspricht
+        action: Auswählen, welche Aktion ausgeführt werden soll, wenn ein Beitrag dem Filter entspricht
         actions:
           blur: Medien mit einer Warnung ausblenden, ohne den Text selbst auszublenden
           hide: Den gefilterten Beitrag vollständig ausblenden, als hätte er nie existiert
@@ -88,7 +88,7 @@ de:
         activity_api_enabled: Anzahl der wöchentlichen Beiträge, aktiven Profile und Registrierungen auf diesem Server
         app_icon: WEBP, PNG, GIF oder JPG. Überschreibt das Standard-App-Symbol auf mobilen Geräten mit einem eigenen Symbol.
         backups_retention_period: Nutzer*innen haben die Möglichkeit, Archive ihrer Beiträge zu erstellen, die sie später herunterladen können. Wenn ein positiver Wert gesetzt ist, werden diese Archive nach der festgelegten Anzahl von Tagen automatisch aus deinem Speicher gelöscht.
-        bootstrap_timeline_accounts: Diese Konten werden bei den Follower-Empfehlungen für neu registrierte Nutzer*innen oben angeheftet.
+        bootstrap_timeline_accounts: Diese Konten werden an den Anfang der Follow-Empfehlungen für neue Nutzer angeheftet. Gib eine durch Kommata getrennte Liste von Konten an.
         closed_registrations_message: Wird angezeigt, wenn Registrierungen deaktiviert sind
         content_cache_retention_period: Sämtliche Beiträge von anderen Servern (einschließlich geteilte Beiträge und Antworten) werden, unabhängig von der Interaktion der lokalen Nutzer*innen mit diesen Beiträgen, nach der festgelegten Anzahl von Tagen gelöscht. Das betrifft auch Beiträge, die von lokalen Nutzer*innen favorisiert oder als Lesezeichen gespeichert wurden. Private Erwähnungen zwischen Nutzer*innen von verschiedenen Servern werden ebenfalls verloren gehen und können nicht wiederhergestellt werden. Diese Option richtet sich ausschließlich an Server mit speziellen Zwecken und wird die allgemeine Nutzungserfahrung beeinträchtigen, wenn sie für den allgemeinen Gebrauch aktiviert ist.
         custom_css: Du kannst benutzerdefinierte Stile auf die Web-Version von Mastodon anwenden.
@@ -240,7 +240,7 @@ de:
         setting_boost_modal: Sichtbarkeit für geteilte Beiträge anpassen
         setting_default_language: Beitragssprache
         setting_default_privacy: Beitragssichtbarkeit
-        setting_default_quote_policy: Wer zitieren darf
+        setting_default_quote_policy: Wer darf mich zitieren?
         setting_default_sensitive: Medien immer mit einer Inhaltswarnung versehen
         setting_delete_modal: Vor dem Löschen bestätigen
         setting_disable_hover_cards: Profilvorschau deaktivieren, wenn die Maus über das Profil bewegt wird
@@ -372,9 +372,7 @@ de:
         jurisdiction: Gerichtsstand
         min_age: Mindestalter
       user:
-        date_of_birth_1i: Tag
         date_of_birth_2i: Monat
-        date_of_birth_3i: Jahr
         role: Rolle
         time_zone: Zeitzone
       user_role:

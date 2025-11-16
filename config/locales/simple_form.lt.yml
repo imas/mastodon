@@ -71,7 +71,6 @@ lt:
       featured_tag:
         name: 'Štai keletas pastaruoju metu dažniausiai saitažodžių, kurių tu naudojai:'
       filters:
-        action: Pasirink, kokį veiksmą atlikti, kai įrašas atitinka filtrą
         actions:
           blur: Slėpti mediją po įspėjimu, neslepiant paties teksto
           hide: Visiškai paslėpti filtruotą turinį ir elgtis taip, tarsi jo neegzistuotų
@@ -247,9 +246,7 @@ lt:
         jurisdiction: Teisinis teismingumas
         min_age: Mažiausias amžius
       user:
-        date_of_birth_1i: Diena
         date_of_birth_2i: Mėnuo
-        date_of_birth_3i: Metai
         role: Vaidmuo
         time_zone: Laiko juosta
       user_role:
