@@ -253,7 +253,7 @@ pt-BR:
         setting_expand_spoilers: Sempre expandir toots com Aviso de Conteúdo
         setting_hide_network: Ocultar suas relações
         setting_missing_alt_text_modal: Avise-me antes de publicar mídia sem texto alternado
-        setting_quick_boosting: Ativar aceleração rápida
+        setting_quick_boosting: Ativar impulsionamento rápido
         setting_reduce_motion: Reduzir animações
         setting_system_font_ui: Usar fonte padrão do sistema
         setting_system_scrollbars_ui: Usar barra de rolagem padrão do sistema
@@ -372,7 +372,9 @@ pt-BR:
         jurisdiction: Jurisdição legal
         min_age: Idade mínima
       user:
+        date_of_birth_1i: Ano
         date_of_birth_2i: Mês
+        date_of_birth_3i: Dia
         role: Cargo
         time_zone: Fuso horário
       user_role:
