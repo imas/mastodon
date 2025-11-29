@@ -8,6 +8,6 @@ services:
       - 'POSTGRES_USER=mastodon'
       - 'POSTGRES_PASSWORD=mastodon'
   redis:
-    image: redis:5.0.6-alpine
+    image: redis:7.0.7-alpine
     ports:
       - '6379:6379'
