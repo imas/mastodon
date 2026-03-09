@@ -1,0 +1,40 @@
+name: ecspresso deploy sidekiq
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-west-2
+  ECSPRESSO_VERSION: v2.4.5
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::579532189334:role/mastodon_deployer
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install ecspresso
+        uses: kayac/ecspresso@v2
+        with:
+          version: ${{ env.ECSPRESSO_VERSION }}
+
+      - name: Deploy sidekiq
+        working-directory: .ecspresso
+        env:
+          IMAGE_TAG: ${{ inputs.image_tag }}
+        run: ecspresso deploy --config ecspresso.yml
