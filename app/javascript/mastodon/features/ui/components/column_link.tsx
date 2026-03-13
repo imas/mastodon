@@ -14,6 +14,7 @@ export const ColumnLink: React.FC<{
   to?: string;
   href?: string;
   method?: string;
+  target?: string;
   badge?: React.ReactNode;
   transparent?: boolean;
   className?: string;
