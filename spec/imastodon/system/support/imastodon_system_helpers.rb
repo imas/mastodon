@@ -7,6 +7,9 @@ module ImastodonSystemHelpers
 
   def ignore_react_warnings
     ignore_js_error(/uses the legacy childContextTypes API/)
+    ignore_js_error(/uses the legacy contextTypes API/)
+    ignore_js_error(/findDOMNode is deprecated/)
+    ignore_js_error(/componentWillMount has been renamed/)
   end
 
   def login_and_visit_spa(path = '/')
