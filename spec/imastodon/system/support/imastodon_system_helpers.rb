@@ -23,14 +23,14 @@ module ImastodonSystemHelpers
 
   def enable_advanced_ui
     visit '/settings/preferences/appearance'
-    check 'user_setting_advanced_layout'
-    click_button I18n.t('generic.save_changes')
+    find('input[type="checkbox"][id*="advanced_layout"]').check
+    first('button[type="submit"]').click
   end
 
   def disable_advanced_ui
     visit '/settings/preferences/appearance'
-    uncheck 'user_setting_advanced_layout'
-    click_button I18n.t('generic.save_changes')
+    find('input[type="checkbox"][id*="advanced_layout"]').uncheck
+    first('button[type="submit"]').click
   end
 
   def change_user_locale(locale)
