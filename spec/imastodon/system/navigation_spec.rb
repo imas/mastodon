@@ -7,8 +7,15 @@ RSpec.describe 'ナビゲーション', :js, type: :system do
   include ImastodonSystemHelpers
 
   context 'ログインユーザーがシングルカラムUIを使っている場合' do
-    it 'ナビゲーションパネルにFAQリンクがある'
+    before { login_and_visit_spa }
 
-    it 'ログイン後のデフォルトページがローカルTLである'
+    it 'ナビゲーションパネルにFAQリンクがある' do
+      nav_panel = find('.navigation-panel')
+      expect(nav_panel).to have_link(href: 'https://faq.imastodon.net/getting-started/')
+    end
+
+    it 'ログイン後のデフォルトページがローカルTLである' do
+      expect(page).to have_current_path(%r{/public/local})
+    end
   end
 end
