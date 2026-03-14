@@ -1,7 +1,18 @@
 # frozen_string_literal: true
 
 module ImastodonSystemHelpers
+  def ignore_streaming_errors
+    ignore_js_error(/ERR_CONNECTION_REFUSED/)
+  end
+
+  def ignore_react_warnings
+    ignore_js_error(/uses the legacy childContextTypes API/)
+  end
+
   def login_and_visit_spa(path = '/')
+    @finished_onboarding = true
+    ignore_streaming_errors
+    ignore_react_warnings
     as_a_logged_in_user
     visit path
     wait_for_react
