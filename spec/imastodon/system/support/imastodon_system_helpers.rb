@@ -35,8 +35,8 @@ module ImastodonSystemHelpers
 
   def change_user_locale(locale)
     visit '/settings/preferences'
-    select locale, from: 'user_locale'
-    click_button I18n.t('generic.save_changes')
+    find_by_id('user_locale').find("option[value='#{locale}']").select_option
+    first('button[type="submit"]').click
   end
 
   def wait_for_react
