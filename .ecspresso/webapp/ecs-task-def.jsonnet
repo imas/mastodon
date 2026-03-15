@@ -136,9 +136,9 @@ local tfstate = std.native('tfstate');
     // node streaming - WebSocket streaming (port 4000)
     {
       name: 'streaming',
-      image: tfstate('module.ecr.aws_ecr_repository.mastodon.repository_url') + ':' + must_env('IMAGE_TAG'),
+      image: tfstate('module.ecr.aws_ecr_repository.streaming.repository_url') + ':' + must_env('IMAGE_TAG'),
       essential: true,
-      command: ['node', './streaming'],
+      command: ['node', './streaming/index.js'],
       environment: [
         { name: 'NODE_ENV', value: 'production' },
         { name: 'PORT', value: '4000' },
