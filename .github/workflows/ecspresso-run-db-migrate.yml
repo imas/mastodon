@@ -61,7 +61,7 @@ jobs:
           echo "overrides=$(echo $OVERRIDES | jq -c .)" >> $GITHUB_OUTPUT
 
       - name: Run db:migrate
-        working-directory: .ecspresso
+        working-directory: .ecspresso/sidekiq
         env:
           IMAGE_TAG: ${{ inputs.image_tag }}
         run: |
