@@ -1,0 +1,71 @@
+name: ecspresso run db:migrate
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        description: 'Image tag to use for migration'
+        required: true
+        type: string
+      skip_post_deployment_migrations:
+        description: 'SKIP_POST_DEPLOYMENT_MIGRATIONS=true（pre-deployマイグレーション時に使用）'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-west-2
+  ECSPRESSO_VERSION: v2.7.1
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::579532189334:role/mastodon_deployer
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install ecspresso
+        uses: kayac/ecspresso@v2
+        with:
+          version: ${{ env.ECSPRESSO_VERSION }}
+
+      - name: Build overrides JSON
+        id: overrides
+        run: |
+          if [ "${{ inputs.skip_post_deployment_migrations }}" = "true" ]; then
+            EXTRA_ENV='[{"name":"SKIP_POST_DEPLOYMENT_MIGRATIONS","value":"true"}]'
+          else
+            EXTRA_ENV='[]'
+          fi
+          OVERRIDES=$(cat <<EOF
+          {
+            "containerOverrides": [
+              {
+                "name": "sidekiq-default",
+                "command": ["bundle", "exec", "rails", "db:migrate"],
+                "environment": $EXTRA_ENV
+              }
+            ]
+          }
+          EOF
+          )
+          echo "overrides=$(echo $OVERRIDES | jq -c .)" >> $GITHUB_OUTPUT
+
+      - name: Run db:migrate
+        working-directory: .ecspresso/sidekiq
+        env:
+          IMAGE_TAG: ${{ inputs.image_tag }}
+        run: |
+          ecspresso run \
+            --config ecspresso.yml \
+            --overrides '${{ steps.overrides.outputs.overrides }}' \
+            --wait-until stopped
