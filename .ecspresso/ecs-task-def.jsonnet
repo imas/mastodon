@@ -39,7 +39,7 @@ local tfstate = std.native('tfstate');
     // pgbouncer - sidekiqより先に起動
     {
       name: 'pgbouncer',
-      image: 'bitnami/pgbouncer:1.23.1',
+      image: 'public.ecr.aws/bitnami/pgbouncer:1.23.1',
       essential: true,
       environment: [
         { name: 'POSTGRESQL_HOST', value: tfstate('module.rds.aws_db_instance.imastodon_rds.address') },
