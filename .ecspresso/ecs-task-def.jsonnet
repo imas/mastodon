@@ -87,6 +87,7 @@ local tfstate = std.native('tfstate');
         { name: 'DB_PORT', value: '6432' },
         { name: 'PARAMETER_STORE_REGION', value: 'us-west-2' },
         { name: 'PARAMETER_STORE_PREFIX', value: '/imastodon/prod/' },
+        { name: 'RUBY_GC_OLDMALLOC_LIMIT_MAX', value: '33554432' },
       ],
       stopTimeout: 120,
       dependsOn: [
@@ -121,6 +122,7 @@ local tfstate = std.native('tfstate');
         { name: 'DB_PORT', value: '6432' },
         { name: 'PARAMETER_STORE_REGION', value: 'us-west-2' },
         { name: 'PARAMETER_STORE_PREFIX', value: '/imastodon/prod/' },
+        { name: 'RUBY_GC_OLDMALLOC_LIMIT_MAX', value: '33554432' },
       ],
       stopTimeout: 120,
       dependsOn: [
