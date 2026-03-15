@@ -149,6 +149,9 @@ local tfstate = std.native('tfstate');
       secrets: [
         { name: 'REDIS_HOST', valueFrom: '/imastodon/prod/REDIS_HOST' },
         { name: 'REDIS_PORT', valueFrom: '/imastodon/prod/REDIS_PORT' },
+        { name: 'DB_NAME', valueFrom: '/imastodon/prod/DB_NAME' },
+        { name: 'DB_USER', valueFrom: '/imastodon/prod/DB_USER' },
+        { name: 'DB_PASS', valueFrom: '/imastodon/prod/DB_PASS' },
       ],
       dependsOn: [
         { containerName: 'pgbouncer', condition: 'START' },
