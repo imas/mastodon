@@ -1,4 +1,4 @@
-name: Deploy sidekiq
+name: Deploy
 
 on:
   workflow_dispatch:
@@ -15,16 +15,25 @@ jobs:
       image_tag: ${{ inputs.image_tag }}
       skip_post_deployment_migrations: true
 
-  deploy:
-    name: Deploy
+  deploy-sidekiq:
+    name: Deploy sidekiq
     needs: pre-deploy-migrate
     uses: ./.github/workflows/ecspresso-deploy-sidekiq.yml
     with:
       image_tag: ${{ inputs.image_tag }}
 
+  deploy-webapp:
+    name: Deploy webapp
+    needs: pre-deploy-migrate
+    uses: ./.github/workflows/ecspresso-deploy-webapp.yml
+    with:
+      image_tag: ${{ inputs.image_tag }}
+
   post-deploy-migrate:
     name: Post-deploy migration
-    needs: deploy
+    needs:
+      - deploy-sidekiq
+      - deploy-webapp
     uses: ./.github/workflows/ecspresso-run-db-migrate.yml
     with:
       image_tag: ${{ inputs.image_tag }}
