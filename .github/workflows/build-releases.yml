@@ -1,8 +1,6 @@
 name: Build container release images
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
 
 permissions:
   contents: read
