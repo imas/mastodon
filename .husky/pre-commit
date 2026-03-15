@@ -1,2 +1,2 @@
 export PATH="$HOME/.local/share/mise/shims:$PATH"
-yarn lint-staged
+node_modules/.bin/lint-staged
