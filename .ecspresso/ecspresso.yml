@@ -1,10 +1,10 @@
 region: us-west-2
-cluster: '{{ tfstate "module.ecs.cluster_name" }}'
+cluster: imastodon_prod_cluster
 service: imastodon-sidekiq
-timeout: "10m"
+timeout: '10m'
 
 plugins:
   - name: tfstate
     config:
-      path: s3://imastodon-tfstate/prod.tfstate
+      url: s3://imastodon-tfstate/prod.tfstate
       region: ap-northeast-1
