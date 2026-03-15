@@ -17,7 +17,6 @@ permissions:
 env:
   AWS_REGION: us-west-2
   ECR_REGISTRY: 579532189334.dkr.ecr.us-west-2.amazonaws.com
-  ECR_REPOSITORY: imastodon/mastodon
 
 jobs:
   build-and-push:
@@ -46,11 +45,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
+      - name: Build and push mastodon
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.tag.outputs.image_tag }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ${{ env.ECR_REGISTRY }}/imastodon/mastodon:${{ steps.tag.outputs.image_tag }}
+          cache-from: type=gha,scope=mastodon
+          cache-to: type=gha,mode=max,scope=mastodon
+
+      - name: Build and push streaming
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: streaming/Dockerfile
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/imastodon/streaming:${{ steps.tag.outputs.image_tag }}
+          cache-from: type=gha,scope=streaming
+          cache-to: type=gha,mode=max,scope=streaming
