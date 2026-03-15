@@ -49,6 +49,7 @@ local tfstate = std.native('tfstate');
         { name: 'PGBOUNCER_MAX_CLIENT_CONN', value: '100' },
         { name: 'PGBOUNCER_DEFAULT_POOL_SIZE', value: '50' },
         { name: 'PGBOUNCER_DATABASE', value: '*' },
+        { name: 'PGBOUNCER_SERVER_TLS_SSLMODE', value: 'require' },
       ],
       secrets: [
         { name: 'POSTGRESQL_DATABASE', valueFrom: '/imastodon/prod/DB_NAME' },
