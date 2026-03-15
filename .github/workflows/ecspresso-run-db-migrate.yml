@@ -19,7 +19,7 @@ permissions:
 
 env:
   AWS_REGION: us-west-2
-  ECSPRESSO_VERSION: v2.4.5
+  ECSPRESSO_VERSION: v2.7.1
 
 jobs:
   migrate:
