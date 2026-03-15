@@ -39,7 +39,7 @@ local tfstate = std.native('tfstate');
     // pgbouncer - sidekiqより先に起動
     {
       name: 'pgbouncer',
-      image: 'bitnami/pgbouncer:1.23.1',
+      image: 'public.ecr.aws/bitnami/pgbouncer:1.25.1',
       essential: true,
       environment: [
         { name: 'POSTGRESQL_HOST', value: tfstate('module.rds.aws_db_instance.imastodon_rds.address') },
@@ -48,6 +48,8 @@ local tfstate = std.native('tfstate');
         { name: 'PGBOUNCER_POOL_MODE', value: 'transaction' },
         { name: 'PGBOUNCER_MAX_CLIENT_CONN', value: '100' },
         { name: 'PGBOUNCER_DEFAULT_POOL_SIZE', value: '50' },
+        { name: 'PGBOUNCER_DATABASE', value: '*' },
+        { name: 'PGBOUNCER_SERVER_TLS_SSLMODE', value: 'require' },
       ],
       secrets: [
         { name: 'POSTGRESQL_DATABASE', valueFrom: '/imastodon/prod/DB_NAME' },
