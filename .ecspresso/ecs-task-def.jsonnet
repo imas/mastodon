@@ -5,8 +5,8 @@ local tfstate = std.native('tfstate');
   family: 'imastodon-sidekiq',
   requiresCompatibilities: ['FARGATE'],
   networkMode: 'awsvpc',
-  cpu: '2048',
-  memory: '4096',
+  cpu: '512',
+  memory: '1024',
   executionRoleArn: tfstate('module.ecs.aws_iam_role.ecs_task_execution_role.arn'),
   taskRoleArn: tfstate('module.iam.aws_iam_role.imastodon_iam_role.arn'),
 
