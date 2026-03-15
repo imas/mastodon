@@ -9,6 +9,10 @@ local tfstate = std.native('tfstate');
   memory: '4096',
   executionRoleArn: tfstate('module.ecs.aws_iam_role.ecs_task_execution_role.arn'),
   taskRoleArn: tfstate('module.iam.aws_iam_role.imastodon_iam_role.arn'),
+  runtimePlatform: {
+    operatingSystemFamily: 'LINUX',
+    cpuArchitecture: 'ARM64',
+  },
 
   containerDefinitions: [
     // log_router (FireLens) - 他コンテナより先に起動する必要あり
