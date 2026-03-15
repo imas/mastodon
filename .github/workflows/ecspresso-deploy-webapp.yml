@@ -1,0 +1,45 @@
+name: ecspresso deploy webapp
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        description: 'Mastodon image tag to deploy'
+        required: true
+        type: string
+      nginx_image_tag:
+        description: 'nginx image tag (commit SHA) to deploy'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-west-2
+  ECSPRESSO_VERSION: v2.7.1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::579532189334:role/mastodon_deployer
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install ecspresso
+        uses: kayac/ecspresso@v2
+        with:
+          version: ${{ env.ECSPRESSO_VERSION }}
+
+      - name: Deploy webapp
+        working-directory: .ecspresso/webapp
+        env:
+          IMAGE_TAG: ${{ inputs.image_tag }}
+          NGINX_IMAGE_TAG: ${{ inputs.nginx_image_tag }}
+        run: ecspresso deploy --config ecspresso.yml
