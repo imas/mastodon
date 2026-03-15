@@ -145,8 +145,10 @@ local tfstate = std.native('tfstate');
         { name: 'BIND', value: '127.0.0.1' },
         { name: 'DB_HOST', value: '127.0.0.1' },
         { name: 'DB_PORT', value: '6432' },
-        { name: 'PARAMETER_STORE_REGION', value: 'us-west-2' },
-        { name: 'PARAMETER_STORE_PREFIX', value: '/imastodon/prod/' },
+      ],
+      secrets: [
+        { name: 'REDIS_HOST', valueFrom: '/imastodon/prod/REDIS_HOST' },
+        { name: 'REDIS_PORT', valueFrom: '/imastodon/prod/REDIS_PORT' },
       ],
       dependsOn: [
         { containerName: 'pgbouncer', condition: 'START' },
