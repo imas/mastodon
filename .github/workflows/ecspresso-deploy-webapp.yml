@@ -1,10 +1,10 @@
-name: ecspresso deploy sidekiq
+name: ecspresso deploy webapp
 
 on:
   workflow_call:
     inputs:
       image_tag:
-        description: 'Image tag to deploy'
+        description: 'Mastodon image tag to deploy'
         required: true
         type: string
 
@@ -15,6 +15,7 @@ permissions:
 env:
   AWS_REGION: us-west-2
   ECSPRESSO_VERSION: v2.7.1
+  ECR_REGISTRY: 579532189334.dkr.ecr.us-west-2.amazonaws.com
 
 jobs:
   deploy:
@@ -28,13 +29,23 @@ jobs:
           role-to-assume: arn:aws:iam::579532189334:role/mastodon_deployer
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Fetch latest nginx image tag from ECR
+        id: nginx_tag
+        run: |
+          TAG=$(aws ecr describe-images \
+            --repository-name imastodon/nginx \
+            --query 'sort_by(imageDetails, &imagePushedAt)[-1].imageTags[0]' \
+            --output text)
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
       - name: Install ecspresso
         uses: kayac/ecspresso@v2
         with:
           version: ${{ env.ECSPRESSO_VERSION }}
 
-      - name: Deploy sidekiq
-        working-directory: .ecspresso/sidekiq
+      - name: Deploy webapp
+        working-directory: .ecspresso/webapp
         env:
           IMAGE_TAG: ${{ inputs.image_tag }}
+          NGINX_IMAGE_TAG: ${{ steps.nginx_tag.outputs.tag }}
         run: ecspresso deploy --config ecspresso.yml
