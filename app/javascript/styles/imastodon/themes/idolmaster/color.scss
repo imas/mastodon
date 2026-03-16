@@ -1,0 +1,38 @@
+// アイドルマスター pink (#ff74b8)
+// body = darken(#ffe2ee, 8%) ≈ #ffbad7(p-86) / compose = #ffe2ee(p-94)
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #ffe2ee,
+  // primary-94 (compose background)
+  $ui-base-lighter-color: #ffecf3,
+  // primary-96
+  $ui-primary-color: #fff5f9,
+  // primary-98
+  $ui-secondary-color: #ffcee2,
+  // primary-90
+  $ui-highlight-color: #830051,
+  // primary-40
+  $primary-text-color: #420027,
+  // primary-25 Lc=65.8
+  $darker-text-color: #570034,
+  // primary-30
+  $secondary-text-color: #570034,
+  $lighter-text-color: #6c0042,
+  // primary-35
+  $highlight-text-color: #a9236e,
+  // primary-50 (links)
+  $dark-text-color: #830051,
+  // primary-40 (placeholder)
+  $light-text-color: #a9236e,
+  // primary-50
+  $inverted-text-color: #fff,
+  $action-button-color: #835268,
+  $base-overlay-background: #fff,
+  $success-green: hsl(138deg, 32%, 43%),
+  $ui-button-secondary-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #6364ff,
+  $ui-button-tertiary-border-color: #6364ff,
+  $emojis-requiring-inversion: 'chains'
+);

@@ -11,6 +11,13 @@
   }
 }
 
+.compose-form .autosuggest-textarea__textarea,
+.search__input {
+  &::placeholder {
+    color: variables.$dark-text-color;
+  }
+}
+
 .compose__extra {
   background: variables.$ui-base-color;
   position: relative;
@@ -99,7 +106,7 @@
     white-space: nowrap;
 
     .fa-hashtag {
-      color: variables.$classic-highlight-color;
+      color: variables.$ui-highlight-color;
       margin-right: 2px;
     }
   }

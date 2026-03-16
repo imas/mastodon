@@ -1,0 +1,34 @@
+// SideM green (#0fbe94)
+// base #237d68 (tone-55相当 S=56%): body = darken(#237d68, 8%) / compose = #237d68
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #237d68,
+  // primary-55 S=56% (compose background)
+  $ui-base-lighter-color: #268770,
+  // primary-62ish S=56%
+  $ui-primary-color: #2b977e,
+  // primary-68ish S=56%
+  $ui-secondary-color: #009d79,
+  // primary-62
+  $ui-highlight-color: #2cca9f,
+  // primary-75
+  $primary-text-color: #6efccf,
+  // primary-90
+  $darker-text-color: #dbdfdd,
+  // neutral-90
+  $secondary-text-color: #dbdfdd,
+  $lighter-text-color: #bbbfbd,
+  $highlight-text-color: #a0ddc6,
+  $dark-text-color: #c1c5c3,
+  $light-text-color: #a2a6a4,
+  $inverted-text-color: #1a1a1a,
+  $action-button-color: #99b6aa,
+  $base-overlay-background: #1a1a1a,
+  $success-green: #86f18b,
+  $ui-button-secondary-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #9fa4ff,
+  $ui-button-tertiary-border-color: #9fa4ff,
+  $emojis-requiring-inversion: 'chains'
+);
