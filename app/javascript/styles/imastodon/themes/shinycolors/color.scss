@@ -1,0 +1,40 @@
+// シャイニーカラーズ skyblue (#8dbbff)
+// base #aaccff (tone-83ish): body = darken(#aaccff, 8%) / compose = #aaccff
+
+@use '../../../mastodon/functions' with (
+  $darken-multiplier: 1,
+  $lighten-multiplier: -1
+);
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #aaccff,
+  // primary-83ish (compose background)
+  $ui-base-lighter-color: #b5d3ff,
+  // primary-86
+  $ui-primary-color: #cae0ff,
+  // primary-90
+  $ui-secondary-color: #9ec4ff,
+  // primary-80
+  $ui-highlight-color: #1e4681,
+  // primary-40
+  $primary-text-color: #001f4d,
+  // primary-25
+  $darker-text-color: #032b62,
+  // primary-30
+  $secondary-text-color: #032b62,
+  $lighter-text-color: #103871,
+  $highlight-text-color: #3963a1,
+  // primary-50
+  $dark-text-color: #1e4681,
+  $light-text-color: #3963a1,
+  $inverted-text-color: #fff,
+  $action-button-color: #54647c,
+  $base-overlay-background: #fff,
+  $success-green: hsl(138deg, 32%, 43%),
+  $ui-button-secondary-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #6364ff,
+  $ui-button-tertiary-border-color: #6364ff,
+  $emojis-requiring-inversion: 'chains'
+);
