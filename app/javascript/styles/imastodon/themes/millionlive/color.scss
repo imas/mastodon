@@ -1,0 +1,28 @@
+// ミリオンライブ！ yellow H=89
+// body = darken(#fdd567, 8%) = #fbcb3e / compose = #fdd567
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #fdd567,
+  // H=89 (compose background)
+  $ui-base-lighter-color: #fee49a,
+  $ui-primary-color: #feeeb8,
+  $ui-secondary-color: #fbcb3e,
+  $ui-highlight-color: #5b4400,
+  $primary-text-color: #2d1f00,
+  $darker-text-color: #3b2b00,
+  $secondary-text-color: #3b2b00,
+  $lighter-text-color: #4b3700,
+  $highlight-text-color: #a37500,
+  $dark-text-color: #5b4400,
+  $light-text-color: #7d5e00,
+  $inverted-text-color: #fff,
+  $action-button-color: #736139,
+  $base-overlay-background: #fff,
+  $success-green: hsl(138deg, 32%, 43%),
+  $ui-button-secondary-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #6364ff,
+  $ui-button-tertiary-border-color: #6364ff,
+  $emojis-requiring-inversion: 'chains'
+);
