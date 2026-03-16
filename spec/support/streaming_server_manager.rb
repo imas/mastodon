@@ -87,6 +87,10 @@ RSpec.configure do |config|
     if streaming_examples_present?
       # Start the node streaming server
       streaming_server_manager.start(port: STREAMING_PORT)
+      # Wait for the streaming server to fully accept WebSocket connections.
+      # The start method returns once the server is "listening", but the first
+      # WebSocket handshake can fail if sent immediately after listen begins.
+      sleep 2
     end
   end
 
