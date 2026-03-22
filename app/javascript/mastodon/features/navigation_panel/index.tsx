@@ -22,6 +22,7 @@ import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react
 import PersonAddActiveIcon from '@/material-icons/400-24px/person_add-fill.svg?react';
 import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
+import QuestionMarkIcon from '@/material-icons/400-24px/question_mark.svg?react';
 import SettingsIcon from '@/material-icons/400-24px/settings.svg?react';
 import StarActiveIcon from '@/material-icons/400-24px/star-fill.svg?react';
 import StarIcon from '@/material-icons/400-24px/star.svg?react';
@@ -87,6 +88,7 @@ const messages = defineMessages({
   },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   compose: { id: 'tabs_bar.publish', defaultMessage: 'New Post' },
+  faq: { id: 'navigation_bar.faq', defaultMessage: 'FAQ' },
 });
 
 const NotificationsLink = () => {
@@ -312,6 +314,15 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               icon='cog'
               iconComponent={SettingsIcon}
               text={intl.formatMessage(messages.preferences)}
+            />
+
+            <ColumnLink
+              transparent
+              href='https://faq.imastodon.net/getting-started/'
+              icon='question'
+              iconComponent={QuestionMarkIcon}
+              text={intl.formatMessage(messages.faq)}
+              target='_blank'
             />
 
             <MoreLink />
