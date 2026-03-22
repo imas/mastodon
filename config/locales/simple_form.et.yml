@@ -8,7 +8,7 @@ et:
         display_name: Su täisnimi või naljanimi.
         fields: Su koduleht, sugu, vanus. Mistahes, mida soovid.
         indexable: Sinu avalikud postitused võivad ilmuda Mastodoni otsingutulemustes. Inimesed, kes on sinu postitustele reageerinud, saavad neid otsida nii või naa.
-        note: 'Saad @mainida teisi inimesi või #silte.'
+        note: 'Saad @mainida teisi inimesi või #teemaviiteid.'
         show_collections: Inimesed saavad sirvida su jälgijaid ja jälgitavaid. Inimesed, keda sa jälgid, näevad seda sõltumata häälestuse valikust.
         unlocked: Teised kasutajad saavad sind jälgima hakata nõusolekut küsimata. Eemalda märge, kui soovid jälgimistaotlusi üle vaadata ja valida, kas nõustuda või keelduda uute jälgijatega.
       account_alias:
@@ -16,7 +16,7 @@ et:
       account_migration:
         acct: Sisesta kasutajanimi@domeen, kuhu soovid konto siit kolida
       account_warning_preset:
-        text: Saab kasutada postituse süntaksi, näiteks URLe, silte ja mainimisi
+        text: Saad kasutada postituse süntaksi, näiteks võrguaadresse, teemaviiteid ja mainimisi
         title: Valikuline. Ei ole nähtav saajale
       admin_account_action:
         include_statuses: Kasutaja näeb, millised postitused on põhjustanud moderaatori otsuse või hoiatuse
@@ -54,8 +54,10 @@ et:
         password: Vajalik on vähemalt 8 märki
         phrase: Kattub olenemata postituse teksti suurtähtedest või sisuhoiatusest
         scopes: Milliseid API-sid see rakendus tohib kasutada. Kui valid kõrgeima taseme, ei pea üksikuid eraldi valima.
+        setting_advanced_layout: Näita Mastodoni mitme veeruga paigutuses, mispuhul näed korraga nii ajajoont, teavitusi, kui sinu valitud kolmandat veergu. Ei sobi kasutamiseks väikeste ekraanide puhul.
         setting_aggregate_reblogs: Ära kuva uusi postituste jagamisi, mis on hiljuti jagatud (kehtib vaid uutele jagamistele)
         setting_always_send_emails: Mastodoni aktiivsel kasutamisel sulle tavaliselt meilile teavitusi ei saadeta
+        setting_boost_modal: Selle eelistuse kasutamisel hooandmise avatakse esmalt kinnitusvaade, kus saad muuta hooandmise nähtavust.
         setting_default_quote_policy_private: Ainult jälgijatele mõeldud Mastodoni postitusi ei saa teiste poolt tsiteerida.
         setting_default_quote_policy_unlisted: Kui teised kasutajad sind tsiteerivad, siis nende postitused peidetakse ajajoonelt, mis näitavad populaarsust koguvaid postitusi.
         setting_default_sensitive: Tundlik meedia on vaikimisi peidetud ning seda saab avada sellele klikkides
@@ -63,6 +65,7 @@ et:
         setting_display_media_hide_all: Alati peida kõik meedia
         setting_display_media_show_all: Alati näita tundlikuks märgistatud meedia
         setting_emoji_style: See määrab emojide kuvamise viisi. Automaatse valiku puhul üritatakse kasutada platvormi või klientrakenduse oma emojisid, kuid varuvariandina jääb toimima Twemoji (näiteks vanade veebibrauserite puhul).
+        setting_quick_boosting_html: Selle eelistuse kasutamisel, Hooandmise ikooni %{boost_icon} teeb toimingu kohe ilma avamata Hooandmise/Tsiteerimise menüüvalikut. Sel puhul tsiteerimise link leidub %{options_icon} (Valikud) menüüs.
         setting_system_scrollbars_ui: Kehtib vaid Safaril ja Chrome'il põhinevatel tavaarvuti veebibrauserite puhul
         setting_use_blurhash: Värvid põhinevad peidetud visuaalidel, kuid hägustavad igasuguseid detaile
         setting_use_pending_items: Voo automaatse kerimise asemel peida ajajoone uuendused kliki taha
@@ -74,7 +77,7 @@ et:
         domain: See võib olla e-postiaadressis näha olev domeen või MX-kirje, mida aadress kasutab. Kontroll toimub liitumise käigus.
         with_dns_records: Püütakse lahendada selle domeeni DNS-kirjed ja ühtlasi blokeerida ka selle tulemused
       featured_tag:
-        name: 'Siin on mõned nendest siltidest, mida oled viimati kasutanud:'
+        name: 'Siin on mõned nendest teemaviiteid, mida oled viimati kasutanud:'
       filters:
         action: Tegevuse valik, kui postitus vastab filtrile
         actions:
@@ -90,6 +93,7 @@ et:
         content_cache_retention_period: Kõik teiste serverite postitused (sealhulgas jagamised ja vastused) kustutatakse pärast määratud arvu päevade möödumist, sõltumata, kuidas kohalik kasutaja on nende postitustega interakteerunud. Hõlmatud on ka postitused, mille kohalik kasutaja on märkinud järjehoidjaks või lemmikuks. Ka eri instantside kasutajate vahelised privaatsed mainimised kaovad ja neid on võimatu taastada. See seadistus on mõeldud eriotstarbeliste instantside jaoks ja rikub paljude kasutajate ootusi, kui seda rakendatakse üldotstarbelise kasutuse puhul.
         custom_css: Mastodoni veebiliideses on võimalik kasutada kohandatud stiile.
         favicon: WEBP, PNG, GIF või JPG. Asendab Mastodoni vaike- favicon ikooni kohandatud ikooniga.
+        landing_page: Sellega valid lehe, mida uued külastajad sinu serverisse tulles näevad. Kui sa valid „Trendid“, siis peavad nad olema lubatud. Kui sa valid „Kohalike postituste voog“, siis seadistuse „Ligipääs kohalike postituste voole“ väärtus peab olema „Kõik“.
         mascot: Asendab kohandatud veebiliidese illustratsiooni.
         media_cache_retention_period: Kaugkasutajate tehtud postituste meediafailid salvestatakse sinu koduserveri vahemällu. Kui see seadistus on seatud positiivsele väärtusele, kustutatakse meediumifailid määratud päevade möödumisel. Kui meediaandmeid küsitakse pärast nende kustutamist, laaditakse need uuesti alla, kui lähtesisu on veel saadaval. Kuna on olemas piirangud, kui tihti tohivad lingikaardid kolmandatelt saitidelt andmeid pärida, on soovitatav määrata väärtuseks vähemalt 14. Vastasel juhul ei uuendata linkide eelvaatekaarte nõudmise korral enne seda aega.
         min_age: Kasutajad peavad liitumisel kinnitama oma sünnikuupäeva
@@ -106,7 +110,7 @@ et:
         theme: Teema, mida näevad sisenemata ning uued kasutajad.
         thumbnail: Umbes 2:1 mõõdus pilt serveri informatsiooni kõrval.
         trendable_by_default: Populaarse sisu ülevaatuse vahele jätmine. Pärast seda on siiski võimalik üksikuid üksusi trendidest eemaldada.
-        trends: Trendid näitavad, millised postitused, sildid ja uudislood koguvad sinu serveris tähelepanu.
+        trends: Trendid näitavad, millised postitused, teemaviited ja uudislood koguvad sinu serveris tähelepanu.
       form_challenge:
         current_password: Turvalisse alasse sisenemine
       imports:
@@ -249,6 +253,7 @@ et:
         setting_expand_spoilers: Alati näita tundlikuks märgitud postituste sisu
         setting_hide_network: Peida oma võrk
         setting_missing_alt_text_modal: Enne postitamist hoiata mind meediumi puuduva selgitusteksti puhul
+        setting_quick_boosting: Luba kiire hooandmine
         setting_reduce_motion: Vähenda animatsioonides liikumist
         setting_system_font_ui: Kasuta süsteemi vaikefonti
         setting_system_scrollbars_ui: Kasuta süsteemi vaikimisi kerimisriba
@@ -267,7 +272,7 @@ et:
       email_domain_block:
         with_dns_records: Kaasa domeeni MX-kirjed ning IP-aadressid
       featured_tag:
-        name: Silt
+        name: Teemaviide
       filters:
         actions:
           blur: Peida hoiatusega meedia
@@ -282,6 +287,7 @@ et:
         content_cache_retention_period: Kaugsisu säilitamise aeg
         custom_css: Kohandatud CSS
         favicon: Favicon
+        landing_page: Avaleht uute külastajate jaoks
         local_live_feed_access: Ligipääs kohalike postituste voole
         local_topic_feed_access: Ligipääs kohalike postitustele viitavale teemaviidete ja linkide voole
         mascot: Kohandatud maskott (kunagine)
@@ -347,10 +353,10 @@ et:
         indexable: Kaasa profiilileht otsimootoritesse
         show_application: Näita, millisest äpist postituse saatsid
       tag:
-        listable: Luba sellel sildil ilmuda profiilide kataloogis
-        name: Silt
-        trendable: Luba sellel sildil trendida
-        usable: Luba seda märksõna postitustes kasutada lokaalselt
+        listable: Luba sellel teemaviitel ilmuda profiilide kataloogis
+        name: Teemaviide
+        trendable: Luba sellel teemaviitel olla nähtav viimaste trendide all
+        usable: Luba seda teemaviidet postitustes kasutada lokaalselt
       terms_of_service:
         changelog: Mis on muutunud?
         effective_date: Jõustumise kuupäev
