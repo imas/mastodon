@@ -24,7 +24,7 @@ gem 'ruby-vips', '~> 2.2', require: false
 
 gem 'active_model_serializers', '~> 0.10'
 gem 'addressable', '~> 2.8'
-gem 'bootsnap', '~> 1.19.0', require: false
+gem 'bootsnap', require: false
 gem 'browser'
 gem 'charlock_holmes', '~> 0.7.7'
 gem 'chewy', '~> 7.3'
@@ -139,7 +139,7 @@ group :test do
   gem 'capybara', '~> 3.39'
   gem 'capybara-playwright-driver'
   gem 'capybara-screenshot-diff'
-  gem 'playwright-ruby-client', '1.57.0', require: false # Pinning the exact version as it needs to be kept in sync with the installed npm package
+  gem 'playwright-ruby-client', '1.57.1', require: false # Pinning the exact version as it needs to be kept in sync with the installed npm package
 
   # Used to reset the database between system tests
   gem 'database_cleaner-active_record'
