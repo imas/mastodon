@@ -1,3 +1,4 @@
+@use 'mastodon/variables';
 @use 'mastodon/mixins';
 @use 'fonts/roboto';
 @use 'fonts/roboto-mono';
@@ -15,11 +16,9 @@
 @use 'mastodon/polls';
 @use 'mastodon/modal';
 @use 'mastodon/emoji_picker';
-@use 'mastodon/annual_reports';
 @use 'mastodon/about';
 @use 'mastodon/tables';
 @use 'mastodon/admin';
 @use 'mastodon/dashboard';
 @use 'mastodon/rtl';
-@use 'mastodon/accessibility';
 @use 'mastodon/rich_text';

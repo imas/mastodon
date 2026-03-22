@@ -5,31 +5,31 @@ import {
   importFetchedAccounts,
   importFetchedStatuses,
 } from '@/mastodon/actions/importer';
-import { insertIntoTimeline } from '@/mastodon/actions/timelines';
 import type { ApiAnnualReportState } from '@/mastodon/api/annual_report';
 import {
   apiGetAnnualReport,
   apiGetAnnualReportState,
   apiRequestGenerateAnnualReport,
 } from '@/mastodon/api/annual_report';
+import { wrapstodon } from '@/mastodon/initial_state';
 import type { AnnualReport } from '@/mastodon/models/annual_report';
-
 import {
-  createAppSelector,
   createAppThunk,
   createDataLoadingThunk,
-} from '../../store/typed_functions';
-
-export const TIMELINE_WRAPSTODON = 'inline-wrapstodon';
+} from '@/mastodon/store/typed_functions';
 
 interface AnnualReportState {
+  year?: number;
   state?: ApiAnnualReportState;
   report?: AnnualReport;
 }
 
 const annualReportSlice = createSlice({
   name: 'annualReport',
-  initialState: {} as AnnualReportState,
+  initialState: {
+    year: wrapstodon?.year,
+    state: wrapstodon?.state,
+  } as AnnualReportState,
   reducers: {
     setReport(state, action: PayloadAction<AnnualReport>) {
       state.report = action.payload;
@@ -55,33 +55,27 @@ const annualReportSlice = createSlice({
 export const annualReport = annualReportSlice.reducer;
 export const { setReport } = annualReportSlice.actions;
 
-export const selectWrapstodonYear = createAppSelector(
-  [(state) => state.server.getIn(['server', 'wrapstodon'])],
-  (year: unknown) => (typeof year === 'number' && year > 2000 ? year : null),
-);
-
-// This kicks everything off, and is called after fetching the server info.
+// Called on initial load to check if we need to refresh the report state.
 export const checkAnnualReport = createAppThunk(
   `${annualReportSlice.name}/checkAnnualReport`,
-  async (_arg: unknown, { dispatch, getState }) => {
-    const year = selectWrapstodonYear(getState());
-    if (!year) {
+  (_arg: unknown, { dispatch, getState }) => {
+    const { state, year } = getState().annualReport;
+    const me = getState().meta.get('me') as string;
+
+    // If we have a state, we only need to fetch it again to poll for changes.
+    const needsStateRefresh = !state || state === 'generating';
+
+    if (!year || !me || !needsStateRefresh) {
       return;
     }
-    const state = await dispatch(fetchReportState());
-    if (
-      state.meta.requestStatus === 'fulfilled' &&
-      state.payload !== 'ineligible'
-    ) {
-      dispatch(insertIntoTimeline('home', TIMELINE_WRAPSTODON, 1));
-    }
+    void dispatch(fetchReportState());
   },
 );
 
 const fetchReportState = createDataLoadingThunk(
   `${annualReportSlice.name}/fetchReportState`,
   async (_arg: unknown, { getState }) => {
-    const year = selectWrapstodonYear(getState());
+    const { year } = getState().annualReport;
     if (!year) {
       throw new Error('Year is not set');
     }
@@ -92,8 +86,6 @@ const fetchReportState = createDataLoadingThunk(
       window.setTimeout(() => {
         void dispatch(fetchReportState());
       }, 1_000 * refresh.retry);
-    } else if (state === 'available') {
-      void dispatch(getReport());
     }
 
     return state;
@@ -105,7 +97,7 @@ const fetchReportState = createDataLoadingThunk(
 export const generateReport = createDataLoadingThunk(
   `${annualReportSlice.name}/generateReport`,
   async (_arg: unknown, { getState }) => {
-    const year = selectWrapstodonYear(getState());
+    const { year } = getState().annualReport;
     if (!year) {
       throw new Error('Year is not set');
     }
@@ -119,7 +111,7 @@ export const generateReport = createDataLoadingThunk(
 export const getReport = createDataLoadingThunk(
   `${annualReportSlice.name}/getReport`,
   async (_arg: unknown, { getState }) => {
-    const year = selectWrapstodonYear(getState());
+    const { year } = getState().annualReport;
     if (!year) {
       throw new Error('Year is not set');
     }
