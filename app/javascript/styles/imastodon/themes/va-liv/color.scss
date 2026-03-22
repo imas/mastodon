@@ -1,0 +1,40 @@
+// ヴイアライヴ silver (#656a75)
+// OKLCH-based palette — tone keys map to OKLCH lightness L%
+// Dark theme: base = dark shade, compose (secondary) = brand tone
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #434852,
+  // primary-46
+  $ui-base-lighter-color: #5e636e,
+  // primary-53
+  $ui-primary-color: #6d727c,
+  // primary-55
+  $ui-secondary-color: #7b808b,
+  // primary-60 (compose area)
+  $ui-highlight-color: #a8aeba,
+  // primary-75
+  $primary-text-color: #d9dee8,
+  // primary-90
+  $darker-text-color: #dcdee1,
+  // neutral-90
+  $secondary-text-color: #dcdee1,
+  // neutral-90 (input text color)
+  $lighter-text-color: #bcbec1,
+  // neutral-80
+  $highlight-text-color: #cbced4,
+  // primary-85 light tinted
+  $dark-text-color: #c2c4c7,
+  // neutral-82 (placeholder color)
+  $light-text-color: #a3a4a8,
+  // neutral-72
+  $inverted-text-color: #1a1a1a,
+  $action-button-color: #acaeb1,
+  $base-overlay-background: #1a1a1a,
+  $success-green: #86f18b,
+  $ui-button-secondary-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #9fa4ff,
+  $ui-button-tertiary-border-color: #9fa4ff,
+  $emojis-requiring-inversion: 'chains'
+);

@@ -1,0 +1,28 @@
+// 学園アイドルマスター orange (#f39800)
+// body = darken(#ffba61, 8%) = #ffa838 / compose = #ffba61
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #ffba61,
+  // compose background
+  $ui-base-lighter-color: #ffd6aa,
+  $ui-primary-color: #ffe5c8,
+  $ui-secondary-color: #ffa838,
+  $ui-highlight-color: #663d00,
+  $primary-text-color: #231100,
+  $darker-text-color: #331c00,
+  $secondary-text-color: #231100,
+  $lighter-text-color: #432600,
+  $highlight-text-color: #8b5500,
+  $dark-text-color: #4d2d00,
+  $light-text-color: #663d00,
+  $inverted-text-color: #fff,
+  $action-button-color: #7b5d3c,
+  $base-overlay-background: #fff,
+  $success-green: hsl(138deg, 32%, 43%),
+  $ui-button-secondary-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 33%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #6364ff,
+  $ui-button-tertiary-border-color: #6364ff,
+  $emojis-requiring-inversion: 'chains'
+);
