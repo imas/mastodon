@@ -2025,6 +2025,14 @@ en:
     default: Mastodon (Dark)
     mastodon-light: Mastodon (Light)
     system: Automatic (use system theme)
+    idolmaster: THE IDOLM@STER (Pink)
+    765pro-allstars: 765PRO ALLSTARS (Red)
+    cinderella: Cinderella Girls (Blue)
+    millionlive: Million Live (Yellow)
+    sidem: SideM (Green)
+    shinycolors: Shiny Colors (Skyblue)
+    gakumas: Gakuen Idolmaster (Orange)
+    va-liv: vα-liv (Silver)
   time:
     formats:
       default: "%b %d, %Y, %H:%M"

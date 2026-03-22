@@ -1,0 +1,33 @@
+// シンデレラガールズ blue (#2681c8)
+// body = darken(#266fab, -8%) = #2d85cc / compose = #266fab
+
+@use '../../../mastodon/functions' with (
+  $darken-multiplier: 1,
+  $lighten-multiplier: -1
+);
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #266fab,
+  // compose background (darker)
+  $ui-base-lighter-color: #2d85cc,
+  $ui-primary-color: #3a8fd4,
+  $ui-secondary-color: #1f5f96,
+  $ui-highlight-color: #84c4ff,
+  $primary-text-color: #f3f9ff,
+  $darker-text-color: #eff2f6,
+  $secondary-text-color: #eff2f6,
+  $lighter-text-color: #dbdee2,
+  $highlight-text-color: #c4e2ff,
+  $dark-text-color: #eff2f6,
+  $light-text-color: #babec2,
+  $inverted-text-color: #1a1a1a,
+  $action-button-color: #84c4ff,
+  $base-overlay-background: #1a1a1a,
+  $success-green: #86f18b,
+  $ui-button-secondary-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #9fa4ff,
+  $ui-button-tertiary-border-color: #9fa4ff,
+  $emojis-requiring-inversion: 'chains'
+);
