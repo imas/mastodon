@@ -1,0 +1,41 @@
+// 765PRO ALLSTARS red (#f34f6d)
+// OKLCH-based palette — tone keys map to OKLCH lightness L%
+// Dark theme: base = dark shade, compose (secondary) = brand tone
+
+@use '../../../mastodon/variables' with (
+  $ui-base-color: #d14a61,
+  // tone-60 C=0.17
+  $ui-base-lighter-color: #d85166,
+  // tone-62 C=0.17
+  $ui-primary-color: #df576c,
+  // tone-64 C=0.17
+  $ui-secondary-color: #e35a6f,
+  // tone-65 C=0.17 (compose area)
+  $ui-highlight-color: #ff9ea7,
+  // primary-80
+  $primary-text-color: #fff6f6,
+  // primary-98
+  $darker-text-color: #e2dcdc,
+  // neutral-90
+  $secondary-text-color: #e2dcdc,
+  // neutral-90 (input text)
+  $lighter-text-color: #d5cfcf,
+  // neutral-86
+  $highlight-text-color: #ffd1d3,
+  // primary-90 (links)
+  $dark-text-color: #f6f0f0,
+  // neutral-96 (placeholder)
+  $light-text-color: #c2bcbc,
+  // neutral-80 (most faded)
+  $inverted-text-color: #1a1a1a,
+  $action-button-color: #ffd1d3,
+  // primary-90
+  $base-overlay-background: #1a1a1a,
+  $success-green: #86f18b,
+  $ui-button-secondary-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-border-color: hsl(240deg, 8%, 85%),
+  $ui-button-secondary-focus-color: #fff,
+  $ui-button-tertiary-color: #9fa4ff,
+  $ui-button-tertiary-border-color: #9fa4ff,
+  $emojis-requiring-inversion: 'chains'
+);

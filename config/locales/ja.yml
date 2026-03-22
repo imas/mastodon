@@ -1911,6 +1911,14 @@ ja:
     default: Mastodon (ダーク)
     mastodon-light: Mastodon (ライト)
     system: 自動 (システムのテーマを使用)
+    idolmaster: アイドルマスター (ピンク)
+    765pro-allstars: 765PRO ALLSTARS (レッド)
+    cinderella: シンデレラガールズ (ブルー)
+    millionlive: ミリオンライブ！ (イエロー)
+    sidem: SideM (グリーン)
+    shinycolors: シャイニーカラーズ (スカイブルー)
+    gakumas: 学園アイドルマスター (オレンジ)
+    va-liv: ヴイアライヴ (シルバー)
   time:
     formats:
       default: "%Y年%m月%d日 %H:%M"
