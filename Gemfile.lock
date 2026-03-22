@@ -151,6 +151,9 @@ GEM
       addressable
       capybara
       playwright-ruby-client (>= 1.16.0)
+    capybara-screenshot-diff (1.10.3.1)
+      actionpack (>= 7.0, < 9)
+      capybara (>= 2, < 4)
     case_transform (0.2)
       activesupport
     cbor (0.5.10.1)
@@ -948,6 +951,7 @@ DEPENDENCIES
   bundler-audit (~> 0.9)
   capybara (~> 3.39)
   capybara-playwright-driver
+  capybara-screenshot-diff
   charlock_holmes (~> 0.7.7)
   chewy (~> 7.3)
   climate_control
