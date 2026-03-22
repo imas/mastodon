@@ -7,6 +7,8 @@ namespace :api, format: false do
   # Experimental JSON / REST API
   namespace :v1_alpha do
     resources :async_refreshes, only: :show
+
+    resources :collections, only: [:show, :create, :update, :destroy]
   end
 
   # JSON / REST API
@@ -70,6 +72,8 @@ namespace :api, format: false do
     resources :annual_reports, only: [:index, :show] do
       member do
         post :read
+        post :generate
+        get :state
       end
     end
 

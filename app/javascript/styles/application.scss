@@ -1,30 +1,5 @@
-@use 'mastodon/_functions' as functions;
-@use 'mastodon/_mixins' as mixins;
-@use 'mastodon/_variables' as variables;
-@use 'mastodon/css_variables';
-@use 'fonts/roboto';
-@use 'fonts/roboto-mono';
-
-@use 'mastodon/reset';
-@use 'mastodon/basics';
-@use 'mastodon/branding';
-@use 'mastodon/containers';
-@use 'mastodon/lists';
-@use 'mastodon/widgets';
-@use 'mastodon/forms';
-@use 'mastodon/accounts';
-@use 'mastodon/components';
-@use 'mastodon/polls';
-@use 'mastodon/modal';
-@use 'mastodon/emoji_picker';
-@use 'mastodon/annual_reports';
-@use 'mastodon/about';
-@use 'mastodon/tables';
-@use 'mastodon/admin';
-@use 'mastodon/dashboard';
-@use 'mastodon/rtl';
-@use 'mastodon/accessibility';
-@use 'mastodon/rich_text';
+@use 'mastodon/variables';
+@use 'common';
 
 @use 'imastodon/logo';
 @use 'imastodon/compose_common';

@@ -1,3 +1,6 @@
+// Compatibility shim: upstream removed this file in the new theme system.
+// imastodon themes (cinderella, shinycolors) still reference this.
+// TODO: migrate imastodon themes to CSS custom properties and remove this file.
 @use 'sass:color';
 @use 'sass:string';
 @use 'sass:meta';
