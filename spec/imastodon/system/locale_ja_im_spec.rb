@@ -24,12 +24,12 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(submit_button).to have_text('あふぅ')
     end
 
-    it 'ブーストボタンが「わかるわ」と表示される' do
+    it 'ブーストボタンが「わかるわか引用」と表示される' do
       status = Fabricate(:status, account: bob.account, text: 'わかるわテスト投稿', visibility: :public)
       FeedManager.instance.push_to_home(bob.account, status)
       visit '/home'
       wait_for_react
-      expect(page).to have_button('わかるわ')
+      expect(page).to have_button('わかるわか引用')
     end
   end
 end
