@@ -48,6 +48,7 @@ require 'pundit/rspec'
 require 'test_prof/recipes/rspec/before_all'
 
 Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
+Rails.root.glob('spec/imastodon/**/support/**/*.rb').each { |f| require f }
 
 ActiveRecord::Migration.maintain_test_schema!
 WebMock.disable_net_connect!(

@@ -331,6 +331,7 @@
   "status.pinned": "固定されたあふぅ",
   "status.read_more": "もっと見る",
   "status.reblog": "わかるわ",
+  "status.reblog_or_quote": "わかるわか引用",
   "status.reblog_private": "わかるわ",
   "status.reblogged_by": "{name}さんにわかるわされました",
   "status.reblogs.empty": "まだ誰もブーストしていません。ブーストされるとここに表示されます。",
