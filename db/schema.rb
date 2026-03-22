@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_27_141820) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_09_143308) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -1204,8 +1204,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_27_141820) do
     t.integer "quote_approval_policy", default: 0, null: false
     t.index ["account_id", "id", "visibility", "updated_at"], name: "index_statuses_20190820", order: { id: :desc }, where: "(deleted_at IS NULL)"
     t.index ["account_id"], name: "index_statuses_on_account_id"
-    t.index ["created_at", "local", "id"], name: "index_statuses_on_created_at_and_local_and_id"
     t.index ["conversation_id"], name: "index_statuses_on_conversation_id"
+    t.index ["created_at", "local", "id"], name: "index_statuses_on_created_at_and_local_and_id"
     t.index ["deleted_at"], name: "index_statuses_on_deleted_at", where: "(deleted_at IS NOT NULL)"
     t.index ["id", "account_id"], name: "index_statuses_local_20190824", order: { id: :desc }, where: "((local OR (uri IS NULL)) AND (deleted_at IS NULL) AND (visibility = 0) AND (reblog_of_id IS NULL) AND ((NOT reply) OR (in_reply_to_account_id = account_id)))"
     t.index ["id", "language", "account_id"], name: "index_statuses_public_20250129", order: { id: :desc }, where: "((deleted_at IS NULL) AND (visibility = 0) AND (reblog_of_id IS NULL) AND ((NOT reply) OR (in_reply_to_account_id = account_id)))"

@@ -59,7 +59,14 @@ export const FollowButton: React.FC<{
   compact?: boolean;
   labelLength?: 'auto' | 'short' | 'long';
   className?: string;
-}> = ({ accountId, compact, labelLength = 'auto', className }) => {
+  withUnmute?: boolean;
+}> = ({
+  accountId,
+  compact,
+  labelLength = 'auto',
+  className,
+  withUnmute = true,
+}) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { signedIn } = useIdentity();
@@ -94,7 +101,14 @@ export const FollowButton: React.FC<{
 
     if (accountId === me) {
       return;
-    } else if (relationship.muting) {
+    } else if (relationship.blocking) {
+      dispatch(
+        openModal({
+          modalType: 'CONFIRM_UNBLOCK',
+          modalProps: { account },
+        }),
+      );
+    } else if (relationship.muting && withUnmute) {
       dispatch(unmuteAccount(accountId));
     } else if (account && relationship.following) {
       dispatch(
@@ -107,17 +121,10 @@ export const FollowButton: React.FC<{
           modalProps: { account },
         }),
       );
-    } else if (relationship.blocking) {
-      dispatch(
-        openModal({
-          modalType: 'CONFIRM_UNBLOCK',
-          modalProps: { account },
-        }),
-      );
     } else {
       dispatch(followAccount(accountId));
     }
-  }, [dispatch, accountId, relationship, account, signedIn]);
+  }, [signedIn, relationship, accountId, withUnmute, account, dispatch]);
 
   const isNarrow = useBreakpoint('narrow');
   const useShortLabel =
@@ -136,7 +143,7 @@ export const FollowButton: React.FC<{
     label = intl.formatMessage(messages.editProfile);
   } else if (!relationship) {
     label = <LoadingIndicator />;
-  } else if (relationship.muting) {
+  } else if (relationship.muting && withUnmute) {
     label = intl.formatMessage(messages.unmute);
   } else if (relationship.following) {
     label = intl.formatMessage(messages.unfollow);
@@ -173,7 +180,7 @@ export const FollowButton: React.FC<{
         (!(relationship?.following || relationship?.requested) &&
           (account?.suspended || !!account?.moved))
       }
-      secondary={following}
+      secondary={following || relationship?.blocking}
       compact={compact}
       className={classNames(className, { 'button--destructive': following })}
     >
