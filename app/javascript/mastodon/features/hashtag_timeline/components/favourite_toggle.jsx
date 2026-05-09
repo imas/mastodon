@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import { memo, useCallback } from 'react';
 
-import { defineMessages, injectIntl } from 'react-intl';
+import PropTypes from 'prop-types';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { Button } from '../../../components/button';
-
 
 const messages = defineMessages({
   add_favourite_tags_public: { id: 'tag.add_favourite.public', defaultMessage: 'add in the favourite tags (Public)' },
@@ -13,60 +12,47 @@ const messages = defineMessages({
   remove_favourite_tags_unlisted: { id: 'tag.remove_favourite.unlisted', defaultMessage: 'Remove from the favourite tags (Unlisted)' },
 });
 
-class FavouriteToggle extends React.PureComponent {
+const FavouriteToggle = ({ tag, addFavouriteTags, removeFavouriteTags, unlistedId, publicId }) => {
+  const intl = useIntl();
 
-  static propTypes = {
-    tag: PropTypes.string.isRequired,
-    addFavouriteTags: PropTypes.func.isRequired,
-    removeFavouriteTags: PropTypes.func.isRequired,
-    unlistedId: PropTypes.number,
-    publicId: PropTypes.number,
-    intl: PropTypes.object.isRequired,
-  };
+  const addPublic = useCallback(() => {
+    addFavouriteTags(tag, 'public');
+  }, [addFavouriteTags, tag]);
 
-  addFavouriteTags = (visibility) => {
-    this.props.addFavouriteTags(this.props.tag, visibility);
-  };
+  const addUnlisted = useCallback(() => {
+    addFavouriteTags(tag, 'unlisted');
+  }, [addFavouriteTags, tag]);
 
-  addPublic = () => {
-    this.addFavouriteTags('public');
-  };
+  const removePublic = useCallback(() => {
+    removeFavouriteTags(publicId);
+  }, [removeFavouriteTags, publicId]);
 
-  addUnlisted = () => {
-    this.addFavouriteTags('unlisted');
-  };
+  const removeUnlisted = useCallback(() => {
+    removeFavouriteTags(unlistedId);
+  }, [removeFavouriteTags, unlistedId]);
 
-  removeFavouriteTags = (id) => {
-    this.props.removeFavouriteTags(id);
-  };
-
-  removePublic = () => {
-    this.removeFavouriteTags(this.props.publicId);
-  };
-
-  removeUnlisted = () => {
-    this.removeFavouriteTags(this.props.unlistedId);
-  };
-
-  render () {
-    const { intl, unlistedId, publicId } = this.props;
-
-    return (
-      <div>
-        <div className='column-settings__row'>
-          {
-            publicId != null ? <Button className='favourite-tags__remove-button-in-column' text={intl.formatMessage(messages.remove_favourite_tags_public)} onClick={this.removePublic} block />
-              : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_public)} onClick={this.addPublic} block />
-          }
-          {
-            unlistedId != null ? <Button className='favourite-tags__remove-button-in-column' text={intl.formatMessage(messages.remove_favourite_tags_unlisted)} onClick={this.removeUnlisted} block />
-              : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_unlisted)} onClick={this.addUnlisted} block />
-          }
-        </div>
+  return (
+    <div>
+      <div className='column-settings__row'>
+        {
+          publicId != null ? <Button className='favourite-tags__remove-button-in-column' text={intl.formatMessage(messages.remove_favourite_tags_public)} onClick={removePublic} block />
+            : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_public)} onClick={addPublic} block />
+        }
+        {
+          unlistedId != null ? <Button className='favourite-tags__remove-button-in-column' text={intl.formatMessage(messages.remove_favourite_tags_unlisted)} onClick={removeUnlisted} block />
+            : <Button className='favourite-tags__add-button-in-column' text={intl.formatMessage(messages.add_favourite_tags_unlisted)} onClick={addUnlisted} block />
+        }
       </div>
-    );
-  }
+    </div>
+  );
+};
 
-}
+FavouriteToggle.propTypes = {
+  tag: PropTypes.string.isRequired,
+  addFavouriteTags: PropTypes.func.isRequired,
+  removeFavouriteTags: PropTypes.func.isRequired,
+  unlistedId: PropTypes.number,
+  publicId: PropTypes.number,
+};
 
-export default injectIntl(FavouriteToggle);
+export default memo(FavouriteToggle);
