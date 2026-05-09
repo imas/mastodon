@@ -6,7 +6,7 @@ local tfstate = std.native('tfstate');
   requiresCompatibilities: ['FARGATE'],
   networkMode: 'awsvpc',
   cpu: '512',
-  memory: '1024',
+  memory: '2048',
   executionRoleArn: tfstate('module.ecs.aws_iam_role.ecs_task_execution_role.arn'),
   taskRoleArn: tfstate('module.iam.aws_iam_role.imastodon_iam_role.arn'),
 

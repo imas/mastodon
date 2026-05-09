@@ -43,5 +43,6 @@ local tfstate = std.native('tfstate');
     maximumPercent: 200,
   },
 
+  availabilityZoneRebalancing: 'ENABLED',
   enableExecuteCommand: true,
 }
