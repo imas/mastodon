@@ -27,22 +27,27 @@ export default class AvatarOverlayIcon extends React.PureComponent {
     account: ImmutablePropTypes.map.isRequired,
     visibility: PropTypes.string.isRequired,
     animate: PropTypes.bool,
+    size: PropTypes.number,
   };
 
   static defaultProps = {
     animate: autoPlayGif,
+    size: 46,
   };
 
   render() {
-    const { account, visibility, animate } = this.props;
+    const { account, visibility, animate, size } = this.props;
     const icon = icons[visibility];
 
     const baseStyle = {
       backgroundImage: `url(${account.get(animate ? 'avatar' : 'avatar_static')})`,
+      width: size,
+      height: size,
+      backgroundSize: `${size}px ${size}px`,
     };
 
     return (
-      <div className='account__avatar-overlay'>
+      <div className='account__avatar-overlay' style={{ width: size, height: size }}>
         <div className='account__avatar-overlay-icon-base' style={baseStyle} />
         <Icon id={visibility} icon={icon} className='account__avatar-overlay-icon-overlay' />
       </div>
