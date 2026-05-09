@@ -1,0 +1,110 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<FoldButton /> > applies transition styles when animate is true 1`] = `
+<button
+  aria-label="toggle"
+  className="icon-button active"
+  onClick={[Function]}
+  style={
+    {
+      "fontSize": "20px",
+      "height": "25.7142858px",
+      "lineHeight": "20px",
+      "width": "25.7142858px",
+    }
+  }
+  title="toggle"
+>
+  <svg
+    aria-hidden={true}
+    className="icon icon-down compose__extra__header__icon"
+    height={24}
+    style={
+      {
+        "transform": "rotate(180deg)",
+        "transition": "transform 300ms ease-in-out",
+      }
+    }
+    title=""
+    viewBox="0 -960 960 960"
+    width={24}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M480-360 280-560h400L480-360Z"
+    />
+  </svg>
+</button>
+`;
+
+exports[`<FoldButton /> > renders a button element with default props 1`] = `
+<button
+  aria-label="toggle"
+  className="icon-button"
+  onClick={[Function]}
+  style={
+    {
+      "fontSize": "20px",
+      "height": "25.7142858px",
+      "lineHeight": "20px",
+      "width": "25.7142858px",
+    }
+  }
+  title="toggle"
+>
+  <svg
+    aria-hidden={true}
+    className="icon icon-down compose__extra__header__icon"
+    height={24}
+    style={
+      {
+        "transform": "rotate(0deg)",
+      }
+    }
+    title=""
+    viewBox="0 -960 960 960"
+    width={24}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M480-360 280-560h400L480-360Z"
+    />
+  </svg>
+</button>
+`;
+
+exports[`<FoldButton /> > rotates icon 180deg when active 1`] = `
+<button
+  aria-label="toggle"
+  className="icon-button active"
+  onClick={[Function]}
+  style={
+    {
+      "fontSize": "20px",
+      "height": "25.7142858px",
+      "lineHeight": "20px",
+      "width": "25.7142858px",
+    }
+  }
+  title="toggle"
+>
+  <svg
+    aria-hidden={true}
+    className="icon icon-down compose__extra__header__icon"
+    height={24}
+    style={
+      {
+        "transform": "rotate(180deg)",
+      }
+    }
+    title=""
+    viewBox="0 -960 960 960"
+    width={24}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M480-360 280-560h400L480-360Z"
+    />
+  </svg>
+</button>
+`;
