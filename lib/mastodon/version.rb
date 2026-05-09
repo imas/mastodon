@@ -13,11 +13,11 @@ module Mastodon
     end
 
     def patch
-      0
+      7
     end
 
     def default_prerelease
-      'rc.2'
+      ''
     end
 
     def prerelease

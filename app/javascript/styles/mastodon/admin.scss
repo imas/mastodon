@@ -163,6 +163,7 @@ $content-width: 840px;
     width: 100%;
     max-width: $content-width;
     flex: 1 1 auto;
+    isolation: isolate;
   }
 
   @media screen and (max-width: ($content-width + $sidebar-width)) {
@@ -1309,6 +1310,10 @@ a.sparkline {
   line-height: 1;
   width: 100%;
   animation: skeleton 1.2s ease-in-out infinite;
+
+  .reduce-motion & {
+    animation: none;
+  }
 }
 
 @keyframes skeleton {
