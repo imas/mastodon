@@ -1,32 +1,17 @@
 @use '../mastodon/_variables' as variables;
 @use 'sass:color';
 
-.account__avatar-overlay-icon {
-  &-base {
-    border-radius: var(--avatar-border-radius);
-    background: transparent no-repeat;
-    background-position: 50%;
-    background-clip: padding-box;
-    width: 46px;
-    height: 46px;
-    background-size: 46px 46px;
-  }
-
-  &-overlay {
-    width: 16px;
-    height: 16px;
-    padding: 2px;
-    border-radius: calc(var(--avatar-border-radius) / 2)
-      calc(var(--avatar-border-radius) / 2) var(--avatar-border-radius)
-      calc(var(--avatar-border-radius) / 2);
-    background: transparent no-repeat;
-    background-size: 16px 16px;
-    background-position: 50%;
-    background-clip: padding-box;
-    background-color: color.adjust(variables.$white, $lightness: -20%);
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-  }
+.account__avatar-overlay-icon-overlay {
+  display: block;
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+  border-radius: calc(var(--avatar-border-radius) / 2)
+    calc(var(--avatar-border-radius) / 2) var(--avatar-border-radius)
+    calc(var(--avatar-border-radius) / 2);
+  background: transparent no-repeat;
+  background-size: 16px 16px;
+  background-position: 50%;
+  background-clip: padding-box;
+  background-color: color.adjust(variables.$white, $lightness: -20%);
 }

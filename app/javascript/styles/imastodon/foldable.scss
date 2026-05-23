@@ -1,0 +1,16 @@
+.foldable {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 300ms ease-in-out;
+
+  &--visible {
+    grid-template-rows: 1fr;
+  }
+
+  &__inner {
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
