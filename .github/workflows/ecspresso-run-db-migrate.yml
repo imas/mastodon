@@ -50,8 +50,7 @@ jobs:
           {
             "containerOverrides": [
               {
-                "name": "sidekiq-default",
-                "command": ["bundle", "exec", "rails", "db:migrate"],
+                "name": "migrate",
                 "environment": $EXTRA_ENV
               }
             ]
@@ -61,11 +60,12 @@ jobs:
           echo "overrides=$(echo $OVERRIDES | jq -c .)" >> $GITHUB_OUTPUT
 
       - name: Run db:migrate
-        working-directory: .ecspresso/sidekiq
+        working-directory: .ecspresso/migrate
         env:
           IMAGE_TAG: ${{ inputs.image_tag }}
         run: |
           ecspresso run \
             --config ecspresso.yml \
             --overrides '${{ steps.overrides.outputs.overrides }}' \
+            --watch-container migrate \
             --wait-until stopped
