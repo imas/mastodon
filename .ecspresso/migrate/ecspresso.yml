@@ -1,5 +1,6 @@
 region: us-west-2
 cluster: imastodon_prod_cluster
+service_definition: ecs-service-def.jsonnet
 task_definition: ecs-task-def.jsonnet
 timeout: '30m'
 
