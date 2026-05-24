@@ -1,4 +1,4 @@
-name: ecspresso run db:migrate
+name: imastodon ecspresso run db:migrate
 
 on:
   workflow_call:

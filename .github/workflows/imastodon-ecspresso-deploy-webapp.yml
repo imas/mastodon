@@ -1,4 +1,4 @@
-name: ecspresso deploy webapp
+name: imastodon ecspresso deploy webapp
 
 on:
   workflow_call:
