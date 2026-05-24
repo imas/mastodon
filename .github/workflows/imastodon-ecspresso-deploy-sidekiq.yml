@@ -1,4 +1,4 @@
-name: ecspresso deploy sidekiq
+name: imastodon ecspresso deploy sidekiq
 
 on:
   workflow_call:

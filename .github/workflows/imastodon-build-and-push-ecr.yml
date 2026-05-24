@@ -1,4 +1,4 @@
-name: Build & Push to ECR
+name: imastodon Build & Push to ECR
 
 on:
   push:
