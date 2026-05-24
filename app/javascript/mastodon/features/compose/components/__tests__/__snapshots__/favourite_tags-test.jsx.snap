@@ -1,0 +1,288 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<FavouriteTags /> > tagsが空かつvisible=falseのときの表示 1`] = `
+<div
+  className="compose__extra"
+>
+  <div
+    className="compose__extra__header"
+  >
+    <div
+      className="compose__extra__header__left"
+    >
+      <svg
+        aria-hidden={true}
+        className="icon icon-tag_icon compose__extra__header__icon"
+        fill="#1f1f1f"
+        height="24px"
+        title=""
+        viewBox="0 -960 960 960"
+        width="24px"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Z"
+        />
+      </svg>
+      <span>
+        Favourite tags
+      </span>
+    </div>
+    <div
+      className="compose__extra__header__right"
+    >
+      <a
+        className="compose__extra__header__icon"
+        href="/settings/favourite_tags"
+      >
+        <svg
+          aria-hidden={true}
+          className="icon icon-setting_icon compose__extra__header__icon"
+          height={24}
+          title=""
+          viewBox="0 -960 960 960"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z"
+          />
+        </svg>
+      </a>
+      <div
+        className="compose__extra__header__fold__icon"
+      >
+        <button
+          aria-label="Toggle visibility"
+          className="icon-button"
+          onClick={[Function]}
+          style={
+            {
+              "fontSize": "20px",
+              "height": "25.7142858px",
+              "lineHeight": "20px",
+              "width": "25.7142858px",
+            }
+          }
+          title="Toggle visibility"
+        >
+          <svg
+            aria-hidden={true}
+            className="icon icon-down compose__extra__header__icon"
+            height={24}
+            style={
+              {
+                "transform": "rotate(0deg)",
+                "transition": "transform 300ms ease-in-out",
+              }
+            }
+            title=""
+            viewBox="0 -960 960 960"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M480-360 280-560h400L480-360Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="foldable"
+  >
+    <div
+      className="foldable__inner"
+    >
+      <ul
+        className="compose__extra__body"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FavouriteTags /> > tagsに2件・visible=trueのときの表示 1`] = `
+<div
+  className="compose__extra"
+>
+  <div
+    className="compose__extra__header"
+  >
+    <div
+      className="compose__extra__header__left"
+    >
+      <svg
+        aria-hidden={true}
+        className="icon icon-tag_icon compose__extra__header__icon"
+        fill="#1f1f1f"
+        height="24px"
+        title=""
+        viewBox="0 -960 960 960"
+        width="24px"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Z"
+        />
+      </svg>
+      <span>
+        Favourite tags
+      </span>
+    </div>
+    <div
+      className="compose__extra__header__right"
+    >
+      <a
+        className="compose__extra__header__icon"
+        href="/settings/favourite_tags"
+      >
+        <svg
+          aria-hidden={true}
+          className="icon icon-setting_icon compose__extra__header__icon"
+          height={24}
+          title=""
+          viewBox="0 -960 960 960"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z"
+          />
+        </svg>
+      </a>
+      <div
+        className="compose__extra__header__fold__icon"
+      >
+        <button
+          aria-label="Toggle visibility"
+          className="icon-button active"
+          onClick={[Function]}
+          style={
+            {
+              "fontSize": "20px",
+              "height": "25.7142858px",
+              "lineHeight": "20px",
+              "width": "25.7142858px",
+            }
+          }
+          title="Toggle visibility"
+        >
+          <svg
+            aria-hidden={true}
+            className="icon icon-down compose__extra__header__icon"
+            height={24}
+            style={
+              {
+                "transform": "rotate(180deg)",
+                "transition": "transform 300ms ease-in-out",
+              }
+            }
+            title=""
+            viewBox="0 -960 960 960"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M480-360 280-560h400L480-360Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="foldable foldable--visible"
+  >
+    <div
+      className="foldable__inner"
+    >
+      <ul
+        className="compose__extra__body"
+      >
+        <li>
+          <svg
+            aria-hidden={true}
+            className="icon icon-public favourite-tags__icon"
+            height={24}
+            title=""
+            viewBox="0 -960 960 960"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-40-82v-78q-33 0-56.5-23.5T360-320v-40L168-552q-3 18-5.5 36t-2.5 36q0 121 79.5 212T440-162Zm276-102q41-45 62.5-100.5T800-480q0-98-54.5-179T600-776v16q0 33-23.5 56.5T520-680h-80v80q0 17-11.5 28.5T400-560h-80v80h240q17 0 28.5 11.5T600-440v120h40q26 0 47 15.5t29 40.5Z"
+            />
+          </svg>
+          <a
+            className="compose__extra__body__name"
+            href="/timelines/tag/foo"
+            onClick={[Function]}
+          >
+            #foo
+          </a>
+          <button
+            className="favourite-tags__lock"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden={true}
+              className="icon icon-undefined favourite-tags__lock"
+              height={24}
+              title=""
+              viewBox="0 -960 960 960"
+              width={24}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M160-400v-80h280v80H160Zm0-160v-80h440v80H160Zm0-160v-80h440v80H160Zm360 560v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T863-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"
+              />
+            </svg>
+          </button>
+        </li>
+        <li>
+          <svg
+            aria-hidden={true}
+            className="icon icon-unlisted favourite-tags__icon"
+            height={24}
+            title=""
+            viewBox="0 -960 960 960"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M484-80q-84 0-157.5-32t-128-86.5Q144-253 112-326.5T80-484q0-146 93-257.5T410-880q-18 99 11 193.5T521-521q71 71 165.5 100T880-410q-26 144-138 237T484-80Zm0-80q88 0 163-44t118-121q-86-8-163-43.5T464-465q-61-61-97-138t-43-163q-77 43-120.5 118.5T160-484q0 135 94.5 229.5T484-160Zm-20-305Z"
+            />
+          </svg>
+          <a
+            className="compose__extra__body__name"
+            href="/timelines/tag/bar"
+            onClick={[Function]}
+          >
+            #bar
+          </a>
+          <button
+            className="favourite-tags__lock"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden={true}
+              className="icon icon-undefined favourite-tags__lock"
+              height={24}
+              title=""
+              viewBox="0 -960 960 960"
+              width={24}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M160-400v-80h280v80H160Zm0-160v-80h440v80H160Zm0-160v-80h440v80H160Zm360 560v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T863-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"
+              />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
