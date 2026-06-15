@@ -39,22 +39,20 @@ local tfstate = std.native('tfstate');
     // pgbouncer - sidekiqより先に起動
     {
       name: 'pgbouncer',
-      image: 'public.ecr.aws/bitnami/pgbouncer:1.25.1',
+      image: 'edoburu/pgbouncer:v1.25.1-p0',
       essential: true,
       environment: [
-        { name: 'POSTGRESQL_HOST', value: tfstate('module.rds.aws_db_instance.imastodon_rds.address') },
-        { name: 'POSTGRESQL_PORT', value: '5432' },
-        { name: 'PGBOUNCER_PORT', value: '6432' },
-        { name: 'PGBOUNCER_POOL_MODE', value: 'transaction' },
-        { name: 'PGBOUNCER_MAX_CLIENT_CONN', value: '100' },
-        { name: 'PGBOUNCER_DEFAULT_POOL_SIZE', value: '50' },
-        { name: 'PGBOUNCER_DATABASE', value: '*' },
-        { name: 'PGBOUNCER_SERVER_TLS_SSLMODE', value: 'require' },
+        { name: 'DB_HOST', value: tfstate('module.rds.aws_db_instance.imastodon_rds.address') },
+        { name: 'DB_PORT', value: '5432' },
+        { name: 'LISTEN_PORT', value: '6432' },
+        { name: 'POOL_MODE', value: 'transaction' },
+        { name: 'MAX_CLIENT_CONN', value: '100' },
+        { name: 'DEFAULT_POOL_SIZE', value: '50' },
+        { name: 'SERVER_TLS_SSLMODE', value: 'require' },
       ],
       secrets: [
-        { name: 'POSTGRESQL_DATABASE', valueFrom: '/imastodon/prod/DB_NAME' },
-        { name: 'POSTGRESQL_USERNAME', valueFrom: '/imastodon/prod/DB_USER' },
-        { name: 'POSTGRESQL_PASSWORD', valueFrom: '/imastodon/prod/DB_PASS' },
+        { name: 'DB_USER', valueFrom: '/imastodon/prod/DB_USER' },
+        { name: 'DB_PASSWORD', valueFrom: '/imastodon/prod/DB_PASS' },
       ],
       dependsOn: [
         { containerName: 'log_router', condition: 'START' },
