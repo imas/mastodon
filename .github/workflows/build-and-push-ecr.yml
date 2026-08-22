@@ -20,7 +20,7 @@ env:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
 
@@ -53,6 +53,7 @@ jobs:
         with:
           context: .
           push: true
+          platforms: linux/arm64
           tags: ${{ env.ECR_REGISTRY }}/imastodon/mastodon:${{ steps.tag.outputs.image_tag }}
           cache-from: type=registry,ref=${{ env.ECR_REGISTRY }}/imastodon/mastodon-cache:${{ steps.tag.outputs.cache_tag }}
           cache-to: type=registry,ref=${{ env.ECR_REGISTRY }}/imastodon/mastodon-cache:${{ steps.tag.outputs.cache_tag }},mode=max,image-manifest=true,oci-mediatypes=true
@@ -63,6 +64,7 @@ jobs:
           context: .
           file: streaming/Dockerfile
           push: true
+          platforms: linux/arm64
           tags: ${{ env.ECR_REGISTRY }}/imastodon/streaming:${{ steps.tag.outputs.image_tag }}
           cache-from: type=registry,ref=${{ env.ECR_REGISTRY }}/imastodon/streaming-cache:${{ steps.tag.outputs.cache_tag }}
           cache-to: type=registry,ref=${{ env.ECR_REGISTRY }}/imastodon/streaming-cache:${{ steps.tag.outputs.cache_tag }},mode=max,image-manifest=true,oci-mediatypes=true
