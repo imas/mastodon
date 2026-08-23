@@ -136,6 +136,48 @@ RSpec.describe ActivityPub::ProcessStatusUpdateService do
       end
     end
 
+    context 'with an implicit update of a poll that has already expired' do
+      let(:account) { Fabricate(:account, domain: 'example.com') }
+      let!(:expiration) { 10.days.ago.utc }
+      let!(:status) do
+        Fabricate(:status,
+                  text: 'Hello world',
+                  account: account,
+                  poll_attributes: {
+                    options: %w(Foo Bar),
+                    account: account,
+                    multiple: false,
+                    hide_totals: false,
+                    expires_at: expiration,
+                  })
+      end
+
+      let(:payload) do
+        {
+          '@context': 'https://www.w3.org/ns/activitystreams',
+          id: 'https://example.com/foo',
+          type: 'Question',
+          content: 'Hello world',
+          endTime: expiration.iso8601,
+          oneOf: [
+            poll_option_json('Foo', 4),
+            poll_option_json('Bar', 3),
+          ],
+        }
+      end
+
+      before do
+        travel_to(expiration - 1.day) do
+          Fabricate(:poll_vote, poll: status.poll)
+        end
+      end
+
+      it 'does not re-trigger notifications' do
+        expect { subject.call(status, json, json) }
+          .to_not enqueue_sidekiq_job(PollExpirationNotifyWorker)
+      end
+    end
+
     context 'when the status changes a poll despite being not explicitly marked as updated' do
       let(:account) { Fabricate(:account, domain: 'example.com') }
       let!(:expiration) { 10.days.from_now.utc }
@@ -870,10 +912,10 @@ RSpec.describe ActivityPub::ProcessStatusUpdateService do
       }))
     end
 
-    it 'updates the approval URI but does not verify the quote' do
+    it 'does not update the approval URI and does not verify the quote' do
       expect { subject.call(status, json, json) }
         .to change(status, :quote).from(nil)
-      expect(status.quote.approval_uri).to eq approval_uri
+      expect(status.quote.approval_uri).to be_nil
       expect(status.quote.state).to_not eq 'accepted'
       expect(status.quote.quoted_status).to be_nil
     end

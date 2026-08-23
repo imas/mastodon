@@ -448,6 +448,30 @@ RSpec.describe ActivityPub::Activity::Create do
         end
       end
 
+      context 'when the status is already known' do
+        let(:recipient) { Fabricate(:account) }
+
+        let(:object_json) do
+          build_object(
+            to: ActivityPub::TagManager.instance.uri_for(recipient)
+          )
+        end
+
+        let!(:status) { Fabricate(:status, uri: object_json[:id], account: sender, text: object_json[:content]) }
+
+        it 'keeps the status intact' do
+          expect(subject.perform).to eq status
+        end
+
+        context 'when the known status is attributed to a different actor' do
+          let(:status) { Fabricate(:status, uri: object_json[:id], account: Fabricate(:account, domain: 'example.com')) }
+
+          it 'returns nil' do
+            expect(subject.perform).to be_nil
+          end
+        end
+      end
+
       context 'when direct' do
         let(:recipient) { Fabricate(:account) }
 
@@ -597,19 +621,19 @@ RSpec.describe ActivityPub::Activity::Create do
                 type: 'Document',
                 mediaType: 'image/png',
                 url: 'http://example.com/attachment.png',
-                name: '*' * MediaAttachment::MAX_DESCRIPTION_LENGTH,
+                name: '*' * (MediaAttachment::MAX_DESCRIPTION_HARD_LENGTH_LIMIT + 5),
               },
             ]
           )
         end
 
-        it 'creates status' do
+        it 'creates status with truncated description' do
           expect { subject.perform }.to change(sender.statuses, :count).by(1)
 
           status = sender.statuses.first
 
           expect(status).to_not be_nil
-          expect(status.media_attachments.map(&:description)).to include('*' * MediaAttachment::MAX_DESCRIPTION_LENGTH)
+          expect(status.media_attachments.map(&:description)).to include('*' * MediaAttachment::MAX_DESCRIPTION_HARD_LENGTH_LIMIT)
         end
       end
 
@@ -621,19 +645,19 @@ RSpec.describe ActivityPub::Activity::Create do
                 type: 'Document',
                 mediaType: 'image/png',
                 url: 'http://example.com/attachment.png',
-                summary: '*' * MediaAttachment::MAX_DESCRIPTION_LENGTH,
+                summary: '*' * (MediaAttachment::MAX_DESCRIPTION_HARD_LENGTH_LIMIT + 5),
               },
             ]
           )
         end
 
-        it 'creates status' do
+        it 'creates status with truncated description' do
           expect { subject.perform }.to change(sender.statuses, :count).by(1)
 
           status = sender.statuses.first
 
           expect(status).to_not be_nil
-          expect(status.media_attachments.map(&:description)).to include('*' * MediaAttachment::MAX_DESCRIPTION_LENGTH)
+          expect(status.media_attachments.map(&:description)).to include('*' * MediaAttachment::MAX_DESCRIPTION_HARD_LENGTH_LIMIT)
         end
       end
 
@@ -1241,7 +1265,7 @@ RSpec.describe ActivityPub::Activity::Create do
         subject.perform
       end
 
-      let(:object_json) { build_object }
+      let(:object_json) { build_object(to: 'http://example.com/followers') }
 
       it 'creates status' do
         status = sender.statuses.first
@@ -1257,7 +1281,8 @@ RSpec.describe ActivityPub::Activity::Create do
       let!(:local_status) { Fabricate(:status) }
       let(:object_json) do
         build_object(
-          inReplyTo: ActivityPub::TagManager.instance.uri_for(local_status)
+          inReplyTo: ActivityPub::TagManager.instance.uri_for(local_status),
+          cc: 'https://www.w3.org/ns/activitystreams#Public'
         )
       end
 
@@ -1334,7 +1359,7 @@ RSpec.describe ActivityPub::Activity::Create do
 
     def build_object(options = {})
       {
-        id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+        id: [ActivityPub::TagManager.instance.uri_for(sender), '/bar'].join,
         type: 'Note',
         content: 'Lorem ipsum',
       }.merge(options)
