@@ -34,7 +34,7 @@ jobs:
         run: |
           TAG=$(aws ecr describe-images \
             --repository-name imastodon/nginx \
-            --query 'sort_by(imageDetails, &imagePushedAt)[-1].imageTags[0]' \
+            --query 'sort_by(imageDetails[?imageTags], &imagePushedAt)[-1].imageTags[0]' \
             --output text)
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
 
