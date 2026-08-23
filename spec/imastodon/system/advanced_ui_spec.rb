@@ -31,11 +31,11 @@ RSpec.describe 'マルチカラムUI', :js, type: :system do
       end
 
       it '折りたたみボタンで開閉できる' do
-        foldable = find('.compose__extra .scrollable.optionally-scrollable')
+        expect(page).to have_css('.compose__extra .foldable--visible')
         within('.compose__extra__header__fold__icon') { click_button }
-        expect(foldable['style']).to include('height: 0px')
+        expect(page).to have_no_css('.compose__extra .foldable--visible')
         within('.compose__extra__header__fold__icon') { click_button }
-        expect(foldable['style']).to_not include('height: 0px')
+        expect(page).to have_css('.compose__extra .foldable--visible')
       end
     end
 
