@@ -18,7 +18,7 @@ local tfstate = std.native('tfstate');
     // log_router (FireLens) - 他コンテナより先に起動する必要あり
     {
       name: 'log_router',
-      image: 'public.ecr.aws/aws-observability/aws-for-fluent-bit:stable',
+      image: 'public.ecr.aws/aws-observability/aws-for-fluent-bit:2.34.3.20260805',
       essential: true,
       firelensConfiguration: {
         type: 'fluentbit',
