@@ -2,6 +2,142 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.5.16] - 2026-08-13
+
+### Changed
+
+- Change `mastodon:setup` task warning about trademark to match `masto` but ignore subdomains (#40143 by @ClearlyClaire)
+
+### Fixed
+
+- Fix connection errors when processing `fediverse:creator` preventing creation of preview cards (#40135 by @ClearlyClaire)
+- Fix Web UI being inaccessible with URLs ending with `.zip` (#40134 by @ClearlyClaire)
+- Fix domain block impact queries being rejected (#40122 by @ClearlyClaire)
+
+## [4.5.15] - 2026-08-06
+
+### Fixed
+
+- Fix typo in embedded quote handling code (#40049 by @shleeable)
+- Fix account merging worker incorrectly merging `Appeal` and `AccountWarning` records (#39982 by @shleeable)
+- Fix off-by-one in handling of updated remote posts allowing up to 5 attachments (#39978 by @shleeable)
+
+## [4.5.14] - 2026-07-27
+
+### Security
+
+- Fix incorrect permission enforcement ([GHSA-7jvv-fhmg-wpfw](https://github.com/mastodon/mastodon/security/advisories/GHSA-7jvv-fhmg-wpfw))
+- Fix SSRF protection bypass via IPv4-compatible IPv6 addresses ([GHSA-vwhj-3g83-v276](https://github.com/mastodon/mastodon/security/advisories/GHSA-vwhj-3g83-v276))
+- Update dependencies
+
+### Fixed
+
+- Fix being unable to vote in polls without an expiration date (#39949 by @ClearlyClaire)
+- Fix “Hide media with a warning” filters not being applied correctly (#39946 by @ClearlyClaire)
+- Fix performance of user-focused queries in admin dashboard (#39929 by @ClearlyClaire)
+- Fix Web Push subscription deletion endpoint incorrectly expecting anti-CSRF tokens (#39918 by @ClearlyClaire)
+- Fix `ActivityPub::Activity::Create` trying to re-create known statuses when author changes (#39916 by @ClearlyClaire)
+- Fix typo in quotes list error handling (#39904 by @shleeable)
+- Fix lax relevancy check in inbound activity processing (#39892 by @ClearlyClaire)
+- Fix `Account::Merging` concern not supporting Quotes, refactor it (#39884 by @ClearlyClaire)
+- Fix suspended accounts not being removed from follow request count in `/api/v1/accounts/verify_credentials` (#39858 by @ClearlyClaire)
+- Fix followed tags not being properly cleaned up when an account is deleted (#39824 by @shleeable)
+- Fix CW being copied to body when editing quote posts with empty text (#39823 and #39837 by @shleeable and @ClearlyClaire)
+- Fix handling of `QuoteRequest` rejections when those can't be found by `id` (#39820 by @shleeable)
+- Fix autofollow option being ignored in invite moderation interface (#39819 by @shleeable)
+
+## [4.5.13] - 2026-06-25
+
+### Security
+
+- Update FFMpeg version used in the container image to fix [CVE-2026-8461](https://github.com/advisories/GHSA-qff7-4q6c-m8h6) (critical severity)
+
+## [4.5.12] - 2026-06-24
+
+### Security
+
+- Fix TLS certificate verification being disabled on setups with `LDAP_TLS_NO_VERIFY=true` ([GHSA-3rhr-8phh-jm86](https://github.com/mastodon/mastodon/security/advisories/GHSA-3rhr-8phh-jm86))
+- Update dependencies
+
+### Fixed
+
+- Fix being unable to unmark media as sensitive when "always mark media as sensitive" is enabled in web UI (#39339 by @matrix07012)
+
+## [4.5.11] - 2026-06-03
+
+### Security
+
+- Fix allowed attribution domains spoofing ([GHSA-rwcw-vq68-g34p](https://github.com/mastodon/mastodon/security/advisories/GHSA-rwcw-vq68-g34p))
+- Fix uncaught exception in message sanitization causing Denial of Service ([GHSA-qrgq-9fx2-vf2r](https://github.com/mastodon/mastodon/security/advisories/GHSA-qrgq-9fx2-vf2r))
+- Update dependencies
+
+### Fixed
+
+- Fix remote statuses with large media descriptions being rejected (#39135 by @ClearlyClaire)
+
+## [4.5.10] - 2026-05-20
+
+### Security
+
+- Fix SSRF protection bypass ([GHSA-crr4-7rm4-8gpw](https://github.com/mastodon/mastodon/security/advisories/GHSA-crr4-7rm4-8gpw), [GHSA-xx55-4rrg-8xg6](https://github.com/mastodon/mastodon/security/advisories/GHSA-xx55-4rrg-8xg6))
+- Fix Linked-Data Signature bypass through JSON-LD graph restructuring features ([GHSA-53m7-2wrh-q839](https://github.com/mastodon/mastodon/security/advisories/GHSA-53m7-2wrh-q839), [GHSA-chgx-jx3p-rf73](https://github.com/mastodon/mastodon/security/advisories/GHSA-chgx-jx3p-rf73))
+- Updated dependencies
+
+### Fixed
+
+- Fix type of `interactingObject`, `interactionTarget` and add missing `QuoteAuthorization` (#38940 by @ClearlyClaire)
+
+### Removed
+
+- Remove unused devise strategies (#38795 by @ClearlyClaire)
+
+## [4.5.9] - 2026-04-15
+
+### Security
+
+- Insufficient verification of email addresses ([GHSA-5r37-qpwq-2jhh](https://github.com/mastodon/mastodon/security/advisories/GHSA-5r37-qpwq-2jhh))
+- Updated dependencies
+
+### Added
+
+- Add trademark warning to `mastodon:setup` task (#38548 by @ClearlyClaire)
+
+### Fixed
+
+- Fix definition for `quote` in JSON-LD context (#38686 by @ClearlyClaire)
+- Fix being unable to disable sound for quote update notification (#38537 by @ClearlyClaire)
+- Fix being able to quote someone you blocked (#38608 by @ClearlyClaire)
+
+## [4.5.8] - 2026-03-24
+
+### Security
+
+- Fix insufficient checks on quote authorizations ([GHSA-q4g8-82c5-9h33](https://github.com/mastodon/mastodon/security/advisories/GHSA-q4g8-82c5-9h33))
+- Fix open redirect in legacy path handler ([GHSA-xqw8-4j56-5hj6](https://github.com/mastodon/mastodon/security/advisories/GHSA-xqw8-4j56-5hj6))
+- Updated dependencies
+
+### Added
+
+- Add for searching already-known private GtS posts (#38057 by @ClearlyClaire)
+
+### Changed
+
+- Change media description length limit for remote media attachments from 1500 to 10000 characters (#37921 by @ClearlyClaire)
+- Change HTTP signatures to skip the `Accept` header (#38132 by @ClearlyClaire)
+- Change numeric AP endpoints to redirect to short account URLs when HTML is requested (#38056 by @ClearlyClaire)
+
+### Fixed
+
+- Fix some model definitions in `tootctl maintenance fix-duplicates` (#38214 by @ClearlyClaire)
+- Fix overly strict checks for current username on account migration page (#38183 by @mjankowski)
+- Fix OpenStack Swift Keystone token rate limiting (#38145 by @hugogameiro)
+- Fix poll expiration notification being re-triggered on implicit updates (#38078 by @ClearlyClaire)
+- Fix incorrect translation string in webauthn mailers (#38062 by @mjankowski)
+- Fix “Unblock” and “Unmute” actions being disabled when blocked (#38075 by @ClearlyClaire)
+- Fix username availability check being wrongly applied on race conditions (#37975 by @ClearlyClaire)
+- Fix hover card unintentionally being shown in some cases (#38039 and #38112 by @diondiondion)
+- Fix existing posts not being removed from lists when a list member is unfollowed (#38048 by @ClearlyClaire)
+
 ## [4.5.7] - 2026-02-24
 
 ### Security
