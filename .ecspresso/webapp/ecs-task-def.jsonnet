@@ -43,7 +43,7 @@ local tfstate = std.native('tfstate');
     // pgbouncer - webappより先に起動
     {
       name: 'pgbouncer',
-      image: 'edoburu/pgbouncer:v1.25.1-p0',
+      image: tfstate('module.ecr.aws_ecr_repository.pgbouncer.repository_url') + ':v1.25.1-p0',
       essential: true,
       environment: [
         { name: 'DB_HOST', value: tfstate('module.rds.aws_db_instance.imastodon_rds.address') },
