@@ -18,7 +18,7 @@ local tfstate = std.native('tfstate');
     // log_router (FireLens) - migrateが終わったら一緒に落としたいのでessential=false
     {
       name: 'log_router',
-      image: 'public.ecr.aws/aws-observability/aws-for-fluent-bit:stable',
+      image: 'public.ecr.aws/aws-observability/aws-for-fluent-bit:2.34.3.20260805',
       essential: false,
       firelensConfiguration: {
         type: 'fluentbit',
@@ -43,7 +43,7 @@ local tfstate = std.native('tfstate');
     // pgbouncer - advisory lockを正しく扱うためsessionモードで起動
     {
       name: 'pgbouncer',
-      image: 'edoburu/pgbouncer:v1.25.1-p0',
+      image: tfstate('module.ecr.aws_ecr_repository.pgbouncer.repository_url') + ':v1.25.1-p0',
       essential: false,
       environment: [
         { name: 'DB_HOST', value: tfstate('module.rds.aws_db_instance.imastodon_rds.address') },

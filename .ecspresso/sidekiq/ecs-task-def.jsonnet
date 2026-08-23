@@ -18,7 +18,7 @@ local tfstate = std.native('tfstate');
     // log_router (FireLens) - 他コンテナより先に起動する必要あり
     {
       name: 'log_router',
-      image: 'public.ecr.aws/aws-observability/aws-for-fluent-bit:stable',
+      image: 'public.ecr.aws/aws-observability/aws-for-fluent-bit:2.34.3.20260805',
       essential: true,
       firelensConfiguration: {
         type: 'fluentbit',
@@ -43,7 +43,7 @@ local tfstate = std.native('tfstate');
     // pgbouncer - sidekiqより先に起動
     {
       name: 'pgbouncer',
-      image: 'edoburu/pgbouncer:v1.25.1-p0',
+      image: tfstate('module.ecr.aws_ecr_repository.pgbouncer.repository_url') + ':v1.25.1-p0',
       essential: true,
       environment: [
         { name: 'DB_HOST', value: tfstate('module.rds.aws_db_instance.imastodon_rds.address') },
