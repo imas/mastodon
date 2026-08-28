@@ -71,10 +71,15 @@ export const DropdownMenuItemContent: React.FC<{ item: MenuItem }> = ({
     return null;
   }
 
-  const { text, description, icon } = item;
+  const { text, description, icon, iconId } = item;
   return (
     <>
-      {icon && <Icon icon={icon} id={`${text}-icon`} />}
+      {icon && (
+        <Icon
+          icon={icon}
+          id={iconId ?? text.toLowerCase().replaceAll(/[^a-z]+/g, '-')}
+        />
+      )}
       <span className='dropdown-menu__item-content'>
         {text}
         {Boolean(description) && (
@@ -309,7 +314,7 @@ interface DropdownProps<Item extends object | null = MenuItem> {
   renderItem?: RenderItemFn<Item>;
   renderHeader?: RenderHeaderFn<Item>;
   onOpen?: // Must use a union type for the full function as a union with void is not allowed.
-  | ((event: React.MouseEvent | React.KeyboardEvent) => void)
+    | ((event: React.MouseEvent | React.KeyboardEvent) => void)
     | ((event: React.MouseEvent | React.KeyboardEvent) => boolean);
   onItemClick?: ItemClickFn<Item>;
 }

@@ -7,9 +7,12 @@ zh-TW:
     hosted_on: 於 %{domain} 託管之 Mastodon 站點
     title: 關於本站
   accounts:
+    errors:
+      cannot_be_added_to_collections: 此帳號無法被加至集合中。
     followers:
       other: 跟隨者
-    following: 正在跟隨
+    following:
+      other: 正在跟隨
     instance_actor_flash: 此帳號是用來代表此伺服器的虛擬執行者，而非個別使用者。它的用途為維繫聯邦宇宙，且不應被停權。
     last_active: 上次活躍時間
     link_verified_on: 此連結之所有權已於 %{date} 檢查過
@@ -834,6 +837,7 @@ zh-TW:
         publish_statistics: 公開統計資料
         title: 探索
         trends: 熱門趨勢
+        wrapstodon: Mastodon 年度回顧
       domain_blocks:
         all: 至任何人
         disabled: 至沒有人
@@ -1299,6 +1303,13 @@ zh-TW:
     hint_html: "<strong>温馨小提醒：</strong> 我們於接下來一小時內不會再要求您輸入密碼。"
     invalid_password: 密碼錯誤
     prompt: 輸入密碼以繼續
+  color_scheme:
+    auto: 自動
+    dark: 闇黑
+    light: 淺色
+  contrast:
+    auto: 自動
+    high: 高
   crypto:
     errors:
       invalid_key: 這不是一把有效的 Ed25519 或 Curve25519 金鑰
@@ -1427,7 +1438,7 @@ zh-TW:
       statuses_hint_html: 此過濾器會套用至所選之各別嘟文，無論其是否符合下列關鍵字。<a href="%{path}">審閱或自過濾條件移除嘟文</a>。
       title: 編輯過濾條件
     errors:
-      deprecated_api_multiple_keywords: 這些參數無法自此應用程式中更改，因為它們適用於一或多個過濾器關鍵字。請使用較新的應用程式或是網頁介面。
+      deprecated_api_multiple_keywords: 這些參數無法自此應用程式中更改，因為它們適用於一個以上之過濾器關鍵字。請使用較新的應用程式或是網頁介面。
       invalid_context: 沒有提供內文或內文無效
     index:
       contexts: "%{contexts} 中的過濾器"
@@ -1669,16 +1680,22 @@ zh-TW:
       body: "%{name} 於嘟文中提及您："
       subject: "%{name} 於嘟文中提及您"
       title: 新的提及
+    moderation_warning:
+      subject: 您已收到管理員警告
     poll:
       subject: 由 %{name} 發起的投票已結束
     quote:
       body: 您的嘟文被 %{name} 引用：
       subject: "%{name} 已引用您的嘟文"
       title: 新引用
+    quoted_update:
+      subject: "%{name} 已編輯一則您曾引用之嘟文"
     reblog:
       body: 您的嘟文被 %{name} 轉嘟：
       subject: "%{name} 已轉嘟您的嘟文"
       title: 新的轉嘟
+    severed_relationships:
+      subject: 由於管理員之決定，您已失去您的社交網路
     status:
       subject: "%{name} 剛剛嘟文"
     update:
@@ -1721,7 +1738,7 @@ zh-TW:
       invalid_choice: 您所選的投票選項並不存在
       over_character_limit: 不能多於 %{max} 個字元
       self_vote: 您無法於您的嘟文投票
-      too_few_options: 必須包含至少一個項目
+      too_few_options: 必須包含一個項目以上
       too_many_options: 不能包含多於 %{max} 個項目
     vote: 投票
   posting_defaults:
@@ -1916,11 +1933,11 @@ zh-TW:
     enabled: 自動刪除舊嘟文
     enabled_hint: 一旦達到指定的保存期限，就會自動刪除您的嘟文，除非該嘟文符合下列例外
     exceptions: 例外
-    explanation: 因為刪除嘟文是耗費資源的操作，當伺服器不那麼忙碌時才會慢慢完成。因此，您的嘟文將於到達保存期限後一段時間才會被刪除。
+    explanation: 自動刪除將以低優先度執行。達到刪除效期門檻與實際刪除時間可能有些許延遲。
     ignore_favs: 忽略最愛數
     ignore_reblogs: 忽略轉嘟數
     interaction_exceptions: 基於互動的例外規則
-    interaction_exceptions_explanation: 請注意嘟文是無法保證被刪除的，如果於一次處理過後嘟文低於最愛或轉嘟的門檻。
+    interaction_exceptions_explanation: 暫時超過最愛或轉嘟門檻之嘟文若稍候下降後，可能將被保留。
     keep_direct: 保留私訊
     keep_direct_hint: 不會刪除任何您的私訊
     keep_media: 保留包含多媒體附加檔案之嘟文
@@ -2136,8 +2153,12 @@ zh-TW:
       error: 移除安全金鑰時出現了問題。請再試一次。
       success: 您已成功將安全金鑰移除。
     invalid_credential: 無效的安全金鑰
+    nickname: 暱稱
     nickname_hint: 輸入您新安全金鑰的暱稱
     not_enabled: 您尚未啟用 WebAuthn
     not_supported: 此瀏覽器並不支援安全金鑰
     otp_required: 請先啟用兩階段驗證以使用安全金鑰。
     registered_on: 註冊於 %{date}
+  wrapstodon:
+    description: 來瞧瞧 %{name} 今年是如何使用 Mastodon 吧！
+    title: "%{name} 的 %{year} Mastodon 年度回顧 (Wrapstodon)"

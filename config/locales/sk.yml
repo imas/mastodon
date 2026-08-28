@@ -12,7 +12,6 @@ sk:
       many: Sledovateľov
       one: Sledujúci
       other: Sledujúci
-    following: Nasledujem
     instance_actor_flash: Toto konto je virtuálny aktér, ktorý predstavuje samotný server, a nie konkrétneho používateľa. Používa sa na účely federácie a nemal by byť pozastavený.
     last_active: posledná aktivita
     link_verified_on: Vlastníctvo tohto odkazu bolo skontrolované %{date}
@@ -1328,11 +1327,9 @@ sk:
     enabled: Automaticky mazať staré príspevky
     enabled_hint: Automaticky vymaže vaše príspevky po dosiahnutí stanoveného veku, pokiaľ nespadajú do niektorej z výnimiek nižšie
     exceptions: Výnimky
-    explanation: Keďže je mazanie príspevkov drahým procesom, bude sa to diať pomaly a postupne v časoch, keď server nie je inak vyťažovaný. Preto môže príspevkom po dosiahnutí stanoveného veku ešte chvíľu trvať, než budú vymazané.
     ignore_favs: Ignorovať hviezdičky
     ignore_reblogs: Ignorovať zdieľania
     interaction_exceptions: Výnimky podľa interakcií
-    interaction_exceptions_explanation: Vymazanie príspevkov nie je zaručené, pokiaľ klesnú pod limit hviezdičkovaní alebo zdieľaní až po kontrole.
     keep_direct: Ponechať súkromné správy
     keep_direct_hint: Vaše súkromné správy nebudú vymazané
     keep_media: Ponechať príspevky s médiami

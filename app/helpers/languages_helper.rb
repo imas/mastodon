@@ -234,6 +234,7 @@ module LanguagesHelper
     'es-MX': 'Español (México)',
     'fr-CA': 'Français (Canadien)',
     'ja-IM': '日本語(im@s)',
+    'nan-TW': '臺語 (Hô-ló話)',
     'pt-BR': 'Português (Brasil)',
     'pt-PT': 'Português (Portugal)',
     'sr-Latn': 'Srpski (latinica)',
