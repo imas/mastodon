@@ -1,0 +1,8 @@
+---
+# CVE-2026-53727: css_parser 1.x の CssParser::Parser#read_remote_file の SSRF / ローカルファイル読み取り。
+# 修正版（>= 3.0.0）は Ruby >= 3.3 を要求し、stable-4.5 の CI は Ruby 3.2 も回すため上げられない。
+# Mastodon では premailer-rails が PremailerBundledAssetStrategy 経由の css_string でしか CSS を渡さず、
+# メール HTML はアプリ側のテンプレートなので、利用者が制御できる URI が read_remote_file に届く経路は無い。
+# upstream stable-4.5 が対応したら外す。
+ignore:
+  - CVE-2026-53727
