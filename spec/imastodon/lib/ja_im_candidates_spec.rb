@@ -56,8 +56,25 @@ RSpec.describe JaImCandidates do
       expect(finder.candidates).to eq []
     end
 
-    it '長い語を優先して置き換える'
-    it 'ja に無いキーは返さない'
+    it '長い語を優先して置き換える' do
+      finder = described_class.new(
+        en_messages: { 'keyboard_shortcuts.home' => 'Open home timeline' },
+        ja_messages: { 'keyboard_shortcuts.home' => 'ホームタイムラインを開く' },
+        ja_im_messages: {}
+      )
+
+      expect(finder.candidates.first.suggestion).to eq 'オフィスを開く'
+    end
+
+    it 'en に無いキーは返さない' do
+      finder = described_class.new(
+        en_messages: {},
+        ja_messages: { 'status.removed_key' => '投稿を削除' },
+        ja_im_messages: {}
+      )
+
+      expect(finder.candidates).to eq []
+    end
   end
 
   describe '#coverage' do

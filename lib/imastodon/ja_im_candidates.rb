@@ -2,11 +2,22 @@
 
 # ja-IM で言い換える候補（en と ja にあって ja-IM に無いキー）を探す
 class JaImCandidates
-  # ja の語 => ja-IM での言い換え
+  # ja の語 => ja-IM での言い換え。既存の ja-IM で全面的に言い換えている語だけを載せる
+  # 「通知」「フォロー」は言い換え済みのキーでもそのまま残っているので載せない
   TERMS = {
     '投稿' => 'あふぅ',
     'ブースト' => 'わかるわ',
-  }.freeze
+    'お気に入り' => 'ティン',
+    '返信' => 'Re:あふぅ',
+    'メンション' => 'Re:あふぅ',
+    'ミュート' => 'だまっとけ☆',
+    '閲覧注意' => '早苗さんに見つからない',
+    'ホームタイムライン' => 'オフィス',
+    'ホーム' => 'オフィス',
+    'ローカルタイムライン' => '楽屋',
+    '連合タイムライン' => 'ライブステージ',
+    'ピン留め' => '固定',
+  }.sort_by { |term, _| -term.length }.to_h.freeze
 
   Candidate = Struct.new(:key, :ja, :suggestion)
 
@@ -19,6 +30,7 @@ class JaImCandidates
 
   def candidates
     @ja_messages.filter_map do |key, message|
+      next unless @en_messages.key?(key)
       next if @ja_im_messages.key?(key) || @ignored_keys.include?(key)
       next unless TERMS.keys.any? { |term| message.to_s.include?(term) }
 
