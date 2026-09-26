@@ -7,6 +7,7 @@ class JaImCandidates
   TERMS = {
     '投稿' => 'あふぅ',
     'ブースト' => 'わかるわ',
+    'お気に入りタグ' => 'スウィーティー☆なタグ',
     'お気に入り' => 'ティン',
     '返信' => 'Re:あふぅ',
     'メンション' => 'Re:あふぅ',
@@ -73,14 +74,15 @@ class JaImCandidates
   end
 
   def coverage
-    TERMS.keys.index_with do |term|
+    # bin から Rails 抜きで使うので ActiveSupport の index_with は使わない
+    TERMS.keys.to_h do |term|
       keys = @ja_messages.select { |key, message| @en_messages.key?(key) && message.to_s.include?(term) }.keys
 
-      {
+      [term, {
         total: keys.size,
         overridden: keys.count { |key| @ja_im_messages.key?(key) },
         ignored: keys.count { |key| !@ja_im_messages.key?(key) && @ignored_keys.include?(key) },
-      }
+      }]
     end
   end
 

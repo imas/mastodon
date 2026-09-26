@@ -125,6 +125,14 @@ RSpec.describe JaImCandidates do
     end
   end
 
+  describe 'bin/ja-im-candidates' do
+    it 'Rails を読み込まずに実行できる' do
+      output, status = Open3.capture2e(Rails.root.join('bin', 'ja-im-candidates').to_s, '--json')
+
+      expect(status).to be_success, output
+    end
+  end
+
   describe '除外リスト' do
     it 'en に存在するキーだけを持つ' do
       ignored = described_class.load_ignored
