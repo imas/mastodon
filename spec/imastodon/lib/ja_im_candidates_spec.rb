@@ -92,7 +92,19 @@ RSpec.describe JaImCandidates do
   end
 
   describe '.load_json' do
-    it 'en / ja / ja-IM の JSON を読み込む'
+    it 'en / ja / ja-IM の JSON を読み込む' do
+      Dir.mktmpdir do |dir|
+        File.write(File.join(dir, 'en.json'), { 'status.delete' => 'Delete' }.to_json)
+        File.write(File.join(dir, 'ja.json'), { 'status.delete' => '投稿を削除' }.to_json)
+        File.write(File.join(dir, 'ja-IM.json'), { 'status.delete' => 'あふぅを削除' }.to_json)
+
+        expect(described_class.load_json(dir)).to eq(
+          en_messages: { 'status.delete' => 'Delete' },
+          ja_messages: { 'status.delete' => '投稿を削除' },
+          ja_im_messages: { 'status.delete' => 'あふぅを削除' }
+        )
+      end
+    end
   end
 
   describe '.load_yml' do

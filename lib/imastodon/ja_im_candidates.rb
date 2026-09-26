@@ -21,6 +21,12 @@ class JaImCandidates
 
   Candidate = Struct.new(:key, :ja, :suggestion)
 
+  LOCALES = { en_messages: 'en', ja_messages: 'ja', ja_im_messages: 'ja-IM' }.freeze
+
+  def self.load_json(dir)
+    LOCALES.transform_values { |locale| JSON.parse(File.read(File.join(dir, "#{locale}.json"))) }
+  end
+
   def initialize(en_messages:, ja_messages:, ja_im_messages:, ignored_keys: [])
     @en_messages = en_messages
     @ja_messages = ja_messages
