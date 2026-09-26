@@ -5,7 +5,16 @@ require Rails.root.join('lib', 'imastodon', 'ja_im_candidates')
 
 RSpec.describe JaImCandidates do
   describe '#candidates' do
-    it '言い換える語を ja が含み、ja-IM に無いキーを返す'
+    it '言い換える語を ja が含み、ja-IM に無いキーを返す' do
+      finder = described_class.new(
+        en_messages: { 'status.delete' => 'Delete post' },
+        ja_messages: { 'status.delete' => '投稿を削除' },
+        ja_im_messages: {}
+      )
+
+      expect(finder.candidates.map(&:key)).to eq ['status.delete']
+    end
+
     it '語を置き換えた訳文を言い換え案として返す'
     it 'ja-IM で言い換え済みのキーは返さない'
     it '言い換える語を含まないキーは返さない'
