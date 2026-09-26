@@ -10,11 +10,15 @@ import type { Map as ImmutableMap } from 'immutable';
 import { animated, useSpring } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 
+import {
+  StatusBookmarkActiveIcon,
+  StatusBookmarkIcon,
+  StatusLikeActiveIcon,
+  StatusLikeIcon,
+} from '@/mastodon/components/status/icons';
 import { useAccount } from '@/mastodon/hooks/useAccount';
 import AddIcon from '@/material-icons/400-24px/add.svg?react';
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
-import BookmarksActiveIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
-import BookmarksIcon from '@/material-icons/400-24px/bookmarks.svg?react';
 import CollectionsActiveIcon from '@/material-icons/400-24px/category-fill.svg?react';
 import CollectionsIcon from '@/material-icons/400-24px/category.svg?react';
 import HomeActiveIcon from '@/material-icons/400-24px/home-fill.svg?react';
@@ -27,8 +31,6 @@ import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
 import QuestionMarkIcon from '@/material-icons/400-24px/question_mark.svg?react';
 import SettingsIcon from '@/material-icons/400-24px/settings.svg?react';
-import StarActiveIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarIcon from '@/material-icons/400-24px/star.svg?react';
 import TrendingUpIcon from '@/material-icons/400-24px/trending_up.svg?react';
 import { fetchFollowRequests } from 'mastodon/actions/accounts';
 import { openNavigation, closeNavigation } from 'mastodon/actions/navigation';
@@ -347,8 +349,8 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
                 transparent
                 to='/favourites'
                 icon='star'
-                iconComponent={StarIcon}
-                activeIconComponent={StarActiveIcon}
+                iconComponent={StatusLikeIcon}
+                activeIconComponent={StatusLikeActiveIcon}
                 text={intl.formatMessage(messages.favourites)}
               />
             </li>
@@ -357,8 +359,8 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
                 transparent
                 to='/bookmarks'
                 icon='bookmarks'
-                iconComponent={BookmarksIcon}
-                activeIconComponent={BookmarksActiveIcon}
+                iconComponent={StatusBookmarkIcon}
+                activeIconComponent={StatusBookmarkActiveIcon}
                 text={intl.formatMessage(messages.bookmarks)}
               />
             </li>

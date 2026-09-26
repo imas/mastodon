@@ -352,7 +352,7 @@ class UI extends PureComponent {
     if (!this.props.isUploadEnabled) {
       return;
     }
-    if (this.dataTransferIsText(e.dataTransfer)) return false;
+    if (this.dataTransferIsText(e.dataTransfer)) return;
 
     e.preventDefault();
     e.stopPropagation();
@@ -363,7 +363,7 @@ class UI extends PureComponent {
       // do nothing
     }
 
-    return false;
+    return;
   };
 
   handleDrop = (e) => {
@@ -650,6 +650,7 @@ class UI extends PureComponent {
         <div className={classNames('ui', { 'is-composing': isComposing })} ref={this.setRef}>
           {!minimalShell && (
             <SkipLinks
+              // TODO: Remove these props & related methods when isRedesignEnabled() flag is removed
               multiColumn={layout === 'multi-column'}
               onFocusGettingStartedColumn={this.handleHotkeyGoToStart}
             />

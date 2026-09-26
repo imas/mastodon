@@ -1491,7 +1491,7 @@ body > [data-popover-placement] {
 
 .focusable {
   &:focus-visible {
-    outline: 2px solid var(--color-border-brand);
+    outline: var(--outline-focus-default);
     outline-offset: -2px;
     background: var(--color-bg-brand-softest);
   }
@@ -4623,6 +4623,10 @@ a.status-card {
   display: flex;
   align-items: center;
   gap: 8px;
+
+  html[data-redesign='true'] & {
+    border-inline: none;
+  }
 
   &__checkbox .check-box {
     display: flex;
@@ -8539,6 +8543,13 @@ noscript {
     width: 100%;
   }
 
+  &__close-button {
+    position: absolute;
+    top: var(--space-2);
+    inset-inline-end: var(--space-2);
+    z-index: 1;
+  }
+
   &__root {
     background: var(--color-bg-brand-softest);
     font-size: 13px;
@@ -8580,18 +8591,17 @@ noscript {
     display: block;
     font-weight: 500;
     margin-bottom: 10px;
-    padding-inline-end: 18px;
+    padding-inline-end: 28px;
   }
 
   &__unread {
-    position: absolute;
-    top: 19px;
-    inset-inline-end: 19px;
-    display: block;
-    background: var(--color-text-brand);
-    border-radius: 50%;
+    display: inline-block;
     width: 0.625rem;
     height: 0.625rem;
+    margin-inline-start: 8px;
+    border-radius: 50%;
+    vertical-align: 0.05em;
+    background: var(--color-text-brand);
   }
 
   &__pagination {
@@ -11051,10 +11061,14 @@ noscript {
 }
 
 .column-footer {
-  padding: 16px;
   position: sticky;
   bottom: 0;
+  padding: 16px;
   background: var(--color-bg-primary);
+
+  @media (width <= $mobile-menu-breakpoint) {
+    padding-bottom: calc(16px + var(--mobile-bottom-nav-height, 0));
+  }
 }
 
 .lists-scrollable {
