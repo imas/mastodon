@@ -108,14 +108,10 @@ ja-IM:
         delete_statuses: あふぅの削除
         mark_statuses_as_sensitive: あふぅを早苗さんに見つからないように隠す
         sensitive: アカウントを早苗さんに見つからないように隠す
-  edit_profile:
-    hint_html: "<strong>アカウントのトップページやあふぅの隣に表示される公開情報です。</strong>プロフィールとアイコンを設定することで、ほかのユーザーは親しみやすく、またフォローしやすくなります。"
   exports:
     archive_takeout:
       hint_html: "<strong>あふぅ本文とメディア</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。7日毎にアーカイブをリクエストできます。"
     mutes: だまっとけ☆
-  featured_tags:
-    hint_html: "<strong>注目のハッシュタグとは？</strong>　プロフィールページに目立つ形で表示され、そのハッシュタグのついたあなたの公開あふぅだけを抽出して閲覧できるようにします。クリエイティブな仕事や長期的なプロジェクトを追うのに優れた機能です。"
   filters:
     contexts:
       home: オフィスおよびリスト
@@ -150,13 +146,6 @@ ja-IM:
       destructive: ブロック・だまっとけ☆
     types:
       muting: だまっとけ☆したアカウントリスト
-  mail_subscriptions:
-    unsubscribe:
-      emails:
-        notification_emails:
-          favourite: ティンと来た通知メール
-          mention: Re:あふぅの通知メール
-          reblog: わかるわの通知メール
   media_attachments:
     validations:
       not_found: メディア (%{ids}) が存在しないか、すでに添付してあふぅされています
@@ -237,6 +226,11 @@ ja-IM:
     min_reblogs_hint: この数以上、わかるわされたあふぅを削除せずに残します。空白にしておくと、わかるわされた数に関わらずあふぅを削除します。
   stream_entries:
     sensitive_content: 早苗さんに見つからないように隠された
+  unsubscriptions:
+    notification_emails:
+      favourite: ティンと来た通知メール
+      mention: Re:あふぅの通知メール
+      reblog: わかるわの通知メール
   user_mailer:
     warning:
       explanation:
