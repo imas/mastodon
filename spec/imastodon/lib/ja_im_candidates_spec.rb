@@ -152,20 +152,17 @@ RSpec.describe JaImCandidates do
   end
 
   describe '.load_ignored' do
-    it '訳文だけの形と、訳文と理由の形の両方を読む' do
+    it 'キーと除外したときの訳文を読む' do
       Tempfile.create(['ignore', '.yml']) do |file|
         file.write(<<~YAML)
           json:
             status.copy: リンクをコピー
-            notification.mention:
-              ja: メンション
-              reason: 表示に使われていない
           yml: {}
         YAML
         file.close
 
         expect(described_class.load_ignored(file.path)).to eq(
-          json: { 'status.copy' => 'リンクをコピー', 'notification.mention' => 'メンション' },
+          json: { 'status.copy' => 'リンクをコピー' },
           yml: {}
         )
       end
@@ -185,23 +182,22 @@ RSpec.describe JaImCandidates do
       end
     end
 
-    it '既に書いてある理由を消さない' do
+    it '既にあるキーは残し、除外し直したキーは訳文を今のものに更新する' do
       Tempfile.create(['ignore', '.yml']) do |file|
         file.write(<<~YAML)
           ---
           json:
-            notification.mention:
-              ja: メンション
-              reason: 表示に使われていない
+            account.pinned: ピン済
+            notification.mention: メンション
           yml: {}
         YAML
         file.close
 
-        described_class.record_ignored(:json, ['status.copy'], { 'status.copy' => 'リンクをコピー' }, file.path)
+        described_class.record_ignored(:json, ['account.pinned'], { 'account.pinned' => '固定された投稿' }, file.path)
 
-        expect(YAML.load_file(file.path)['json']).to eq(
-          'notification.mention' => { 'ja' => 'メンション', 'reason' => '表示に使われていない' },
-          'status.copy' => 'リンクをコピー'
+        expect(described_class.load_ignored(file.path)[:json]).to eq(
+          'account.pinned' => '固定された投稿',
+          'notification.mention' => 'メンション'
         )
       end
     end
