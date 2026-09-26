@@ -20,17 +20,21 @@ class JaImCandidates
     'ピン留め' => '固定',
   }.sort_by { |term, _| -term.length }.to_h.freeze
 
-  Candidate = Struct.new(:key, :ja, :suggestion, :matched)
+  Candidate = Struct.new(:key, :ja, :suggestion, :matched, :ignored_ja)
 
   LOCALES = { en_messages: 'en', ja_messages: 'ja', ja_im_messages: 'ja-IM' }.freeze
 
   # config/locales に置くと Rails と i18n-tasks にロケールとして読まれるので、ここに置く
   IGNORE_FILE = File.expand_path('ja_im_candidates.ignore.yml', __dir__)
 
+  # キー => 除外したときの ja の訳文 を返す。理由を書きたいキーは { ja:, reason: } の形で書ける
   def self.load_ignored(path = IGNORE_FILE)
     data = YAML.load_file(path) || {}
 
-    { json: (data['json'] || {}).keys, yml: (data['yml'] || {}).keys }
+    %i(json yml).to_h do |kind|
+      entries = (data[kind.to_s] || {}).transform_values { |value| value.is_a?(Hash) ? value['ja'] : value }
+      [kind, entries]
+    end
   end
 
   def self.load_json(dir)
@@ -56,20 +60,21 @@ class JaImCandidates
   end
   private_class_method :flatten
 
-  def initialize(en_messages:, ja_messages:, ja_im_messages:, ignored_keys: [])
+  # ignored はキー => 除外したときの ja の訳文
+  def initialize(en_messages:, ja_messages:, ja_im_messages:, ignored: {})
     @en_messages = en_messages
     @ja_messages = ja_messages
     @ja_im_messages = ja_im_messages
-    @ignored_keys = ignored_keys
+    @ignored = ignored
   end
 
   # 言い換える語を含むキーを先に並べる。辞書は並び順と言い換え案にだけ使い、絞り込みには使わない
   def candidates
     unreviewed = @ja_messages.filter_map do |key, message|
       next unless @en_messages.key?(key)
-      next if @ja_im_messages.key?(key) || @ignored_keys.include?(key)
+      next if @ja_im_messages.key?(key) || ignored?(key, message)
 
-      Candidate.new(key, message, suggest(message), matched?(message))
+      Candidate.new(key, message, suggest(message), matched?(message), @ignored[key])
     end
 
     unreviewed.partition(&:matched).flatten
@@ -83,12 +88,17 @@ class JaImCandidates
       [term, {
         total: keys.size,
         overridden: keys.count { |key| @ja_im_messages.key?(key) },
-        ignored: keys.count { |key| !@ja_im_messages.key?(key) && @ignored_keys.include?(key) },
+        ignored: keys.count { |key| !@ja_im_messages.key?(key) && ignored?(key, @ja_messages[key]) },
       }]
     end
   end
 
   private
+
+  # 除外したときから ja の訳文が変わっていれば、判断の前提が変わったので除外扱いにしない
+  def ignored?(key, message)
+    @ignored.key?(key) && @ignored[key] == message
+  end
 
   def matched?(message)
     TERMS.keys.any? { |term| message.to_s.include?(term) }
