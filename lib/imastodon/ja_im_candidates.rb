@@ -37,6 +37,22 @@ class JaImCandidates
     end
   end
 
+  # 今の ja の訳文を控えて追記する。冒頭の説明コメントと、既に書いてある理由は残す
+  def self.record_ignored(kind, keys, ja_messages, path = IGNORE_FILE)
+    text = File.read(path)
+    header = text[/\A(?:#.*\n)*/]
+    data = YAML.safe_load(text) || {}
+
+    entries = data[kind.to_s] || {}
+    keys.each do |key|
+      ja = ja_messages.fetch(key)
+      entries[key] = entries[key].is_a?(Hash) ? entries[key].merge('ja' => ja) : ja
+    end
+    data[kind.to_s] = entries.sort.to_h
+
+    File.write(path, header + YAML.dump(data, line_width: -1))
+  end
+
   def self.load_json(dir)
     LOCALES.transform_values { |locale| JSON.parse(File.read(File.join(dir, "#{locale}.json"))) }
   end

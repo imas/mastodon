@@ -173,8 +173,38 @@ RSpec.describe JaImCandidates do
   end
 
   describe '.record_ignored' do
-    it '今の ja の訳文を控えて除外リストに追記する'
-    it '既に書いてある理由を消さない'
+    it '今の ja の訳文を控えて除外リストに追記する' do
+      Tempfile.create(['ignore', '.yml']) do |file|
+        file.write("# 説明\n---\njson: {}\nyml: {}\n")
+        file.close
+
+        described_class.record_ignored(:json, ['status.copy'], { 'status.copy' => 'リンクをコピー' }, file.path)
+
+        expect(File.read(file.path)).to start_with("# 説明\n")
+        expect(described_class.load_ignored(file.path)[:json]).to eq('status.copy' => 'リンクをコピー')
+      end
+    end
+
+    it '既に書いてある理由を消さない' do
+      Tempfile.create(['ignore', '.yml']) do |file|
+        file.write(<<~YAML)
+          ---
+          json:
+            notification.mention:
+              ja: メンション
+              reason: 表示に使われていない
+          yml: {}
+        YAML
+        file.close
+
+        described_class.record_ignored(:json, ['status.copy'], { 'status.copy' => 'リンクをコピー' }, file.path)
+
+        expect(YAML.load_file(file.path)['json']).to eq(
+          'notification.mention' => { 'ja' => 'メンション', 'reason' => '表示に使われていない' },
+          'status.copy' => 'リンクをコピー'
+        )
+      end
+    end
   end
 
   describe 'bin/ja-im-candidates' do
