@@ -25,8 +25,26 @@ RSpec.describe JaImCandidates do
       expect(finder.candidates.first.suggestion).to eq 'まだ誰もこのあふぅをわかるわしていません。'
     end
 
-    it 'ja-IM で言い換え済みのキーは返さない'
-    it '言い換える語を含まないキーは返さない'
+    it 'ja-IM で言い換え済みのキーは返さない' do
+      finder = described_class.new(
+        en_messages: { 'status.delete' => 'Delete post' },
+        ja_messages: { 'status.delete' => '投稿を削除' },
+        ja_im_messages: { 'status.delete' => 'あふぅを削除' }
+      )
+
+      expect(finder.candidates).to eq []
+    end
+
+    it '言い換える語を含まないキーは返さない' do
+      finder = described_class.new(
+        en_messages: { 'status.copy' => 'Copy link' },
+        ja_messages: { 'status.copy' => 'リンクをコピー' },
+        ja_im_messages: {}
+      )
+
+      expect(finder.candidates).to eq []
+    end
+
     it '除外リストにあるキーは返さない'
     it '長い語を優先して置き換える'
     it 'ja に無いキーは返さない'
