@@ -67,7 +67,6 @@ class JaImCandidates
     @ja_messages.filter_map do |key, message|
       next unless @en_messages.key?(key)
       next if @ja_im_messages.key?(key) || @ignored_keys.include?(key)
-      next unless TERMS.keys.any? { |term| message.to_s.include?(term) }
 
       Candidate.new(key, message, suggest(message))
     end
