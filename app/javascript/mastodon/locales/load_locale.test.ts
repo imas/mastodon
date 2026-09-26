@@ -1,3 +1,4 @@
+import en from './en.json';
 import jaIM from './ja-IM.json';
 import ja from './ja.json';
 
@@ -34,11 +35,20 @@ describe('loadLocale', () => {
   });
 
   describe('ja のとき', () => {
-    it.todo('ja-IM の訳文が混ざらない');
+    it('ja-IM の訳文が混ざらない', async () => {
+      const messages = await loadMessages('ja');
+
+      expect(messages).toEqual(ja);
+    });
   });
 });
 
 describe('ja-IM.json', () => {
-  it.todo('en.json に存在しないキーを持たない');
+  it('en.json に存在しないキーを持たない', () => {
+    const unknownKeys = Object.keys(jaIM).filter((key) => !(key in en));
+
+    expect(unknownKeys).toEqual([]);
+  });
+
   it.todo('ja.json と同じ訳文のキーを持たない');
 });
