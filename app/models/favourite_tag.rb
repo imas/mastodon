@@ -5,13 +5,13 @@
 # Table name: favourite_tags
 #
 #  id         :bigint(8)        not null, primary key
-#  account_id :bigint(8)        not null
-#  tag_id     :bigint(8)        not null
+#  name       :string
+#  order      :integer          default(0), not null
+#  visibility :integer          default("public"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  visibility :integer          default("public"), not null
-#  order      :integer          default(0), not null
-#  name       :string
+#  account_id :bigint(8)        not null
+#  tag_id     :bigint(8)
 #
 
 class FavouriteTag < ApplicationRecord
