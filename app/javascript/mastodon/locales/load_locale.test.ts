@@ -50,5 +50,11 @@ describe('ja-IM.json', () => {
     expect(unknownKeys).toEqual([]);
   });
 
-  it.todo('ja.json と同じ訳文のキーを持たない');
+  it('ja.json と同じ訳文のキーを持たない', () => {
+    const copiedKeys = Object.entries(jaIM)
+      .filter(([key, message]) => ja[key as keyof typeof ja] === message)
+      .map(([key]) => key);
+
+    expect(copiedKeys).toEqual([]);
+  });
 });
