@@ -1,13 +1,16 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# ja-IM で言い換える候補（en と ja にあって ja-IM に無く、言い換える語を含むキー）を一覧する
+# ja-IM で言い換えるかどうかをまだ決めていないキー（en と ja にあって ja-IM に無いキー）を一覧する
 #
-#   bin/ja-im-candidates          # JSON（Web UI）と yml（Rails）の両方
-#   bin/ja-im-candidates --json   # JSON だけ
-#   bin/ja-im-candidates --yml    # yml だけ
+#   bin/ja-im-candidates                          # JSON（Web UI）と yml（Rails）の両方
+#   bin/ja-im-candidates --json                   # JSON だけ
+#   bin/ja-im-candidates --yml                    # yml だけ
+#   bin/ja-im-candidates --json --ignore <キー>...  # 言い換えないと決めたキーを除外リストに追記する
 #
-# 言い換えないと決めたキーは lib/imastodon/ja_im_candidates.ignore.yml に理由と一緒に書く
+# 言い換えると決めたキーは ja-IM のロケールファイルに書けば候補から消える。
+# 言い換えないと決めたキーは --ignore で lib/imastodon/ja_im_candidates.ignore.yml に今の ja の訳文ごと控える。
+# ja の訳文が控えと変わると、再び候補に出る。
 
 require 'json'
 require 'yaml'
@@ -19,6 +22,23 @@ sources = {
   yml: ['yml（config/locales）', -> { JaImCandidates.load_yml(File.join(root, 'config', 'locales')) }],
 }
 selected = sources.keys.select { |kind| ARGV.include?("--#{kind}") }
+
+if (index = ARGV.index('--ignore'))
+  abort '--ignore には --json か --yml のどちらか一方を付けてください' unless selected.size == 1
+
+  kind = selected.first
+  keys = ARGV[(index + 1)..].reject { |arg| arg.start_with?('--') }
+  abort '--ignore の後に除外するキーを並べてください' if keys.empty?
+
+  messages = sources.fetch(kind).last.call
+  unknown = keys.reject { |key| messages[:ja_messages].key?(key) && messages[:en_messages].key?(key) }
+  abort "en と ja の両方にないキーです: #{unknown.join(', ')}" if unknown.any?
+
+  JaImCandidates.record_ignored(kind, keys, messages[:ja_messages])
+  puts "#{keys.size} 件を除外リストに追記しました（#{kind}）"
+  exit
+end
+
 selected = sources.keys if selected.empty?
 ignored = JaImCandidates.load_ignored
 
@@ -38,11 +58,12 @@ selected.each do |kind|
   puts
 
   candidates = finder.candidates
-  puts "候補（#{candidates.size} 件）"
+  puts "未判断のキー（#{candidates.size} 件。★は言い換える語を含むもの）"
   candidates.each do |candidate|
-    puts "  #{candidate.key}"
-    puts "    ja: #{candidate.ja}"
-    puts "    案: #{candidate.suggestion}"
+    puts "  #{candidate.matched ? '★' : '  '}#{candidate.key}"
+    puts "      ja: #{candidate.ja}"
+    puts "      除外したときの ja: #{candidate.ignored_ja}" if candidate.ignored_ja
+    puts "      案: #{candidate.suggestion}" if candidate.matched
   end
   puts
 end
