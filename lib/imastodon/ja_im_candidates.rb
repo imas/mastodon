@@ -27,6 +27,25 @@ class JaImCandidates
     LOCALES.transform_values { |locale| JSON.parse(File.read(File.join(dir, "#{locale}.json"))) }
   end
 
+  # Rails の I18n と同じく <locale>.yml と *.<locale>.yml（simple_form など）をまとめて読む
+  def self.load_yml(dir)
+    LOCALES.transform_values do |locale|
+      paths = [File.join(dir, "#{locale}.yml"), *Dir[File.join(dir, '**', "*.#{locale}.yml")]]
+
+      paths.select { |path| File.exist?(path) }.each_with_object({}) do |path, messages|
+        messages.merge!(flatten(YAML.load_file(path).fetch(locale, {})))
+      end
+    end
+  end
+
+  def self.flatten(hash, prefix = nil)
+    hash.each_with_object({}) do |(key, value), result|
+      path = [prefix, key].compact.join('.')
+      value.is_a?(Hash) ? result.merge!(flatten(value, path)) : result[path] = value
+    end
+  end
+  private_class_method :flatten
+
   def initialize(en_messages:, ja_messages:, ja_im_messages:, ignored_keys: [])
     @en_messages = en_messages
     @ja_messages = ja_messages
