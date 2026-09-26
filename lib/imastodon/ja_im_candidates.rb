@@ -5,9 +5,10 @@ class JaImCandidates
   # ja の語 => ja-IM での言い換え
   TERMS = {
     '投稿' => 'あふぅ',
+    'ブースト' => 'わかるわ',
   }.freeze
 
-  Candidate = Struct.new(:key, :ja)
+  Candidate = Struct.new(:key, :ja, :suggestion)
 
   def initialize(en_messages:, ja_messages:, ja_im_messages:, ignored_keys: [])
     @en_messages = en_messages
@@ -21,7 +22,13 @@ class JaImCandidates
       next if @ja_im_messages.key?(key)
       next unless TERMS.keys.any? { |term| message.to_s.include?(term) }
 
-      Candidate.new(key, message)
+      Candidate.new(key, message, suggest(message))
     end
+  end
+
+  private
+
+  def suggest(message)
+    TERMS.reduce(message) { |result, (term, replacement)| result.gsub(term, replacement) }
   end
 end
