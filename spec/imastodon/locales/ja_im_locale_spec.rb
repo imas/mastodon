@@ -45,7 +45,14 @@ RSpec.describe 'I18n' do
         expect(ja_im.select { |key, value| ja[key] == value }.keys).to eq []
       end
 
-      it '訳文の変数が ja と一致する'
+      it '訳文の変数が ja と一致する' do
+        ja = translations_for(:ja)
+        variables = ->(message) { message.to_s.scan(/%\{(\w+)\}/).flatten.uniq.sort }
+
+        mismatched = ja_im.reject { |key, value| variables.call(value) == variables.call(ja[key]) }
+
+        expect(mismatched).to eq({})
+      end
     end
   end
 end
