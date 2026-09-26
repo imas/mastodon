@@ -108,7 +108,21 @@ RSpec.describe JaImCandidates do
   end
 
   describe '.load_yml' do
-    it 'ロケールごとに <locale>.yml と *.<locale>.yml をまとめて平坦なハッシュで読み込む'
+    it 'ロケールごとに <locale>.yml と *.<locale>.yml をまとめて平坦なハッシュで読み込む' do
+      Dir.mktmpdir do |dir|
+        File.write(File.join(dir, 'en.yml'), { 'en' => { 'statuses' => { 'title' => 'Posts' } } }.to_yaml)
+        File.write(File.join(dir, 'simple_form.en.yml'), { 'en' => { 'simple_form' => { 'labels' => { 'text' => 'Post' } } } }.to_yaml)
+        File.write(File.join(dir, 'ja.yml'), { 'ja' => { 'statuses' => { 'title' => '投稿' } } }.to_yaml)
+        File.write(File.join(dir, 'simple_form.ja.yml'), { 'ja' => { 'simple_form' => { 'labels' => { 'text' => '投稿' } } } }.to_yaml)
+        File.write(File.join(dir, 'ja-IM.yml'), { 'ja-IM' => { 'statuses' => { 'title' => 'あふぅ' } } }.to_yaml)
+
+        expect(described_class.load_yml(dir)).to eq(
+          en_messages: { 'statuses.title' => 'Posts', 'simple_form.labels.text' => 'Post' },
+          ja_messages: { 'statuses.title' => '投稿', 'simple_form.labels.text' => '投稿' },
+          ja_im_messages: { 'statuses.title' => 'あふぅ' }
+        )
+      end
+    end
   end
 
   describe '除外リスト' do
