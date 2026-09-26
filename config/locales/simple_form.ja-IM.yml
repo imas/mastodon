@@ -8,7 +8,6 @@ ja-IM:
         setting_display_media_default: 早苗さんに見つからないメディアは隠す
         setting_display_media_hide_all: 全てのメディアを常に早苗さんに見つからないようにする
         setting_display_media_show_all: 早苗さんに見つからないメディアも常に表示する
-        username: あなたのプロデューサー名は %{domain} の中で重複していない必要があります
       user:
         chosen_languages: 選択すると、選択した言語のあふぅのみが楽屋に表示されるようになります
     labels:
