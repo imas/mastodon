@@ -1,136 +1,260 @@
 ---
 ja-IM:
-  about:
-    about_hashtag_html: ハッシュタグ <strong>#%{hashtag}</strong> の付いた公開あふぅです。どこでもいいので、ライブステージに参加しているSNS上にアカウントを作れば会話に参加することができます。
-    status_count_after:
-      one: あふぅ
-      other: あふぅ
-    status_count_before: あふぅした数
-    user_count_before: プロデューサー数
   accounts:
-    moved_html: "%{name} さんは引っ越しました %{new_profile_link}:"
     posts:
       one: あふぅ
       other: あふぅ
     posts_tab_heading: あふぅ
-    posts_with_replies: あふぅとReあふぅ
   admin:
     accounts:
-      statuses: あふぅした数
+      sensitive: 早苗さんに見つからないように隠された
+      sensitized: 早苗さんに見つからないように隠されたとしてマーク済み
+      statuses: あふぅ数
+      undo_sensitized: 早苗さんに見つからないように隠された状態から戻す
     action_logs:
+      action_types:
+        destroy_status: あふぅを削除
+        sensitive_account: アカウントのメディアを早苗さんに見つからないように隠す
+        unsensitive_account: アカウントのメディアを早苗さんに見つからないように隠したのを解除
+        update_status: あふぅを更新
       actions:
-        destroy_status: "%{name} さんが %{target} さんのあふぅを削除しました"
-        update_status: "%{name} さんが %{target} さんのあふぅを更新しました"
+        destroy_status_html: "%{name}さんが%{target}さんのあふぅを削除しました"
+        sensitive_account_html: "%{name}さんが%{target}さんのメディアを早苗さんに見つからないように隠しました"
+        unsensitive_account_html: "%{name}さんが%{target}さんのメディアを早苗さんに見つからないように隠された状態から解除しました"
+        update_status_html: "%{name}さんが%{target}さんのあふぅを更新しました"
     domain_blocks:
       new:
         severity:
-          desc_html: "<strong>サイレンス</strong>はアカウントのあふぅをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、メディア、プロフィールデータをすべて削除します。メディアファイルを拒否したいだけの場合は<strong>なし</strong>を使います。"
+          desc_html: "<strong>制限</strong>は、このドメイン上のアカウントからのあふぅが、相手をフォローしている場合を除き非表示になります。<strong>停止</strong>は、このドメイン上のすべてのコンテンツ、メディア、およびプロフィールデータを受け付けなくなります。メディアファイルのみを拒否したい場合は<strong>なし</strong>を選択します。"
+    instances:
+      dashboard:
+        instance_statuses_measure: 保存されたあふぅ
     relays:
       description_html: "<strong>連合リレー</strong>とは、登録しているサーバー間の公開あふぅを仲介するサーバーです。<strong>中小規模のサーバーが連合のコンテンツを見つけるのを助けます。</strong>これを使用しない場合、ローカルユーザーがリモートユーザーを手動でフォローする必要があります。"
       enable_hint: 有効にすると、リレーから全ての公開あふぅを受信するようになり、またこのサーバーの全ての公開あふぅをリレーに送信するようになります。
+    reports:
+      actions:
+        delete_description_html: 報告されたあふぅは削除され、ストライクが記録されます。同じアカウントによる今後の違反行為のエスカレーションに役立てられます。
+        mark_as_sensitive_description_html: 報告されたあふぅのメディアは早苗さんに見つからないように隠され、ストライクが記録され、同じアカウントによる今後の違反行為のエスカレーションに役立てられます。
+      actions_no_posts: 削除対象となるあふぅがレポートに含まれていません
+      delete_and_resolve: あふぅを削除
+      forwarded_replies_explanation: これはリモートユーザーによる、リモートコンテンツについての報告です。問題のコンテンツはあなたのサーバー利用者へのRe:あふぅなので、こちらにも転送されて来ました。
+      mark_as_sensitive: 早苗さんに見つからないように隠す
+      statuses_description_html: 問題のあふぅは通報されたアカウントへの連絡時に引用されます
+      summary:
+        action_preambles:
+          delete_html: "<strong>@%{acct}</strong>さんのあふぅを<strong>削除</strong>します。この操作は:"
+          mark_as_sensitive_html: "<strong>@%{acct}</strong>さんのあふぅを<strong>早苗さんに見つからないように隠</strong>します。この操作は:"
+        actions:
+          delete_html: 当該のあふぅを削除します
+          mark_as_sensitive_html: 当該のあふぅに含まれるメディアを早苗さんに見つからないように隠します
+          suspend_html: "<strong>@%{acct}</strong>さんのアカウントが凍結され、プロフィールとコンテンツへのアクセス、およびあふぅができなくなります"
     settings:
-      preview_sensitive_media:
-        desc_html: 他のウェブサイトにリンクを貼った際、メディアが早苗さんに見つからないように隠されていてもサムネイルが表示されます
-        title: OpenGraphによるプレビューで早苗さんに見つからないように隠されたメディアも表示する
-      show_known_fediverse_at_about_page:
-        desc_html: チェックを入れるとプレビュー欄に既知のライブステージ全てのあふぅを表示します。外すと楽屋のあふぅだけ表示します。
-        title: タイムラインプレビューにライブステージを表示する
-      timeline_preview:
-        desc_html: ランディングページにライブステージを表示します
-        title: タイムラインプレビュー
+      discovery:
+        public_timelines: 楽屋
+      security:
+        authorized_fetch_hint: ほかの連合サーバーから受け付けるリクエストに署名を必須にすることで、ユーザーによるブロックおよびドメインブロック両方の効果をより強力にします。ただし連合の処理コストが増えてパフォーマンス面で不利になるほか、このサーバーから送られた反応が届く範囲が狭まったり、連合における互換性の問題を招く可能性もあります。また、この機能は公開あふぅやプロフィールへのアクセスをブロックした相手から完全に遮断できるものではありません。
     statuses:
-      title: あふぅ一覧
+      contents: あふぅ内容
+      favourites: ティンと来た
+      in_reply_to: Re:あふぅ先
+      no_history: このあふぅは編集されていません
+      open: あふぅを開く
+      original_status: オリジナルのあふぅ
+      reblogs: わかるわ
+      replied_to_html: "%{acct_link}さんへのRe:あふぅ"
+      status_changed: あふぅを変更しました
+      status_title: "@%{name} のあふぅ"
+      title: あふぅ一覧 - @%{name}
+      view_publicly: 元のあふぅを開く
+    strikes:
+      actions:
+        delete_statuses: "%{name}さんが%{target}さんのあふぅを削除しました"
+        mark_statuses_as_sensitive: "%{name}さんが%{target}さんのあふぅを早苗さんに見つからないように隠しました"
+        sensitive: "%{name}さんが%{target}さんのアカウントを早苗さんに見つからないように隠しました"
+    trends:
+      statuses:
+        allow_account: あふぅ者を許可
+        description_html: これらは、このサーバーが知っている、たくさんシェアされ、ティンと来たあふぅです。新しいユーザーや久しぶりにアクセスするユーザーがフォローする人を探すのに役立ちます。あなたがあふぅ者を承認し、あふぅ者が許可するまで、表示されることはありません。また、個別のあふぅを許可または拒否することもできます。
+        disallow_account: あふぅ者を拒否
+        not_discoverable: あふぅ者は発見可能であることに同意していません
+        shared_by:
+          other: "%{friendly_count}回の共有、ティンと来た"
+        title: トレンドあふぅ
+      tags:
+        description_html: これらは、多くのあふぅに使用されているハッシュタグです。あなたのユーザーが、人々が今一番話題にしていることを知るのに役立ちます。あなたが承認するまで、ハッシュタグは一般に表示されません。
+    webhooks:
+      status: あふぅ
+  admin_mailer:
+    new_appeal:
+      actions:
+        delete_statuses: あふぅを削除する
+        mark_statuses_as_sensitive: 早苗さんに見つからないように隠す
+        sensitive: アカウントを早苗さんに見つからないように隠す
+    new_trends:
+      new_trending_statuses:
+        title: トレンドあふぅ
+  appearance:
+    sensitive_content: 早苗さんに見つからないように隠されたコンテンツ
   application_mailer:
     view_status: あふぅを表示
+  deletes:
+    warning:
+      data_removal: あなたのあふぅやその他のデータはこのサーバーから完全に削除されます
+  disputes:
+    strikes:
+      status: 'あふぅ #%{id}'
+      title_actions:
+        delete_statuses: あふぅの削除
+        mark_statuses_as_sensitive: あふぅを早苗さんに見つからないように隠す
+        sensitive: アカウントを早苗さんに見つからないように隠す
+  edit_profile:
+    hint_html: "<strong>アカウントのトップページやあふぅの隣に表示される公開情報です。</strong>プロフィールとアイコンを設定することで、ほかのユーザーは親しみやすく、またフォローしやすくなります。"
   exports:
     archive_takeout:
-      hint_html: "<strong>あふぅとメディア</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。7日毎にアーカイブをリクエストできます。"
+      hint_html: "<strong>あふぅ本文とメディア</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。7日毎にアーカイブをリクエストできます。"
     mutes: だまっとけ☆
-  favourite_tags:
-    delete_it: 削除
-    edit:
-      submit: お気に入りタグを変更
-      title: お気に入りタグの編集
-    edit_it: 編集
-    form:
-      hint:
-        order: 降順に表示されます
-    name_of_tag: タグ名
-    order: 順序
-    submit: お気に入りタグを登録
+  featured_tags:
+    hint_html: "<strong>注目のハッシュタグとは？</strong>　プロフィールページに目立つ形で表示され、そのハッシュタグのついたあなたの公開あふぅだけを抽出して閲覧できるようにします。クリエイティブな仕事や長期的なプロジェクトを追うのに優れた機能です。"
   filters:
     contexts:
-      home: オフィス
+      home: オフィスおよびリスト
       notifications: ホワイトボード
       public: 楽屋
-      thread: 会話
     edit:
-      title: フィルターを編集
-    errors:
-      invalid_context: 対象がないか無効です
-      invalid_irreversible: この機能は楽屋または通知と一緒に指定する場合のみ機能します
+      statuses: 個別のあふぅ
+      statuses_hint_html: このフィルタは、以下のキーワードにマッチするかどうかに関わらず、個々のあふぅを選択して適用されます。 <a href="%{path}">フィルターを確認またはあふぅを削除</a>。
     index:
-      delete: 削除
-      title: フィルター
-    new:
-      title: 新規フィルターを追加
+      statuses:
+        other: "%{count}件のあふぅ"
+      statuses_long:
+        other: "%{count}件のあふぅを非表示にしました"
+    statuses:
+      index:
+        hint: このフィルターは、他の条件に関係なく個々のあふぅを選択する場合に適用されます。Webインターフェースからこのフィルターにさらにあふぅを追加できます。
+        title: フィルターされたあふぅ
   imports:
+    overwrite_preambles:
+      bookmarks_html:
+        other: あなたは<strong>%{filename}</strong>から最大<strong>%{count}のあふぅ</strong>で<strong>ブックマークを置き換えようとしています</strong>。
+      muting_html:
+        other: あなたは<strong>%{filename}</strong>から最大<strong>%{count}のアカウント</strong>で<strong>だまっとけ☆アカウントのリストを置き換えようとしています</strong>。
+    preambles:
+      bookmarks_html:
+        other: あなたは<strong>%{filename}</strong>から最大<strong>%{count}のあふぅ</strong>を<strong>ブックマークに追加しようとしています</strong>。
+      muting_html:
+        other: あなたは<strong>%{filename}</strong>から最大<strong>%{count}のアカウント</strong>を<strong>だまっとけ☆しようとしています</strong>。
+    titles:
+      muting: だまっとけ☆のインポート
+    type_groups:
+      destructive: ブロック・だまっとけ☆
     types:
-      muting: だまっとけ☆リストにいるアカウントリスト
-  migrations:
-    currently_redirecting: 'あなたの名刺は引っ越し先が設定されています:'
+      muting: だまっとけ☆したアカウントリスト
+  mail_subscriptions:
+    unsubscribe:
+      emails:
+        notification_emails:
+          favourite: ティンと来た通知メール
+          mention: Re:あふぅの通知メール
+          reblog: わかるわの通知メール
+  media_attachments:
+    validations:
+      not_found: メディア (%{ids}) が存在しないか、すでに添付してあふぅされています
+  move_handler:
+    carry_mutes_over_text: このユーザーは、あなたがだまっとけ☆していた%{acct}から引っ越しました。
   notification_mailer:
-    digest:
-      mention: "%{name} さんがあなたにReあふぅしました:"
     favourite:
-      body: "%{name} さんの頭にティンときた、あなたのあふぅがあります:"
-      subject: "%{name} さんがあなたのあふぅにティンときたようです"
-      title: 新たなティン
+      body: "%{name}さんの頭にティンと来た、あなたのあふぅがあります:"
+      subject: "%{name}さんにティンと来ました"
+      title: 新たなティンと来たあふぅ
     mention:
-      action: Reあふぅ
-      body: "%{name} さんからReあふぅがありました:"
-      subject: "%{name} さんにReあふぅされました"
-      title: 新たなReあふぅ
+      action: Re:あふぅ
+      body: "%{name}さんからRe:あふぅがありました:"
+      subject: "%{name}さんにRe:あふぅされました"
+      title: 新たなRe:あふぅ
     reblog:
-      body: "%{name} さんに同意された、あなたのあふぅがあります:"
-      subject: あなたのあふぅが %{name} さんに同意されました。わかるわ
+      body: "%{name}さんにわかるわされた、あなたのあふぅがあります:"
+      subject: "%{name}さんにわかられました"
       title: 新たなわかるわ
+    status:
+      subject: "%{name}さんがあふぅしました"
+    update:
+      subject: "%{name}さんがあふぅを更新しました"
   pagination:
     newer: 新しいあふぅ
-    next: 次
     older: 以前のあふぅ
-    prev: 前
-    truncate: "&hellip;"
-  remote_interaction:
-    favourite:
-      proceed: ティンときた！
-      prompt: 'ティンときようとしています:'
-    reblog:
-      proceed: わかるわする
-      prompt: 'わかるわしようとしています:'
-    reply:
-      proceed: Reあふぅ
-      prompt: 'Reあふぅしようとしています:'
+  preferences:
+    posting_defaults: デフォルトのあふぅ設定
+    public_timelines: 楽屋
+  privacy:
+    privacy_hint_html: 自分に関する情報をどの程度開示するかについての設定項目です。ユーザーはほかのアカウントのフォロー一覧を見て興味のあるアカウントを探したり、あふぅ元のアプリ名を見て自分が使いたいアプリの参考にすることがあります。希望に応じて、これらを見られないようにできます。
+    search_hint_html: 検索での見つかりやすさに関する設定項目です。公開あふぅを検索できるようにするかや、Mastodonの外からweb検索でたどり着けるようにするかをここで変更できます。ただし検索エンジンのなかには、この設定に従わずに公開されている情報を利用するものがあるかもしれません。
+  rss:
+    content_warning: '早苗さんに見つからないように隠された:'
+    descriptions:
+      account: "@%{acct}からの公開あふぅ"
+      tag: "#%{hashtag}が付けられた公開あふぅ"
   scheduled_statuses:
-    over_daily_limit: その日予約できるあふぅ数 %{limit} を超えています
-    over_total_limit: 予約できるあふぅ数 %{limit} を超えています
+    over_daily_limit: その日予約できるあふぅ数 %{limit}を超えています
+    over_total_limit: 予約できるあふぅ数 %{limit}を超えています
+  settings:
+    statuses_cleanup: あふぅの自動削除
   statuses:
-    boosted_from_html: "%{acct_link} からわかられました"
+    boosted_from_html: "%{acct_link}からわかるわ"
+    content_warning: '早苗さんに見つからないように隠された: %{warning}'
+    errors:
+      in_reply_not_found: あなたがRe:あふぅしようとしているあふぅは存在しないようです。
     pin_errors:
+      direct: Re:あふぅしたユーザーのみに表示されるあふぅはピン留めできません
       limit: 固定できるあふぅ数の上限に達しました
       ownership: 他人のあふぅを固定することはできません
-      private: 非公開のあふぅを固定することはできません
       reblog: わかるわを固定することはできません
     visibilities:
       private: 私的資料
-      private_long: フォロワーにのみ表示されます
       public: 公開資料
       public_long: 誰でも見ることができ、かつ楽屋に表示されます
       unlisted: 社内資料
       unlisted_long: 誰でも見ることができますが、楽屋には表示されません
+  statuses_cleanup:
+    enabled: 古いあふぅを自動的に削除する
+    enabled_hint: 設定した期間を過ぎたあふぅは、以下の例外に該当しない限り、自動的に削除されます
+    explanation: あふぅの削除はサーバーに負荷がかかるため、サーバーが混み合っていないときに時間をかけて行われます。
+    interaction_exceptions_explanation: ティンと来たやわかるわの基準値を一度超えてしまったあふぅは、基準値を下回った後であっても、削除される保証はありません。
+    keep_media: メディア付きのあふぅを保持
+    keep_media_hint: メディア付きのあふぅを削除せずに残します
+    keep_pinned: ピン留めされたあふぅを保持
+    keep_pinned_hint: ピン留めされたあふぅを削除せずに残します
+    keep_polls: アンケート付きのあふぅを保持
+    keep_polls_hint: アンケート付きのあふぅを削除せずに残します
+    keep_self_bookmark: ブックマークしたあふぅを保持
+    keep_self_bookmark_hint: 自分自身でブックマークしたあふぅを削除せずに残します
+    keep_self_fav: ティンと来たあふぅを保持
+    keep_self_fav_hint: 自分自身でティンと来たあふぅを削除せずに残します
+    min_age_label: あふぅを保持する期間
+    min_favs: ティンと来た基準値
+    min_favs_hint: この数以上、ティンと来たあふぅを削除せずに残します。空白にしておくと、ティンと来た数に関わらずあふぅを削除します。
+    min_reblogs: わかるわの基準値
+    min_reblogs_hint: この数以上、わかるわされたあふぅを削除せずに残します。空白にしておくと、わかるわされた数に関わらずあふぅを削除します。
   stream_entries:
-    pinned: 固定されたあふぅ
-    reblogged: さんにわかられました
+    sensitive_content: 早苗さんに見つからないように隠された
   user_mailer:
+    warning:
+      explanation:
+        delete_statuses: あなたのあふぅのいくつかは、1つ以上のコミュニティガイドラインに違反していることが判明し、%{instance}のモデレータによって削除されました。
+        mark_statuses_as_sensitive: あなたのいくつかのあふぅは、%{instance}のモデレータによって早苗さんに見つからないように隠されています。これは、プレビューが表示される前にユーザがあふぅ内のメディアをタップする必要があることを意味します。あなたは将来あふぅする際に自分自身でメディアを早苗さんに見つからないように隠すことができます。
+        sensitive: 今後、アップロードされたすべてのメディアファイルは早苗さんに見つからないように隠され、クリック解除式の警告で覆われるようになります。
+        silence: アカウントが制限されています。このサーバーでは既にフォローしている人だけがあなたのあふぅを見ることができます。 様々な発見機能から除外されるかもしれません。他の人があなたを手動でフォローすることは可能です。
+      statuses: 'あふぅ:'
+      subject:
+        delete_statuses: "%{acct}さんのあふぅが削除されました"
+        mark_statuses_as_sensitive: あなたの%{acct}のあふぅは早苗さんに見つからないように隠されました
+        sensitive: あなたの%{acct}のあふぅはこれから早苗さんに見つからないように隠されます
+      title:
+        delete_statuses: あふぅが削除されました
+        mark_statuses_as_sensitive: 早苗さんに見つからないように隠されたあふぅ
+        sensitive: 早苗さんに見つからないように隠されたアカウント
     welcome:
-      final_step: 'さあ始めましょう！ たとえフォロワーがいなくても、あなたの公開した投稿はローカルタイムラインやハッシュタグなどで誰かの目に止まるかもしれません。自己紹介をしたい時は #Pの自己紹介 ハッシュタグを使うといいかもしれません。'
+      feature_control: オフィスフィードで見たいものは、あなたが一番よく知っています。時間を無駄にするアルゴリズムや広告はありません。ひとつのアカウントからすべてのMastodonサーバーのあふぅを時系列で受け取り、インターネットの隅っこをもう少しあなたらしくしましょう。
+      feature_creativity: Mastodonでは、自己表現を多様にするため、音声・動画・画像のあふぅや、アクセシビリティ用説明、投票・コンテンツ警告・動くアバター・カスタム絵文字・サムネイル切り抜き設定などをサポートしています。アートや音楽、ポッドキャストをあふぅしたいあなたにもMastodonはピッタリです。
+      follow_title: 自分のオフィスタイムラインを作る
+      post_title: はじめてのあふぅ

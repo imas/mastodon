@@ -2,30 +2,67 @@
 ja-IM:
   simple_form:
     hints:
+      account:
+        discoverable: プロフィールと公開あふぅをMastodonのおすすめやハイライトとしてほかのユーザーに表示することを許可します。
+        indexable: "「楽屋」で送信されたあふぅがMastodonの検索結果にヒットするようになります。ここのチェック状態にかかわらず、ほかのユーザーにわかられたりやティンと来たあふぅはそのユーザーから検索されることがあります。"
+      account_warning_preset:
+        text: URL、ハッシュタグ、メンションなど、あふぅに用いる構文が使用できます
+      admin_account_action:
+        include_statuses: ユーザーは取られた制限や警告の原因となったあふぅを確認できるようになります
+        text_html: オプションです。あふぅに用いる構文を使うことができます。簡略化のため<a href="%{path}">プリセット警告文を追加</a>することができます
+        types:
+          sensitive: このユーザーが添付したメディアを強制的に早苗さんに見つからないように隠す
+          silence: ユーザーによる公開あふぅを禁止し、フォローしていない人にあふぅや通知が表示されないようにします。また、このアカウントに対するすべての通報をクローズします。
+      announcement:
+        text: あふぅと同じ構文を使用できます。アナウンスが占める画面のスペースに注意してください
       defaults:
-        fields: 名刺に表として4つまでの項目を表示することができます
-        phrase: あふぅの大文字小文字や閲覧注意に関係なく一致
+        irreversible: フィルターが後で削除されても、除外されたあふぅは元に戻せなくなります
+        phrase: あふぅ内容の大文字小文字や早苗さんに見つからないか関係なく一致
         setting_aggregate_reblogs: 最近わかるわされたあふぅが新たにわかるわされても表示しません (設定後受信したものにのみ影響)
-        setting_default_language: あふぅの言語は自動的に検出されますが、必ずしも正確とは限りません
+        setting_default_sensitive: 早苗さんに見つからないメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
         setting_display_media_default: 早苗さんに見つからないメディアは隠す
         setting_display_media_hide_all: 全てのメディアを常に早苗さんに見つからないようにする
         setting_display_media_show_all: 早苗さんに見つからないメディアも常に表示する
-        setting_hide_network: フォローとフォロワーの情報が名刺から見られないようにします
-        setting_noindex: 公開されている名刺および各あふぅページに影響します
-        setting_show_application: あふぅするのに使用したアプリがあふぅの詳細ビューに表示されるようになります
-        username: あなたのプロデューサー名は %{domain} の中で重複していない必要があります
+      filters:
+        action: あふぅがフィルタに一致したときに実行するアクションを選択
+        actions:
+          blur: メディアは警告して早苗さんに見つからないようにするが、テキストは表示する
+          hide: フィルタに一致したあふぅを完全に非表示にします
+          warn: フィルタに一致したあふぅを非表示にし、フィルタのタイトルを含む警告を表示します
+      form_admin_settings:
+        activity_api_enabled: 週単位でローカルで公開されたあふぅ数、アクティブユーザー数、新規登録者数を表示します
+        backups_retention_period: ユーザーには、後でダウンロードするためにあふぅのアーカイブを生成する機能があります。正の値に設定すると、これらのアーカイブは指定された日数後に自動的にストレージから削除されます。
+        content_cache_retention_period: 他のサーバーからのすべてのあふぅ（わかるわやRe:あふぅを含む）は、指定された日数が経過すると、ローカルユーザーとのやりとりに関係なく削除されます。これには、ローカルユーザーがブックマークやお気に入りとして登録したあふぅも含まれます。異なるサーバーのユーザー間のダイレクトメッセージも失われ、復元することは不可能です。この設定の使用は特別な目的のインスタンスのためのものであり、一般的な目的のサーバーで使用した場合、多くのユーザーの期待を裏切ることになります。
+        media_cache_retention_period: リモートユーザーがあふぅしたメディアファイルは、あなたのサーバーにキャッシュされます。正の値を設定すると、メディアは指定した日数後に削除されます。削除後にメディアデータが要求された場合、ソースコンテンツがまだ利用可能であれば、再ダウンロードされます。リンクプレビューカードがサードパーティのサイトを更新する頻度に制限があるため、この値を少なくとも14日に設定することをお勧めします。
+        trends: トレンドは、サーバー上で人気を集めているあふぅ、ハッシュタグ、ニュース記事などが表示されます。
+      settings:
+        show_application: 自分で自分のあふぅの送信元アプリを確認することは、ここのチェック状態にかかわらず可能です。
       user:
         chosen_languages: 選択すると、選択した言語のあふぅのみが楽屋に表示されるようになります
     labels:
+      account:
+        indexable: 公開あふぅを検索できるようにする
+      admin_account_action:
+        include_statuses: 通報されたあふぅをメールに含める
       defaults:
         setting_aggregate_reblogs: わかるわをまとめる
         setting_boost_modal: わかるわする前に確認ダイアログを表示する
+        setting_default_language: あふぅする言語
+        setting_default_privacy: あふぅの公開範囲
         setting_default_sensitive: メディアを常に早苗さんに見つからないようにする
         setting_delete_modal: あふぅを削除する前に確認ダイアログを表示する
-        setting_expand_spoilers: 閲覧注意としてマークされたあふぅを常に展開する
-        setting_show_application: あふぅの送信に使用したアプリを開示する
+        setting_expand_spoilers: 早苗さんに見つからないように隠されたあふぅを常に展開する
+      filters:
+        actions:
+          blur: 警告付きでメディアを早苗さんに見つからないようにする
+          hide: 完全に早苗さんに見つからないようにする
+          warn: 警告付きで早苗さんに見つからないようにする
       notification_emails:
         digest: 楽屋からピックアップしてメールで通知する
-        favourite: ティンときた人がいた時にメールで通知する
-        mention: Reあふぅが来た時にメールで通知する
-        reblog: あふぅが同意(わかるわ)された時にメールで通知する
+        favourite: ティンと来た時
+        mention: Re:あふぅが来た時
+        reblog: あふぅがわかるわされた時
+      settings:
+        show_application: あふぅに使ったアプリを開示する
+      tag:
+        usable: このサーバーのユーザーがタグをつけてあふぅすることを許可する
