@@ -9,6 +9,9 @@ const localeFiles = import.meta.glob<{ default: LocaleData['messages'] }>([
   './*.json',
 ]);
 
+// imastodon: ja-IM は ja からの言い換えだけを持つので、ja を下敷きにして重ねる
+const baseLocales: Partial<Record<string, string>> = { 'ja-IM': 'ja' };
+
 export async function loadLocale() {
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- we want to match empty strings
   const locale = document.querySelector<HTMLElement>('html')?.lang || 'en';
@@ -30,6 +33,12 @@ export async function loadLocale() {
 
     const { default: localeData } = await localeFile();
 
-    setLocale({ messages: localeData, locale });
+    const baseLocale = baseLocales[locale];
+    const baseLocaleFile = baseLocale && localeFiles[`./${baseLocale}.json`];
+    const baseLocaleData = baseLocaleFile
+      ? (await baseLocaleFile()).default
+      : {};
+
+    setLocale({ messages: { ...baseLocaleData, ...localeData }, locale });
   });
 }
