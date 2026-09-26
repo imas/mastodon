@@ -24,7 +24,7 @@ ignored = JaImCandidates.load_ignored
 
 selected.each do |kind|
   label, loader = sources.fetch(kind)
-  finder = JaImCandidates.new(**loader.call, ignored_keys: ignored.fetch(kind))
+  finder = JaImCandidates.new(**loader.call, ignored: ignored.fetch(kind))
 
   puts "== #{label}"
   puts

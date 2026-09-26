@@ -63,13 +63,24 @@ RSpec.describe JaImCandidates do
         en_messages: { 'status.delete' => 'Delete post' },
         ja_messages: { 'status.delete' => '投稿を削除' },
         ja_im_messages: {},
-        ignored_keys: ['status.delete']
+        ignored: { 'status.delete' => '投稿を削除' }
       )
 
       expect(finder.candidates).to eq []
     end
 
-    it '除外したときから ja の訳文が変わったキーは、除外したときの訳文と一緒に返す'
+    it '除外したときから ja の訳文が変わったキーは、除外したときの訳文と一緒に返す' do
+      finder = described_class.new(
+        en_messages: { 'account.pinned' => 'Pinned posts' },
+        ja_messages: { 'account.pinned' => '固定された投稿' },
+        ja_im_messages: {},
+        ignored: { 'account.pinned' => 'ピン済' }
+      )
+
+      expect(finder.candidates.map { |candidate| [candidate.key, candidate.ignored_ja] }).to eq [
+        ['account.pinned', 'ピン済'],
+      ]
+    end
 
     it '長い語を優先して置き換える' do
       finder = described_class.new(
@@ -98,7 +109,7 @@ RSpec.describe JaImCandidates do
         en_messages: { 'a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D' },
         ja_messages: { 'a' => '投稿を削除', 'b' => '投稿を編集', 'c' => '投稿を固定', 'd' => 'ブーストを取り消す' },
         ja_im_messages: { 'a' => 'あふぅを削除' },
-        ignored_keys: ['b']
+        ignored: { 'b' => '投稿を編集' }
       )
 
       expect(finder.coverage['投稿']).to eq({ total: 3, overridden: 1, ignored: 1 })
@@ -141,7 +152,24 @@ RSpec.describe JaImCandidates do
   end
 
   describe '.load_ignored' do
-    it '訳文だけの形と、訳文と理由の形の両方を読む'
+    it '訳文だけの形と、訳文と理由の形の両方を読む' do
+      Tempfile.create(['ignore', '.yml']) do |file|
+        file.write(<<~YAML)
+          json:
+            status.copy: リンクをコピー
+            notification.mention:
+              ja: メンション
+              reason: 表示に使われていない
+          yml: {}
+        YAML
+        file.close
+
+        expect(described_class.load_ignored(file.path)).to eq(
+          json: { 'status.copy' => 'リンクをコピー', 'notification.mention' => 'メンション' },
+          yml: {}
+        )
+      end
+    end
   end
 
   describe '.record_ignored' do
@@ -163,8 +191,8 @@ RSpec.describe JaImCandidates do
       json_en = described_class.load_json(Rails.root.join('app', 'javascript', 'mastodon', 'locales'))[:en_messages]
       yml_en = described_class.load_yml(Rails.root.join('config', 'locales'))[:en_messages]
 
-      expect(ignored[:json].reject { |key| json_en.key?(key) }).to eq []
-      expect(ignored[:yml].reject { |key| yml_en.key?(key) }).to eq []
+      expect(ignored[:json].keys.reject { |key| json_en.key?(key) }).to eq []
+      expect(ignored[:yml].keys.reject { |key| yml_en.key?(key) }).to eq []
     end
   end
 end
