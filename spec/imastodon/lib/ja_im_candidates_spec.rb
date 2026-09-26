@@ -5,7 +5,7 @@ require Rails.root.join('lib', 'imastodon', 'ja_im_candidates')
 
 RSpec.describe JaImCandidates do
   describe '#candidates' do
-    it '言い換える語を ja が含み、ja-IM に無いキーを返す' do
+    it 'en と ja にあって ja-IM に無いキーを返す' do
       finder = described_class.new(
         en_messages: { 'status.delete' => 'Delete post' },
         ja_messages: { 'status.delete' => '投稿を削除' },
@@ -35,15 +35,8 @@ RSpec.describe JaImCandidates do
       expect(finder.candidates).to eq []
     end
 
-    it '言い換える語を含まないキーは返さない' do
-      finder = described_class.new(
-        en_messages: { 'status.copy' => 'Copy link' },
-        ja_messages: { 'status.copy' => 'リンクをコピー' },
-        ja_im_messages: {}
-      )
-
-      expect(finder.candidates).to eq []
-    end
+    it '言い換える語を含まないキーも返す'
+    it '言い換える語を含むキーを先に並べる'
 
     it '除外リストにあるキーは返さない' do
       finder = described_class.new(
@@ -55,6 +48,8 @@ RSpec.describe JaImCandidates do
 
       expect(finder.candidates).to eq []
     end
+
+    it '除外したときから ja の訳文が変わったキーは、除外したときの訳文と一緒に返す'
 
     it '長い語を優先して置き換える' do
       finder = described_class.new(
@@ -123,6 +118,15 @@ RSpec.describe JaImCandidates do
         )
       end
     end
+  end
+
+  describe '.load_ignored' do
+    it '訳文だけの形と、訳文と理由の形の両方を読む'
+  end
+
+  describe '.record_ignored' do
+    it '今の ja の訳文を控えて除外リストに追記する'
+    it '既に書いてある理由を消さない'
   end
 
   describe 'bin/ja-im-candidates' do
