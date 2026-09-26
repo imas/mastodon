@@ -20,7 +20,7 @@ class JaImCandidates
     'ピン留め' => '固定',
   }.sort_by { |term, _| -term.length }.to_h.freeze
 
-  Candidate = Struct.new(:key, :ja, :suggestion)
+  Candidate = Struct.new(:key, :ja, :suggestion, :matched)
 
   LOCALES = { en_messages: 'en', ja_messages: 'ja', ja_im_messages: 'ja-IM' }.freeze
 
@@ -63,13 +63,16 @@ class JaImCandidates
     @ignored_keys = ignored_keys
   end
 
+  # 言い換える語を含むキーを先に並べる。辞書は並び順と言い換え案にだけ使い、絞り込みには使わない
   def candidates
-    @ja_messages.filter_map do |key, message|
+    unreviewed = @ja_messages.filter_map do |key, message|
       next unless @en_messages.key?(key)
       next if @ja_im_messages.key?(key) || @ignored_keys.include?(key)
 
-      Candidate.new(key, message, suggest(message))
+      Candidate.new(key, message, suggest(message), matched?(message))
     end
+
+    unreviewed.partition(&:matched).flatten
   end
 
   def coverage
@@ -86,6 +89,10 @@ class JaImCandidates
   end
 
   private
+
+  def matched?(message)
+    TERMS.keys.any? { |term| message.to_s.include?(term) }
+  end
 
   def suggest(message)
     TERMS.reduce(message) { |result, (term, replacement)| result.gsub(term, replacement) }
