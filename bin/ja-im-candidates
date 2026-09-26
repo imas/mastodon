@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# ja-IM で言い換える候補（en と ja にあって ja-IM に無く、言い換える語を含むキー）を一覧する
+#
+#   bin/ja-im-candidates          # JSON（Web UI）と yml（Rails）の両方
+#   bin/ja-im-candidates --json   # JSON だけ
+#   bin/ja-im-candidates --yml    # yml だけ
+#
+# 言い換えないと決めたキーは lib/imastodon/ja_im_candidates.ignore.yml に理由と一緒に書く
+
+require 'json'
+require 'yaml'
+require_relative '../lib/imastodon/ja_im_candidates'
+
+root = File.expand_path('..', __dir__)
+sources = {
+  json: ['JSON（app/javascript/mastodon/locales）', -> { JaImCandidates.load_json(File.join(root, 'app', 'javascript', 'mastodon', 'locales')) }],
+  yml: ['yml（config/locales）', -> { JaImCandidates.load_yml(File.join(root, 'config', 'locales')) }],
+}
+selected = sources.keys.select { |kind| ARGV.include?("--#{kind}") }
+selected = sources.keys if selected.empty?
+ignored = JaImCandidates.load_ignored
+
+selected.each do |kind|
+  label, loader = sources.fetch(kind)
+  finder = JaImCandidates.new(**loader.call, ignored_keys: ignored.fetch(kind))
+
+  puts "== #{label}"
+  puts
+  puts '語ごとの言い換え率（言い換え済み / 除外済み / ja で含むキー）'
+  finder.coverage.each do |term, count|
+    next if count[:total].zero?
+
+    puts format('  %<term>s → %<to>s  %<overridden>d / %<ignored>d / %<total>d',
+                term: term, to: JaImCandidates::TERMS[term], **count)
+  end
+  puts
+
+  candidates = finder.candidates
+  puts "候補（#{candidates.size} 件）"
+  candidates.each do |candidate|
+    puts "  #{candidate.key}"
+    puts "    ja: #{candidate.ja}"
+    puts "    案: #{candidate.suggestion}"
+  end
+  puts
+end
