@@ -1,0 +1,120 @@
+# frozen_string_literal: true
+
+# ja-IM で言い換える候補（en と ja にあって ja-IM に無いキー）を探す
+class JaImCandidates
+  # ja の語 => ja-IM での言い換え。既存の ja-IM で全面的に言い換えている語だけを載せる
+  # 「通知」「フォロー」は言い換え済みのキーでもそのまま残っているので載せない
+  TERMS = {
+    '投稿' => 'あふぅ',
+    'ブースト' => 'わかるわ',
+    'お気に入りタグ' => 'スウィーティー☆なタグ',
+    'お気に入り' => 'ティン',
+    '返信' => 'Re:あふぅ',
+    'メンション' => 'Re:あふぅ',
+    'ミュート' => 'だまっとけ☆',
+    '閲覧注意' => '早苗さんに見つからない',
+    'ホームタイムライン' => 'オフィス',
+    'ホーム' => 'オフィス',
+    'ローカルタイムライン' => '楽屋',
+    '連合タイムライン' => 'ライブステージ',
+    'ピン留め' => '固定',
+  }.sort_by { |term, _| -term.length }.to_h.freeze
+
+  Candidate = Struct.new(:key, :ja, :suggestion, :matched, :ignored_ja)
+
+  LOCALES = { en_messages: 'en', ja_messages: 'ja', ja_im_messages: 'ja-IM' }.freeze
+
+  # config/locales に置くと Rails と i18n-tasks にロケールとして読まれるので、ここに置く
+  IGNORE_FILE = File.expand_path('ja_im_candidates.ignore.yml', __dir__)
+
+  # キー => 除外したときの ja の訳文 を返す
+  def self.load_ignored(path = IGNORE_FILE)
+    data = YAML.load_file(path) || {}
+
+    { json: data['json'] || {}, yml: data['yml'] || {} }
+  end
+
+  # 今の ja の訳文を控えて追記する。冒頭の説明コメントは残す
+  def self.record_ignored(kind, keys, ja_messages, path = IGNORE_FILE)
+    text = File.read(path)
+    header = text[/\A(?:#.*\n)*/]
+    data = YAML.safe_load(text) || {}
+
+    entries = data[kind.to_s] || {}
+    keys.each { |key| entries[key] = ja_messages.fetch(key) }
+    data[kind.to_s] = entries.sort.to_h
+
+    File.write(path, header + YAML.dump(data, line_width: -1))
+  end
+
+  def self.load_json(dir)
+    LOCALES.transform_values { |locale| JSON.parse(File.read(File.join(dir, "#{locale}.json"))) }
+  end
+
+  # Rails の I18n と同じく <locale>.yml と *.<locale>.yml（simple_form など）をまとめて読む
+  def self.load_yml(dir)
+    LOCALES.transform_values do |locale|
+      paths = [File.join(dir, "#{locale}.yml"), *Dir[File.join(dir, '**', "*.#{locale}.yml")]]
+
+      paths.select { |path| File.exist?(path) }.each_with_object({}) do |path, messages|
+        messages.merge!(flatten(YAML.load_file(path).fetch(locale, {})))
+      end
+    end
+  end
+
+  def self.flatten(hash, prefix = nil)
+    hash.each_with_object({}) do |(key, value), result|
+      path = [prefix, key].compact.join('.')
+      value.is_a?(Hash) ? result.merge!(flatten(value, path)) : result[path] = value
+    end
+  end
+  private_class_method :flatten
+
+  # ignored はキー => 除外したときの ja の訳文
+  def initialize(en_messages:, ja_messages:, ja_im_messages:, ignored: {})
+    @en_messages = en_messages
+    @ja_messages = ja_messages
+    @ja_im_messages = ja_im_messages
+    @ignored = ignored
+  end
+
+  # 言い換える語を含むキーを先に並べる。辞書は並び順と言い換え案にだけ使い、絞り込みには使わない
+  def candidates
+    unreviewed = @ja_messages.filter_map do |key, message|
+      next unless @en_messages.key?(key)
+      next if @ja_im_messages.key?(key) || ignored?(key, message)
+
+      Candidate.new(key, message, suggest(message), matched?(message), @ignored[key])
+    end
+
+    unreviewed.partition(&:matched).flatten
+  end
+
+  def coverage
+    # bin から Rails 抜きで使うので ActiveSupport の index_with は使わない
+    TERMS.keys.to_h do |term|
+      keys = @ja_messages.select { |key, message| @en_messages.key?(key) && message.to_s.include?(term) }.keys
+
+      [term, {
+        total: keys.size,
+        overridden: keys.count { |key| @ja_im_messages.key?(key) },
+        ignored: keys.count { |key| !@ja_im_messages.key?(key) && ignored?(key, @ja_messages[key]) },
+      }]
+    end
+  end
+
+  private
+
+  # 除外したときから ja の訳文が変わっていれば、判断の前提が変わったので除外扱いにしない
+  def ignored?(key, message)
+    @ignored.key?(key) && @ignored[key] == message
+  end
+
+  def matched?(message)
+    TERMS.keys.any? { |term| message.to_s.include?(term) }
+  end
+
+  def suggest(message)
+    TERMS.reduce(message) { |result, (term, replacement)| result.gsub(term, replacement) }
+  end
+end

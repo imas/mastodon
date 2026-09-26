@@ -1,0 +1,11 @@
+# bin/ja-im-candidates で候補に出るが、ja-IM では言い換えないと決めたキー
+#
+#   キー: 除外したときの ja の訳文
+#
+# ja の訳文が控えと変わると、判断の前提が変わったものとして再び候補に出る。
+# 追記は bin/ja-im-candidates --json|--yml --ignore <キー>... で行う（書き直すので、ここ以外のコメントは消える）。
+# 言い換えない理由を残したいときは、除外したときのコミットメッセージに書く。
+# json は app/javascript/mastodon/locales、yml は config/locales のキー
+---
+json: {}
+yml: {}
