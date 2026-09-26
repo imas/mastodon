@@ -27,27 +27,21 @@ class JaImCandidates
   # config/locales に置くと Rails と i18n-tasks にロケールとして読まれるので、ここに置く
   IGNORE_FILE = File.expand_path('ja_im_candidates.ignore.yml', __dir__)
 
-  # キー => 除外したときの ja の訳文 を返す。理由を書きたいキーは { ja:, reason: } の形で書ける
+  # キー => 除外したときの ja の訳文 を返す
   def self.load_ignored(path = IGNORE_FILE)
     data = YAML.load_file(path) || {}
 
-    %i(json yml).to_h do |kind|
-      entries = (data[kind.to_s] || {}).transform_values { |value| value.is_a?(Hash) ? value['ja'] : value }
-      [kind, entries]
-    end
+    { json: data['json'] || {}, yml: data['yml'] || {} }
   end
 
-  # 今の ja の訳文を控えて追記する。冒頭の説明コメントと、既に書いてある理由は残す
+  # 今の ja の訳文を控えて追記する。冒頭の説明コメントは残す
   def self.record_ignored(kind, keys, ja_messages, path = IGNORE_FILE)
     text = File.read(path)
     header = text[/\A(?:#.*\n)*/]
     data = YAML.safe_load(text) || {}
 
     entries = data[kind.to_s] || {}
-    keys.each do |key|
-      ja = ja_messages.fetch(key)
-      entries[key] = entries[key].is_a?(Hash) ? entries[key].merge('ja' => ja) : ja
-    end
+    keys.each { |key| entries[key] = ja_messages.fetch(key) }
     data[kind.to_s] = entries.sort.to_h
 
     File.write(path, header + YAML.dump(data, line_width: -1))
