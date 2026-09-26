@@ -35,7 +35,16 @@ RSpec.describe JaImCandidates do
       expect(finder.candidates).to eq []
     end
 
-    it '言い換える語を含まないキーも返す'
+    it '言い換える語を含まないキーも返す' do
+      finder = described_class.new(
+        en_messages: { 'status.copy' => 'Copy link' },
+        ja_messages: { 'status.copy' => 'リンクをコピー' },
+        ja_im_messages: {}
+      )
+
+      expect(finder.candidates.map(&:key)).to eq ['status.copy']
+    end
+
     it '言い換える語を含むキーを先に並べる'
 
     it '除外リストにあるキーは返さない' do
