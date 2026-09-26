@@ -39,7 +39,12 @@ RSpec.describe 'I18n' do
         expect(ja_im.keys.reject { |key| en.key?(key) }).to eq []
       end
 
-      it 'ja と同じ訳文のキーを持たない'
+      it 'ja と同じ訳文のキーを持たない' do
+        ja = translations_for(:ja)
+
+        expect(ja_im.select { |key, value| ja[key] == value }.keys).to eq []
+      end
+
       it '訳文の変数が ja と一致する'
     end
   end
