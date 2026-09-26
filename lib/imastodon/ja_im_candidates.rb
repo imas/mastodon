@@ -23,6 +23,15 @@ class JaImCandidates
 
   LOCALES = { en_messages: 'en', ja_messages: 'ja', ja_im_messages: 'ja-IM' }.freeze
 
+  # config/locales に置くと Rails と i18n-tasks にロケールとして読まれるので、ここに置く
+  IGNORE_FILE = File.expand_path('ja_im_candidates.ignore.yml', __dir__)
+
+  def self.load_ignored(path = IGNORE_FILE)
+    data = YAML.load_file(path) || {}
+
+    { json: (data['json'] || {}).keys, yml: (data['yml'] || {}).keys }
+  end
+
   def self.load_json(dir)
     LOCALES.transform_values { |locale| JSON.parse(File.read(File.join(dir, "#{locale}.json"))) }
   end

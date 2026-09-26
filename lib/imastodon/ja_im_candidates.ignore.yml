@@ -1,0 +1,7 @@
+# bin/ja-im-candidates で候補に出るが、ja-IM では言い換えないと決めたキー
+# キー: 言い換えない理由
+#
+# json は app/javascript/mastodon/locales、yml は config/locales のキー
+---
+json: {}
+yml: {}
