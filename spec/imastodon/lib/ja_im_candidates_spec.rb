@@ -78,7 +78,17 @@ RSpec.describe JaImCandidates do
   end
 
   describe '#coverage' do
-    it '語ごとに ja で含むキーの数と ja-IM で言い換え済みの数を返す'
+    it '語ごとに ja で含むキーの数と、言い換え済み・除外済みの数を返す' do
+      finder = described_class.new(
+        en_messages: { 'a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D' },
+        ja_messages: { 'a' => '投稿を削除', 'b' => '投稿を編集', 'c' => '投稿を固定', 'd' => 'ブーストを取り消す' },
+        ja_im_messages: { 'a' => 'あふぅを削除' },
+        ignored_keys: ['b']
+      )
+
+      expect(finder.coverage['投稿']).to eq({ total: 3, overridden: 1, ignored: 1 })
+      expect(finder.coverage['ブースト']).to eq({ total: 1, overridden: 0, ignored: 0 })
+    end
   end
 
   describe '.load_json' do
