@@ -183,6 +183,13 @@ ja-IM:
     descriptions:
       account: "@%{acct}からの公開あふぅ"
       tag: "#%{hashtag}が付けられた公開あふぅ"
+  scheduled_statuses:
+    over_daily_limit:
+      one: その日予約できるあふぅ数 %{count}を超えています
+      other: その日予約できるあふぅ数 %{count}を超えています
+    over_total_limit:
+      one: 予約できるあふぅ数 %{count}を超えています
+      other: 予約できるあふぅ数 %{count}を超えています
   settings:
     statuses_cleanup: あふぅの自動削除
   statuses:
