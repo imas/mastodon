@@ -126,6 +126,13 @@ RSpec.describe JaImCandidates do
   end
 
   describe '除外リスト' do
-    it 'en に存在するキーだけを持つ'
+    it 'en に存在するキーだけを持つ' do
+      ignored = described_class.load_ignored
+      json_en = described_class.load_json(Rails.root.join('app', 'javascript', 'mastodon', 'locales'))[:en_messages]
+      yml_en = described_class.load_yml(Rails.root.join('config', 'locales'))[:en_messages]
+
+      expect(ignored[:json].reject { |key| json_en.key?(key) }).to eq []
+      expect(ignored[:yml].reject { |key| yml_en.key?(key) }).to eq []
+    end
   end
 end
