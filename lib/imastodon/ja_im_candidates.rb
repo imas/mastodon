@@ -38,6 +38,18 @@ class JaImCandidates
     end
   end
 
+  def coverage
+    TERMS.keys.index_with do |term|
+      keys = @ja_messages.select { |key, message| @en_messages.key?(key) && message.to_s.include?(term) }.keys
+
+      {
+        total: keys.size,
+        overridden: keys.count { |key| @ja_im_messages.key?(key) },
+        ignored: keys.count { |key| !@ja_im_messages.key?(key) && @ignored_keys.include?(key) },
+      }
+    end
+  end
+
   private
 
   def suggest(message)
