@@ -23,33 +23,11 @@ ja-IM:
     archive_takeout:
       hint_html: "<strong>あふぅとメディア</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。7日毎にアーカイブをリクエストできます。"
     mutes: だまっとけ☆
-  favourite_tags:
-    delete_it: 削除
-    edit:
-      submit: お気に入りタグを変更
-      title: お気に入りタグの編集
-    edit_it: 編集
-    form:
-      hint:
-        order: 降順に表示されます
-    name_of_tag: タグ名
-    order: 順序
-    submit: お気に入りタグを登録
   filters:
     contexts:
       home: オフィス
       notifications: ホワイトボード
       public: 楽屋
-      thread: 会話
-    edit:
-      title: フィルターを編集
-    errors:
-      invalid_context: 対象がないか無効です
-    index:
-      delete: 削除
-      title: フィルター
-    new:
-      title: 新規フィルターを追加
   imports:
     types:
       muting: だまっとけ☆リストにいるアカウントリスト
@@ -69,10 +47,7 @@ ja-IM:
       title: 新たなわかるわ
   pagination:
     newer: 新しいあふぅ
-    next: 次
     older: 以前のあふぅ
-    prev: 前
-    truncate: "&hellip;"
   scheduled_statuses:
     over_daily_limit: その日予約できるあふぅ数 %{limit} を超えています
     over_total_limit: 予約できるあふぅ数 %{limit} を超えています
