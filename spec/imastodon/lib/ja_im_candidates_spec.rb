@@ -45,7 +45,17 @@ RSpec.describe JaImCandidates do
       expect(finder.candidates).to eq []
     end
 
-    it '除外リストにあるキーは返さない'
+    it '除外リストにあるキーは返さない' do
+      finder = described_class.new(
+        en_messages: { 'status.delete' => 'Delete post' },
+        ja_messages: { 'status.delete' => '投稿を削除' },
+        ja_im_messages: {},
+        ignored_keys: ['status.delete']
+      )
+
+      expect(finder.candidates).to eq []
+    end
+
     it '長い語を優先して置き換える'
     it 'ja に無いキーは返さない'
   end
