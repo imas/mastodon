@@ -1,0 +1,8 @@
+---
+# GHSA-42qh-8mx8-7wqm: rack-proxy のレスポンス分割。
+# advisory 本文の影響範囲は 1.0.0〜1.0.2 だが、ruby-advisory-db は patched_versions（>= 1.0.3）しか
+# 持たないため 0.x まで検出される。stable-4.6 の rack-proxy は 0.8.2 で影響範囲外。
+# vite_ruby 3.10 が rack-proxy ~> 0.6 を要求するので 1.0.3 には上げられない。
+# advisory-db に unaffected_versions が入るか、upstream stable-4.6 が対応したら外す。
+ignore:
+  - GHSA-42qh-8mx8-7wqm
