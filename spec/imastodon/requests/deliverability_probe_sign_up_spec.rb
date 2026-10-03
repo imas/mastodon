@@ -26,6 +26,8 @@ RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
 
         expect(response).to have_http_status(200)
       end
+
+      it 'returns a dummy token response shaped like a real sign-up'
     end
 
     context 'when only the username matches' do
