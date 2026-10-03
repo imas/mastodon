@@ -29,11 +29,27 @@ RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
     end
 
     context 'when only the username matches' do
-      it 'creates an account with the probe-like username'
+      let(:username) { probe_username }
+      let(:reason) { 'アイマスが好きです' }
+
+      it 'creates an account with the probe-like username' do
+        expect { subject }
+          .to change(User, :count).by(1)
+
+        expect(Account.find_local(probe_username)).to be_present
+      end
     end
 
     context 'when only the reason matches' do
-      it 'creates an account with the probe reason'
+      let(:username) { 'fuyuko' }
+      let(:reason) { probe_reason }
+
+      it 'creates an account with the probe reason' do
+        expect { subject }
+          .to change(User, :count).by(1)
+
+        expect(Account.find_local('fuyuko')).to be_present
+      end
     end
 
     context 'when the hex part of the username is not 16 digits' do
