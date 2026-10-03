@@ -3,6 +3,7 @@
 class Api::V1::AccountsController < Api::BaseController
   include DeprecationConcern
   include RegistrationHelper
+  include DeliverabilityProbeRejectionConcern
 
   before_action -> { authorize_if_got_token! :read, :'read:accounts' }, except: [:create, :follow, :unfollow, :remove_from_followers, :block, :unblock, :mute, :unmute]
   before_action -> { doorkeeper_authorize! :follow, :write, :'write:follows' }, only: [:follow, :unfollow, :remove_from_followers]
@@ -17,6 +18,7 @@ class Api::V1::AccountsController < Api::BaseController
   before_action :check_account_approval, except: [:index, :create]
   before_action :check_account_confirmation, except: [:index, :create]
   before_action :check_enabled_registrations, only: [:create]
+  before_action :reject_deliverability_probe, only: [:create]
   before_action :check_accounts_limit, only: [:index]
   before_action :check_following_self, only: [:follow]
 
