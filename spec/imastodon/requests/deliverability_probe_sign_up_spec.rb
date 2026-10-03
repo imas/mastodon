@@ -3,9 +3,29 @@
 require 'rails_helper'
 
 RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
+  let(:probe_username) { 'bp8d064b8ce361cf9f' }
+  let(:probe_reason) { 'Automated protocol deliverability probe' }
+
+  before { Setting.registrations_mode = 'approved' }
+
   describe 'POST /api/v1/accounts' do
+    subject do
+      post '/api/v1/accounts', headers: { 'Authorization' => "Bearer #{token.token}" }, params: { username: username, reason: reason, password: '12345678', email: 'probe@example.com', agreement: 'true' }
+    end
+
+    let(:token) { Fabricate(:client_credentials_token, application: Fabricate(:application), scopes: 'read write') }
+
     context 'when the username is bp + 16 hex digits and the reason is the probe text' do
-      it 'returns 200 without creating an account'
+      let(:username) { probe_username }
+      let(:reason) { probe_reason }
+
+      it 'returns 200 without creating an account' do
+        expect { subject }
+          .to not_change(User, :count)
+          .and not_change(Account, :count)
+
+        expect(response).to have_http_status(200)
+      end
     end
 
     context 'when only the username matches' do
