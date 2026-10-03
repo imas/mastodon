@@ -673,8 +673,6 @@ ga:
           description: Fuair ​​tú clárú ó FASP. Diúltaigh é murar chuir tú tús leis seo. Má thionscain tú é seo, déan comparáid chúramach idir an t-ainm agus an eochair-mhéarlorg sula ndearbhaítear an clárúchán.
           reject: Diúltaigh
           title: Deimhnigh Clárú FASP
-        save: Sábháil
-        select_capabilities: Roghnaigh Cumais
         sign_in: Sínigh Isteach
         status: Stádas
         title: Soláthraithe Seirbhíse Cúnta Fediverse
@@ -1031,10 +1029,8 @@ ga:
       discovery:
         follow_recommendations: Lean na moltaí
         preamble: Tá sé ríthábhachtach ábhar suimiúil a chur chun cinn chun úsáideoirí nua a thabhairt isteach ar Mastodon, úsáideoirí nach mbeadh aithne acu ar aon duine. Rialú conas a oibríonn gnéithe éagsúla fionnachtana ar do fhreastalaí.
-        privacy: Príobháideacht
         profile_directory: Eolaire próifíle
         public_timelines: Amlínte poiblí
-        publish_statistics: Staitisticí a fhoilsiú
         title: Fionnachtain
         trends: Treochtaí
         wrapstodon: Wrapstodon
@@ -1070,7 +1066,6 @@ ga:
         warning_hint: Molaimid úsáid a bhaint as “Faomhadh riachtanach chun clárú” ach amháin má tá tú muiníneach gur féidir le d’fhoireann mhodhnóireachta clárú turscair agus mailíseach a láimhseáil go tráthúil.
       security:
         authorized_fetch: Teastaíonn fíordheimhniú ó fhreastalaithe cónasctha
-        authorized_fetch_hint: Toisc go n-éilítear fíordheimhniú ó fhreastalaithe cónasctha, is féidir bloic ar leibhéal an úsáideora agus ar leibhéal an fhreastalaí araon a fhorfheidhmiú níos déine. Mar sin féin, tagann sé seo ar chostas pionós feidhmíochta, laghdaítear an teacht ar do chuid freagraí, agus d'fhéadfadh saincheisteanna comhoiriúnachta a thabhairt isteach le roinnt seirbhísí cónasctha. Ina theannta sin, ní chuirfidh sé seo cosc ​​ar aisteoirí tiomnaithe do phoist phoiblí agus do chuntais phoiblí a fháil.
         authorized_fetch_overridden_hint: Ní féidir leat an socrú seo a athrú faoi láthair toisc go bhfuil sé sáraithe ag athróg timpeallachta.
         federation_authentication: Forghníomhú fíordheimhnithe Cónaidhm
       title: Socruithe freastalaí
@@ -1588,7 +1583,6 @@ ga:
   deletes:
     challenge_not_passed: Ní raibh an fhaisnéis a d'iontráil tú ceart
     confirm_password: Cuir isteach do phasfhocal reatha chun d'aitheantas a fhíorú
-    confirm_username: Cuir isteach d'ainm úsáideora chun an nós imeachta a dhearbhú
     proceed: Scrios cuntas
     success_msg: Scriosadh do chuntas go rathúil
     warning:
@@ -2278,7 +2272,6 @@ ga:
     appearance: Cuma
     authorized_apps: Aipeanna údaraithe
     back: Ar ais go Mastodon
-    delete: Scriosadh cuntais
     development: Forbairt
     edit_profile: Cuir an phróifíl in eagar
     export: Easpórtáil

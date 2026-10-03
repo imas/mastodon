@@ -643,8 +643,6 @@ gl:
           description: Recibiches unha solicitude de rexistro desde un FASP. Rexeitaa se non iniciaches ti o proceso. Se foi iniciada por ti, compara con atención o nome e impresión dixital antes de confirmar o rexistro.
           reject: Rexeitar
           title: Confirmar o rexistro do FASP
-        save: Gardar
-        select_capabilities: Seleccionar funcións
         sign_in: Acceder
         status: Estado
         title: Provedores de Servizos Auxiliares do Fediverso
@@ -983,10 +981,8 @@ gl:
       discovery:
         follow_recommendations: Recomendacións de seguimento
         preamble: Destacar contido interesante é importante para axudar a que as novas usuarias se sintan cómodas se non coñecen a ninguén en Mastodon. Xestiona os diferentes xeitos de promocionar contidos.
-        privacy: Privacidade
         profile_directory: Directorio de perfís
         public_timelines: Cronoloxías públicas
-        publish_statistics: Publicar estatísticas
         title: Descubrir
         trends: Tendencias
         wrapstodon: Wrapstodon
@@ -1022,7 +1018,6 @@ gl:
         warning_hint: Recomendamos utilizar "Requerir aprobación para o rexistro" a menos que confíes en que o equipo de moderación é quen de xestionar áxilmente o spam e a creación de contas maliciosas.
       security:
         authorized_fetch: Require autenticación desde os servidores federados
-        authorized_fetch_hint: Ao requerir autenticación desde os servidores federados activas un reforzamento das políticas de bloqueo a nivel usuaria e nivel servidor. Este proceder ten un custo no rendemento, reducindo o alcance das túas respostas e podería introducir problemas de compatibilidade con algúns servizos federados. Ademais, non evitará que contas con tal propósito vexan as túas publicacións públicas e contas.
         authorized_fetch_overridden_hint: Actualmente non podes cambiar este axuste porque está controlado por unha variable xeral do sistema.
         federation_authentication: Reforzo da autenticación na federación
       title: Axustes do servidor
@@ -1517,7 +1512,6 @@ gl:
   deletes:
     challenge_not_passed: A información introducida non é correcta
     confirm_password: Escribe o contrasinal actual para verificar a túa identidade
-    confirm_username: Introduce o nome de usuaria para confirmar o procedemento
     proceed: Eliminar conta
     success_msg: A súa conta eliminouse correctamente
     warning:
@@ -2123,7 +2117,6 @@ gl:
     appearance: Aparencia
     authorized_apps: Apps autorizadas
     back: Volver a Mastodon
-    delete: Eliminación da conta
     development: Desenvolvemento
     edit_profile: Editar perfil
     export: Exportar

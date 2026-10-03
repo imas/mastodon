@@ -620,6 +620,11 @@ es-AR:
         title: Importar bloques de dominio
       no_file: No hay ningún archivo seleccionado
     fasp:
+      capabilities:
+        activation_msg: Capacidad habilitada exitosamente.
+        deactivation_msg: Capacidad deshabilitada exitosamente.
+        disable: Deshabilitar
+        enable: Habilitar
       debug:
         callbacks:
           created_at: 'Fecha de creación:'
@@ -631,6 +636,7 @@ es-AR:
         active: Activo
         base_url: Dirección web base
         callback: Depuraciones
+        capabilities: Capacidades
         delete: Eliminar
         edit: Editar proveedor
         finish_registration: Finalizar registro
@@ -643,8 +649,6 @@ es-AR:
           description: Recibiste un registro de un FASP (Fediverse Auxiliary Service Providers; Proveedores de Servicio Auxiliares del Fediverso). Rechazalo si no iniciaste esto. Si, en cambio, iniciaste esto, compará cuidadosamente el nombre y la huella de la clave antes de confirmar el registro.
           reject: Rechazar
           title: Confirmar registro FASP
-        save: Guardar
-        select_capabilities: Seleccionar capacidades
         sign_in: Iniciar sesión
         status: Estado
         title: Proveedores de Servicios Auxiliares del Fediverso
@@ -983,10 +987,8 @@ es-AR:
       discovery:
         follow_recommendations: Recom. de cuentas a seguir
         preamble: Exponer contenido interesante a la superficie es fundamental para incorporar nuevos usuarios que pueden no conocer a nadie Mastodon. Controlá cómo funcionan varias opciones de descubrimiento en tu servidor.
-        privacy: Privacidad
         profile_directory: Directorio de perfiles
         public_timelines: Líneas temporales públicas
-        publish_statistics: Publicar estadísticas
         title: Descubrí
         trends: Tendencias
         wrapstodon: MastodonAnual
@@ -994,6 +996,11 @@ es-AR:
         all: A todos
         disabled: A nadie
         users: A usuarios locales con sesiones abiertas
+      external:
+        preamble: Controlá cuánta información sobre tu servidor se comparte con otros servicios y cuán visible debería ser tu servidor.
+        privacy: Privacidad
+        publish_statistics: Publicar estadísticas
+        title: Descubrimiento externo
       feed_access:
         modes:
           authenticated: Solo usuarios autenticados
@@ -1022,7 +1029,15 @@ es-AR:
         warning_hint: Recomendamos el uso de la opción “Se requiere aprobación para registrarse”, a menos que estés seguro de que tu equipo de moderación puede manejar el spam y los registros maliciosos de forma oportuna.
       security:
         authorized_fetch: Requiere autenticación de servidores federados
-        authorized_fetch_hint: Requerir autenticación de servidores federados permite un cumplimiento más estricto tanto de los bloques de nivel de usuario como de nivel de servidor. Sin embargo, esto se produce a costa de una penalidad en el rendimiento, reduce el alcance de tus respuestas y puede introducir problemas de compatibilidad con algunos servicios federados. Además, esto no impedirá que actores dedicados obtengan tus mensajes y cuentas públicas.
+        authorized_fetch_hint: Decidí cuándo se requiere autenticación de servidores remotos cuando se obtiene contenido de este servidor.
+        authorized_fetch_hints:
+          actors: Requerir autenticación para perfiles permite el seguimiento de qué servidor ha descubierto cada una de tus cuentas locales, que puede reducir en gran medida el número de peticiones innecesarias realizadas al notificar a los servidores de la eliminación de una cuenta. Esta opción viene a un ligero costo de rendimiento al servir perfiles, debido a dicho seguimiento y a la incapacidad para que el proxy inverso para almacenar las respuestas en caché para estas solicitudes. Esto también podría introducir problemas de compatibilidad con algunos servicios federados.
+          all: Además de los beneficios e inconvenientes de requerir autenticación para los perfiles, requerir incondicionalmente autenticación de servidores federados permite un cumplimiento más estricto, tanto de los bloques de nivel de usuario como de nivel de servidor, pero también previene el almacenamiento en caché de la mayoría de las solicitudes. También reducirá el alcance de tus respuestas, ya que el reenvío de las respuestas se desactivará.
+          none: Requerir autenticación solo cuando sea estrictamente necesario permite a tu proxy inverso almacenar más solicitudes. Esta opción puede ser eliminada en el futuro. Usalo solo si las otras opciones causan problemas.
+        authorized_fetch_modes:
+          actors: Para perfiles y contenido privado
+          all: Para cada solicitud
+          none: Solo para contenido privado
         authorized_fetch_overridden_hint: Actualmente no podés cambiar esta configuración porque está sobreescrita por una variable de entorno.
         federation_authentication: Ejecución de autenticación de federación
       title: Configuración del servidor
@@ -1517,9 +1532,11 @@ es-AR:
   deletes:
     challenge_not_passed: La información que ingresaste no es correcta
     confirm_password: Ingresá tu contraseña actual para verificar tu identidad
-    confirm_username: Ingresá tu nombre de usuario para confirmar el procedimiento
+    confirm_username: Confirmar nombre de usuario
+    confirm_username_hint_html: Por favor, escribí <code>%{username}</code> para confirmar la cuenta que querés eliminar
     proceed: Eliminar cuenta
     success_msg: Tu cuenta fue eliminada exitosamente
+    title: Eliminar cuenta %{acct}
     warning:
       before: 'Antes de proceder, por favor, leé estas notas cuidadosamente:'
       caches: El contenido que fue almacenado en caché por otros servidores puede persistir
@@ -2123,7 +2140,6 @@ es-AR:
     appearance: Apariencia
     authorized_apps: Aplicaciones autorizadas
     back: Volver a Mastodon
-    delete: Eliminación de la cuenta
     development: Desarrollo
     edit_profile: Editar perfil
     export: Exportar

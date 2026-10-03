@@ -4,6 +4,8 @@ import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
+import { WarningIcon } from '@phosphor-icons/react';
+
 import { openModal } from '@/mastodon/actions/modal';
 import type { DeployPictureInPictureCallback } from '@/mastodon/actions/picture_in_picture';
 import { deployPictureInPicture } from '@/mastodon/actions/picture_in_picture';
@@ -27,6 +29,7 @@ import { decodeIDNA } from '@/mastodon/utils/links';
 
 import { Avatar } from '../avatar';
 import { Button } from '../button/redesign';
+import { Callout } from '../callout/redesign';
 import { Card, CardActions, CardBody, CardTitle } from '../card';
 import { DisplayName } from '../display_name';
 import { RelativeTimestamp } from '../relative_timestamp';
@@ -52,7 +55,7 @@ export const StatusAttachments: React.FC<{
       <MediaAttachments
         statusId={statusId}
         accountId={status.account.id}
-        sensitive={status.sensitive && !status.spoiler_text}
+        sensitive={status.sensitive}
         language={status.translation?.language ?? status.language}
         attachment={attachment}
         restAttachments={status.media_attachments.slice(1)}
@@ -345,10 +348,12 @@ const MediaAttachmentWrapper: React.FC<{
   return (
     <div className={classes.galleryWrapper} ref={wrapperRef}>
       {showSpoiler && (
-        <div className={classes.gallerySpoilerWrapper}>
-          <span className={classes.gallerySpoilerContent}>{message}</span>
-          <Button variant='solid' size='sm' onClick={onToggle}>
-            {visible ? (
+        <Callout
+          className={classes.gallerySpoiler}
+          icon={WarningIcon}
+          actionClick={onToggle}
+          actionText={
+            visible ? (
               <FormattedMessage
                 id='content_warning.media.hide_short'
                 defaultMessage='Hide media'
@@ -358,15 +363,18 @@ const MediaAttachmentWrapper: React.FC<{
                 id='content_warning.media.show_short'
                 defaultMessage='Show media'
               />
-            )}
-          </Button>
-        </div>
+            )
+          }
+        >
+          {message}
+        </Callout>
       )}
       <div
         data-color-scheme='dark'
         className={classNames(
           mainClasses.contentWrapper,
-          !visible && mainClasses.isFiltered,
+          classes.galleryContent,
+          !visible && mainClasses.hasContentWarning,
           !visible && classes.galleryHideButtons,
         )}
       >
@@ -406,6 +414,10 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
     rel: 'noopener',
   } as const;
 
+  const authors = card.authors
+    .map(({ accountId }) => accountId)
+    .filter((id): id is string => !!id);
+
   return (
     <Card>
       <CardTitle
@@ -433,18 +445,18 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
         </CardBody>
       )}
 
-      {card.authors.length > 0 && (
+      {authors.length > 0 && (
         <CardActions>
           <FormattedMessage
             id='status.link_preview.authors'
             defaultMessage='{count, plural, one {Find the author in the Fediverse:} other {Find the authors in the Fediverse:}}'
             values={{
-              count: card.authors.length,
+              count: authors.length,
             }}
             tagName='span'
           />
 
-          {card.authors.map(({ accountId }) => (
+          {authors.map((accountId) => (
             <LinkCardAuthor authorId={accountId} key={accountId} />
           ))}
         </CardActions>

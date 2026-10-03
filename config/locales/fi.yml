@@ -620,6 +620,11 @@ fi:
         title: Tuo verkkotunnusten estoja
       no_file: Yhtäkään tiedostoa ei ole valittu
     fasp:
+      capabilities:
+        activation_msg: Kyvykkyys otettu onnistuneesti käyttöön.
+        deactivation_msg: Kyvykkyys poistettu onnistuneesti käytöstä.
+        disable: Poista käytöstä
+        enable: Ota käyttöön
       debug:
         callbacks:
           created_at: Luotu
@@ -631,6 +636,7 @@ fi:
         active: Käytössä
         base_url: Perus-URL
         callback: Takaisinkutsu
+        capabilities: Kyvykkyydet
         delete: Poista
         edit: Muokkaa palveluntarjoajaa
         finish_registration: Viimeistele rekisteröinti
@@ -643,8 +649,6 @@ fi:
           description: Vastaanotit rekisteröintymisen FASP-palvelusta. Hylkää rekisteröintyminen, jos et aloittanut sitä. Jos aloitit sen, vertaile huolellisesti nimeä ja avaimen sormenjälkeä ennen kuin hyväksyt rekisteröintymisen.
           reject: Hylkää
           title: Vahvista FASP-rekisteröinti
-        save: Tallenna
-        select_capabilities: Valitse kyvykkyydet
         sign_in: Kirjaudu sisään
         status: Tila
         title: Fediversumin tukitoimintojen tarjoajat
@@ -983,10 +987,8 @@ fi:
       discovery:
         follow_recommendations: Seurantasuositukset
         preamble: Mielenkiintoisen sisällön esille tuominen on keskeistä perehdyttäessä uusia käyttäjiä, jotka eivät ehkä tunne ketään Mastodonissa. Hallitse, miten eri löydettävyysominaisuudet toimivat palvelimellasi.
-        privacy: Yksityisyys
         profile_directory: Profiilihakemisto
         public_timelines: Julkiset aikajanat
-        publish_statistics: Julkaise tilastot
         title: Löydettävyys
         trends: Trendit
         wrapstodon: Wrapstodon
@@ -994,6 +996,11 @@ fi:
         all: Kaikille
         disabled: Ei kellekään
         users: Kirjautuneille paikallisille käyttäjille
+      external:
+        preamble: Määritä, kuinka paljon tietoja palvelimestasi jaetaan muiden palvelujen kanssa ja kuinka löydettävä palvelimesi pitäisi olla.
+        privacy: Yksityisyys
+        publish_statistics: Julkaise tilastoja
+        title: Ulkoinen löydettävyys
       feed_access:
         modes:
           authenticated: Vain todennetut käyttäjät
@@ -1022,7 +1029,11 @@ fi:
         warning_hint: Suosittelemme käyttämään asetusta ”Rekisteröityminen vaatii hyväksynnän”, ellet ole varma siitä, että moderaattorit ovat valmiina käsittelemään roskapostia ja haittarekisteröitymisiä oikea-aikaisesti.
       security:
         authorized_fetch: Vaadi todennus federoivilta palvelimilta
-        authorized_fetch_hint: Todennuksen vaatiminen federoivilta palvelimilta mahdollistaa sekä käyttäjä- että palvelintason estojen tiukemman valvonnan. Tämä tapahtuu kuitenkin suorituskyvyn kustannuksella, vähentää vastauksiesi tavoittavuutta ja voi aiheuttaa yhteensopivuusongelmia joidenkin federoivien palvelujen kanssa. Tämä ei myöskään estä asialleen omistautuneita toimijoita hakemasta julkisia julkaisujasi ja tilejäsi.
+        authorized_fetch_hint: Päätä, milloin etäpalvelinten on todennuttava, kun ne hakevat sisältöä tältä palvelimelta.
+        authorized_fetch_modes:
+          actors: Profiileille ja yksityiselle sisällölle
+          all: Kaikille pyynnöille
+          none: Vain yksityiselle sisällölle
         authorized_fetch_overridden_hint: Et voi tällä hetkellä muuttaa tätä asetusta, koska se on ohitettu ympäristömuuttujalla.
         federation_authentication: Federoinnin todennuksen valvonta
       title: Palvelimen asetukset
@@ -1517,9 +1528,11 @@ fi:
   deletes:
     challenge_not_passed: Antamasi tiedot eivät olleet oikeat
     confirm_password: Tunnistaudu syöttämällä nykyinen salasanasi
-    confirm_username: Vahvista toimenpide antamalla käyttäjänimesi
+    confirm_username: Vahvista käyttäjänimi
+    confirm_username_hint_html: Vahvista tili, jonka haluat poistaa, kirjoittamalla <code>%{username}</code>
     proceed: Poista tili
     success_msg: Tilin poisto onnistui
+    title: Poista tili %{acct}
     warning:
       before: 'Ennen kuin etenet, lue nämä huomautukset huolellisesti:'
       caches: Muiden palvelinten välimuistiinsa tallentamaa sisältöä voi säilyä
@@ -2123,7 +2136,6 @@ fi:
     appearance: Ulkoasu
     authorized_apps: Valtuutetut sovellukset
     back: Takaisin Mastodoniin
-    delete: Tilin poisto
     development: Kehitys
     edit_profile: Muokkaa profiilia
     export: Vie

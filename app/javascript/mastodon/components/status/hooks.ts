@@ -164,7 +164,8 @@ export function useStatusHandlers({
       if (
         !(target instanceof HTMLElement) ||
         target.closest('a, button') ||
-        contextType === 'detailed'
+        contextType === 'detailed' ||
+        window.getSelection()?.type === 'Range'
       ) {
         return;
       }
@@ -281,10 +282,10 @@ const iconMessages = defineMessages({
     id: 'status.unlike',
     defaultMessage: 'Unlike',
   },
-  bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
+  bookmark: { id: 'status.save', defaultMessage: 'Save post' },
   removeBookmark: {
-    id: 'status.remove_bookmark',
-    defaultMessage: 'Remove bookmark',
+    id: 'status.remove_from_saved',
+    defaultMessage: 'Remove from Saved',
   },
 });
 
@@ -405,15 +406,25 @@ export function useTextForScreenReader({
 
     const spoilerText = status.translation?.spoiler_text ?? status.spoiler_text;
     const contentHtml = status.translation?.contentHtml ?? status.contentHtml;
-    const contentText = domParser.parseFromString(contentHtml, 'text/html')
-      .documentElement.textContent;
+    let contentText = spoilerText;
+    if (!status.hidden) {
+      contentText = '';
+      for (const paragraph of domParser
+        .parseFromString(contentHtml, 'text/html')
+        .querySelectorAll('p')) {
+        const text = paragraph.textContent.trim();
+        if (text) {
+          contentText += ` ${text}`;
+        }
+      }
+    }
 
     const values = [
       isQuote ? intl.formatMessage(screenReaderMessages.quote_noun) : undefined,
       displayName.length === 0
         ? status.account.acct.split('@')[0]
         : displayName,
-      spoilerText && status.hidden ? spoilerText : contentText,
+      contentText,
       status.quote
         ? intl.formatMessage(screenReaderMessages.contains_quote)
         : undefined,

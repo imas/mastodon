@@ -235,6 +235,8 @@ gem 'mail', '~> 2.8'
 
 gem 'base58', '~> 0.2.3'
 
+gem 'bloom_fit', '~> 1.2'
+
 group :imastodon do
   gem 'aws-sdk-ssm', '~> 1.157'
 end

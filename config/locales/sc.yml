@@ -543,7 +543,6 @@ sc:
         follow_recommendations: Cussìgios de sighidura
         profile_directory: Diretòriu de profilos
         public_timelines: Lìnias de tempus pùblicas
-        publish_statistics: Pùblica istatìsticas
         title: Iscoberta
         trends: Tendèntzias
       domain_blocks:
@@ -751,7 +750,6 @@ sc:
   deletes:
     challenge_not_passed: S'informatzione insertada no est curreta
     confirm_password: Inserta·nche sa crae atuale pro verificare s'identidade
-    confirm_username: Iscrie su nòmine de utente tuo cunfirmare su protzedimentu
     proceed: Cantzella su contu
     success_msg: Contu cantzelladu
     warning:
@@ -1099,7 +1097,6 @@ sc:
     appearance: Aspetu
     authorized_apps: Aplicatziones autorizadas
     back: Torra a Mastodon
-    delete: Eliminatzione de su contu
     development: Isvilupu
     edit_profile: Modìfica profilu
     featured_tags: Etichetas in evidèntzia

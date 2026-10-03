@@ -195,6 +195,9 @@ class HashtagTimeline extends PureComponent {
             iconComponent={TagIcon}
             active={hasUnread}
             title={this.title()}
+            onPin={this.handlePin}
+            onMove={this.handleMove}
+            pinned={pinned}
             multiColumn={multiColumn}
             showBackButton
             scrollTopOnClick

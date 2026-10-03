@@ -24,18 +24,12 @@
   }
 }
 
-.gallerySpoilerWrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-2);
+.galleryContent {
+  border-radius: var(--radius-4);
 }
 
-.gallerySpoilerContent {
-  @include mixins.type-body-strong;
-
-  font-style: italic;
-  flex-grow: 1;
+.gallerySpoiler {
+  margin-bottom: var(--space-2);
 }
 
 .galleryHideButtons {

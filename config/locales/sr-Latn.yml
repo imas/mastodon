@@ -743,7 +743,6 @@ sr-Latn:
         follow_recommendations: Preporuke za praćenje
         profile_directory: Direktorijum profilâ
         public_timelines: Javne vremenske linije
-        publish_statistics: Objavi statistiku
         title: Otkrivanje
         trends: Trendovi
       domain_blocks:
@@ -762,7 +761,6 @@ sr-Latn:
         warning_hint: Preporučujemo da koristite „Neophodno je odobrenje za registraciju” osim ako niste sigurni da vaš moderatorski tim može blagovremeno da obradi neželjenu poštu i zlonamerne registracije.
       security:
         authorized_fetch: Zahtevaj autentifikaciju sa združenih servera
-        authorized_fetch_hint: Zahtevanje autentifikacije sa združenih servera omogućuje strožiju primenu blokova i na nivou korisnika i na nivou servera. Međutim, ovo dolazi po cenu smanjenja performansi, smanjuje domet vaših odgovora i može dovesti do problema kompatibilnosti sa nekim združenim uslugama. Pored toga, ovo neće sprečiti posvećene aktere da preuzimaju vaše javne objave i naloge.
         authorized_fetch_overridden_hint: Trenutno ne možete da promenite ovo podešavanje jer ga zamenjuje promenljiva okruženja.
         federation_authentication: Sprovođenje združene autentifikacije
       title: Podešavanja servera
@@ -1116,7 +1114,6 @@ sr-Latn:
   deletes:
     challenge_not_passed: Lozinka koju ste uneli nije bila ispravna
     confirm_password: Unesite trenutnu lozinku za verifikaciju vašeg identiteta
-    confirm_username: Unesite svoje korisničko ime da biste potvrdili proceduru
     proceed: Obriši nalog
     success_msg: Vaš nalog je uspešno obrisan
     warning:
@@ -1570,7 +1567,6 @@ sr-Latn:
     appearance: Izgled
     authorized_apps: Autorizovane aplikacije
     back: Nazad na Mastodon
-    delete: Brisanje naloga
     development: Razvoj
     edit_profile: Uređivanje profila
     featured_tags: Istaknute heš oznake
