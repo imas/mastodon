@@ -620,6 +620,11 @@ tr:
         title: Domain bloklarını içe aktar
       no_file: Dosya seçilmedi
     fasp:
+      capabilities:
+        activation_msg: Özellik başarıyla etkinleştirildi.
+        deactivation_msg: Özellik başarıyla devre dışı bırakıldı.
+        disable: Devre dışı bırak
+        enable: Etkinleştir
       debug:
         callbacks:
           created_at: Oluşturulma tarihi
@@ -631,6 +636,7 @@ tr:
         active: Etkin
         base_url: Temel URL
         callback: Geri çağırma
+        capabilities: Özellikler
         delete: Sil
         edit: Sağlayıcıyı Düzenle
         finish_registration: Kaydı tamamla
@@ -643,8 +649,6 @@ tr:
           description: FASP'tan bir kayıt aldınız. Eğer bunu siz başlatmadıysanız reddedin. Eğer siz başlattıysanız, kaydı onaylamadan önce ad ve anahtar parmak izini dikkatlice karşılaştırın.
           reject: Reddet
           title: FASP Kaydını Onayla
-        save: Kaydet
-        select_capabilities: Yetenekleri Seç
         sign_in: Oturum Aç
         status: Durum
         title: Fediverse Yardımcı Hizmet Sağlayıcıları (FASP)
@@ -983,10 +987,8 @@ tr:
       discovery:
         follow_recommendations: Takip önerileri
         preamble: İlginç içeriği gezinmek, Mastodon'da kimseyi tanımayan yeni kullanıcıları alıştırmak için oldukça etkilidir. Sunucunuzdaki çeşitli keşif özelliklerinin nasıl çalıştığını denetleyin.
-        privacy: Gizlilik
         profile_directory: Profil dizini
         public_timelines: Genel zaman çizelgeleri
-        publish_statistics: İstatistikleri yayınla
         title: Keşfet
         trends: Öne çıkanlar
         wrapstodon: Wrapstodon
@@ -1022,7 +1024,15 @@ tr:
         warning_hint: Denetleyici ekibinizin istenmeyen ve kötü niyetli kayıtları ele alabilecekleri konusunda emin değilseniz "Kayıt için onay gerekli" seçeneğini kullanmanızı öneririz.
       security:
         authorized_fetch: Dağıtık sunuculardan kimlik doğrulama gerektir
-        authorized_fetch_hint: Dağıtık sunuculardan kimlik doğrulaması istemek, hem kullanıcı düzeyinde hem de sunucu düzeyinde blokların daha sıkı bir şekilde uygulanmasını sağlar. Ancak bu performans kaybına sebep olur, yanıtlarınızın erişimini azaltır ve bazı dağıtık hizmetlerle uyumluluk sorunları ortaya çıkarabilir. Ayrıca bu, özel aktörlerin herkese açık gönderilerinizi ve hesaplarınızı getirilmesini engellemez.
+        authorized_fetch_hint: Bu sunucudan içerik alırken uzak sunucuların kimlik doğrulaması yapması gereken durumları belirleyin.
+        authorized_fetch_hints:
+          actors: Profiller için kimlik doğrulama zorunluluğu getirilmesi, her bir yerel hesabınızın hangi sunucu tarafından daha önce keşfedildiğinin izlenmesini sağlar; bu da, bir hesabın silinmesi durumunda sunuculara bildirimde bulunurken yapılan gereksiz isteklerin sayısını büyük ölçüde azaltabilir. Söz konusu izleme işlemi ve ters proxy’nin bu istekler için yanıtları önbelleğe alamaması nedeniyle, bu seçenek profillerin sunulması sırasında hafif bir performans kaybına yol açar. Bu durum, bazı federasyon hizmetleriyle uyumluluk sorunlarına da yol açabilir.
+          all: Profiller için kimlik doğrulama zorunluluğunun avantaj ve dezavantajlarının yanı sıra, federasyon sunucularından koşulsuz olarak kimlik doğrulama talep edilmesi, hem kullanıcı düzeyinde hem de sunucu düzeyinde engellemelerin daha sıkı bir şekilde uygulanmasını sağlar; ancak aynı zamanda çoğu isteğin önbelleğe alınmasını da engeller. Ayrıca, yanıtların iletilmesi devre dışı bırakılacağından, yanıtlarınızın erişim alanı da daralacaktır.
+          none: Kimlik doğrulamayı yalnızca kesinlikle gerekli olduğunda zorunlu kılmak, ters proxy’nizin daha fazla isteği önbelleğe almasını sağlar. Bu seçenek ileride kaldırılabilir. Yalnızca diğer seçenekler sorun yaratıyorsa bu seçeneği kullanın.
+        authorized_fetch_modes:
+          actors: Profiller ve özel içerik için
+          all: Her istek için
+          none: Sadece özel içerik için
         authorized_fetch_overridden_hint: Bir ortam değişkeni tarafından geçersiz kılındığı için şu anda bu ayarı değiştiremezsiniz.
         federation_authentication: Dağıtık kimlik doğrulama uygulaması
       title: Sunucu ayarları
@@ -1517,9 +1527,11 @@ tr:
   deletes:
     challenge_not_passed: Girdiğiniz bilgi hatalı
     confirm_password: Kimliğinizi doğrulamak için mevcut parolanızı girin
-    confirm_username: Prosedürü doğrulamak için kullanıcı adınızı girin
+    confirm_username: Kullanıcı adını onayla
+    confirm_username_hint_html: Silmek istediğiniz hesabı onaylamak için lütfen <code>%{username}</code> yazın
     proceed: Hesabı sil
     success_msg: Hesabınız başarıyla silindi
+    title: "%{acct} hesabını sil"
     warning:
       before: 'Devam etmeden önce, lütfen bu notları dikkatlice okuyun:'
       caches: Diğer sunucular tarafından ön belleğe alınan içerik kalabilir
@@ -2123,7 +2135,6 @@ tr:
     appearance: Görünüm
     authorized_apps: Yetkili uygulamalar
     back: Mastodon'a geri dön
-    delete: Hesap silme
     development: Geliştirme
     edit_profile: Profili düzenle
     export: Dışa Aktar

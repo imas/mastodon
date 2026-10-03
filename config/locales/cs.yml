@@ -644,8 +644,6 @@ cs:
           description: Obdrželi jste registraci od FASP. Odmítněte ji, pokud jste ji neiniciovali. Pokud jste ji iniciovali, pečlivě porovnejte jméno a otisk klíče před jejím potvrzením.
           reject: Zamítnout
           title: Potvrdit registraci FASP
-        save: Uložit
-        select_capabilities: Vybrat možnosti
         sign_in: Přihlásit se
         status: Stav
         title: Fediverse Auxiliary Service Providers
@@ -996,10 +994,8 @@ cs:
       discovery:
         follow_recommendations: Doporučená sledování
         preamble: Zobrazování zajímavého obsahu je užitečné pro zapojovní nových uživatelů, kteří nemusí na Mastodonu nikoho znát. Kontrolujte, jak fungují různé funkce objevování obsahu na vašem serveru.
-        privacy: Soukromí
         profile_directory: Adresář profilů
         public_timelines: Veřejné časové osy
-        publish_statistics: Zveřejnit statistiku
         title: Objevování
         trends: Trendy
         wrapstodon: Wrapstodon
@@ -1035,7 +1031,6 @@ cs:
         warning_hint: Doporučujeme použít "Schválení požadované pro registraci", pokud si nejste jistí, že váš moderační tým dokáže včas zpracovat spam a škodlivé registrace.
       security:
         authorized_fetch: Vyžadovat autentizaci od federovaných serverů
-        authorized_fetch_hint: Vyžadování ověřování pravosti od federalizovaných serverů umožňuje přísnější prosazování uživatelských i serverních bloků. K tomu však dochází k snížení výkonu, snižení dosah vašich odpovědí a můžou se zavést problémy s kompatibilitou s některými federálními službami. Kromě toho to nebude bránit oddaným uživatelům či robotům v načítání vašich veřejných příspěvků a účtů.
         authorized_fetch_overridden_hint: Momentálně nemůžete změnit toto nastavení, protože je přepsáno proměnnou prostředí.
         federation_authentication: Uplatnění ověřování pravosti federace
       title: Nastavení serveru
@@ -1534,7 +1529,6 @@ cs:
   deletes:
     challenge_not_passed: Zadané informace nejsou správné
     confirm_password: Pro ověření vaší identity zadejte své současné heslo
-    confirm_username: Zadáním svého uživatelského jména proces potvrdíte
     proceed: Odstranit účet
     success_msg: Váš účet byl úspěšně odstraněn
     warning:
@@ -2175,7 +2169,6 @@ cs:
     appearance: Vzhled
     authorized_apps: Autorizované aplikace
     back: Zpět na Mastodon
-    delete: Smazání účtu
     development: Vývoj
     edit_profile: Upravit profil
     export: Export

@@ -735,7 +735,6 @@
         follow_recommendations: Følg anbefalinger
         profile_directory: Profilkatalog
         public_timelines: Offentlige tidslinjer
-        publish_statistics: Publiser statistikk
         title: Oppdagelse
         trends: Trender
       domain_blocks:
@@ -752,7 +751,6 @@
           open: Hvem som helst kan melde seg inn
       security:
         authorized_fetch: Krev autentisering fra fødererte servere
-        authorized_fetch_hint: Krav om godkjenning fra fødererte servere muliggjør strengere håndhevelse av blokker på både brukernivå og servernivå. Dette går imidlertid på bekostning av en ytelsesstraff, reduserer rekkevidden til svarene dine og kan introdusere kompatibilitetsproblemer med enkelte fødererte tjenester. I tillegg vil dette ikke hindre dedikerte aktører i å hente dine offentlige innlegg og kontoer.
         authorized_fetch_overridden_hint: Du kan for øyeblikket ikke endre denne innstillingen fordi den overstyres av en miljøvariabel.
         federation_authentication: Håndheving av føderasjonsautentisering
       title: Serverinnstillinger
@@ -1119,7 +1117,6 @@
   deletes:
     challenge_not_passed: Informasjonen du oppga var ikke korrekt
     confirm_password: Skriv inn ditt passord for å verifisere din identitet
-    confirm_username: Skriv inn brukernavnet ditt for å bekrefte prosedyren
     proceed: Slett konto
     success_msg: Din konto ble slettet
     warning:
@@ -1565,7 +1562,6 @@
     appearance: Utseende
     authorized_apps: Autoriserte applikasjoner
     back: Tilbake til Mastodon
-    delete: Kontosletting
     development: Utvikling
     edit_profile: Endre profil
     featured_tags: Utvalgte emneknagger

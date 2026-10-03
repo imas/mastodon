@@ -1,4 +1,3 @@
-import type React from 'react';
 import { useCallback } from 'react';
 
 import { FormattedMessage } from 'react-intl';
@@ -7,6 +6,7 @@ import { WarningIcon } from '@phosphor-icons/react';
 
 import { changeComposeLanguage } from '@/mastodon/actions/compose';
 import { Callout } from '@/mastodon/components/callout/redesign';
+import { Icon } from '@/mastodon/components/icon';
 import { useDismissible } from '@/mastodon/hooks/useDismissible';
 import { selectAccountStatus } from '@/mastodon/selectors/statuses';
 import {
@@ -17,6 +17,7 @@ import {
 
 import { languageName, useLanguageGuess } from './hooks';
 import { selectComposeAttachments } from './selectors';
+import classes from './styles.module.scss';
 
 const selectComposeAttachmentsWithoutAlt = createAppSelector(
   [selectComposeAttachments],
@@ -53,7 +54,31 @@ export const ComposeHints = () => {
   const guess = useLanguageGuess();
   const isDifferentLanguage = lang && guess && lang !== guess;
 
+  const publishErrors = useAppSelector((state) => state.composer.publishErrors);
+
   const messages: React.ReactNode[] = [];
+
+  if (publishErrors.includes('empty')) {
+    messages.push(
+      <ComposerError key='empty'>
+        <FormattedMessage
+          id='compose.hints.empty'
+          defaultMessage="Post can't be blank"
+        />
+      </ComposerError>,
+    );
+  }
+
+  if (publishErrors.includes('too-long')) {
+    messages.push(
+      <ComposerError key='too-long'>
+        <FormattedMessage
+          id='compose.hints.too-long'
+          defaultMessage='Post exceeds character maximum'
+        />
+      </ComposerError>,
+    );
+  }
 
   if (replyFollowersHandle) {
     messages.push(
@@ -99,7 +124,7 @@ export const ComposeHints = () => {
     return null;
   }
 
-  return <div>{messages}</div>;
+  return <div className={classes.calloutWrapper}>{messages}</div>;
 };
 
 const defaultWrapper = (children: React.ReactNode, key: string) => (
@@ -107,6 +132,18 @@ const defaultWrapper = (children: React.ReactNode, key: string) => (
     {children}
   </Callout>
 );
+
+const ComposerError: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return (
+    <div className={classes.calloutError}>
+      <Icon icon={WarningIcon} />
+
+      {children}
+    </div>
+  );
+};
 
 const LanguageHint: React.FC<{ guess: string }> = ({ guess }) => {
   const language = languageName(guess);

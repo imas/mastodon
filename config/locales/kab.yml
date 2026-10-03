@@ -354,7 +354,6 @@ kab:
         registrations:
           confirm: Sentem
           reject: Agi
-        save: Sekles
         sign_in: Qqen
         status: Addad
       title: FASP
@@ -513,7 +512,6 @@ kab:
         preamble: Sagen agrudem web n Mastodon.
         title: Udem
       discovery:
-        privacy: Tabaḍnit
         profile_directory: Akaram n imaɣnuten
         title: Asnirem
         trends: Ayen mucaɛen
@@ -1073,7 +1071,6 @@ kab:
     appearance: Udem
     authorized_apps: Isnasen yettussirgen
     back: Uɣal ɣer Maṣṭudun
-    delete: Tukksa n umiḍan
     development: Taneflit
     edit_profile: Ẓreg amaɣnu
     export: Sifeḍ

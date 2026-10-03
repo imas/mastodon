@@ -610,6 +610,11 @@ zh-CN:
         title: 导入域名列表
       no_file: 没有选择文件
     fasp:
+      capabilities:
+        activation_msg: 能力已成功启用。
+        deactivation_msg: 能力已成功禁用。
+        disable: 禁用
+        enable: 启用
       debug:
         callbacks:
           created_at: 创建于
@@ -621,6 +626,7 @@ zh-CN:
         active: 有效
         base_url: 基础 URL
         callback: 回调
+        capabilities: 能力
         delete: 删除
         edit: 编辑提供商
         finish_registration: 完成注册
@@ -633,8 +639,6 @@ zh-CN:
           description: 你收到了来自FASP的注册。若你没有发起这个请求，请拒绝。若你发起了这个请求，请仔细比对名称和密钥指纹后再确认注册。
           reject: 拒绝
           title: 确认FASP注册
-        save: 保存
-        select_capabilities: 选择能力
         sign_in: 登录
         status: 状态
         title: 联邦宇宙辅助服务提供商
@@ -967,10 +971,8 @@ zh-CN:
       discovery:
         follow_recommendations: 关注推荐
         preamble: 展示有趣的内容有助于新加入 Mastodon 的用户融入。可在这里控制多种发现功能如何在你的服务器上工作。
-        privacy: 隐私
         profile_directory: 个人资料目录
         public_timelines: 公共时间线
-        publish_statistics: 发布统计数据
         title: 发现
         trends: 热门
         wrapstodon: Wrapstodon 年度回顾
@@ -978,6 +980,11 @@ zh-CN:
         all: 对每个人
         disabled: 不对任何人
         users: 对已登录的本站用户
+      external:
+        preamble: 控制服务器信息共享的程度及服务器的可发现性。
+        privacy: 隐私
+        publish_statistics: 发布统计数据
+        title: 外部发现
       feed_access:
         modes:
           authenticated: 仅已登录用户
@@ -1006,7 +1013,15 @@ zh-CN:
         warning_hint: 我们建议使用“注册必须经过批准”，除非你确信你的管理团队能够及时处理骚扰和恶意注册。
       security:
         authorized_fetch: 与外站联合时要求身份验证
-        authorized_fetch_hint: 要求外站请求通过验证能够使用户级别与服务器级别的封锁更为严格。然而，这将带来额外的性能负担、减少回复触达范围、并可能导致与一些联邦宇宙服务的兼容性问题。此外，这并不能阻止他人针对性地获取公开嘟文与账号。
+        authorized_fetch_hint: 决定远程服务器从此服务器获取什么内容时要求进行身份验证。
+        authorized_fetch_hints:
+          actors: 要求对个人资料进行身份验证，可以跟踪哪些服务器曾经发现过你服务器的各个本地账号，从而大幅减少在通知服务器账号删除时执行的不必要的请求数量。由于需要进行上述跟踪，以及反向代理无法缓存这些请求的响应，此选项在提供个人资料时会带来轻微的性能开销。这也可能会与某些其他联邦宇宙服务产生兼容性问题。
+          all: 除了要求对个人资料进行身份验证所具备的优点和缺点之外，无条件要求外站请求通过验证能够使用户级别与服务器级别的封锁更为严格，但也会阻止大多数请求的缓存。这还会降低你服务器回复嘟文的触达范围，因为这样做回复转发将会被禁用。
+          none: 仅在绝对必要时要求身份验证，这样可以让你的反向代理缓存更多请求。此选项未来可能会被移除。只有在其他选项导致问题时才使用它。
+        authorized_fetch_modes:
+          actors: 个人资料及私密内容
+          all: 每个请求
+          none: 仅私密内容
         authorized_fetch_overridden_hint: 由于此设置被环境变量覆盖，目前无法更改。
         federation_authentication: 联合时强制要求身份验证
       title: 服务器设置
@@ -1494,9 +1509,11 @@ zh-CN:
   deletes:
     challenge_not_passed: 你输入的信息不正确
     confirm_password: 输入你当前的密码来验证身份
-    confirm_username: 输入你的用户名以继续
+    confirm_username: 确认用户名
+    confirm_username_hint_html: 请输入 <code>%{username}</code> 以确认你要删除的账号
     proceed: 删除账号
     success_msg: 你的账号已成功删除
+    title: 删除账号 %{acct}
     warning:
       before: 在删除前，请仔细阅读下列说明：
       caches: 已被其他服务器缓存的内容可能还会保留
@@ -2072,7 +2089,6 @@ zh-CN:
     appearance: 外观
     authorized_apps: 已授权的应用
     back: 返回 Mastodon
-    delete: 删除账号
     development: 开发
     edit_profile: 更改个人资料
     export: 导出

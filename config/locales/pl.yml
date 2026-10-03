@@ -579,7 +579,6 @@ pl:
           confirm: Zatwierdź
           reject: Odrzuć
           title: Potwierdź rejestrację FASP
-        save: Zapisz
         sign_in: Zaloguj się
         status: Status
         title: Dostawcy usług pomocniczych Fediverse (Fediverse Auxiliary Service Providers)
@@ -927,10 +926,8 @@ pl:
       discovery:
         follow_recommendations: Polecane konta
         preamble: Prezentowanie ciekawych treści jest kluczowe przy wdrażaniu nowych użytkowników, którzy mogą jeszcze nikogo nie znać na Mastodonie. Tutaj kontrolujesz, jak działają różne funkcje odkrywania treści na Twoim serwerze.
-        privacy: Prywatność
         profile_directory: Katalog profilów
         public_timelines: Publiczne osie czasu
-        publish_statistics: Publikuj statystyki
         title: Odkrywanie
         trends: Trendy
         wrapstodon: Wrapstodon
@@ -955,7 +952,6 @@ pl:
         warning_hint: Polecamy "Przyjęcie jest wymagane do rejestracji" chyba że masz pewność, że twój zespół moderacyjny może szybko obsłużyć spam i złośliwe rejestracje.
       security:
         authorized_fetch: Wymagaj uwierzytelnienia od sfederowanych serwerów
-        authorized_fetch_hint: Wymaganie uwierzytelnienia ze sfederowanych serwerów pozwala na ściślejsze wymuszanie bloków z poziomu użytkowników i serwera, ale jest wolniejsze, redukuje zasięg odpowiedzi, i może być niekompatybilne z niektórymi sfederowanymi usługami. Nie chroni również publicznych kont i wpisów przed oddanymi użytkownikami.
         authorized_fetch_overridden_hint: Nie możesz zmienić tego ustawienia bo jest nadpisane przez zmienną środowiskową.
         federation_authentication: Wymuszanie uwierzytelnienia dla federacji
       title: Ustawienia serwera
@@ -1431,7 +1427,6 @@ pl:
   deletes:
     challenge_not_passed: Wprowadzone informacje za nieprawidłowe
     confirm_password: Wprowadź aktualne hasło, aby potwierdzić tożsamość
-    confirm_username: Wprowadź swoją nazwę użytkownika aby potwierdzić procedurę
     proceed: Usuń konto
     success_msg: Twoje konto zostało pomyślnie usunięte
     warning:
@@ -1994,7 +1989,6 @@ pl:
     appearance: Wygląd
     authorized_apps: Uwierzytelnione aplikacje
     back: Powrót do Mastodona
-    delete: Usuń konto
     development: Tworzenie aplikacji
     edit_profile: Edytuj profil
     export: Eksportowanie danych

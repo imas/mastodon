@@ -510,7 +510,6 @@ lad:
         registrations:
           confirm: Konfirma
           reject: Refuza
-        save: Guadra
         sign_in: Konektate
         status: Estado
       title: FASP
@@ -825,10 +824,8 @@ lad:
       discovery:
         follow_recommendations: Rekomendasyones de kuentos
         preamble: Ekspone kontenido enteresante a la superfisie es fundamental para inkorporar muevos utilizadores ke pueden no koneser a dinguno en Mastodon. Kontrola komo fonksionan varias opsiones de diskuvrimiento en tu sirvidor.
-        privacy: Privasita
         profile_directory: Katalogo de profiles
         public_timelines: Linyas de tiempo publikas
-        publish_statistics: Publika estatistikas
         title: Diskuvrimiento
         trends: Trendes
       domain_blocks:
@@ -850,7 +847,6 @@ lad:
         warning_hint: Rekomendamos el uzo de "Se rekiere achetasion para enrejistrarse" a manko ke estes siguro ke tu taifa de moderasyon puede moderar el spam i los enrejistramyentos malisiozos en un tyempo razonavle.
       security:
         authorized_fetch: Rekere autentifikasyon de sirvidores federados
-        authorized_fetch_hint: Rekerir autentifikasyon de sirvidores federados permite un forsamyento mas estrikto de los blokos a nivel de utilizador i a nivel de sirvidor. Malgrado esto, el koste de esto es una penalizasyon de efisyensya, reduksyon del alkanse de tus repuestas i puede introduzir problemas de kompatibilita kon algunos sirvisyos federados. Ademas, esto no impidira ke aktores dedikados obtengan tus kuentos publikos i publikasyones publikas.
         authorized_fetch_overridden_hint: Agora no puedes trokar esta konfigurasyon dkee esta sovreeskrita por una variable de entorno.
         federation_authentication: Forzamyento de autentifikasyon para la federasyon
       title: Konfigurasyon del sirvidor
@@ -1277,7 +1273,6 @@ lad:
   deletes:
     challenge_not_passed: Los datos introdusidos son yerrados
     confirm_password: Eskrive tu kod aktual para demostrar tu identita
-    confirm_username: Eskrive tu nombre de utilizador para konfirmar
     proceed: Efasa kuento
     success_msg: Tu kuento fue efasado kon reushita
     warning:
@@ -1755,7 +1750,6 @@ lad:
     appearance: Aparensya
     authorized_apps: Aplikasyones autorizadas
     back: Retorna a Mastodon
-    delete: Efasa kuento
     development: Dezvelopamiento
     edit_profile: Edita profil
     export: Eksporto
