@@ -53,7 +53,15 @@ RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
     end
 
     context 'when the hex part of the username is not 16 digits' do
-      it 'creates an account with the 17-digit username'
+      let(:username) { 'bp8d064b8ce361cf9f0' }
+      let(:reason) { probe_reason }
+
+      it 'creates an account with the 17-digit username' do
+        expect { subject }
+          .to change(User, :count).by(1)
+
+        expect(Account.find_local('bp8d064b8ce361cf9f0')).to be_present
+      end
     end
   end
 end
