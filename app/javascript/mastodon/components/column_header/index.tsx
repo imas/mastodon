@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import { useLocation } from 'react-router';
 
-import { ArrowLeftIcon, ListIcon } from '@phosphor-icons/react';
+import { ArrowLeftIcon, ArrowUpIcon, ListIcon } from '@phosphor-icons/react';
 import type { DistributedOmit } from 'type-fest';
 
 import { openNavigation } from '@/mastodon/actions/navigation';
@@ -45,13 +45,14 @@ export const ColumnHeader: React.FC<ColumnHeaderProps> = ({
   className,
   ...props
 }: ColumnHeaderProps) => {
-  const { scrollTop } = useColumn();
   const columnIndex = useColumnIndexContext();
   const location = useLocation<LocationState>();
   const hasBackButton =
     withBackButton === true ||
     (withBackButton === 'auto' && location.state?.fromMastodon);
   const hasExtraStickyContent = hasReactChildren(extraStickyContent);
+
+  const { isScrolledToTop, scrollTop } = useColumn();
 
   const handleHeaderClick = useCallback<React.MouseEventHandler>(
     (e) => {
@@ -71,6 +72,8 @@ export const ColumnHeader: React.FC<ColumnHeaderProps> = ({
     [scrollTop],
   );
 
+  const hasScrollToTopButton = !isScrolledToTop && withUnreadMarker;
+
   return (
     <header
       {...props}
@@ -83,11 +86,7 @@ export const ColumnHeader: React.FC<ColumnHeaderProps> = ({
       {/* eslint-disable-next-line
           jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
         */}
-      <div
-        className={classes.layout}
-        data-has-unread={withUnreadMarker}
-        onClick={handleHeaderClick}
-      >
+      <div className={classes.layout} onClick={handleHeaderClick}>
         {hasBackButton ? <BackButton /> : <MobileMenuButton />}
         <NavigationFocusTarget className={classes.title}>
           <button
@@ -96,15 +95,6 @@ export const ColumnHeader: React.FC<ColumnHeaderProps> = ({
             id={getColumnSkipLinkId(columnIndex)}
           >
             {title}
-            {withUnreadMarker && (
-              <span className='sr-only'>
-                {' '}
-                <FormattedMessage
-                  id='column.has_unread_content'
-                  defaultMessage='(has unread content)'
-                />
-              </span>
-            )}
           </button>
         </NavigationFocusTarget>
         {hasReactChildren(extraButtons) && (
@@ -113,6 +103,21 @@ export const ColumnHeader: React.FC<ColumnHeaderProps> = ({
       </div>
       {hasExtraStickyContent && (
         <div className={classes.extraStickyContent}>{extraStickyContent}</div>
+      )}
+      {hasScrollToTopButton && (
+        <Button
+          size='sm'
+          color='accent'
+          variant='solid'
+          onClick={scrollTop}
+          leadingIcon={ArrowUpIcon}
+          className={classes.unreadButton}
+        >
+          <FormattedMessage
+            id='column_header.scroll_to_top'
+            defaultMessage='Scroll to top'
+          />
+        </Button>
       )}
     </header>
   );

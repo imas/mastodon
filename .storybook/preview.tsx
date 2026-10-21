@@ -28,6 +28,16 @@ import { modes } from './modes';
 import '../app/javascript/styles/application.scss';
 import './styles.css';
 
+const startMsw = mswLoader(async () => {
+  const worker = setupWorker();
+
+  await worker.start({
+    onUnhandledRequest: unhandledRequestHandler,
+  });
+
+  return worker;
+});
+
 const preview: Preview = {
   // Auto-generate docs: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
@@ -195,28 +205,17 @@ const preview: Preview = {
         </IdentityContext.Provider>
       );
     },
-    (Story, { parameters }) => {
-      useEffect(() => {
-        document.documentElement.dataset.redesign = parameters.redesign
-          ? 'true'
-          : 'false';
-      }, [parameters.redesign]);
-      return <Story />;
-    },
   ],
   loaders: [
-    mswLoader(async () => {
-      const worker = setupWorker();
-
-      await worker.start({
-        onUnhandledRequest: unhandledRequestHandler,
-      });
-
-      return worker;
-    }),
-    importCustomEmojiData,
-    importLegacyShortcodes,
-    ({ globals: { locale } }) => importEmojiData(locale),
+    // Storybook runs loaders concurrently, so wait for msw to be ready
+    async (context) => {
+      await startMsw(context);
+      await Promise.all([
+        importCustomEmojiData(),
+        importLegacyShortcodes(),
+        importEmojiData(context.globals.locale),
+      ]);
+    },
   ],
   parameters: {
     layout: 'centered',
