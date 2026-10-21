@@ -1,4 +1,11 @@
-default: styles/application.scss
+default:
+  path: styles/application.scss
+  colors:
+    - indigo
+    - lime
+    - pink
+    - orange
+    - cyan
 idolmaster: styles/idolmaster.scss
 765pro-allstars: styles/765pro-allstars.scss
 cinderella: styles/cinderella.scss
