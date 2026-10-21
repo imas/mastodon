@@ -11,6 +11,7 @@ import {
   COMPOSE_MENTION,
   COMPOSE_REPLY,
   COMPOSE_SET_STATUS,
+  COMPOSE_UPLOAD_REQUEST,
   directCompose,
   resetCompose,
   submitCompose,
@@ -94,6 +95,7 @@ const composerSlice = createSlice({
       if (!state.publishErrors.includes(action.payload)) {
         state.publishErrors.push(action.payload);
       }
+      state.pendingFocus = { selection: null };
     },
     clearErrors(state) {
       state.publishErrors = [];
@@ -109,6 +111,7 @@ const composerSlice = createSlice({
           COMPOSE_MENTION,
           COMPOSE_DIRECT,
           COMPOSE_SET_STATUS,
+          COMPOSE_UPLOAD_REQUEST,
           REDRAFT,
         ].includes(action.type),
       (state) => {
