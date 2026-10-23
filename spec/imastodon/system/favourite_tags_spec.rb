@@ -89,7 +89,15 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
     end
 
     context 'お気に入りタグが1件も無い場合' do
-      it '登録されていない旨と、登録画面へのリンクが出る'
+      it '登録されていない旨と、登録画面へのリンクが出る' do
+        FavouriteTag.where(account: bob.account).destroy_all
+        close_composer
+        open_composer
+
+        favourite_tags_button.click
+        expect(page).to have_text(frontend_translations('compose_form.favourite_tags.empty'))
+        expect(page).to have_link(frontend_translations('compose_form.favourite_tags.register'), href: '/settings/favourite_tags')
+      end
     end
   end
 

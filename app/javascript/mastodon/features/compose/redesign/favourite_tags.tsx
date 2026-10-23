@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import type Immutable from 'immutable';
 
-import { TagIcon } from '@phosphor-icons/react';
+import { PlusIcon, TagIcon } from '@phosphor-icons/react';
 
 import {
   refreshFavouriteTags,
@@ -16,6 +16,7 @@ import {
   MenuList,
   MenuTrigger,
   MenuItemCheckbox,
+  MenuItemLink,
 } from '@/mastodon/components/menu';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
@@ -54,6 +55,7 @@ export const ComposeFavouriteTags: React.FC = () => {
         {lockedTags.size > 0 && `(${lockedTags.size})`}
       </MenuTrigger>
       <MenuList placement='bottom-start'>
+        {tags.isEmpty() && <FavouriteTagsEmpty />}
         {tags.map((tag) => (
           <FavouriteTagItem
             key={tag.get('id') as number}
@@ -66,6 +68,25 @@ export const ComposeFavouriteTags: React.FC = () => {
     </Menu>
   );
 };
+
+// 普段のメニューはロックの切り替えに専念させ、設定画面への常設の入口はアカウントカードの「⋯」メニューに置く。
+// 空のときだけは行き止まりにならないよう、ここから登録画面へ誘導する
+const FavouriteTagsEmpty: React.FC = () => (
+  <>
+    <p className='favourite-tags__empty'>
+      <FormattedMessage
+        id='compose_form.favourite_tags.empty'
+        defaultMessage='No favourite tags yet.'
+      />
+    </p>
+    <MenuItemLink as='a' href='/settings/favourite_tags' icon={PlusIcon}>
+      <FormattedMessage
+        id='compose_form.favourite_tags.register'
+        defaultMessage='Register favourite tags'
+      />
+    </MenuItemLink>
+  </>
+);
 
 const FavouriteTagItem: React.FC<{
   name: string;

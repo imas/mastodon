@@ -28,3 +28,13 @@
     );
   }
 }
+
+/**
+  * features/compose/redesign/favourite_tags
+  */
+
+// メニューの項目と余白を揃え、操作できない文言なので一段薄い色にする
+.favourite-tags__empty {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-secondary);
+}

@@ -287,6 +287,8 @@
   "compose_form.direct_message_warning_learn_more": "もっと詳しく",
   "compose_form.encryption_warning": "Mastodonの投稿はエンドツーエンド暗号化に対応していません。安全に送受信されるべき情報をMastodonで共有しないでください。",
   "compose_form.favourite_tags": "お気に入りタグ",
+  "compose_form.favourite_tags.empty": "お気に入りタグが登録されていません",
+  "compose_form.favourite_tags.register": "お気に入りタグを登録する",
   "compose_form.hashtag_warning": "この投稿は公開設定が未収載より狭いのでハッシュタグの一覧に表示されません。公開範囲が公開または未収載である投稿だけがハッシュタグで検索できます。",
   "compose_form.lock_disclaimer": "あなたのアカウントは{locked}になっていません。誰でもあなたをフォローすることができ、フォロワー限定の投稿を見ることができます。",
   "compose_form.lock_disclaimer.lock": "承認制",
