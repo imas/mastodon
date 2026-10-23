@@ -44,6 +44,7 @@
   "compose.privacy.unlisted": "社内資料",
   "compose.publish": "あふぅ",
   "compose.published.body": "あふぅされました！",
+  "compose.reply.title.new": "Re:あふぅ",
   "compose.sensitive.text": "ζ'ヮ')ζ＜まえせつ",
   "compose.visibility.title": "公開範囲",
   "compose_form.encryption_warning": "Mastodonのあふぅはエンドツーエンド暗号化に対応していません。安全に送受信されるべき情報をMastodonで共有しないでください。",

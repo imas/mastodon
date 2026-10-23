@@ -89,7 +89,18 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css('form[role="dialog"] label', exact_text: "ζ'ヮ')ζ＜まえせつ")
     end
 
-    it '返信の投稿小窓のタイトルが「Re:あふぅ」である'
+    it '返信の投稿小窓のタイトルが「Re:あふぅ」である' do
+      status = Fabricate(:status, account: bob.account, text: '返信テスト投稿', visibility: :public)
+      FeedManager.instance.push_to_home(bob.account, status)
+      visit '/home'
+      wait_for_react
+
+      # 返信ボタンのラベルも ja-IM で「Re:あふぅ」に言い換えてある。ラベルは aria-labelledby の参照先にある
+      label = find('article[data-id] [id]', exact_text: ui_text('status.reply'), visible: :hidden)
+      find("button[aria-labelledby='#{label[:id]}']").click
+
+      expect(page).to have_css('form[role="dialog"] header h2', text: 'Re:あふぅ')
+    end
 
     it 'メッセージに切り替えると、タイトルが「新しい機密資料」、ヒントが「指定した同僚だけに公開。暗号化はされません」、送信ボタンが「あふぅ」になる'
 
