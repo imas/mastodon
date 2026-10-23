@@ -64,7 +64,14 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css('[role="menuitemcheckbox"]', text: '楽屋には発言しない')
     end
 
-    it '検索結果に出さないようにすると、公開範囲のボタンが「社内資料」になる'
+    it '検索結果に出さないようにすると、公開範囲のボタンが「社内資料」になる' do
+      open_composer
+      open_visibility_menu
+      find('[role="menuitemcheckbox"]', text: '楽屋には発言しない').click
+      send_keys :escape
+
+      expect(page).to have_css('form[role="dialog"] button[aria-haspopup="menu"]', text: '社内資料')
+    end
 
     it '閲覧注意のトグルが「早苗さんに見つからないようにする」、入力欄が「ζ\'ヮ\')ζ＜まえせつ」である'
 
