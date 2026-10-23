@@ -20,6 +20,8 @@ RSpec.describe 'AvatarOverlayIcon', :js, type: :system do
       article = visit_home_with('テスト投稿（未収載）', :unlisted)
       expect(article).to have_css('header .account__avatar-overlay-icon-overlay')
     end
+
+    it '公開範囲アイコンの背景が不透明で、アバターの上でも見える'
   end
 
   context 'public投稿がホームTLに表示される場合' do
