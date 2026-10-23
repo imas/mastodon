@@ -87,7 +87,27 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
       expect(FavouriteTag.where(account: bob.account, name: 'imastodon', visibility: :public)).to exist
     end
 
-    it '登録済みのお気に入りタグ（公開）を外せる'
-    it 'お気に入りタグ（未収載）に追加できる'
+    it '登録済みのお気に入りタグ（公開）を外せる' do
+      FavouriteTag.create!(account: bob.account, name: 'imastodon', visibility: :public)
+      visit '/tags/imastodon'
+      wait_for_react
+
+      open_hashtag_menu
+      click_menu_item('tag.remove_favourite.public')
+
+      open_hashtag_menu
+      expect(page).to have_css('[role="menuitem"]', text: frontend_translations('tag.add_favourite.public'))
+      expect(FavouriteTag.where(account: bob.account, name: 'imastodon')).to_not exist
+    end
+
+    it 'お気に入りタグ（未収載）に追加できる' do
+      open_hashtag_menu
+      click_menu_item('tag.add_favourite.unlisted')
+
+      open_hashtag_menu
+      expect(page).to have_css('[role="menuitem"]', text: frontend_translations('tag.remove_favourite.unlisted'))
+      expect(page).to have_css('[role="menuitem"]', text: frontend_translations('tag.add_favourite.public'))
+      expect(FavouriteTag.where(account: bob.account, name: 'imastodon').pluck(:visibility)).to eq ['unlisted']
+    end
   end
 end
