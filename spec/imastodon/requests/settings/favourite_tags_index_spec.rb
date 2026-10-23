@@ -14,6 +14,10 @@ RSpec.describe 'GET /settings/favourite_tags', type: :request do
 
         expect(response).to have_http_status(:success)
       end
+
+      context 'when the user has favourite tags' do
+        it 'renders icons on the edit and delete links'
+      end
     end
 
     context 'when not signed in' do
