@@ -19,8 +19,25 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       change_user_locale('ja')
     end
 
-    it '投稿ボタンのテキストが「あふぅ」である' do
+    def open_composer
       within('nav') { click_on '新しいあふぅ' }
+      expect(page).to have_css('form[role="dialog"]')
+    end
+
+    def open_visibility_menu
+      find('form[role="dialog"] button[aria-haspopup="menu"]', text: '公開資料').click
+    end
+
+    # ja-IM で言い換えていない文言は、アプリと同じく ja、en の順に引き継がれる
+    def ui_text(key)
+      %w(ja-IM ja en).each do |locale|
+        text = JSON.parse(Rails.root.join('app', 'javascript', 'mastodon', 'locales', "#{locale}.json").read)[key]
+        return text if text
+      end
+    end
+
+    it '投稿ボタンのテキストが「あふぅ」である' do
+      open_composer
       within('form[role="dialog"]') do
         expect(page).to have_button('あふぅ', type: 'submit')
       end
@@ -37,21 +54,12 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css("##{boost_button['aria-labelledby']}", text: 'わかるわか引用', visible: :hidden)
     end
 
-    def open_composer
-      within('nav') { click_on '新しいあふぅ' }
-      expect(page).to have_css('form[role="dialog"]')
-    end
-
     it '投稿小窓のタイトルが「新しいあふぅ」、本文欄のプレースホルダが「もう時間がないんです！」である' do
       open_composer
       within('form[role="dialog"]') do
         expect(page).to have_css('header h2', text: '新しいあふぅ')
         expect(page).to have_field(placeholder: 'もう時間がないんです！')
       end
-    end
-
-    def open_visibility_menu
-      find('form[role="dialog"] button[aria-haspopup="menu"]', text: '公開資料').click
     end
 
     it '公開範囲メニューの見出しが「公開範囲」、選択肢が「公開資料」「私的資料」「楽屋には発言しない」である' do
@@ -71,14 +79,6 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       send_keys :escape
 
       expect(page).to have_css('form[role="dialog"] button[aria-haspopup="menu"]', text: '社内資料')
-    end
-
-    # ja-IM で言い換えていない文言は、アプリと同じく ja、en の順に引き継がれる
-    def ui_text(key)
-      %w(ja-IM ja en).each do |locale|
-        text = JSON.parse(Rails.root.join('app', 'javascript', 'mastodon', 'locales', "#{locale}.json").read)[key]
-        return text if text
-      end
     end
 
     it '閲覧注意のトグルが「早苗さんに見つからないようにする」、入力欄のラベルが「ζ\'ヮ\')ζ＜まえせつ」である' do
