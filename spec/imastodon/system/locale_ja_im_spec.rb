@@ -50,7 +50,19 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       end
     end
 
-    it '公開範囲メニューの見出しが「公開範囲」、選択肢が「公開資料」「私的資料」「楽屋には発言しない」である'
+    def open_visibility_menu
+      find('form[role="dialog"] button[aria-haspopup="menu"]', text: '公開資料').click
+    end
+
+    it '公開範囲メニューの見出しが「公開範囲」、選択肢が「公開資料」「私的資料」「楽屋には発言しない」である' do
+      open_composer
+      open_visibility_menu
+
+      expect(page).to have_css('[role="group"]', text: '公開範囲')
+      expect(page).to have_css('[role="menuitemradio"]', text: '公開資料')
+      expect(page).to have_css('[role="menuitemradio"]', text: '私的資料')
+      expect(page).to have_css('[role="menuitemcheckbox"]', text: '楽屋には発言しない')
+    end
 
     it '検索結果に出さないようにすると、公開範囲のボタンが「社内資料」になる'
 
