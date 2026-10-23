@@ -9,12 +9,12 @@ import { useAccount } from '@/mastodon/hooks/useAccount';
 import { useCurrentAccountId } from '@/mastodon/hooks/useAccountId';
 import type { AccountStatusShape } from '@/mastodon/models/status';
 
-import { Avatar } from '../avatar';
 import { DisplayName } from '../display_name';
 import { useAccountHandle } from '../display_name/default';
 import { RelativeTimestamp } from '../relative_timestamp';
 import { Skeleton } from '../skeleton';
 
+import { AvatarWithVisibility } from './avatar_with_visibility';
 import classes from './header.module.scss';
 import { accountStatusLinkProps, statusLink } from './utils';
 
@@ -106,7 +106,10 @@ export const StatusRedesignHeader: React.FC<StatusRedesignHeaderProps> = ({
         tabIndex={-1}
         className={classes.avatar}
       >
-        <Avatar account={account} size={null} />
+        <AvatarWithVisibility
+          account={account}
+          visibility={status.visibility}
+        />
       </Link>
 
       <div className={classes.contents}>

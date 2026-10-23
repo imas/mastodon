@@ -24,8 +24,8 @@ RSpec.describe 'マルチカラムUI', :js, type: :system do
         FeedManager.instance.push_to_home(bob.account, status)
         visit '/deck/timelines/home'
         wait_for_react
-        status_wrapper = first('.status__wrapper-unlisted')
-        expect(status_wrapper).to have_css('.account__avatar-overlay-icon-overlay')
+        article = find('article[data-id]', text: 'デッキテスト投稿（未収載）')
+        expect(article).to have_css('header .account__avatar-overlay-icon-overlay')
       end
     end
 
