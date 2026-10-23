@@ -142,7 +142,12 @@ export const minimizeComposerToggle = createAppThunk(
 
 export const selectComposerIsChanged = createAppSelector(
   [
-    (state) => state.compose.get('text') as string,
+    // imastodon: ロック中のお気に入りタグだけが入った本文は書きかけとみなさない
+    (state) => {
+      const text = state.compose.get('text') as string;
+      const defaultText = state.compose.get('defaultText') as string;
+      return text.trim() === defaultText.trim() ? '' : text;
+    },
     (state) => state.compose.get('spoiler_text') as string,
     (state) => !!state.compose.get('poll'),
     (state) => !!state.compose.get('quoted_status_id'),

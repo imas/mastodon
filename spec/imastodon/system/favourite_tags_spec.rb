@@ -19,6 +19,7 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
     before do
       login_and_visit_spa
       FavouriteTag.create!(account: bob.account, name: 'imastest', visibility: :public)
+      FavouriteTag.create!(account: bob.account, name: 'imasunlisted', visibility: :unlisted)
       open_composer
     end
 
@@ -34,6 +35,11 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
       expect(page).to have_no_css('[role="menuitemcheckbox"]')
     end
 
+    def close_composer
+      # ヘッダーの右端が閉じるボタン。ラベルは aria-labelledby の参照先にあり、Capybara では名前で探せない
+      find('form[role="dialog"] header button:last-of-type').click
+    end
+
     def compose_text
       find('form[role="dialog"] textarea').value
     end
@@ -45,10 +51,42 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
       expect(favourite_tags_button).to have_text("#{frontend_translations('compose_form.favourite_tags')}(1)")
     end
 
-    it 'ロックを外すと本文からタグが消え、件数も消える'
-    it '小窓を閉じて開き直しても、ロック表示と本文の差し込みが一致する'
-    it '本文がロック中のタグだけなら、小窓を閉じても破棄の確認が出ない'
-    it '未収載のタグをロックすると公開範囲が未収載になる'
+    it 'ロックを外すと本文からタグが消え、件数も消える' do
+      toggle_lock('imastest')
+      expect(compose_text).to include('#imastest')
+
+      toggle_lock('imastest')
+      expect(compose_text).to_not include('#imastest')
+      expect(favourite_tags_button).to have_no_text('(')
+    end
+
+    it '小窓を閉じて開き直しても、ロック表示と本文の差し込みが一致する' do
+      toggle_lock('imastest')
+
+      close_composer
+      expect(page).to have_no_css('form[role="dialog"]')
+      open_composer
+
+      expect(compose_text).to include('#imastest')
+      favourite_tags_button.click
+      expect(page).to have_css('[role="menuitemcheckbox"][aria-checked="true"]', text: '#imastest')
+    end
+
+    it '本文がロック中のタグだけなら、小窓を閉じても破棄の確認が出ない' do
+      toggle_lock('imastest')
+
+      close_composer
+      expect(page).to have_no_css('form[role="dialog"]')
+      expect(page).to have_no_text(frontend_translations('compose.cancel_modal.title'))
+    end
+
+    it '未収載のタグをロックすると公開範囲が未収載になる' do
+      toggle_lock('imasunlisted')
+
+      within('form[role="dialog"]') do
+        expect(page).to have_button(frontend_translations('compose.privacy.unlisted'))
+      end
+    end
   end
 
   context '設定画面でのCRUD操作' do
