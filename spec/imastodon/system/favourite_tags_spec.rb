@@ -27,7 +27,24 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
       expect(page).to have_css('[role="menuitemcheckbox"]', text: '#imastest')
     end
 
-    it 'タグをロックすると本文にタグが入り、ボタンにロック中の件数が出る'
+    def toggle_lock(tag_name)
+      favourite_tags_button.click
+      find('[role="menuitemcheckbox"]', text: "##{tag_name}").click
+      send_keys :escape
+      expect(page).to have_no_css('[role="menuitemcheckbox"]')
+    end
+
+    def compose_text
+      find('form[role="dialog"] textarea').value
+    end
+
+    it 'タグをロックすると本文にタグが入り、ボタンにロック中の件数が出る' do
+      toggle_lock('imastest')
+
+      expect(compose_text).to include('#imastest')
+      expect(favourite_tags_button).to have_text("#{frontend_translations('compose_form.favourite_tags')}(1)")
+    end
+
     it 'ロックを外すと本文からタグが消え、件数も消える'
     it '小窓を閉じて開き直しても、ロック表示と本文の差し込みが一致する'
     it '本文がロック中のタグだけなら、小窓を閉じても破棄の確認が出ない'
