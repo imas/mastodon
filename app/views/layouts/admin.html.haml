@@ -17,7 +17,7 @@
           .sidebar__toggle
             .sidebar__toggle__logo
               = link_to root_path do
-                = logo_as_symbol(:wordmark)
+                = image_tag vite_asset_path('images/logo_full_imastodon.svg'), class: 'logo logo--wordmark', alt: 'iMastodon'
 
             = link_to '#', class: 'sidebar__toggle__icon', 'aria-label': t('navigation.toggle_menu'), 'aria-expanded': 'false' do
               = material_symbol 'menu'

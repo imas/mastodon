@@ -28,7 +28,24 @@ RSpec.describe 'アイマストドンのロゴ', :js, type: :system do
   end
 
   context '設定画面のサイドバー' do
-    it 'デスクトップ幅ではワードマークが潰れずに出る'
-    it 'スマホ幅では上部にアイマストドンのワードマークが出る'
+    # スマホ幅のテストで変えた大きさが後続のテストに残らないよう、Playwright の既定に戻す
+    after { page.current_window.resize_to(1280, 720) }
+
+    it 'デスクトップ幅ではワードマークが潰れずに出る' do
+      login_and_visit_spa
+      visit '/settings/preferences'
+
+      wordmark = find('.sidebar > a img[src*="logo_full_imastodon"]')
+      expect(rendered_width(wordmark)).to be >= 180
+    end
+
+    it 'スマホ幅では上部にアイマストドンのワードマークが出る' do
+      login_and_visit_spa
+      page.current_window.resize_to(390, 844)
+      visit '/settings/preferences'
+
+      wordmark = find('.sidebar__toggle__logo img[src*="logo_full_imastodon"]')
+      expect(rendered_width(wordmark)).to be >= 100
+    end
   end
 end
