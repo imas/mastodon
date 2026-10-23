@@ -73,7 +73,21 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css('form[role="dialog"] button[aria-haspopup="menu"]', text: '社内資料')
     end
 
-    it '閲覧注意のトグルが「早苗さんに見つからないようにする」、入力欄が「ζ\'ヮ\')ζ＜まえせつ」である'
+    # ja-IM で言い換えていない文言は、アプリと同じく ja、en の順に引き継がれる
+    def ui_text(key)
+      %w(ja-IM ja en).each do |locale|
+        text = JSON.parse(Rails.root.join('app', 'javascript', 'mastodon', 'locales', "#{locale}.json").read)[key]
+        return text if text
+      end
+    end
+
+    it '閲覧注意のトグルが「早苗さんに見つからないようにする」、入力欄のラベルが「ζ\'ヮ\')ζ＜まえせつ」である' do
+      open_composer
+      find('form[role="dialog"] button[aria-haspopup="menu"]', text: ui_text('compose.settings')).click
+      find('[role="menuitemcheckbox"]', text: '早苗さんに見つからないようにする').click
+
+      expect(page).to have_css('form[role="dialog"] label', exact_text: "ζ'ヮ')ζ＜まえせつ")
+    end
 
     it '返信の投稿小窓のタイトルが「Re:あふぅ」である'
 
