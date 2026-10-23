@@ -20,8 +20,10 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
     end
 
     it '投稿ボタンのテキストが「あふぅ」である' do
-      submit_button = find('.compose-form button[type="submit"]')
-      expect(submit_button).to have_text('あふぅ')
+      within('nav') { click_on '新しいあふぅ' }
+      within('form[role="dialog"]') do
+        expect(page).to have_button('あふぅ', type: 'submit')
+      end
     end
 
     it 'ブーストボタンが「わかるわか引用」と表示される' do

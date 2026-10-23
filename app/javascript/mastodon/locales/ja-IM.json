@@ -39,6 +39,7 @@
   "column.mutes": "だまっとけ☆リスト",
   "column.notifications": "ホワイトボード",
   "column.public": "ライブステージ",
+  "compose.publish": "あふぅ",
   "compose.published.body": "あふぅされました！",
   "compose_form.encryption_warning": "Mastodonのあふぅはエンドツーエンド暗号化に対応していません。安全に送受信されるべき情報をMastodonで共有しないでください。",
   "compose_form.favourite_tags": "スウィーティー☆なタグ",
