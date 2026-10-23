@@ -18,6 +18,7 @@ import { useAppDispatch } from 'mastodon/store';
 
 import { useColumnSettings } from '../../public_timeline/components/feed_column_settings';
 
+import { FavouriteTagMenuItems } from './favourite_tag_menu_items';
 import { messages } from './hashtag_header';
 
 export const HashtagColumnMenu: React.FC<{
@@ -79,6 +80,7 @@ export const HashtagColumnMenu: React.FC<{
           <FormattedMessage {...messages.feature} />
         )}
       </MenuItem>
+      <FavouriteTagMenuItems tagName={tagId} />
       {multiColumn && pinned && (
         <>
           <MenuItemDivider />
