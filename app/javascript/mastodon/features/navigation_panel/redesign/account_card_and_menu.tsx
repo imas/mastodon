@@ -46,6 +46,7 @@ import {
 import { useAppDispatch } from '@/mastodon/store';
 
 import classes from './account_card_and_menu.module.scss';
+import { FavouriteTagsMenuItemLink } from './favourite_tags_menu_item';
 
 export const NavigationAccountCardAndMenu: React.FC = () => {
   const { accountId } = useIdentity();
@@ -125,6 +126,7 @@ export const AccountMenuItems: React.FC<{
       <MenuItemLink as='a' href='/settings/preferences' icon={GearIcon}>
         <FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />
       </MenuItemLink>
+      <FavouriteTagsMenuItemLink />
 
       <MenuItemDivider />
 

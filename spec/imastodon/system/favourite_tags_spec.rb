@@ -88,10 +88,18 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
       end
     end
 
-    it 'メニューからお気に入りタグの設定画面を開ける'
-
     context 'お気に入りタグが1件も無い場合' do
-      it '登録されていない旨が出る'
+      it '登録されていない旨と、登録画面へのリンクが出る'
+    end
+  end
+
+  context 'アカウントカードの「⋯」メニューの場合' do
+    before { login_and_visit_spa }
+
+    it 'お気に入りタグの設定画面へのリンクがある' do
+      # ナビゲーション型のメニューなので、トリガーは aria-haspopup を持たず、項目もただのリンクになる
+      find('nav footer button[aria-expanded]').click
+      expect(page).to have_link(frontend_translations('navigation_bar.favourite_tags'), href: '/settings/favourite_tags')
     end
   end
 
