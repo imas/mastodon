@@ -114,6 +114,11 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       end
     end
 
-    it 'アカウントカードの「⋯」メニューに「理由あってブロック！」「だまっとけ☆リスト」がある'
+    it 'アカウントカードの「⋯」メニューに「理由あってブロック！」「だまっとけ☆リスト」がある' do
+      find('nav footer button[aria-expanded]').click
+
+      expect(page).to have_link('理由あってブロック！')
+      expect(page).to have_link('だまっとけ☆リスト')
+    end
   end
 end
