@@ -12,7 +12,8 @@ RSpec.describe 'AvatarOverlayIcon', :js, type: :system do
     FeedManager.instance.push_to_home(bob.account, status)
     visit '/home'
     wait_for_react
-    find('article[data-id]', text: text)
+    # ときどき同じ投稿の article が 2 つ見つかり、find だと Ambiguous で落ちる（4 回に 1 回ほど。原因は未特定）
+    find('article[data-id]', text: text, match: :first)
   end
 
   context 'unlisted投稿がホームTLに表示される場合' do
