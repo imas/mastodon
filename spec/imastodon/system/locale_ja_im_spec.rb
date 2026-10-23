@@ -31,7 +31,10 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       FeedManager.instance.push_to_home(bob.account, status)
       visit '/home'
       wait_for_react
-      expect(page).to have_button('わかるわか引用')
+      # リデザイン版のブーストボタンは見えないラベル要素を aria-labelledby で参照していて、
+      # Capybara の have_button はそれを名前として解決しない
+      boost_button = find('article[data-id] button[aria-haspopup="menu"][aria-pressed]')
+      expect(page).to have_css("##{boost_button['aria-labelledby']}", text: 'わかるわか引用', visible: :hidden)
     end
   end
 end
