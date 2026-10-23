@@ -36,6 +36,8 @@ RSpec.describe 'AvatarOverlayIcon', :js, type: :system do
       JS
       expect(alpha).to eq 255
     end
+
+    it '公開範囲アイコンがアバターの顔を覆いすぎない'
   end
 
   context 'public投稿がホームTLに表示される場合' do
