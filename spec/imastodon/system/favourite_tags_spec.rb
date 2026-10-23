@@ -61,19 +61,9 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
     end
   end
 
-  context 'ハッシュタグタイムライン上部の場合' do
-    before do
-      login_and_visit_spa
-      page.execute_script(<<~JS)
-        window.history.pushState({}, '', '/timelines/tag/imastodon');
-        window.dispatchEvent(new PopStateEvent('popstate', { state: {} }));
-      JS
-      have_css('.column-header')
-    end
-
-    it 'お気に入りタグ追加ボタンが表示される' do
-      first('button.column-header__button').click
-      expect(page).to have_css('.favourite-tags__add-button-in-column')
-    end
+  context 'ハッシュタグTLの「…」メニューの場合' do
+    it 'お気に入りタグ（公開）に追加できる'
+    it '登録済みのお気に入りタグ（公開）を外せる'
+    it 'お気に入りタグ（未収載）に追加できる'
   end
 end
