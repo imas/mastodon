@@ -20,8 +20,10 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
     end
 
     it '投稿ボタンのテキストが「あふぅ」である' do
-      submit_button = find('.compose-form button[type="submit"]')
-      expect(submit_button).to have_text('あふぅ')
+      within('nav') { click_on '新しいあふぅ' }
+      within('form[role="dialog"]') do
+        expect(page).to have_button('あふぅ', type: 'submit')
+      end
     end
 
     it 'ブーストボタンが「わかるわか引用」と表示される' do
@@ -29,7 +31,10 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       FeedManager.instance.push_to_home(bob.account, status)
       visit '/home'
       wait_for_react
-      expect(page).to have_button('わかるわか引用')
+      # リデザイン版のブーストボタンは見えないラベル要素を aria-labelledby で参照していて、
+      # Capybara の have_button はそれを名前として解決しない
+      boost_button = find('article[data-id] button[aria-haspopup="menu"][aria-pressed]')
+      expect(page).to have_css("##{boost_button['aria-labelledby']}", text: 'わかるわか引用', visible: :hidden)
     end
   end
 end

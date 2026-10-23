@@ -14,8 +14,8 @@ import {
   GavelIcon,
   ShieldStarIcon,
   SignOutIcon,
-  MastodonLogoIcon,
-  GithubLogoIcon,
+  BellSlashIcon,
+  HandWavingIcon,
 } from '@phosphor-icons/react';
 
 import { openModal } from '@/mastodon/actions/modal';
@@ -39,7 +39,6 @@ import {
 } from '@/mastodon/components/menu';
 import { useAccount } from '@/mastodon/hooks/useAccount';
 import { useIdentity } from '@/mastodon/identity_context';
-import { source_url, version } from '@/mastodon/initial_state';
 import {
   canManageReports,
   canViewAdminDashboard,
@@ -47,6 +46,7 @@ import {
 import { useAppDispatch } from '@/mastodon/store';
 
 import classes from './account_card_and_menu.module.scss';
+import { FavouriteTagsMenuItemLink } from './favourite_tags_menu_item';
 
 export const NavigationAccountCardAndMenu: React.FC = () => {
   const { accountId } = useIdentity();
@@ -63,13 +63,18 @@ export const NavigationAccountCardAndMenu: React.FC = () => {
       icon={<Avatar account={account} size={32} />}
       sideContent={
         <Menu type='navigation'>
-          <MenuTrigger as={IconButton} icon={DotsThreeIcon} size='sm'>
+          <MenuTrigger
+            as={IconButton}
+            icon={DotsThreeIcon}
+            size='sm'
+            variant='ghost'
+          >
             <FormattedMessage
               id='tabs_bar.account_settings'
               defaultMessage='Account settings'
             />
           </MenuTrigger>
-          <MenuList placement='top' offset={12} strategy='fixed'>
+          <MenuList placement='top' offset={12} strategy='fixed' minWidth={220}>
             <AccountMenuItems />
           </MenuList>
         </Menu>
@@ -121,6 +126,7 @@ export const AccountMenuItems: React.FC<{
       <MenuItemLink as='a' href='/settings/preferences' icon={GearIcon}>
         <FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />
       </MenuItemLink>
+      <FavouriteTagsMenuItemLink />
 
       <MenuItemDivider />
 
@@ -152,19 +158,39 @@ export const AccountMenuItems: React.FC<{
 
       <MenuItemDivider />
 
-      <MenuItemLink as='a' href='/relationships' icon={UsersThreeIcon}>
-        <FormattedMessage
-          id='navigation_bar.followers_and_following'
-          defaultMessage='Followers & Following'
-        />
-      </MenuItemLink>
+      <MenuItemGroup
+        label={
+          <FormattedMessage
+            id='navigation_bar.relationships'
+            defaultMessage='Relationships'
+          />
+        }
+      >
+        <MenuItemLink to={`${accountBasePath}/followers`} icon={HandWavingIcon}>
+          <FormattedMessage
+            id='navigation_bar.followers'
+            defaultMessage='Followers'
+          />
+        </MenuItemLink>
 
-      <MenuItemLink to='/blocks' icon={ProhibitIcon}>
-        <FormattedMessage
-          id='navigation_bar.blocked_accounts'
-          defaultMessage='Blocked accounts'
-        />
-      </MenuItemLink>
+        <MenuItemLink to={`${accountBasePath}/following`} icon={UsersThreeIcon}>
+          <FormattedMessage
+            id='navigation_bar.following'
+            defaultMessage='Following'
+          />
+        </MenuItemLink>
+
+        <MenuItemLink to='/mutes' icon={BellSlashIcon}>
+          <FormattedMessage id='navigation_bar.muted' defaultMessage='Muted' />
+        </MenuItemLink>
+
+        <MenuItemLink to='/blocks' icon={ProhibitIcon}>
+          <FormattedMessage
+            id='navigation_bar.blocked'
+            defaultMessage='Blocked'
+          />
+        </MenuItemLink>
+      </MenuItemGroup>
 
       {(isManager || isAdmin) && (
         <>
@@ -189,28 +215,6 @@ export const AccountMenuItems: React.FC<{
           )}
         </>
       )}
-
-      <MenuItemDivider />
-
-      <MenuItemGroup label={`Mastodon v${version}`}>
-        <MenuItemLink as='a' href={source_url} icon={GithubLogoIcon}>
-          <FormattedMessage
-            id='navigation_bar.source_code'
-            defaultMessage='Source Code'
-          />
-        </MenuItemLink>
-
-        <MenuItemLink
-          as='a'
-          href='https://joinmastodon.org'
-          icon={MastodonLogoIcon}
-        >
-          <FormattedMessage
-            id='navigation_bar.about_mastodon'
-            defaultMessage='About Mastodon'
-          />
-        </MenuItemLink>
-      </MenuItemGroup>
 
       <MenuItemDivider />
 

@@ -5,13 +5,9 @@ import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
-import {
-  ImageSquareIcon,
-  ChartBarHorizontalIcon,
-  WarningCircleIcon,
-} from '@phosphor-icons/react';
+import { ImageSquareIcon, WarningCircleIcon } from '@phosphor-icons/react';
 
-import { addPoll, uploadCompose } from '@/mastodon/actions/compose';
+import { uploadCompose } from '@/mastodon/actions/compose';
 import { Button, IconButton } from '@/mastodon/components/button/redesign';
 import {
   createAppSelector,
@@ -34,19 +30,12 @@ export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
 }) => {
   const type = useAppSelector(selectComposeType);
   const { current, max } = useAppSelector(selectComposeCharsCount);
-  const { hasPoll, quotedStatusId } = useAppSelector(
-    selectComposeHasAttachments,
-  );
+  const { quotedStatusId } = useAppSelector(selectComposeHasAttachments);
   const hasQuote = !!quotedStatusId;
   const isSubmitting = useAppSelector(
     (state) => !!state.compose.get('is_submitting'),
   );
   const isEditing = useAppSelector((state) => !!state.compose.get('id'));
-
-  const dispatch = useAppDispatch();
-  const handlePoll = useCallback(() => {
-    dispatch(addPoll());
-  }, [dispatch]);
 
   let publishText = (
     <FormattedMessage id='compose.publish' defaultMessage='Publish' />
@@ -64,18 +53,6 @@ export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
       <ComposeUploadButton disabled={hasQuote} />
 
       <ComposeEmojiButton onPick={onEmojiPick} />
-
-      <IconButton
-        size='sm'
-        icon={ChartBarHorizontalIcon}
-        disabled={hasQuote || hasPoll}
-        onClick={handlePoll}
-      >
-        <FormattedMessage
-          id='poll_button.add_poll'
-          defaultMessage='Add a poll'
-        />
-      </IconButton>
 
       <div className={classes.flexGrowWrap}>
         <span

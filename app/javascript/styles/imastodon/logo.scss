@@ -15,7 +15,19 @@ nav.header div.nav-left a.brand > img.logo {
 }
 
 // /settings/profileの左上と/auth/sign_in
-div.sidebar-wrapper div.sidebar a img.logo,
+// upstream で .sidebar-wrapper が div から header になったので、要素名では絞らない。
+// スマホ幅のトグルのワードマーク（.sidebar__toggle__logo）には当てない
+.sidebar-wrapper .sidebar > a > img.logo,
 div.logo-container img.logo {
   width: 200px;
+  height: auto;
+}
+
+// リデザイン版の新ナビの左上（features/navigation_panel/redesign/header.tsx）。
+// ワードマークの下の小さな文字が潰れない高さにする
+.navigation-header__wordmark {
+  display: block;
+  height: 36px;
+  width: auto;
+  max-width: 100%;
 }

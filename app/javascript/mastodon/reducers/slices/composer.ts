@@ -11,14 +11,15 @@ import {
   COMPOSE_MENTION,
   COMPOSE_REPLY,
   COMPOSE_SET_STATUS,
+  COMPOSE_UPLOAD_REQUEST,
   directCompose,
-  replyComposeById,
   resetCompose,
   submitCompose,
 } from '@/mastodon/actions/compose';
 import {
   changeComposeVisibility,
   PRIVATE_QUOTE_MODAL_ID,
+  replyComposeById,
 } from '@/mastodon/actions/compose_typed';
 import { openModal } from '@/mastodon/actions/modal';
 import { REDRAFT } from '@/mastodon/actions/statuses';
@@ -94,6 +95,7 @@ const composerSlice = createSlice({
       if (!state.publishErrors.includes(action.payload)) {
         state.publishErrors.push(action.payload);
       }
+      state.pendingFocus = { selection: null };
     },
     clearErrors(state) {
       state.publishErrors = [];
@@ -109,6 +111,7 @@ const composerSlice = createSlice({
           COMPOSE_MENTION,
           COMPOSE_DIRECT,
           COMPOSE_SET_STATUS,
+          COMPOSE_UPLOAD_REQUEST,
           REDRAFT,
         ].includes(action.type),
       (state) => {
@@ -139,7 +142,12 @@ export const minimizeComposerToggle = createAppThunk(
 
 export const selectComposerIsChanged = createAppSelector(
   [
-    (state) => state.compose.get('text') as string,
+    // imastodon: ロック中のお気に入りタグだけが入った本文は書きかけとみなさない
+    (state) => {
+      const text = state.compose.get('text') as string;
+      const defaultText = state.compose.get('defaultText') as string;
+      return text.trim() === defaultText.trim() ? '' : text;
+    },
     (state) => state.compose.get('spoiler_text') as string,
     (state) => !!state.compose.get('poll'),
     (state) => !!state.compose.get('quoted_status_id'),
@@ -204,7 +212,7 @@ export const openNewComposer = createAppThunk(
         dispatch(requestComposerFocus());
       }
     } else if (payload.type === 'reply') {
-      dispatch(replyComposeById(payload.toStatusId));
+      dispatch(replyComposeById({ statusId: payload.toStatusId }));
     } else {
       dispatch(requestComposerFocus());
     }

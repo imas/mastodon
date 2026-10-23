@@ -8,12 +8,14 @@ import { normalizeKey } from '@/mastodon/components/hotkeys/utils';
 import {
   closeComposer,
   getComposerTextarea,
+  selectComposerIsChanged,
   submitComposer,
 } from '@/mastodon/reducers/slices/composer';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
 import { ComposeAttachments } from './attachments';
 import type { OnEmojiPick } from './emoji';
+import { ComposeFavouriteTags } from './favourite_tags';
 import { ComposeFooter } from './footer';
 import { ComposeFormHeader } from './header';
 import { ComposeHints } from './hints';
@@ -49,6 +51,7 @@ export const RedesignComposeForm: React.FC<
   const { onEmojiPick, onSubmit } = useComposeHandlers(redirectOnSuccess);
 
   const titleId = useId();
+  const hintsId = useId();
 
   return (
     <form
@@ -68,23 +71,32 @@ export const RedesignComposeForm: React.FC<
 
       {!headless && <ComposeFormHeader id={titleId} noMinimize={noMinimize} />}
 
-      <ComposeReply />
-
       <div className={classes.toolbar}>
-        <ComposeVisibility className={classes.flexGrowWrap} />
+        <div className={classes.flexGrowWrap}>
+          <ComposeVisibility />
+          <ComposeFavouriteTags />
+        </div>
 
         <LanguageButton />
 
         <ComposeSettingsMenu />
       </div>
 
-      <ComposeSensitiveField />
+      <ComposeTextarea
+        autoFocus={autoFocus}
+        aria-describedby={hintsId}
+        beforeTextArea={
+          <>
+            <ComposeReply />
 
-      <ComposeTextarea autoFocus={autoFocus}>
+            <ComposeSensitiveField />
+          </>
+        }
+      >
         <ComposeAttachments className={classes.attachments} />
       </ComposeTextarea>
 
-      <ComposeHints />
+      <ComposeHints id={hintsId} />
 
       <ComposeFooter onEmojiPick={onEmojiPick} />
     </form>
@@ -100,6 +112,7 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
   const dispatch = useAppDispatch();
 
   const isModalOpen = useAppSelector((state) => state.modal.stack.size > 0);
+  const isComposerChanged = useAppSelector(selectComposerIsChanged);
   useEffect(() => {
     function escapeComposer(event: KeyboardEvent) {
       const key = normalizeKey(event.key);
@@ -112,11 +125,21 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
       }
     }
 
+    function closePage(event: BeforeUnloadEvent) {
+      if (isComposerChanged) {
+        event.preventDefault();
+        return true;
+      }
+      return;
+    }
+
     document.addEventListener('keydown', escapeComposer);
+    window.addEventListener('beforeunload', closePage);
     return () => {
       document.removeEventListener('keydown', escapeComposer);
+      window.removeEventListener('beforeunload', closePage);
     };
-  }, [dispatch, isModalOpen]);
+  }, [dispatch, isComposerChanged, isModalOpen]);
 
   const onEmojiPick: OnEmojiPick = useCallback(
     (emoji) => {

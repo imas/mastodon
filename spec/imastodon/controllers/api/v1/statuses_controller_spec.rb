@@ -26,6 +26,23 @@ RSpec.describe Api::V1::StatusesController, type: :controller do
           expect(response).to have_http_status(422)
         end
       end
+
+      describe 'PUT #update' do
+        let(:scopes) { 'write:statuses' }
+        let(:status) { Fabricate(:status, account: user.account) }
+
+        before do
+          put :update, params: { id: status.id, status: 'Hello world', poll: { options: %w(Sakura Izumi Ako), expires_in: 300 } }
+        end
+
+        it 'returns http failure (imastodon)' do
+          expect(response).to have_http_status(422)
+        end
+
+        it 'does not attach a poll to the status (imastodon)' do
+          expect(status.reload.preloadable_poll).to be_nil
+        end
+      end
     end
   end
 end

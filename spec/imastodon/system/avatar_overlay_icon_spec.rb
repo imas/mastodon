@@ -6,27 +6,52 @@ RSpec.describe 'AvatarOverlayIcon', :js, type: :system do
   include ProfileStories
   include ImastodonSystemHelpers
 
+  def visit_home_with(text, visibility)
+    login_and_visit_spa
+    status = Fabricate(:status, account: bob.account, text: text, visibility: visibility)
+    FeedManager.instance.push_to_home(bob.account, status)
+    visit '/home'
+    wait_for_react
+    find('article[data-id]', text: text)
+  end
+
   context 'unlisted投稿がホームTLに表示される場合' do
     it 'アバターに公開範囲アイコンが表示される' do
-      login_and_visit_spa
-      status = Fabricate(:status, account: bob.account, text: 'テスト投稿（未収載）', visibility: :unlisted)
-      FeedManager.instance.push_to_home(bob.account, status)
-      visit '/home'
-      wait_for_react
-      status_wrapper = first('.status__wrapper-unlisted')
-      expect(status_wrapper).to have_css('.account__avatar-overlay-icon-overlay')
+      article = visit_home_with('テスト投稿（未収載）', :unlisted)
+      expect(article).to have_css('header .account__avatar-overlay-icon-overlay')
+    end
+
+    it '公開範囲アイコンの背景が不透明で、アバターの上でも見える' do
+      article = visit_home_with('テスト投稿（未収載）', :unlisted)
+      icon = article.find('header .account__avatar-overlay-icon-overlay')
+
+      # 色の書式（rgb() や color()）に左右されないよう、canvas に塗ってアルファ値を読む
+      alpha = page.evaluate_script(<<~JS, icon)
+        ((el) => {
+          const ctx = document.createElement('canvas').getContext('2d');
+          ctx.fillStyle = getComputedStyle(el).backgroundColor;
+          ctx.fillRect(0, 0, 1, 1);
+          return ctx.getImageData(0, 0, 1, 1).data[3];
+        })(arguments[0])
+      JS
+      expect(alpha).to eq 255
+    end
+
+    it '公開範囲アイコンがアバターの顔を覆いすぎない' do
+      article = visit_home_with('テスト投稿（未収載）', :unlisted)
+      avatar_width = article.find('header .status__avatar-with-visibility').evaluate_script('this.getBoundingClientRect().width')
+      icon_width = article.find('header .account__avatar-overlay-icon-overlay').evaluate_script('this.getBoundingClientRect().width')
+
+      # 直径がアバターの半分あると、面積で 1/4 を覆って邪魔に見えた
+      expect(icon_width.fdiv(avatar_width)).to be < 0.4
     end
   end
 
   context 'public投稿がホームTLに表示される場合' do
     it 'アバターに公開範囲アイコンが表示されない' do
-      login_and_visit_spa
-      status = Fabricate(:status, account: bob.account, text: 'テスト投稿（公開）', visibility: :public)
-      FeedManager.instance.push_to_home(bob.account, status)
-      visit '/home'
-      wait_for_react
-      status_wrapper = first('.status__wrapper-public')
-      expect(status_wrapper).to have_no_css('.account__avatar-overlay-icon-overlay')
+      article = visit_home_with('テスト投稿（公開）', :public)
+      expect(article).to have_css('header .account__avatar')
+      expect(article).to have_no_css('header .account__avatar-overlay-icon-overlay')
     end
   end
 end

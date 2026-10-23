@@ -9,14 +9,14 @@ import { useAccount } from '@/mastodon/hooks/useAccount';
 import { useCurrentAccountId } from '@/mastodon/hooks/useAccountId';
 import type { AccountStatusShape } from '@/mastodon/models/status';
 
-import { Avatar } from '../avatar';
 import { DisplayName } from '../display_name';
 import { useAccountHandle } from '../display_name/default';
 import { RelativeTimestamp } from '../relative_timestamp';
 import { Skeleton } from '../skeleton';
 
+import { AvatarWithVisibility } from './avatar_with_visibility';
 import classes from './header.module.scss';
-import { statusLink } from './utils';
+import { accountStatusLinkProps, statusLink } from './utils';
 
 interface StatusRedesignHeaderProps {
   status: Pick<
@@ -40,16 +40,7 @@ export const StatusRedesignHeader: React.FC<StatusRedesignHeaderProps> = ({
   );
 
   const handleId = useId();
-  const accountLinkProps = {
-    to: {
-      pathname: `/@${account.acct}`,
-      state: { reference: 'status' },
-    },
-    title: `@${account.acct}`,
-    'data-id': account.id,
-    'data-hover-card-account': account.id,
-    'data-hover-card-reference': 'status',
-  };
+  const accountLinkProps = accountStatusLinkProps(account);
 
   let displayName = (
     <Link
@@ -102,17 +93,26 @@ export const StatusRedesignHeader: React.FC<StatusRedesignHeaderProps> = ({
   }
 
   return (
-    <header className={classNames(className, classes.root)}>
+    <header
+      className={classNames(
+        className,
+        classes.root,
+        !!children && classes.hasExtra,
+      )}
+    >
       <Link
         {...accountLinkProps}
         role='presentation'
         tabIndex={-1}
         className={classes.avatar}
       >
-        <Avatar account={account} size={null} />
+        <AvatarWithVisibility
+          account={account}
+          visibility={status.visibility}
+        />
       </Link>
 
-      <div>
+      <div className={classes.contents}>
         <p className={classes.name}>
           {displayName}
           &bull;

@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
+import logoFullImastodon from '@/images/logo_full_imastodon.svg';
 import { IconLogo } from '@/mastodon/components/logo';
 import { customAppIcon, domain, title } from '@/mastodon/initial_state';
 
@@ -36,7 +37,12 @@ export const LogoLockup: React.FC<{
       )}
       <span className={classes.content}>
         <span className={classes.serverName}>
-          {siteName ?? title ?? domain}
+          {/* imastodon: サイト名の文字の代わりにワードマークを出す */}
+          <img
+            src={logoFullImastodon}
+            alt={siteName ?? title ?? domain}
+            className='navigation-header__wordmark'
+          />
         </span>
         <span className={classes.poweredBy}>
           <FormattedMessage
