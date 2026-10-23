@@ -26,6 +26,11 @@ RSpec.describe Api::V1::StatusesController, type: :controller do
           expect(response).to have_http_status(422)
         end
       end
+
+      describe 'PUT #update' do
+        it 'returns http failure (imastodon)'
+        it 'does not attach a poll to the status (imastodon)'
+      end
     end
   end
 end
