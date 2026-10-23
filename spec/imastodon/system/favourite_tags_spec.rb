@@ -7,7 +7,26 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
   include ImastodonSystemHelpers
 
   context '投稿小窓の場合' do
-    it 'お気に入りタグボタンからお気に入りタグの一覧を開ける'
+    def open_composer
+      within('nav') { click_on frontend_translations('tabs_bar.publish') }
+      expect(page).to have_css('form[role="dialog"]')
+    end
+
+    def favourite_tags_button
+      find('form[role="dialog"] button', text: frontend_translations('compose_form.favourite_tags'))
+    end
+
+    before do
+      login_and_visit_spa
+      FavouriteTag.create!(account: bob.account, name: 'imastest', visibility: :public)
+      open_composer
+    end
+
+    it 'お気に入りタグボタンからお気に入りタグの一覧を開ける' do
+      favourite_tags_button.click
+      expect(page).to have_css('[role="menuitemcheckbox"]', text: '#imastest')
+    end
+
     it 'タグをロックすると本文にタグが入り、ボタンにロック中の件数が出る'
     it 'ロックを外すと本文からタグが消え、件数も消える'
     it '小窓を閉じて開き直しても、ロック表示と本文の差し込みが一致する'

@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
 import { ComposeAttachments } from './attachments';
 import type { OnEmojiPick } from './emoji';
+import { ComposeFavouriteTags } from './favourite_tags';
 import { ComposeFooter } from './footer';
 import { ComposeFormHeader } from './header';
 import { ComposeHints } from './hints';
@@ -71,7 +72,10 @@ export const RedesignComposeForm: React.FC<
       {!headless && <ComposeFormHeader id={titleId} noMinimize={noMinimize} />}
 
       <div className={classes.toolbar}>
-        <ComposeVisibility className={classes.flexGrowWrap} />
+        <div className={classes.flexGrowWrap}>
+          <ComposeVisibility />
+          <ComposeFavouriteTags />
+        </div>
 
         <LanguageButton />
 
