@@ -7,5 +7,6 @@
 # 言い換えない理由を残したいときは、除外したときのコミットメッセージに書く。
 # json は app/javascript/mastodon/locales、yml は config/locales のキー
 ---
-json: {}
+json:
+  compose_form.spoiler.marked: 本文は警告の後ろに隠されます
 yml: {}
