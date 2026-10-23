@@ -39,7 +39,9 @@ RSpec.describe Api::V1::StatusesController, type: :controller do
           expect(response).to have_http_status(422)
         end
 
-        it 'does not attach a poll to the status (imastodon)'
+        it 'does not attach a poll to the status (imastodon)' do
+          expect(status.reload.preloadable_poll).to be_nil
+        end
       end
     end
   end
