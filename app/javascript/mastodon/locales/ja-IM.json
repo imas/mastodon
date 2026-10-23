@@ -37,6 +37,8 @@
   "column.home": "オフィス",
   "column.notifications": "ホワイトボード",
   "column.public": "ライブステージ",
+  "compose.post.placeholder": "もう時間がないんです！",
+  "compose.post.title.new": "新しいあふぅ",
   "compose.publish": "あふぅ",
   "compose.published.body": "あふぅされました！",
   "compose_form.encryption_warning": "Mastodonのあふぅはエンドツーエンド暗号化に対応していません。安全に送受信されるべき情報をMastodonで共有しないでください。",

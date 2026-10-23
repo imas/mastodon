@@ -37,7 +37,18 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css("##{boost_button['aria-labelledby']}", text: 'わかるわか引用', visible: :hidden)
     end
 
-    it '投稿小窓のタイトルが「新しいあふぅ」、本文欄のプレースホルダが「もう時間がないんです！」である'
+    def open_composer
+      within('nav') { click_on '新しいあふぅ' }
+      expect(page).to have_css('form[role="dialog"]')
+    end
+
+    it '投稿小窓のタイトルが「新しいあふぅ」、本文欄のプレースホルダが「もう時間がないんです！」である' do
+      open_composer
+      within('form[role="dialog"]') do
+        expect(page).to have_css('header h2', text: '新しいあふぅ')
+        expect(page).to have_field(placeholder: 'もう時間がないんです！')
+      end
+    end
 
     it '公開範囲メニューの見出しが「公開範囲」、選択肢が「公開資料」「私的資料」「楽屋には発言しない」である'
 
