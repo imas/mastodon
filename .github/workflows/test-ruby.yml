@@ -178,7 +178,8 @@ jobs:
 
   test-e2e:
     name: End to End testing
-    runs-on: ubuntu-latest
+    # Playwright 1.60 は ubuntu-26.04 に未対応（1.61 で対応）
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
 
     needs:
