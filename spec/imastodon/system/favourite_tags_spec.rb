@@ -87,6 +87,12 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
         expect(page).to have_button(frontend_translations('compose.privacy.unlisted'))
       end
     end
+
+    it 'メニューからお気に入りタグの設定画面を開ける'
+
+    context 'お気に入りタグが1件も無い場合' do
+      it '登録されていない旨が出る'
+    end
   end
 
   context '設定画面でのCRUD操作' do
