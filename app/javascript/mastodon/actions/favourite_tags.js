@@ -1,7 +1,6 @@
 import api from '../api';
 
 export const FAVOURITE_TAGS_SUCCESS = 'FAVOURITE_TAGS_SUCCESS';
-export const TOGGLE_FAVOURITE_TAGS = 'TOGGLE_FAVOURITE_TAGS';
 export const COMPOSE_LOCK_TAG = 'LOCK_TAG';
 export const TOGGLE_LOCK_FAVOURITE_TAG = 'TOGGLE_LOCK_FAVOURITE_TAG';
 
@@ -32,12 +31,6 @@ export function removeFavouriteTags(id) {
     api(getState).delete(`/api/v1/favourite_tags/${id}`).then(() => {
       dispatch(refreshFavouriteTags());
     }).catch(() => {});
-  };
-}
-
-export function toggleFavouriteTags() {
-  return {
-    type: TOGGLE_FAVOURITE_TAGS,
   };
 }
 

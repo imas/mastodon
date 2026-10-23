@@ -1031,7 +1031,6 @@
   "load_pending": "{count, plural, one {# new item} other {# new items}}",
   "loading_indicator.label": "Loading…",
   "media_gallery.hide": "Hide",
-  "media_gallery.toggle_visible": "Toggle visibility",
   "messages.new": "New",
   "moved_to_account_banner.text": "Your account {disabledAccount} is currently disabled because you moved to {movedToAccount}.",
   "multi_column_placeholer.message": "Posts and other pages will open in this column.",

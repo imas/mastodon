@@ -1,20 +1,6 @@
 /**
-  * features/compose/components/favourite_tags
+  * features/hashtag_timeline/components/favourite_toggle
   */
-
-.favourite-tags__icon {
-  width: 15px;
-  padding: 0 5px;
-  text-align: center;
-}
-
-.favourite-tags__lock {
-  background-color: transparent;
-  text-align: center;
-  border: none;
-  color: var(--color-text-primary);
-  height: 16px;
-}
 
 .favourite-tags__add-button-in-column {
   background-color: var(--color-bg-brand-base);

@@ -36,7 +36,6 @@ import { messages as navbarMessages } from '../ui/components/navigation_bar';
 
 import { Search } from './components/search';
 import ComposeFormContainer from './containers/compose_form_container';
-import FavouriteTagsContainer from './containers/favourite_tags_container';
 
 const messages = defineMessages({
   live_feed_public: {
@@ -178,7 +177,6 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
         >
           <div className='drawer__inner' onFocus={handleFocus}>
             <ComposeFormContainer />
-            <FavouriteTagsContainer />
 
             <div className='drawer__inner__mastodon with-zig-zag-decoration'>
               <img alt='' draggable='false' src={mascot ?? elephantUIPlane} />
@@ -217,7 +215,6 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
         ) : (
           <ComposeFormContainer autoFocus />
         )}
-        <FavouriteTagsContainer />
       </div>
 
       <Helmet>
