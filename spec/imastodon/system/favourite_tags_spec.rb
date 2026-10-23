@@ -6,38 +6,13 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
   include ProfileStories
   include ImastodonSystemHelpers
 
-  context 'お気に入りタグが1件登録されているシングルカラムUIの場合' do
-    before do
-      login_and_visit_spa
-      FavouriteTag.create!(account: bob.account, name: 'imastest', visibility: :public)
-      visit '/'
-      wait_for_react
-    end
-
-    it 'Compose Panelにお気に入りタグ一覧が表示される' do
-      expect(page).to have_css('.compose__extra')
-      expect(page).to have_css('.compose__extra__body__name', text: '#imastest')
-    end
-
-    it 'タグ名をクリックするとそのタグTLに遷移する' do
-      find('.compose__extra__body__name', text: '#imastest').click
-      expect(page).to have_current_path(%r{/timelines/tag/imastest|/tags/imastest})
-    end
-
-    it 'ロックボタンをクリックすると投稿テキストにタグが挿入される' do
-      within('.compose__extra li', text: '#imastest') do
-        click_button class: 'favourite-tags__lock'
-      end
-      expect(find('.autosuggest-textarea__textarea').value).to include('#imastest')
-    end
-
-    it '折りたたみボタンで開閉できる' do
-      expect(page).to have_css('.compose__extra .foldable--visible')
-      within('.compose__extra__header__fold__icon') { click_button }
-      expect(page).to have_no_css('.compose__extra .foldable--visible')
-      within('.compose__extra__header__fold__icon') { click_button }
-      expect(page).to have_css('.compose__extra .foldable--visible')
-    end
+  context '投稿小窓の場合' do
+    it 'お気に入りタグボタンからお気に入りタグの一覧を開ける'
+    it 'タグをロックすると本文にタグが入り、ボタンにロック中の件数が出る'
+    it 'ロックを外すと本文からタグが消え、件数も消える'
+    it '小窓を閉じて開き直しても、ロック表示と本文の差し込みが一致する'
+    it '本文がロック中のタグだけなら、小窓を閉じても破棄の確認が出ない'
+    it '未収載のタグをロックすると公開範囲が未収載になる'
   end
 
   context '設定画面でのCRUD操作' do

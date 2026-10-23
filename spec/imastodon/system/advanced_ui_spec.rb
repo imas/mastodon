@@ -18,27 +18,6 @@ RSpec.describe 'マルチカラムUI', :js, type: :system do
       disable_advanced_ui
     end
 
-    context 'お気に入りタグ' do
-      before do
-        FavouriteTag.create!(account: bob.account, name: 'imasdecktest', visibility: :public)
-        visit '/deck'
-        wait_for_react
-      end
-
-      it 'Composeカラムにお気に入りタグ一覧が表示される' do
-        expect(page).to have_css('.compose__extra')
-        expect(page).to have_css('.compose__extra__body__name', text: '#imasdecktest')
-      end
-
-      it '折りたたみボタンで開閉できる' do
-        expect(page).to have_css('.compose__extra .foldable--visible')
-        within('.compose__extra__header__fold__icon') { click_button }
-        expect(page).to have_no_css('.compose__extra .foldable--visible')
-        within('.compose__extra__header__fold__icon') { click_button }
-        expect(page).to have_css('.compose__extra .foldable--visible')
-      end
-    end
-
     context 'アバターオーバーレイアイコン' do
       it 'unlisted投稿のアバターに公開範囲アイコンが表示される' do
         status = Fabricate(:status, account: bob.account, text: 'デッキテスト投稿（未収載）', visibility: :unlisted)
