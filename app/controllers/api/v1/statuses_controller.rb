@@ -55,6 +55,8 @@ class Api::V1::StatusesController < Api::BaseController
   end
 
   def update
+    raise Mastodon::ValidationError, I18n.t('_imastodon.polls.validations.forbidden') if status_params[:poll].present?
+
     @status = Status.where(account: current_account).find(params[:id])
     authorize @status, :update?
 
