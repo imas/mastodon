@@ -37,7 +37,14 @@ RSpec.describe 'AvatarOverlayIcon', :js, type: :system do
       expect(alpha).to eq 255
     end
 
-    it '公開範囲アイコンがアバターの顔を覆いすぎない'
+    it '公開範囲アイコンがアバターの顔を覆いすぎない' do
+      article = visit_home_with('テスト投稿（未収載）', :unlisted)
+      avatar_width = article.find('header .status__avatar-with-visibility').evaluate_script('this.getBoundingClientRect().width')
+      icon_width = article.find('header .account__avatar-overlay-icon-overlay').evaluate_script('this.getBoundingClientRect().width')
+
+      # 直径がアバターの半分あると、面積で 1/4 を覆って邪魔に見えた
+      expect(icon_width.fdiv(avatar_width)).to be < 0.4
+    end
   end
 
   context 'public投稿がホームTLに表示される場合' do

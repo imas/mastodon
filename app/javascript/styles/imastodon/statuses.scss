@@ -1,13 +1,13 @@
 .account__avatar-overlay-icon-overlay {
   display: block;
-  width: 16px;
-  height: 16px;
-  padding: 2px;
+  width: 12px;
+  height: 12px;
+  padding: 1px;
   border-radius: calc(var(--avatar-border-radius) / 2)
     calc(var(--avatar-border-radius) / 2) var(--avatar-border-radius)
     calc(var(--avatar-border-radius) / 2);
   background: transparent no-repeat;
-  background-size: 16px 16px;
+  background-size: 12px 12px;
   background-position: 50%;
   background-clip: padding-box;
   background-color: var(--color-bg-primary);
