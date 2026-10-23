@@ -102,7 +102,17 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css('form[role="dialog"] header h2', text: 'Re:あふぅ')
     end
 
-    it 'メッセージに切り替えると、タイトルが「新しい機密資料」、ヒントが「指定した同僚だけに公開。暗号化はされません」、送信ボタンが「あふぅ」になる'
+    it 'メッセージに切り替えると、タイトルが「新しい機密資料」、ヒントが「指定した同僚だけに公開。暗号化はされません」、送信ボタンが「あふぅ」になる' do
+      open_composer
+      open_visibility_menu
+      find('[role="menuitem"]', text: ui_text('compose.post.to_message')).click
+
+      within('form[role="dialog"]') do
+        expect(page).to have_css('header h2', text: '新しい機密資料')
+        expect(page).to have_text('指定した同僚だけに公開。暗号化はされません')
+        expect(page).to have_button('あふぅ', type: 'submit')
+      end
+    end
 
     it 'アカウントカードの「⋯」メニューに「理由あってブロック！」「だまっとけ☆リスト」がある'
   end
