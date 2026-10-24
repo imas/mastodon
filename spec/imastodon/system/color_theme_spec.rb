@@ -84,7 +84,13 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect(rgba_of(select_background).last).to eq 255
     end
 
-    it '二次テキストが背景に透けない'
+    it '二次テキストが背景に透けない' do
+      use_theme('cinderella', 'dark')
+
+      # upstream は本文の色を半透明にして二次テキストを作る。中間の明るさの背景だと透けてコントラストが落ちる
+      expect(rgba_of(token_color('--color-text-secondary')).last).to eq 255
+      expect(rgba_of(token_color('--color-text-tertiary')).last).to eq 255
+    end
   end
 
   context 'シンデレラをライトで使う場合' do

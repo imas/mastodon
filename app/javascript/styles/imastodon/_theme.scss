@@ -81,6 +81,10 @@
 //   bg-accent           ボタン・選択中の項目  --base-color-bg-accent
 //   fg-on-accent        ボタン上の文字        --base-color-fg-on-accent
 //   highlight-strength  選択中の項目の濃さ    --base-highlight-strength（省略時は upstream の 8%）
+// 上の段を直接決めるキー（省略可）:
+//   fg-secondary        二次テキスト          --color-text-secondary（省略時は upstream の fg 80% 透過）
+//   fg-tertiary         三次テキスト          --color-text-tertiary（省略時は upstream の fg 70% 透過）
+//   中間の明るさの背景では透過した文字のコントラストが落ちるので、そのときは不透明な色を渡す。
 @mixin base($colors) {
   --base-color-bg: #{map.get($colors, bg)};
   --base-color-bg-desktop: #{map.get($colors, bg-desktop)};
@@ -98,4 +102,12 @@
   // upstream は入力欄・セレクトボックスの背景を半透明の highlight にしている。
   // 選択肢の一覧は OS が描くので白地に透け、ダークでは白文字が読めなくなる。不透明な外側の色で塗る。
   --color-bg-secondary: #{map.get($colors, bg-desktop)};
+
+  @if map.has-key($colors, fg-secondary) {
+    --color-text-secondary: #{map.get($colors, fg-secondary)};
+  }
+
+  @if map.has-key($colors, fg-tertiary) {
+    --color-text-tertiary: #{map.get($colors, fg-tertiary)};
+  }
 }
