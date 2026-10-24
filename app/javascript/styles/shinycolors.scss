@@ -4,34 +4,30 @@
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #d3e4ff,
-      bg-compose: #aaccff,
-      bg-surface: #bed8ff,
-      border: #96c0ff,
-      text: #001f4d,
-      text-2: #032b62,
-      text-3: #1e4681,
-      link: #3963a1,
-      accent: #1e4681,
+      bg-desktop: #c6d7f2,
+      fg: #001f4d,
+      fg-accent: #3963a1,
+      bg-accent: #1e4681,
+      fg-on-accent: #d3e4ff,
+      bg-accent-high-contrast: #063069,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #111f37,
-      bg-compose: #162d50,
-      bg-surface: #132643,
-      border: #253d61,
-      text: #e6effc,
-      text-2: #c5d2e5,
-      text-3: #96a6be,
-      link: #96c0fe,
-      accent: #7bacf6,
+      bg-desktop: #030e25,
+      fg: #e6effc,
+      fg-accent: #96c0fe,
+      bg-accent: #7bacf6,
+      fg-on-accent: #111f37,
+      bg-accent-high-contrast: #a0c6ff,
     )
   );
 }
