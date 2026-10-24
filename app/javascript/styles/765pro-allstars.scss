@@ -1,37 +1,38 @@
 // 765PRO ALLSTARS red (#f34f6d)
 // ダーク側が正（v4.4 までの見た目）。ライト側は同じ色相から機械生成した派生。
+// ダーク側は中間の明るさの背景なので、二次テキストを不透明にし、選択中の項目を濃くしてある（シンデレラと同じ）。
+// ボタンの文字は背景色だと読めないので、ライト側の本文色にした。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #ffdfe0,
-      bg-compose: #fdc8cc,
-      bg-surface: #fed1d3,
-      border: #eca9b0,
-      text: #361719,
-      text-2: #50282a,
-      text-3: #774547,
-      link: #7b5053,
-      accent: #842637,
+      bg-desktop: #f2d2d3,
+      fg: #361719,
+      fg-accent: #7b5053,
+      bg-accent: #842637,
+      fg-on-accent: #ffdfe0,
+      bg-accent-high-contrast: #6a0823,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #c1314a,
-      bg-compose: #d14a61,
-      bg-surface: #cd3a53,
-      border: #d55a6f,
-      text: #fff6f6,
-      text-2: #e2dcdc,
-      text-3: #f6f0f0,
-      link: #ffd1d3,
-      accent: #ff9ea7,
+      bg-desktop: #a81237,
+      fg: #fff6f6,
+      fg-accent: #ffd1d3,
+      bg-accent: #ff9ea7,
+      fg-on-accent: #361719,
+      bg-accent-high-contrast: #ffc7cb,
+      highlight-strength: 30%,
+      fg-secondary: #f4d3d7,
+      fg-tertiary: #f4d3d7,
     )
   );
 }

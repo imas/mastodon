@@ -69,6 +69,12 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
     [d, 360 - d].min
   end
 
+  # 下の段の上書き漏れがあると、upstream の既定の indigo がカラムの外側やボタンに出る
+  def expect_theme_hue
+    expect(hue_distance(desktop_background, token_color('--color-bg-primary'))).to be < 15
+    expect(hue_distance(token_color('--color-bg-brand-base'), token_color('--color-bg-primary'))).to be < 15
+  end
+
   context 'シンデレラをダークで使う場合' do
     it 'カラムの外側の背景がテーマと同じ色相になる' do
       use_theme('cinderella', 'dark')
@@ -105,6 +111,93 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       visit '/settings/preferences/appearance'
 
       expect(rgba_of(select_background).last).to eq 255
+    end
+  end
+
+  # v4.4 で「正」だった側を先に、派生の側を後に並べる
+  context '残りのテーマを使う場合' do
+    it 'idolmaster をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('idolmaster', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'idolmaster をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('idolmaster', 'dark')
+
+      expect_theme_hue
+    end
+
+    it '765pro-allstars をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('765pro-allstars', 'dark')
+
+      expect_theme_hue
+    end
+
+    it '765pro-allstars をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('765pro-allstars', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'millionlive をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('millionlive', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'millionlive をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('millionlive', 'dark')
+
+      expect_theme_hue
+    end
+
+    it 'sidem をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('sidem', 'dark')
+
+      expect_theme_hue
+    end
+
+    it 'sidem をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('sidem', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'shinycolors をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('shinycolors', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'shinycolors をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('shinycolors', 'dark')
+
+      expect_theme_hue
+    end
+
+    it 'gakumas をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('gakumas', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'gakumas をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('gakumas', 'dark')
+
+      expect_theme_hue
+    end
+
+    it 'va-liv をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('va-liv', 'dark')
+
+      expect_theme_hue
+    end
+
+    it 'va-liv をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('va-liv', 'light')
+
+      expect_theme_hue
     end
   end
 

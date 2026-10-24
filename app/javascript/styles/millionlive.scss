@@ -1,37 +1,36 @@
 // ミリオンライブ！ yellow (#ffc30b)
 // ライト側が正（v4.4 までの見た目）。ダーク側は同じ色相から機械生成した派生。
+// ライト側のリンクは v4.4 のままだと背景とのコントラストが足りないので、一段暗くしてある。
+// ダーク側はガクマスのダークと見分けられるよう、色相を黄緑寄りに動かしてある。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #fcca3f,
-      bg-compose: #fdd567,
-      bg-surface: #fdcf53,
-      border: #fddb7b,
-      text: #2d1f00,
-      text-2: #3b2b00,
-      text-3: #5b4400,
-      link: #a37500,
-      accent: #5b4400,
+      bg-desktop: #efbd2c,
+      fg: #2d1f00,
+      fg-accent: #764800,
+      bg-accent: #5b4400,
+      fg-on-accent: #fcca3f,
+      bg-accent-high-contrast: #423000,
+      fg-tertiary: #674f12,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
-      bg: #2b1d00,
-      bg-compose: #3b2c00,
-      bg-surface: #322400,
-      border: #4b3b05,
-      text: #f5eee0,
-      text-2: #dad0bb,
-      text-3: #b0a389,
-      link: #e5b55d,
-      accent: #c4a766,
+      bg: #282200,
+      bg-desktop: #171200,
+      fg: #f5eee0,
+      fg-accent: #e5b55d,
+      bg-accent: #c4a766,
+      fg-on-accent: #2d1f00,
+      bg-accent-high-contrast: #dec07f,
     )
   );
 }

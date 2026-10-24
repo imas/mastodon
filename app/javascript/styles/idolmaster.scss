@@ -1,37 +1,35 @@
 // アイドルマスター pink (#ff74b8)
 // ライト側が正（v4.4 までの見た目）。ダーク側は同じ色相から機械生成した派生。
+// ライト側のリンクは v4.4 のままだと背景とのコントラストが足りないので、一段暗くしてある。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #ffb9d6,
-      bg-compose: #ffe2ee,
-      bg-surface: #ffcee2,
-      border: #fff6fa,
-      text: #420027,
-      text-2: #570034,
-      text-3: #830051,
-      link: #a9236e,
-      accent: #830051,
+      bg-desktop: #f1acc9,
+      fg: #420027,
+      fg-accent: #97035c,
+      bg-accent: #830051,
+      fg-on-accent: #ffb9d6,
+      bg-accent-high-contrast: #61003a,
+      fg-tertiary: #79365a,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #341122,
-      bg-compose: #3e2530,
-      bg-surface: #3c1929,
-      border: #433a3e,
-      text: #fae9f0,
-      text-2: #e2c9d3,
-      text-3: #b99ba7,
-      link: #f99dc6,
-      accent: #ed83b4,
+      bg-desktop: #210212,
+      fg: #fae9f0,
+      fg-accent: #f99dc6,
+      bg-accent: #ed83b4,
+      fg-on-accent: #341122,
+      bg-accent-high-contrast: #ffa4cc,
     )
   );
 }
