@@ -12,6 +12,7 @@
       fg-accent: #005086,
       bg-accent: #005086,
       fg-on-accent: #d6ebff,
+      bg-accent-high-contrast: #003a66,
     )
   );
 }
@@ -26,6 +27,7 @@ html:not([data-color-scheme]) {
       fg-accent: #c4e2ff,
       bg-accent: #84c4ff,
       fg-on-accent: #0b2338,
+      bg-accent-high-contrast: #b3dbff,
       highlight-strength: 30%,
       fg-secondary: #eff2f6,
       fg-tertiary: #e0eefb,

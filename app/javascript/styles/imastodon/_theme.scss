@@ -80,6 +80,7 @@
 //   fg-accent           リンク                --base-color-fg-accent
 //   bg-accent           ボタン・選択中の項目  --base-color-bg-accent
 //   fg-on-accent        ボタン上の文字        --base-color-fg-on-accent
+//   bg-accent-high-contrast  ハイコントラスト時の bg-accent（省略時は bg-accent のまま）
 //   highlight-strength  選択中の項目の濃さ    --base-highlight-strength（省略時は upstream の 8%）
 // 上の段を直接決めるキー（省略可）:
 //   fg-secondary        二次テキスト          --color-text-secondary（省略時は upstream の fg 80% 透過）
@@ -95,6 +96,14 @@
 
   @if map.has-key($colors, highlight-strength) {
     --base-highlight-strength: #{map.get($colors, highlight-strength)};
+  }
+
+  // upstream はハイコントラスト時に bg-accent を一段強い indigo に差し替える。
+  // その指定は [data-contrast] の分だけ詳細度が高いので、同じ詳細度で後から出してテーマの色に戻す。
+  &[data-contrast='high'],
+  [data-contrast='high'] & {
+    --base-color-bg-accent: #{map.get($colors, bg-accent-high-contrast) or
+        map.get($colors, bg-accent)};
   }
 
   // 上の段で上書きを残すもの。

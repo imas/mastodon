@@ -100,10 +100,19 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect(hue_distance(desktop_background, token_color('--color-bg-primary'))).to be < 15
     end
 
-    it 'セレクトボックスの背景が不透明で、選択肢の一覧が透けない'
+    it 'セレクトボックスの背景が不透明で、選択肢の一覧が透けない' do
+      use_theme('cinderella', 'light')
+      visit '/settings/preferences/appearance'
+
+      expect(rgba_of(select_background).last).to eq 255
+    end
   end
 
   context 'ハイコントラストを有効にした場合' do
-    it 'ボタンの色がテーマの色相のまま変わらない'
+    it 'ボタンの色がテーマの色相のまま変わらない' do
+      use_theme('cinderella', 'dark', contrast: 'high')
+
+      expect(hue_distance(token_color('--color-bg-brand-base'), token_color('--color-bg-primary'))).to be < 15
+    end
   end
 end
