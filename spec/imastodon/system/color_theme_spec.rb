@@ -47,6 +47,10 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
     page.evaluate_script('getComputedStyle(document.documentElement).backgroundColor')
   end
 
+  def select_background
+    find('select', match: :first).evaluate_script('getComputedStyle(this).backgroundColor')
+  end
+
   def hue(css_color)
     r, g, b = rgba_of(css_color).first(3).map { |v| v / 255.0 }
     max, min = [r, g, b].minmax.reverse
@@ -72,7 +76,14 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect(hue_distance(desktop_background, token_color('--color-bg-primary'))).to be < 15
     end
 
-    it 'セレクトボックスの背景が不透明で、選択肢の一覧が透けない'
+    it 'セレクトボックスの背景が不透明で、選択肢の一覧が透けない' do
+      use_theme('cinderella', 'dark')
+      visit '/settings/preferences/appearance'
+
+      # 選択肢の一覧は OS が描くので、半透明の背景は白地に透けて白文字が読めなくなる
+      expect(rgba_of(select_background).last).to eq 255
+    end
+
     it '二次テキストが背景に透けない'
   end
 

@@ -92,4 +92,10 @@
   @if map.has-key($colors, highlight-strength) {
     --base-highlight-strength: #{map.get($colors, highlight-strength)};
   }
+
+  // 上の段で上書きを残すもの。
+
+  // upstream は入力欄・セレクトボックスの背景を半透明の highlight にしている。
+  // 選択肢の一覧は OS が描くので白地に透け、ダークでは白文字が読めなくなる。不透明な外側の色で塗る。
+  --color-bg-secondary: #{map.get($colors, bg-desktop)};
 }
