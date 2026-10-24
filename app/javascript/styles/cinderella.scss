@@ -1,19 +1,20 @@
 // シンデレラガールズ blue (#2681c8)
 // ダーク側が正。v4.4 までの青から一段暗くした（本文や選択中の項目のコントラストが足りなかったため）。
-// ライト側は同じ色相から機械生成した派生。
+// ライト側は同じ色相の派生。淡いとシャイニーカラーズのライトと見分けられないので、明度を下げ彩度を上げてある。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
   @include theme.base(
     (
-      bg: #d6ebff,
-      bg-desktop: #c5e2fe,
+      bg: #a0d0fc,
+      bg-desktop: #8bc4f8,
       fg: #0b2338,
-      fg-accent: #005086,
-      bg-accent: #005086,
-      fg-on-accent: #d6ebff,
-      bg-accent-high-contrast: #003a66,
+      fg-accent: #003f6b,
+      bg-accent: #003f6b,
+      fg-on-accent: #a0d0fc,
+      bg-accent-high-contrast: #002f52,
+      fg-tertiary: #29465f,
     )
   );
 }
