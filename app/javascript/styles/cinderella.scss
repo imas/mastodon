@@ -21,17 +21,15 @@
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
-      bg: #2d85cc,
-      bg-compose: #266fab,
-      bg-surface: #2a7abc,
-      border: #22649a,
-      text: #f3f9ff,
-      text-2: #eff2f6,
-      text-3: #eff2f6,
-      link: #c4e2ff,
-      accent: #84c4ff,
+      bg: #2677b8,
+      bg-desktop: #1f6299,
+      fg: #f3f9ff,
+      fg-accent: #c4e2ff,
+      bg-accent: #84c4ff,
+      fg-on-accent: #0b2338,
+      highlight-strength: 30%,
     )
   );
 }

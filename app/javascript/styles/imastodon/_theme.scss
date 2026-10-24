@@ -67,3 +67,29 @@
   --color-border-brand: #{$accent};
   --color-border-brand-soft: color-mix(in oklab, #{$bg}, #{$accent} 25%);
 }
+
+// リデザイン版向けの作り方。upstream の下の段（--base-color-*）だけを決め、
+// 上の段（--color-*）は upstream の計算に任せる。upstream がトークンを足しても下の段から導かれるので、
+// tokens のように上書き漏れで既定の indigo が出ることがない。
+// tokens は、残りのテーマが移るまで残す。
+
+// $colors のキーと upstream の下の段の対応:
+//   bg                  カラムの背景          --base-color-bg
+//   bg-desktop          カラムの外側・ナビ    --base-color-bg-desktop
+//   fg                  本文                  --base-color-fg
+//   fg-accent           リンク                --base-color-fg-accent
+//   bg-accent           ボタン・選択中の項目  --base-color-bg-accent
+//   fg-on-accent        ボタン上の文字        --base-color-fg-on-accent
+//   highlight-strength  選択中の項目の濃さ    --base-highlight-strength（省略時は upstream の 8%）
+@mixin base($colors) {
+  --base-color-bg: #{map.get($colors, bg)};
+  --base-color-bg-desktop: #{map.get($colors, bg-desktop)};
+  --base-color-fg: #{map.get($colors, fg)};
+  --base-color-fg-accent: #{map.get($colors, fg-accent)};
+  --base-color-bg-accent: #{map.get($colors, bg-accent)};
+  --base-color-fg-on-accent: #{map.get($colors, fg-on-accent)};
+
+  @if map.has-key($colors, highlight-strength) {
+    --base-highlight-strength: #{map.get($colors, highlight-strength)};
+  }
+}
