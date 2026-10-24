@@ -128,8 +128,18 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect_theme_hue
     end
 
-    it '765pro-allstars をダークで使うと、カラムの外側とボタンがテーマの色相になる'
-    it '765pro-allstars をライトで使うと、カラムの外側とボタンがテーマの色相になる'
+    it '765pro-allstars をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('765pro-allstars', 'dark')
+
+      expect_theme_hue
+    end
+
+    it '765pro-allstars をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('765pro-allstars', 'light')
+
+      expect_theme_hue
+    end
+
     it 'millionlive をライトで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'millionlive をダークで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'sidem をダークで使うと、カラムの外側とボタンがテーマの色相になる'
