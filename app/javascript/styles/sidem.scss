@@ -1,37 +1,38 @@
 // SideM green (#0fbe94)
 // ダーク側が正（v4.4 までの見た目）。ライト側は同じ色相から機械生成した派生。
+// ダーク側は中間の明るさの背景なので、二次テキストを不透明にし、選択中の項目を濃くしてある（シンデレラと同じ）。
+// ボタンの文字は背景色だと読めないので、ライト側の本文色にした。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #c7f3e5,
-      bg-compose: #9fe9d3,
-      bg-surface: #b5ecdb,
-      border: #86cfb9,
-      text: #00291e,
-      text-2: #0f3f2e,
-      text-3: #2a624b,
-      link: #276c56,
-      accent: #005b45,
+      bg-desktop: #bae6d8,
+      fg: #00291e,
+      fg-accent: #276c56,
+      bg-accent: #005b45,
+      fg-on-accent: #c7f3e5,
+      bg-accent-high-contrast: #004332,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #1a5d4d,
-      bg-compose: #237d68,
-      bg-surface: #1f6d5b,
-      border: #278d75,
-      text: #6efccf,
-      text-2: #dbdfdd,
-      text-3: #c1c5c3,
-      link: #a0ddc6,
-      accent: #2cca9f,
+      bg-desktop: #00493a,
+      fg: #6efccf,
+      fg-accent: #a0ddc6,
+      bg-accent: #2cca9f,
+      fg-on-accent: #00291e,
+      bg-accent-high-contrast: #52e4b8,
+      highlight-strength: 30%,
+      fg-secondary: #61e3ba,
+      fg-tertiary: #61e3ba,
     )
   );
 }

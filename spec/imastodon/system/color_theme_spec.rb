@@ -152,8 +152,18 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect_theme_hue
     end
 
-    it 'sidem をダークで使うと、カラムの外側とボタンがテーマの色相になる'
-    it 'sidem をライトで使うと、カラムの外側とボタンがテーマの色相になる'
+    it 'sidem をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('sidem', 'dark')
+
+      expect_theme_hue
+    end
+
+    it 'sidem をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('sidem', 'light')
+
+      expect_theme_hue
+    end
+
     it 'shinycolors をライトで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'shinycolors をダークで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'gakumas をライトで使うと、カラムの外側とボタンがテーマの色相になる'
