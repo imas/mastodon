@@ -1,8 +1,9 @@
 // imastodon 独自テーマの共通 mixin。
 
-// upstream の theme token（app/javascript/styles/mastodon/tokens/theme/）を
-// 上書きする（作り方は tokens と base の 2 通り。下の base を参照）。upstream の Sass モジュールには依存せず、
-// 生成される CSS 変数名だけに依存する。
+// upstream の theme token（app/javascript/styles/mastodon/tokens/theme/）のうち、
+// 下の段（--base-color-*）だけを決め、上の段（--color-*）は upstream の計算に任せる。
+// upstream がトークンを足しても下の段から導かれるので、上書き漏れで既定の indigo が出ることがない。
+// upstream の Sass モジュールには依存せず、生成される CSS 変数名だけに依存する。
 
 // 各テーマの entrypoint（app/javascript/styles/<theme>.scss）は
 //   @use 'application';
@@ -11,67 +12,9 @@
 //   [data-color-scheme='dark'], html:not([data-color-scheme]) { @include theme.base((...)); }
 // の形で、upstream の [data-color-scheme] ブロックと同じ詳細度で後から出力し、後勝ちさせる。
 
-// $roles のキーと、v4.4 までの旧 SCSS 変数との対応:
-//   bg          body・カラム・ナビの背景                  旧 --background-color（darken($ui-base-color, 8%)）
-//   bg-compose  compose フォーム・検索入力・カードの背景    旧 $ui-base-color
-//   bg-surface  見出し行など一段違う面                      旧 --surface-background-color（darken($ui-base-color, 4%)）
-//   border      区切り線・カラム枠                          旧 --background-border-color（lighten($ui-base-color, 4%)）
-//   text        本文                                        旧 $primary-text-color
-//   text-2      二次テキスト・入力文字・ナビ項目             旧 $secondary-text-color / $darker-text-color
-//   text-3      placeholder・相対時刻                        旧 $dark-text-color
-//   link        リンク・アクティブ状態・セカンダリボタン     旧 $highlight-text-color
-//   accent      強調色（compose のアクティブ枠、通知バナーのティント元） 旧 $ui-highlight-color
-
-// 投稿ボタン・フォローボタン等（--color-bg-brand-base）は accent で塗る。
-// v4.4 では全テーマ Mastodon 既定の紫のままだったが、テーマに合わせる方針に変えた。
-// ボタン上の文字色は accent の明度で決める（明るい accent なら背景色、暗い accent なら白）。
 // 触らない token:
 //   red / yellow / green 系（エラー・警告・成功）は意味色なので upstream に任せる。
-@use 'sass:color';
 @use 'sass:map';
-
-@mixin tokens($roles) {
-  $bg: map.get($roles, bg);
-  $text: map.get($roles, text);
-  $link: map.get($roles, link);
-  $accent: map.get($roles, accent);
-  $on-accent: #fff;
-  @if color.channel($accent, 'lightness', $space: oklch) > 60% {
-    $on-accent: $bg;
-  }
-
-  /* BRAND */
-  --color-bg-brand-base: #{$accent};
-  --color-bg-brand-base-hover: color-mix(in oklab, #{$accent}, #{$text} 15%);
-  --color-text-on-brand-base: #{$on-accent};
-
-  /* TEXT */
-  --color-text-primary: #{$text};
-  --color-text-secondary: #{map.get($roles, text-2)};
-  --color-text-tertiary: #{map.get($roles, text-3)};
-  --color-text-inverted: #{$bg};
-  --color-text-brand: #{$link};
-  --color-text-status-links: #{$link};
-
-  /* BACKGROUND */
-  --color-bg-primary: #{$bg};
-  --color-bg-secondary: #{map.get($roles, bg-compose)};
-  --color-bg-tertiary: #{map.get($roles, bg-surface)};
-  --color-bg-inverted: #{$text};
-  --color-bg-overlay-highlight: color-mix(in srgb, #{$text} 6%, transparent);
-  --color-bg-brand-soft: color-mix(in oklab, #{$bg}, #{$accent} 14%);
-  --color-bg-brand-softest: color-mix(in oklab, #{$bg}, #{$accent} 6%);
-
-  /* BORDER */
-  --color-border-primary: #{map.get($roles, border)};
-  --color-border-brand: #{$accent};
-  --color-border-brand-soft: color-mix(in oklab, #{$bg}, #{$accent} 25%);
-}
-
-// リデザイン版向けの作り方。upstream の下の段（--base-color-*）だけを決め、
-// 上の段（--color-*）は upstream の計算に任せる。upstream がトークンを足しても下の段から導かれるので、
-// tokens のように上書き漏れで既定の indigo が出ることがない。
-// tokens は、残りのテーマが移るまで残す。
 
 // $colors のキーと upstream の下の段の対応:
 //   bg                  カラムの背景          --base-color-bg
@@ -85,7 +28,7 @@
 // 上の段を直接決めるキー（省略可）:
 //   fg-secondary        二次テキスト          --color-text-secondary（省略時は upstream の fg 80% 透過）
 //   fg-tertiary         三次テキスト          --color-text-tertiary（省略時は upstream の fg 70% 透過）
-//   中間の明るさの背景では透過した文字のコントラストが落ちるので、そのときは不透明な色を渡す。
+//   透過したままで背景との APCA Lc が 60 を割るときは、届く最小の濃さの不透明な色を渡す（中間の明るさの背景で起きやすい）。
 @mixin base($colors) {
   --base-color-bg: #{map.get($colors, bg)};
   --base-color-bg-desktop: #{map.get($colors, bg-desktop)};
