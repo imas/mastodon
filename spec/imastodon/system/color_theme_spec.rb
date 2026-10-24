@@ -69,6 +69,12 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
     [d, 360 - d].min
   end
 
+  # 下の段の上書き漏れがあると、upstream の既定の indigo がカラムの外側やボタンに出る
+  def expect_theme_hue
+    expect(hue_distance(desktop_background, token_color('--color-bg-primary'))).to be < 15
+    expect(hue_distance(token_color('--color-bg-brand-base'), token_color('--color-bg-primary'))).to be < 15
+  end
+
   context 'シンデレラをダークで使う場合' do
     it 'カラムの外側の背景がテーマと同じ色相になる' do
       use_theme('cinderella', 'dark')
@@ -110,8 +116,18 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
 
   # v4.4 で「正」だった側を先に、派生の側を後に並べる
   context '残りのテーマを使う場合' do
-    it 'idolmaster をライトで使うと、カラムの外側とボタンがテーマの色相になる'
-    it 'idolmaster をダークで使うと、カラムの外側とボタンがテーマの色相になる'
+    it 'idolmaster をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('idolmaster', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'idolmaster をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('idolmaster', 'dark')
+
+      expect_theme_hue
+    end
+
     it '765pro-allstars をダークで使うと、カラムの外側とボタンがテーマの色相になる'
     it '765pro-allstars をライトで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'millionlive をライトで使うと、カラムの外側とボタンがテーマの色相になる'
