@@ -1,37 +1,38 @@
 // シンデレラガールズ blue (#2681c8)
-// ダーク側が正（v4.4 までの見た目）。ライト側は同じ色相から機械生成した派生。
+// ダーク側が正。v4.4 までの青から一段暗くした（本文や選択中の項目のコントラストが足りなかったため）。
+// ライト側は同じ色相の派生。淡いとシャイニーカラーズのライトと見分けられないので、明度を下げ彩度を上げてある。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
-      bg: #d6ebff,
-      bg-compose: #b9dcfe,
-      bg-surface: #c5e2fe,
-      border: #94c3ef,
-      text: #0b2338,
-      text-2: #1f3654,
-      text-3: #3a577c,
-      link: #44617c,
-      accent: #005086,
+      bg: #a0d0fc,
+      bg-desktop: #8bc4f8,
+      fg: #0b2338,
+      fg-accent: #003f6b,
+      bg-accent: #003f6b,
+      fg-on-accent: #a0d0fc,
+      bg-accent-high-contrast: #002f52,
+      fg-tertiary: #29465f,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
-      bg: #2d85cc,
-      bg-compose: #266fab,
-      bg-surface: #2a7abc,
-      border: #22649a,
-      text: #f3f9ff,
-      text-2: #eff2f6,
-      text-3: #eff2f6,
-      link: #c4e2ff,
-      accent: #84c4ff,
+      bg: #2677b8,
+      bg-desktop: #1f6299,
+      fg: #f3f9ff,
+      fg-accent: #c4e2ff,
+      bg-accent: #84c4ff,
+      fg-on-accent: #0b2338,
+      bg-accent-high-contrast: #b3dbff,
+      highlight-strength: 30%,
+      fg-secondary: #eff2f6,
+      fg-tertiary: #e0eefb,
     )
   );
 }

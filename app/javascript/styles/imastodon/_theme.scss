@@ -1,14 +1,14 @@
 // imastodon 独自テーマの共通 mixin。
 
-// upstream の theme token（app/javascript/styles/mastodon/theme/）を
-// 役割単位で上書きする。upstream の Sass モジュールには依存せず、
+// upstream の theme token（app/javascript/styles/mastodon/tokens/theme/）を
+// 上書きする（作り方は tokens と base の 2 通り。下の base を参照）。upstream の Sass モジュールには依存せず、
 // 生成される CSS 変数名だけに依存する。
 
 // 各テーマの entrypoint（app/javascript/styles/<theme>.scss）は
 //   @use 'application';
 //   @use 'imastodon/theme';
-//   [data-color-scheme='light'] { @include theme.tokens((...)); }
-//   [data-color-scheme='dark'], html:not([data-color-scheme]) { @include theme.tokens((...)); }
+//   [data-color-scheme='light'] { @include theme.base((...)); }
+//   [data-color-scheme='dark'], html:not([data-color-scheme]) { @include theme.base((...)); }
 // の形で、upstream の [data-color-scheme] ブロックと同じ詳細度で後から出力し、後勝ちさせる。
 
 // $roles のキーと、v4.4 までの旧 SCSS 変数との対応:
@@ -66,4 +66,57 @@
   --color-border-primary: #{map.get($roles, border)};
   --color-border-brand: #{$accent};
   --color-border-brand-soft: color-mix(in oklab, #{$bg}, #{$accent} 25%);
+}
+
+// リデザイン版向けの作り方。upstream の下の段（--base-color-*）だけを決め、
+// 上の段（--color-*）は upstream の計算に任せる。upstream がトークンを足しても下の段から導かれるので、
+// tokens のように上書き漏れで既定の indigo が出ることがない。
+// tokens は、残りのテーマが移るまで残す。
+
+// $colors のキーと upstream の下の段の対応:
+//   bg                  カラムの背景          --base-color-bg
+//   bg-desktop          カラムの外側・ナビ    --base-color-bg-desktop
+//   fg                  本文                  --base-color-fg
+//   fg-accent           リンク                --base-color-fg-accent
+//   bg-accent           ボタン・選択中の項目  --base-color-bg-accent
+//   fg-on-accent        ボタン上の文字        --base-color-fg-on-accent
+//   bg-accent-high-contrast  ハイコントラスト時の bg-accent（省略時は bg-accent のまま）
+//   highlight-strength  選択中の項目の濃さ    --base-highlight-strength（省略時は upstream の 8%）
+// 上の段を直接決めるキー（省略可）:
+//   fg-secondary        二次テキスト          --color-text-secondary（省略時は upstream の fg 80% 透過）
+//   fg-tertiary         三次テキスト          --color-text-tertiary（省略時は upstream の fg 70% 透過）
+//   中間の明るさの背景では透過した文字のコントラストが落ちるので、そのときは不透明な色を渡す。
+@mixin base($colors) {
+  --base-color-bg: #{map.get($colors, bg)};
+  --base-color-bg-desktop: #{map.get($colors, bg-desktop)};
+  --base-color-fg: #{map.get($colors, fg)};
+  --base-color-fg-accent: #{map.get($colors, fg-accent)};
+  --base-color-bg-accent: #{map.get($colors, bg-accent)};
+  --base-color-fg-on-accent: #{map.get($colors, fg-on-accent)};
+
+  @if map.has-key($colors, highlight-strength) {
+    --base-highlight-strength: #{map.get($colors, highlight-strength)};
+  }
+
+  // upstream はハイコントラスト時に bg-accent を一段強い indigo に差し替える。
+  // その指定は [data-contrast] の分だけ詳細度が高いので、同じ詳細度で後から出してテーマの色に戻す。
+  &[data-contrast='high'],
+  [data-contrast='high'] & {
+    --base-color-bg-accent: #{map.get($colors, bg-accent-high-contrast) or
+        map.get($colors, bg-accent)};
+  }
+
+  // 上の段で上書きを残すもの。
+
+  // upstream は入力欄・セレクトボックスの背景を半透明の highlight にしている。
+  // 選択肢の一覧は OS が描くので白地に透け、ダークでは白文字が読めなくなる。不透明な外側の色で塗る。
+  --color-bg-secondary: #{map.get($colors, bg-desktop)};
+
+  @if map.has-key($colors, fg-secondary) {
+    --color-text-secondary: #{map.get($colors, fg-secondary)};
+  }
+
+  @if map.has-key($colors, fg-tertiary) {
+    --color-text-tertiary: #{map.get($colors, fg-tertiary)};
+  }
 }
