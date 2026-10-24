@@ -1,37 +1,37 @@
 // 学園アイドルマスター orange (#f39800)
 // ライト側が正（v4.4 までの見た目）。ダーク側は同じ色相から機械生成した派生。
+// ライト側は背景が明るくないので、リンクを一段暗くし、二次テキストを不透明にしてある。
+// ダーク側はミリオンのダークと見分けられるよう、色相を赤寄りに動かしてある。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #ffa838,
-      bg-compose: #ffba61,
-      bg-surface: #ffb14d,
-      border: #ffc375,
-      text: #231100,
-      text-2: #231100,
-      text-3: #4d2d00,
-      link: #8b5500,
-      accent: #663d00,
+      bg-desktop: #f19b25,
+      fg: #231100,
+      fg-accent: #582200,
+      bg-accent: #663d00,
+      fg-on-accent: #ffffff,
+      bg-accent-high-contrast: #4b2a00,
+      fg-secondary: #4b2c0a,
+      fg-tertiary: #4b2c0a,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
-      bg: #311800,
-      bg-compose: #432600,
-      bg-surface: #392000,
-      border: #53360a,
-      text: #f8ece1,
-      text-2: #dfcebd,
-      text-3: #b6a08a,
-      link: #f1af64,
-      accent: #d39f66,
+      bg: #361101,
+      bg-desktop: #230200,
+      fg: #f8ece1,
+      fg-accent: #f1af64,
+      bg-accent: #d39f66,
+      fg-on-accent: #231100,
+      bg-accent-high-contrast: #eeb87f,
     )
   );
 }

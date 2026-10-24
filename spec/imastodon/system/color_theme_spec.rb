@@ -176,8 +176,18 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect_theme_hue
     end
 
-    it 'gakumas をライトで使うと、カラムの外側とボタンがテーマの色相になる'
-    it 'gakumas をダークで使うと、カラムの外側とボタンがテーマの色相になる'
+    it 'gakumas をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('gakumas', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'gakumas をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('gakumas', 'dark')
+
+      expect_theme_hue
+    end
+
     it 'va-liv をダークで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'va-liv をライトで使うと、カラムの外側とボタンがテーマの色相になる'
   end
