@@ -140,8 +140,18 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect_theme_hue
     end
 
-    it 'millionlive をライトで使うと、カラムの外側とボタンがテーマの色相になる'
-    it 'millionlive をダークで使うと、カラムの外側とボタンがテーマの色相になる'
+    it 'millionlive をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('millionlive', 'light')
+
+      expect_theme_hue
+    end
+
+    it 'millionlive をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('millionlive', 'dark')
+
+      expect_theme_hue
+    end
+
     it 'sidem をダークで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'sidem をライトで使うと、カラムの外側とボタンがテーマの色相になる'
     it 'shinycolors をライトで使うと、カラムの外側とボタンがテーマの色相になる'
