@@ -94,7 +94,12 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
   end
 
   context 'シンデレラをライトで使う場合' do
-    it 'カラムの外側の背景がテーマと同じ色相になる'
+    it 'カラムの外側の背景がテーマと同じ色相になる' do
+      use_theme('cinderella', 'light')
+
+      expect(hue_distance(desktop_background, token_color('--color-bg-primary'))).to be < 15
+    end
+
     it 'セレクトボックスの背景が不透明で、選択肢の一覧が透けない'
   end
 

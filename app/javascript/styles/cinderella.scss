@@ -4,17 +4,14 @@
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #d6ebff,
-      bg-compose: #b9dcfe,
-      bg-surface: #c5e2fe,
-      border: #94c3ef,
-      text: #0b2338,
-      text-2: #1f3654,
-      text-3: #3a577c,
-      link: #44617c,
-      accent: #005086,
+      bg-desktop: #c5e2fe,
+      fg: #0b2338,
+      fg-accent: #005086,
+      bg-accent: #005086,
+      fg-on-accent: #d6ebff,
     )
   );
 }
