@@ -1,14 +1,14 @@
 // imastodon 独自テーマの共通 mixin。
 
-// upstream の theme token（app/javascript/styles/mastodon/theme/）を
-// 役割単位で上書きする。upstream の Sass モジュールには依存せず、
+// upstream の theme token（app/javascript/styles/mastodon/tokens/theme/）を
+// 上書きする（作り方は tokens と base の 2 通り。下の base を参照）。upstream の Sass モジュールには依存せず、
 // 生成される CSS 変数名だけに依存する。
 
 // 各テーマの entrypoint（app/javascript/styles/<theme>.scss）は
 //   @use 'application';
 //   @use 'imastodon/theme';
-//   [data-color-scheme='light'] { @include theme.tokens((...)); }
-//   [data-color-scheme='dark'], html:not([data-color-scheme]) { @include theme.tokens((...)); }
+//   [data-color-scheme='light'] { @include theme.base((...)); }
+//   [data-color-scheme='dark'], html:not([data-color-scheme]) { @include theme.base((...)); }
 // の形で、upstream の [data-color-scheme] ブロックと同じ詳細度で後から出力し、後勝ちさせる。
 
 // $roles のキーと、v4.4 までの旧 SCSS 変数との対応:
