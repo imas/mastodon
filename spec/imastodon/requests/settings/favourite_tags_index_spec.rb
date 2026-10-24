@@ -14,6 +14,18 @@ RSpec.describe 'GET /settings/favourite_tags', type: :request do
 
         expect(response).to have_http_status(:success)
       end
+
+      context 'when the user has favourite tags' do
+        before { Fabricate(:favourite_tag, account: user.account, name: 'imastodon') }
+
+        it 'renders icons on the edit and delete links' do
+          get settings_favourite_tags_path
+
+          page = Capybara.string(response.body)
+          expect(page).to have_css('table a[href$="/edit"] svg path')
+          expect(page).to have_css('table a[data-method="delete"] svg path')
+        end
+      end
     end
 
     context 'when not signed in' do
