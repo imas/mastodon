@@ -188,8 +188,17 @@ RSpec.describe 'imastodon カラーテーマ', :js, type: :system do
       expect_theme_hue
     end
 
-    it 'va-liv をダークで使うと、カラムの外側とボタンがテーマの色相になる'
-    it 'va-liv をライトで使うと、カラムの外側とボタンがテーマの色相になる'
+    it 'va-liv をダークで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('va-liv', 'dark')
+
+      expect_theme_hue
+    end
+
+    it 'va-liv をライトで使うと、カラムの外側とボタンがテーマの色相になる' do
+      use_theme('va-liv', 'light')
+
+      expect_theme_hue
+    end
   end
 
   context 'ハイコントラストを有効にした場合' do

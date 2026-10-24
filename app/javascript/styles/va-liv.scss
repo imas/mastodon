@@ -1,37 +1,35 @@
 // ヴイアライヴ silver (#8b8f96)
 // ダーク側が正（v4.4 までの見た目）。ライト側は同じ色相から機械生成した派生。
+// ライト側はシャイニーカラーズのライトと見分けられないので、青みを抜いて silver に寄せてある。
 @use 'application';
 @use 'imastodon/theme';
 
 [data-color-scheme='light'] {
-  @include theme.tokens(
+  @include theme.base(
     (
-      bg: #e3e8f4,
-      bg-compose: #cfd8e9,
-      bg-surface: #d8deec,
-      border: #b6becd,
-      text: #15213a,
-      text-2: #213654,
-      text-3: #3d567c,
-      link: #5b5e63,
-      accent: #484d59,
+      bg: #d5d8db,
+      bg-desktop: #c8cbce,
+      fg: #15213a,
+      fg-accent: #585b60,
+      bg-accent: #484d59,
+      fg-on-accent: #d5d8db,
+      bg-accent-high-contrast: #333843,
     )
   );
 }
 
 [data-color-scheme='dark'],
 html:not([data-color-scheme]) {
-  @include theme.tokens(
+  @include theme.base(
     (
       bg: #31343c,
-      bg-compose: #434852,
-      bg-surface: #3a3e47,
-      border: #4c525d,
-      text: #d9dee8,
-      text-2: #dcdee1,
-      text-3: #c2c4c7,
-      link: #cbced4,
-      accent: #a8aeba,
+      bg-desktop: #20232a,
+      fg: #d9dee8,
+      fg-accent: #cbced4,
+      bg-accent: #a8aeba,
+      fg-on-accent: #15213a,
+      bg-accent-high-contrast: #c1c7d4,
+      fg-tertiary: #b6bac4,
     )
   );
 }
