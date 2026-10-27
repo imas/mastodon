@@ -46,6 +46,8 @@ RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
         expect(response.parsed_body['access_token']).to_not eq(real_body['access_token'])
         expect(response.headers.slice('Cache-Control', 'Content-Type', 'Deprecation', 'Pragma')).to eq(real_headers)
       end
+
+      it 'logs the username, IP and application of the rejected probe'
     end
 
     context 'when only the username matches' do
