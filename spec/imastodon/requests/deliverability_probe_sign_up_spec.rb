@@ -47,7 +47,15 @@ RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
         expect(response.headers.slice('Cache-Control', 'Content-Type', 'Deprecation', 'Pragma')).to eq(real_headers)
       end
 
-      it 'logs the username, IP and application of the rejected probe'
+      it 'logs the username, IP and application of the rejected probe' do
+        allow(Rails.logger).to receive(:info)
+
+        subject
+
+        expect(Rails.logger)
+          .to have_received(:info)
+          .with("Rejected deliverability probe sign-up: username=#{probe_username} ip=127.0.0.1 app=#{token.application.name}")
+      end
     end
 
     context 'when only the username matches' do

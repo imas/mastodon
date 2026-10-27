@@ -11,6 +11,8 @@ module DeliverabilityProbeRejectionConcern
   def reject_deliverability_probe
     return unless PROBE_USERNAME_REGEX.match?(params[:username].to_s) && params[:reason] == PROBE_REASON
 
+    Rails.logger.info("Rejected deliverability probe sign-up: username=#{params[:username]} ip=#{request.remote_ip} app=#{doorkeeper_token.application.name}")
+
     response = Doorkeeper::OAuth::TokenResponse.new(dummy_access_token)
 
     headers.merge!(response.headers)
