@@ -3,6 +3,7 @@
 class Api::V1::AccountsController < Api::BaseController
   include DeprecationConcern
   include RegistrationHelper
+  include DeliverabilityProbeRejectionConcern
 
   before_action -> { authorize_if_got_token! :read, :'read:accounts' }, except: [:create, :follow, :unfollow, :remove_from_followers, :block, :unblock, :mute, :unmute]
   before_action -> { doorkeeper_authorize! :follow, :write, :'write:follows' }, only: [:follow, :unfollow, :remove_from_followers]
@@ -25,6 +26,9 @@ class Api::V1::AccountsController < Api::BaseController
   override_rate_limit_headers :follow, family: :follows
 
   deprecate_api '2026-10-01', only: :create
+
+  # 本物の登録と同じヘッダーにするため、deprecate_api の後で弾く
+  before_action :reject_deliverability_probe, only: [:create]
 
   def index
     render json: @accounts, each_serializer: REST::AccountSerializer
