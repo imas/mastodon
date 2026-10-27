@@ -30,7 +30,7 @@ RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
       it 'returns a dummy token response shaped like a real sign-up' do
         post '/api/v1/accounts', headers: { 'Authorization' => "Bearer #{token.token}" }, params: { username: 'fuyuko', password: '12345678', email: 'fuyuko@example.com', agreement: 'true' }
         real_body = response.parsed_body
-        real_headers = response.headers.slice('Cache-Control', 'Content-Type', 'Pragma')
+        real_headers = response.headers.slice('Cache-Control', 'Content-Type', 'Deprecation', 'Pragma')
 
         expect { subject }
           .to not_change(Doorkeeper::AccessToken, :count)
@@ -44,7 +44,7 @@ RSpec.describe 'Deliverability probe sign-up (imastodon)', type: :request do
             'created_at' => be_within(5).of(Time.now.to_i)
           )
         expect(response.parsed_body['access_token']).to_not eq(real_body['access_token'])
-        expect(response.headers.slice('Cache-Control', 'Content-Type', 'Pragma')).to eq(real_headers)
+        expect(response.headers.slice('Cache-Control', 'Content-Type', 'Deprecation', 'Pragma')).to eq(real_headers)
       end
     end
 

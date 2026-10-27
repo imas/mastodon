@@ -18,7 +18,6 @@ class Api::V1::AccountsController < Api::BaseController
   before_action :check_account_approval, except: [:index, :create]
   before_action :check_account_confirmation, except: [:index, :create]
   before_action :check_enabled_registrations, only: [:create]
-  before_action :reject_deliverability_probe, only: [:create]
   before_action :check_accounts_limit, only: [:index]
   before_action :check_following_self, only: [:follow]
 
@@ -27,6 +26,9 @@ class Api::V1::AccountsController < Api::BaseController
   override_rate_limit_headers :follow, family: :follows
 
   deprecate_api '2026-10-01', only: :create
+
+  # 本物の登録と同じヘッダーにするため、deprecate_api の後で弾く
+  before_action :reject_deliverability_probe, only: [:create]
 
   def index
     render json: @accounts, each_serializer: REST::AccountSerializer
