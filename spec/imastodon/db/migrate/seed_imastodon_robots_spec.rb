@@ -12,7 +12,19 @@ RSpec.describe SeedImastodonRobots do
       expect(Setting.override_robots).to be true
     end
 
-    it 'imastodon で拒否していた UA とパスを書き込む'
+    it 'imastodon で拒否していた UA とパスを書き込む' do
+      migration.up
+      expect(Setting.custom_robots.lines(chomp: true)).to include(
+        'User-agent: ExaSearchBot',
+        'Disallow: /interact/',
+        'Disallow: /api/v1/instance/domain_blocks',
+        'Disallow: /auth/',
+        'Disallow: /users/',
+        'Disallow: /api/v1/timelines/',
+        'Disallow: /api/v1/trends/'
+      )
+    end
+
     it 'upstream の既定で拒否している AI クローラーも書き込む'
   end
 
