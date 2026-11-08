@@ -46,6 +46,16 @@ class SeedImastodonRobots < ActiveRecord::Migration[8.1]
     Setting.reset_column_information
     return if Setting.exists?(var: %w(override_robots custom_robots))
 
+    # id を明示して入れた行があると連番が追いつかず INSERT が衝突するので、最大 id まで進めておく。
+    # 連番が既に先にあれば何もしない（戻すと使用済みの id を再び払い出しうる）
+    safety_assured do
+      execute(<<~SQL.squish)
+        SELECT setval('settings_id_seq', max_id)
+        FROM (SELECT MAX(id) AS max_id FROM settings) AS settings_max
+        WHERE max_id >= (SELECT last_value FROM settings_id_seq)
+      SQL
+    end
+
     Setting.upsert_all(
       [
         { var: 'override_robots', value: true.to_yaml },

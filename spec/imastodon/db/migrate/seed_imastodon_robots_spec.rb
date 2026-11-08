@@ -49,4 +49,16 @@ RSpec.describe SeedImastodonRobots do
       expect(stored('custom_robots')).to eq "User-agent: *\nDisallow: /secret/\n"
     end
   end
+
+  # Historical data migration test の投入データのように、id を明示して入れた行があると連番が追いつかない
+  context 'settings の連番が既存の id より遅れているとき' do
+    it '連番を追いつかせて書き込む' do
+      next_id = described_class::Setting.connection.select_value("SELECT nextval('settings_id_seq')")
+      described_class::Setting.create!(id: next_id + 1, var: 'site_title', value: "--- imastodon\n")
+
+      migration.up
+
+      expect(stored('override_robots')).to be true
+    end
+  end
 end
