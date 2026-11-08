@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -6,8 +6,7 @@ import { TrashIcon } from '@phosphor-icons/react';
 
 import { changeComposeSpoilerText } from '@/mastodon/actions/compose';
 import { IconButton } from '@/mastodon/components/button/redesign';
-import { FormFieldWrapper } from '@/mastodon/components/form_fields';
-import { TextInput } from '@/mastodon/components/form_fields/redesign';
+import { FormFieldWrapper, TextInput } from '@/mastodon/components/form_fields';
 import {
   matchesKeyCode,
   normalizeKey,
@@ -42,13 +41,6 @@ export const ComposeSensitiveField: React.FC<
   const intl = useIntl();
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
-  const isSensitive = useAppSelector((state) => !!state.compose.get('spoiler'));
-  useEffect(() => {
-    if (!isSensitive) {
-      dispatch(requestComposerFocus());
-    }
-  }, [isSensitive, dispatch]);
-
   const errors = useAppSelector((state) => state.composer.publishErrors);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -88,6 +80,7 @@ export const ComposeSensitiveField: React.FC<
 
   return (
     <FormFieldWrapper
+      compact
       className={classes.sensitiveWrapper}
       status={
         errors.includes('missing-content-warning')

@@ -2,10 +2,11 @@
 
 .galleryWrapper {
   position: relative;
+  border-radius: var(--radius-4);
+  overflow: hidden;
 
   :global(.media-gallery) {
     margin-top: 0;
-    border-radius: var(--radius-4);
   }
 
   // Overrides .media-gallery--layout-2 > .media-gallery__item:nth-child(1)
@@ -13,6 +14,10 @@
   :global(.video-player),
   :global(.audio-player) {
     outline: none;
+  }
+
+  :global(.video-player) {
+    border-radius: var(--radius-4);
   }
 
   :global(.media-gallery__alt__label--non-interactive) {
@@ -29,10 +34,6 @@
   :global(.spoiler-button) {
     display: none;
   }
-}
-
-.galleryContent {
-  border-radius: var(--radius-4);
 }
 
 .gallerySpoiler {
