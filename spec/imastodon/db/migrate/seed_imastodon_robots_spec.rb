@@ -6,15 +6,21 @@ require Rails.root.join('db', 'migrate', '20261108120000_seed_imastodon_robots.r
 RSpec.describe SeedImastodonRobots do
   let(:migration) { described_class.new }
 
+  # Setting はキャッシュから返すため、migration が DB に書いた値はダミーの Setting クラスで直接読む
+  def stored(var)
+    value = described_class::Setting.find_by(var: var)&.value
+    YAML.safe_load(value) if value
+  end
+
   context '管理画面で robots.txt を上書きしていないとき' do
     it 'robots.txt の上書きを有効にする' do
       migration.up
-      expect(Setting.override_robots).to be true
+      expect(stored('override_robots')).to be true
     end
 
     it 'imastodon で拒否していた UA とパスを書き込む' do
       migration.up
-      expect(Setting.custom_robots.lines(chomp: true)).to include(
+      expect(stored('custom_robots').lines(chomp: true)).to include(
         'User-agent: ExaSearchBot',
         'Disallow: /interact/',
         'Disallow: /api/v1/instance/domain_blocks',
@@ -28,11 +34,19 @@ RSpec.describe SeedImastodonRobots do
     it 'upstream の既定で拒否している AI クローラーも書き込む' do
       migration.up
       upstream_agents = RobotsController::DEFAULT_ROBOTS.lines(chomp: true).grep(/\AUser-agent: (?!\*)/)
-      expect(Setting.custom_robots.lines(chomp: true)).to include(*upstream_agents)
+      expect(stored('custom_robots').lines(chomp: true)).to include(*upstream_agents)
     end
   end
 
   context '管理画面で robots.txt を既に設定しているとき' do
-    it '設定を変えない'
+    it '設定を変えない' do
+      Setting.override_robots = false
+      Setting.custom_robots = "User-agent: *\nDisallow: /secret/\n"
+
+      migration.up
+
+      expect(stored('override_robots')).to be false
+      expect(stored('custom_robots')).to eq "User-agent: *\nDisallow: /secret/\n"
+    end
   end
 end

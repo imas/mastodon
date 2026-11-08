@@ -44,6 +44,7 @@ class SeedImastodonRobots < ActiveRecord::Migration[8.1]
 
   def up
     Setting.reset_column_information
+    return if Setting.exists?(var: %w(override_robots custom_robots))
 
     Setting.upsert_all(
       [
