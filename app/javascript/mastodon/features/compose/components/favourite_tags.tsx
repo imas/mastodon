@@ -10,7 +10,7 @@ import {
   refreshFavouriteTags,
   toggleLockFavouriteTag,
 } from '@/mastodon/actions/favourite_tags';
-import { Button, CaretIcon } from '@/mastodon/components/button/redesign';
+import { Button, CaretIcon } from '@/mastodon/components/button';
 import {
   Menu,
   MenuList,

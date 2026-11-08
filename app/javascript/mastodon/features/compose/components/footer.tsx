@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { ImageSquareIcon, WarningCircleIcon } from '@phosphor-icons/react';
 
 import { uploadCompose } from '@/mastodon/actions/compose';
-import { Button, IconButton } from '@/mastodon/components/button/redesign';
+import { Button, IconButton } from '@/mastodon/components/button';
 import type { OnEmojiPick } from '@/mastodon/components/emoji/picker';
 import { EmojiPickerButton } from '@/mastodon/components/emoji/picker';
 import {
