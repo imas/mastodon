@@ -25,7 +25,11 @@ RSpec.describe SeedImastodonRobots do
       )
     end
 
-    it 'upstream の既定で拒否している AI クローラーも書き込む'
+    it 'upstream の既定で拒否している AI クローラーも書き込む' do
+      migration.up
+      upstream_agents = RobotsController::DEFAULT_ROBOTS.lines(chomp: true).grep(/\AUser-agent: (?!\*)/)
+      expect(Setting.custom_robots.lines(chomp: true)).to include(*upstream_agents)
+    end
   end
 
   context '管理画面で robots.txt を既に設定しているとき' do

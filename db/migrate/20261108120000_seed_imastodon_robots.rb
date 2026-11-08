@@ -3,10 +3,33 @@
 class SeedImastodonRobots < ActiveRecord::Migration[8.1]
   class Setting < ApplicationRecord; end
 
+  # RobotsController::DEFAULT_ROBOTS の拒否リストに imastodon で足した UA とパスを加えたもの。
+  # upstream の既定値が後で変わっても migration の結果が変わらないよう、参照せず書き写している
   ROBOTS = <<~TXT
+    # You are not allowed to use the contents of this website for LLM training
+
+    User-agent: AI2Bot
+    User-agent: Ai2Bot-Dolma
+    User-agent: anthropic-ai
+    User-agent: Applebot-Extended
+    User-agent: Bytespider
+    User-agent: CCBot
+    User-agent: ClaudeBot
+    User-agent: cohere-ai
+    User-agent: cohere-training-data-crawler
+    User-agent: Diffbot
+    User-agent: FacebookBot
+    User-agent: Google-CloudVertexBot
+    User-agent: Google-Extended
     User-agent: GPTBot
+    User-agent: ImagesiftBot
+    User-agent: LinerBot
+    User-agent: Meta-ExternalAgent
+    User-agent: omgilibot
+    User-agent: PanguBot
+    User-agent: Scrapy
+    User-agent: Webzio-Extended
     User-agent: ExaSearchBot
-    User-agent: meta-externalagent
     Disallow: /
 
     User-agent: *
