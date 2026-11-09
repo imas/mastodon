@@ -1,36 +1,5 @@
 /**
-  * features/hashtag_timeline/components/favourite_toggle
-  */
-
-.favourite-tags__add-button-in-column {
-  background-color: var(--color-bg-brand-base);
-
-  &:focus,
-  &:hover {
-    background-color: color-mix(
-      in oklab,
-      var(--color-bg-brand-base),
-      var(--color-text-primary) 8%
-    );
-  }
-}
-
-// v4.4 までの見た目（旧 $error-red）を保つため、upstream の意味色 token ではなく固定色にする
-.favourite-tags__remove-button-in-column {
-  background-color: #df405a;
-
-  &:focus,
-  &:hover {
-    background-color: color-mix(
-      in oklab,
-      #df405a,
-      var(--color-text-primary) 8%
-    );
-  }
-}
-
-/**
-  * features/compose/redesign/favourite_tags
+  * features/compose/components/favourite_tags
   */
 
 // メニューの項目と余白を揃え、操作できない文言なので一段薄い色にする

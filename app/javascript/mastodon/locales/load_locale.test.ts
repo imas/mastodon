@@ -16,7 +16,7 @@ async function loadMessages(lang: string) {
 describe('loadLocale', () => {
   describe('ja-IM のとき', () => {
     it('ja-IM で言い換えているキーは ja-IM の訳文になる', async () => {
-      const key = 'compose_form.publish';
+      const key = 'privacy.public.short';
       expect(jaIM[key]).not.toBe(ja[key]);
 
       const messages = await loadMessages('ja-IM');

@@ -354,9 +354,9 @@ vi:
         update_username_block_html: "%{name} đã cập nhật quy tắc cho tên người dùng chứa %{target}"
         usable_tag_html: có thể dùng;
       automated_actions:
-        create_domain_allow_html: Tự động cho phép các liên kết với tên miền %{target}
+        create_domain_allow_html: Tự động cho phép liên hợp với tên miền %{target}
         create_domain_block_html: Tự động chặn tên miền %{target}
-        destroy_domain_allow_html: Tự động từ chối các liên kết với tên miền %{target}
+        destroy_domain_allow_html: Tự động từ chối liên hợp với tên miền %{target}
         destroy_domain_block_html: Tự động bỏ chặn tên miền %{target}
         update_domain_block_html: Tự động cập nhật chặn tên miền với %{target}
       deleted_account: tài khoản đã xóa
@@ -989,6 +989,29 @@ vi:
       translation: Dịch
       translations: Bản dịch
       translations_explanation: Bạn có thể thêm bản dịch cho các nội quy. Nội dung mặc định sẽ được hiển thị nếu không có bản dịch nào. Luôn đảm bảo bất kỳ bản dịch nào được cung cấp đều đồng bộ với nội dung mặc định.
+    server_checks:
+      categories:
+        completed:
+          title: Đã xong
+        critical:
+          title: Nghiêm trọng
+        error:
+          title: Lỗi
+        ignored:
+          title: Đã bỏ qua
+        suggestion:
+          title: Đề xuất
+        unprocessed:
+          title: Chưa xử lí
+        warning:
+          title: Cảnh báo
+      checks:
+        database_schema:
+          error:
+            title: Đã xảy ra lỗi khi kiểm tra lược đồ cơ sở dữ liệu.
+          ok:
+            title: Hiện không có yêu cầu di chuyển cơ sở dữ liệu nào đang chờ xử lý.
+      title: Sức khỏe máy chủ
     settings:
       about:
         manage_rules: Sửa nội quy máy chủ
@@ -1011,6 +1034,9 @@ vi:
         danger_zone: Khu vực nguy hiểm
         preamble: Kiểm soát cách lưu trữ nội dung cá nhân trong Mastodon.
         title: Lưu giữ nội dung
+      crawlers:
+        preamble: Kiểm soát cách thức các bot "tuân thủ quy tắc" (như trình thu thập dữ liệu của công cụ tìm kiếm) tương tác với máy chủ Mastodon của bạn. Các bot độc hại có thể phớt lờ những thiết lập này và cần phải được chặn ở cấp độ mạng.
+        title: Điều khiển trình thu thập thông tin
       default_noindex:
         desc_html: Ảnh hưởng đến tất cả người không tự thay đổi cài đặt này
         title: Mặc định người dùng không xuất hiện trong công cụ tìm kiếm
@@ -1552,7 +1578,7 @@ vi:
     light: Sáng
   color_theme:
     cyan: Xanh lơ
-    indigo: Chàm
+    indigo: Tím
     lime: Vàng chanh
     orange: Cam
     pink: Hồng

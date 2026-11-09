@@ -1,9 +1,7 @@
 @use '@/styles/mastodon/mixins';
 
 .root {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-template-rows: 1fr;
+  display: flex;
   align-items: center;
   color: var(--color-text-secondary);
 
@@ -17,13 +15,13 @@
   }
 
   // When hovering over any link with the account ID, underline them all.
-  &:has(a[data-id]:hover) a[data-id] {
+  &:has(a[data-main-account-link]:hover) a[data-main-account-link] {
     text-decoration: var(--link-underline-stealthy-hover);
   }
 }
 
-.isFeatured {
-  grid-template-columns: var(--first-col-width) 1fr max-content;
+.accountWrapper {
+  overflow: hidden;
 }
 
 .avatar {
@@ -41,6 +39,7 @@
 
   display: flex;
   gap: var(--space-1);
+  white-space: nowrap;
 }
 
 // Overrides .header a

@@ -36,8 +36,8 @@ import {
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
 import { Avatar } from '../avatar';
-import { Button } from '../button/redesign';
-import { Card, CardBody, CardTitle } from '../card';
+import { Button } from '../button';
+import { Card, CardBody, CardTitle, PrimaryCardLink } from '../card';
 import { DisplayName } from '../display_name';
 import { DisplayNameSimple } from '../display_name/simple';
 import { EmojiHTML } from '../emoji/html';
@@ -51,9 +51,9 @@ import {
   useStatusContext,
   useStatusHandlers,
 } from './hooks';
-import { StatusImage } from './image';
+import { StatusGalleryImage, StatusImage } from './image';
 import classes from './quote.module.scss';
-import { accountStatusLinkProps } from './utils';
+import { accountStatusLinkProps, statusLink } from './utils';
 
 type StatusQuoteProps = TQuotedStatus & { parentId: string };
 
@@ -119,7 +119,10 @@ export const QuotedStatus: React.FC<{
     return null;
   }
 
-  const statusTo = `/@${status.account.acct}/${status.id}`;
+  const statusTo = {
+    pathname: statusLink(status),
+    state: { reference: 'status' },
+  };
 
   return (
     <Card
@@ -157,18 +160,26 @@ export const QuotedStatus: React.FC<{
         {!disableOpen ? (
           <Link
             {...accountStatusLinkProps(status.account)}
-            className={classes.accountLink}
+            className={classNames(classes.accountLink, classes.accountName)}
           >
             <DisplayName account={status.account} variant='noDomain' />
           </Link>
         ) : (
-          <DisplayName account={status.account} variant='noDomain' />
+          <DisplayName
+            account={status.account}
+            variant='noDomain'
+            className={classes.accountName}
+          />
         )}
       </CardTitle>
 
       <CardBody className={classes.body} noClamp={!clamp}>
-        <QuotedStatusBody status={status} />
+        <QuotedStatusBody status={status} linkStatus={!onDelete} />
       </CardBody>
+
+      {!disableOpen && (
+        <PrimaryCardLink as={Link} to={statusTo} tabIndex={-1} aria-hidden />
+      )}
 
       {!status.spoilerHtml && <QuotedStatusLink status={status} />}
     </Card>
@@ -177,7 +188,8 @@ export const QuotedStatus: React.FC<{
 
 const QuotedStatusBody: React.FC<{
   status: AccountStatusShape;
-}> = ({ status }) => {
+  linkStatus?: boolean;
+}> = ({ status, linkStatus = true }) => {
   const attachments = status.media_attachments;
   const mainAttachment = attachments.find(
     (
@@ -259,17 +271,22 @@ const QuotedStatusBody: React.FC<{
     );
   }
 
+  const text = (status.translation?.contentHtml ?? status.contentHtml).trim();
+  const ImageComp = linkStatus ? StatusGalleryImage : StatusImage;
+
   return (
     <>
       {!!reply && <p className={classes.reply}>{reply}</p>}
 
-      <EmojiHTML
-        htmlString={status.translation?.contentHtml ?? status.contentHtml}
-        extraEmojis={status.emojis}
-        lang={status.translation?.language ?? status.language}
-        onElement={onStatusLinksDisabled}
-        extraArgs={status}
-      />
+      {text && (
+        <EmojiHTML
+          htmlString={text}
+          extraEmojis={status.emojis}
+          lang={status.translation?.language ?? status.language}
+          onElement={onStatusLinksDisabled}
+          extraArgs={status}
+        />
+      )}
 
       {poll && (
         <div className={classes.spoiler}>
@@ -301,7 +318,8 @@ const QuotedStatusBody: React.FC<{
 
       {mainAttachment?.type === 'video' && (
         <div className={classNames(classes.media, classes.mediaSingle)}>
-          <StatusImage
+          <ImageComp
+            statusId={status.id}
             className={classes.image}
             attachment={mainAttachment}
             sensitive={sensitive}
@@ -312,7 +330,7 @@ const QuotedStatusBody: React.FC<{
 
               {duration}
             </div>
-          </StatusImage>
+          </ImageComp>
         </div>
       )}
 
@@ -326,7 +344,9 @@ const QuotedStatusBody: React.FC<{
           data-number={imageAttachments.length}
         >
           {imageAttachments.map((attachment) => (
-            <StatusImage
+            <ImageComp
+              showAlt
+              statusId={status.id}
               className={classes.image}
               attachment={attachment}
               sensitive={sensitive}
@@ -351,8 +371,21 @@ const QuotedStatusLink: React.FC<{ status: AccountStatusShape }> = ({
 
   if (quotedPost) {
     link = (
-      <Link to={`/@${quotedPost.account.acct}/${quotedPost.id}`}>
-        {quotedPost.uri}
+      <Link
+        to={`/@${quotedPost.account.acct}/${quotedPost.id}`}
+        className={classes.nestedQuote}
+      >
+        <Avatar account={quotedPost.account} />
+        <FormattedMessage
+          id='status.quote.nested.title'
+          defaultMessage='Post from {author}'
+          values={{
+            author: <DisplayNameSimple account={quotedPost.account} />,
+          }}
+          tagName='strong'
+        />
+        &bull;
+        <RelativeTimestamp timestamp={quotedPost.created_at} />
       </Link>
     );
   }
@@ -378,7 +411,7 @@ const QuotedStatusLink: React.FC<{ status: AccountStatusShape }> = ({
     return null;
   }
 
-  return <CardBody>{link}</CardBody>;
+  return <CardBody noClamp>{link}</CardBody>;
 };
 
 function useQuoteError({

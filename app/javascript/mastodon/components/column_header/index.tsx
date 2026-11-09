@@ -15,8 +15,8 @@ import { useResizeObserver } from '@/mastodon/hooks/useObserver';
 import { useAppDispatch } from '@/mastodon/store';
 import { hasReactChildren } from '@/mastodon/utils/has_react_children';
 
-import type { IconButtonProps } from '../button/redesign';
-import { Button, IconButton } from '../button/redesign';
+import type { IconButtonProps } from '../button';
+import { Button, IconButton } from '../button';
 import { useColumn, useColumnIndexContext } from '../column/context';
 import { NavigationFocusTarget } from '../navigation_focus_target';
 import type { LocationState } from '../router';
@@ -211,11 +211,11 @@ function updateHeaderHeightCssVariable(element: HTMLElement) {
   const newHeight = `${element.offsetHeight}px`;
   const currentHeight = getComputedStyle(
     document.documentElement,
-  ).getPropertyValue('--column-header-height');
+  ).getPropertyValue('--current-column-header-height');
 
   if (newHeight !== currentHeight) {
     document.documentElement.style.setProperty(
-      '--column-header-height',
+      '--current-column-header-height',
       `${element.offsetHeight}px`,
     );
   }
