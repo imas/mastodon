@@ -16,6 +16,7 @@ import {
 import { Button, buttonClasses } from '@/mastodon/components/button';
 import { ToggleField, TextInput } from '@/mastodon/components/form_fields';
 import { useAppSelector, useAppDispatch } from '@/mastodon/store';
+import { isKeyComposing } from '@/mastodon/utils/events';
 import { DAY, HOUR, MINUTE } from '@/mastodon/utils/time';
 
 import classes from './attachments.module.scss';
@@ -59,7 +60,7 @@ function durationToMessage(durationMs: number) {
 }
 
 export const ComposePoll: React.FC = () => {
-  const { options, maxOptions, expiresIn, multiple } =
+  const { options, maxOptions, maxCharacters, expiresIn, multiple } =
     useAppSelector(selectComposePoll);
   const listId = useId();
   const intl = useIntl();
@@ -67,6 +68,10 @@ export const ComposePoll: React.FC = () => {
   const dispatch = useAppDispatch();
   const handleKeyDown = useCallback(
     (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (isKeyComposing(event)) {
+        return;
+      }
+
       const value = event.currentTarget.value;
 
       // Disable Enter key to avoid submitting the form.
@@ -129,6 +134,7 @@ export const ComposePoll: React.FC = () => {
             key={index}
             value={option}
             index={index}
+            maxLength={maxCharacters}
             onKeyDown={handleKeyDown}
             disabled={firstItemEmpty && index > 0}
           />
@@ -215,12 +221,13 @@ export const ComposePoll: React.FC = () => {
 const ComposePollOption: React.FC<{
   index: number;
   value: string;
+  maxLength: number;
   onKeyDown: (
     index: number,
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => void;
   disabled: boolean;
-}> = ({ index, value, disabled, onKeyDown }) => {
+}> = ({ index, value, maxLength, disabled, onKeyDown }) => {
   const intl = useIntl();
 
   const dispatch = useAppDispatch();
@@ -247,7 +254,7 @@ const ComposePollOption: React.FC<{
         placeholder={intl.formatMessage(messages.option_placeholder, {
           number: index + 1,
         })}
-        maxLength={50}
+        maxLength={maxLength}
         autoFocus={index === 0}
         data-index={index}
         spellCheck

@@ -93,7 +93,6 @@ const initialState = ImmutableMap({
   suggestions: ImmutableList(),
   default_privacy: 'public',
   default_sensitive: false,
-  default_spoiler_field: false,
   default_language: 'en',
   resetFileKey: Math.floor((Math.random() * 0x10000)),
   idempotencyKey: null,
@@ -141,7 +140,6 @@ function clearAll(state) {
     map.set('in_reply_to', null);
     map.set('privacy', getPrivacy(state));
     map.set('sensitive', state.get('default_sensitive'));
-    map.set('spoiler', state.get('default_spoiler_field', false));
     map.set('language', state.get('default_language'));
     map.update('media_attachments', list => list.clear());
     map.set('progress', 0);
@@ -475,14 +473,16 @@ export const composeReducer = (state = initialState, action) => {
     });
   case COMPOSE_SPOILERNESS_CHANGE:
     return state.withMutations(map => {
-      map.set('spoiler', !state.get('spoiler'));
+      const spoiler = !state.get('spoiler')
+      map.set('spoiler', spoiler);
       map.set('idempotencyKey', uuid());
     });
   case COMPOSE_SPOILER_TEXT_CHANGE:
-    if (!state.get('spoiler')) return state;
-    return state
-      .set('spoiler_text', action.text)
-      .set('idempotencyKey', uuid());
+    return state.withMutations(map => {
+      map.set('spoiler', !!action.text);
+      map.set('spoiler_text', action.text);
+      map.set('idempotencyKey', uuid());
+    });
   case COMPOSE_CHANGE:
     return state
       .set('text', action.text)

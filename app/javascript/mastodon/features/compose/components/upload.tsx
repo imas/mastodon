@@ -1,4 +1,3 @@
-import type React from 'react';
 import { useCallback } from 'react';
 
 import { FormattedMessage } from 'react-intl';
@@ -7,12 +6,17 @@ import classNames from 'classnames';
 
 import {
   ArrowsLeftRightIcon,
+  EyeIcon,
+  EyeSlashIcon,
   PencilSimpleIcon,
   PlusIcon,
   TrashIcon,
 } from '@phosphor-icons/react';
 
-import { undoUploadCompose } from '@/mastodon/actions/compose';
+import {
+  changeComposeSensitivity,
+  undoUploadCompose,
+} from '@/mastodon/actions/compose';
 import { openModal } from '@/mastodon/actions/modal';
 import type { ApiAudioAttachmentJSON } from '@/mastodon/api_types/media_attachments';
 import { Button, IconButton } from '@/mastodon/components/button';
@@ -23,15 +27,16 @@ import classes from './attachments.module.scss';
 import type { ComposeAttachment } from './selectors';
 import { selectComposeAttachment, selectComposeSensitive } from './selectors';
 
-export const ComposeUpload: React.FC<{
-  id?: string;
-  className?: string;
-  single?: boolean;
-}> = ({ id, className, single }) => {
+export const ComposeUpload: React.FC<
+  {
+    id?: string;
+    single?: boolean;
+    showMediaControls?: boolean;
+  } & React.ComponentPropsWithRef<'div'>
+> = ({ id, className, single, showMediaControls = single, ...props }) => {
   const attachment = useAppSelector((state) =>
     selectComposeAttachment(state, id),
   );
-  const { mediaSensitive } = useAppSelector(selectComposeSensitive);
 
   const dispatch = useAppDispatch();
 
@@ -49,6 +54,11 @@ export const ComposeUpload: React.FC<{
     dispatch(undoUploadCompose(id));
   }, [dispatch, id]);
 
+  const { sensitive, mediaSensitive } = useAppSelector(selectComposeSensitive);
+  const handleToggleSensitive = useCallback(() => {
+    dispatch(changeComposeSensitivity());
+  }, [dispatch]);
+
   if (!attachment || attachment.type === 'unknown') {
     return <div className={classNames(classes.mediaUpload, className)} />;
   }
@@ -58,14 +68,11 @@ export const ComposeUpload: React.FC<{
   }
 
   return (
-    <StatusImage
-      attachment={attachment}
-      className={classNames(className, classes.mediaUpload)}
-      sensitive={mediaSensitive}
-    >
+    <StatusImage attachment={attachment} {...props}>
       <Button
         size='xs'
         color='media'
+        expandHitArea={3}
         variant={attachment.description ? 'tonal' : 'solid'}
         onClick={handleAltEdit}
         className={classes.mediaMenuAltButton}
@@ -92,13 +99,36 @@ export const ComposeUpload: React.FC<{
       </Button>
 
       <div className={classes.mediaMenuButtons}>
-        {!single && (
+        {!sensitive && showMediaControls && (
+          <IconButton
+            onClick={handleToggleSensitive}
+            icon={mediaSensitive ? EyeIcon : EyeSlashIcon}
+            size='xs'
+            color='media'
+            tooltipPlacement='top'
+            expandHitArea={{ default: 3, right: 1 }}
+          >
+            {mediaSensitive ? (
+              <FormattedMessage
+                id='compose.sensitive.unblur'
+                defaultMessage='Remove blur'
+              />
+            ) : (
+              <FormattedMessage
+                id='compose.sensitive.blur'
+                defaultMessage='Blur all media'
+              />
+            )}
+          </IconButton>
+        )}
+        {!single && showMediaControls && (
           <IconButton
             onClick={handleRearrange}
             icon={ArrowsLeftRightIcon}
             size='xs'
             color='media'
             tooltipPlacement='top'
+            expandHitArea={{ default: 3, left: 1, right: 1 }}
           >
             <FormattedMessage
               id='compose.upload.rearrange'
@@ -112,6 +142,7 @@ export const ComposeUpload: React.FC<{
           size='xs'
           color='media'
           tooltipPlacement='top'
+          expandHitArea={{ default: 3, left: 1 }}
         >
           <FormattedMessage
             id='compose.upload.menu.delete'

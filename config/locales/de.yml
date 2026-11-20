@@ -275,6 +275,7 @@ de:
         update_ip_block: IP-Regel aktualisieren
         update_report: Meldung aktualisieren
         update_status: Beitrag aktualisieren
+        update_tag: Hashtag aktualisieren
         update_user_role: Rolle bearbeiten
         update_username_block: Regel für Profilnamen aktualisieren
       actions:
@@ -826,7 +827,7 @@ de:
       priority: Priorität
       priority_hint: Abonnierbare Listen werden in der Reihenfolge ihrer Priorität ausgewertet. Abonnements mit einem niedrigeren Wert überschreiben höhere Werte.
       show:
-        delete_confirm: Möchtest du die abonnierbare Liste wirklich löschen?
+        delete_confirm: Möchtest du die abonnierte Liste wirklich löschen?
         edit: Abonnement bearbeiten
         empty: Dieses Abonnement hat noch keine Bemerkungen.
         title: 'Abonnierbare Liste: %{name}'

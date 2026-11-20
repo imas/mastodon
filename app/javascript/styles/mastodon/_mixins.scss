@@ -226,7 +226,45 @@
   border: 1px solid transparent;
 }
 
-@mixin click-area($size: var(--space-1)) {
-  padding: $size;
-  margin: calc(-1 * #{$size});
+// Expands the hit area of an element by placing a pseudo element
+// inside it and expanding it beyond the element's bounding box.
+// Doesn't work on elements with a non-default `overflow` value.
+@mixin expand-hit-area($size: var(--space-1)) {
+  position: relative;
+
+  --hit-area-default: #{$size};
+
+  &::after {
+    content: '';
+    position: absolute;
+
+    // --hit-area- properties are added via style attribute
+    inset: calc(-1 * var(--hit-area-top, var(--hit-area-default)))
+      calc(-1 * var(--hit-area-right, var(--hit-area-default)))
+      calc(-1 * var(--hit-area-bottom, var(--hit-area-default)))
+      calc(-1 * var(--hit-area-left, var(--hit-area-default)));
+  }
+}
+
+@mixin message-background() {
+  position: relative;
+
+  &::before {
+    content: '';
+    mask-repeat: repeat;
+    mask-image: url('@/images/composer_message.svg');
+    mask-size: 311.36px auto;
+    background-color: var(--color-border-brand);
+    opacity: 0.15;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+    [data-contrast='high'] & {
+      display: none;
+    }
+  }
 }
