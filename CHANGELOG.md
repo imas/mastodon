@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.7.6] - 2026-11-19
+
+### Security
+
+- Updated dependencies `ruby`, `puma`, `rails`, `sanitize`, `msgpack` and `omniauth`
+
+### Fixed
+
+- Fix missing `featuredCollections` definition to JSON-LD context (#41728 by @oneiros)
+- Fix improper use of translation strings in email notification unsubscription page (#41555 by @ClearlyClaire)
+- Fix missing dropdown label in admin audit log (#41301 by @e-nomem)
+
+## [4.7.5] - 2026-11-03
+
+### Security
+
+- Fix password authentication bypass for inactive accounts ([GHSA-3xjw-gv43-3w62](https://github.com/mastodon/mastodon/security/advisories/GHSA-3xjw-gv43-3w62))
+- Fix DoS through JSON-LD compaction (#41482 by @ClearlyClaire, [GHSA-cf49-73r7-rxj6](https://github.com/mastodon/mastodon/security/advisories/GHSA-cf49-73r7-rxj6))
+- Fix `Forwarded` header taking precedence over `X-Forwarded-For` (#41481 by @ClearlyClaire, [GHSA-qp4r-p842-mw5c](https://github.com/mastodon/mastodon/security/advisories/GHSA-qp4r-p842-mw5c))
+  - If your reverse-proxy setup uses `Forwarded` instead of `X-Forwarded-For`, please make sure it ignores user-provided `X-Forwarded-For` headers.
+  - If you are using our provided `nginx.conf`, please consider updating it.
+- Updated dependencies, in particular to address security advisories in `addressable`, `loofah`, `rack`, and `rails-html-sanitizer`
+
+### Changed
+
+- Change invites use counts to not decrease if an invited user deletes their account (#41458 by @ClearlyClaire)
+
 ## [4.7.4] - 2026-10-29
 
 ### Security
