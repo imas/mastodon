@@ -336,7 +336,7 @@ export const selectIsMinimized = createAppSelector(
 
 export const submitComposer = createAppThunk(
   (
-    { redirectOnSuccess }: { redirectOnSuccess?: boolean },
+    arg: undefined | { redirectOnSuccess?: boolean; force?: boolean } = {},
     { getState, dispatch },
   ) => {
     const textareaValue = getComposerTextarea()?.value;
@@ -350,9 +350,12 @@ export const submitComposer = createAppThunk(
     const { compose, meta, statuses, server, settings } = getState();
 
     let text = compose.get('text') as string;
+    const spoilerText = compose.get('spoiler_text') as string;
+    if (compose.get('spoiler') && spoilerText) {
+      text += spoilerText;
+    }
 
     const attachments = compose.get('media_attachments');
-    const spoilerText = compose.get('spoiler_text') as string;
     if (!text.trim() && isList(attachments) && attachments.isEmpty()) {
       dispatch(composerSlice.actions.addError('empty'));
     }
@@ -363,9 +366,6 @@ export const submitComposer = createAppThunk(
 
     const maxChars =
       server.server.item?.configuration.statuses.max_characters ?? 500;
-    if (compose.get('spoiler') && typeof spoilerText === 'string') {
-      text += spoilerText;
-    }
     const textLength = length(countableText(text));
     if (textLength > maxChars) {
       dispatch(composerSlice.actions.addError('too-long'));
@@ -397,10 +397,13 @@ export const submitComposer = createAppThunk(
       statuses.getIn([quotedStatusId, 'account']) !== me &&
       !settings.getIn(['dismissed_banners', PRIVATE_QUOTE_MODAL_ID]);
 
+    const { force, redirectOnSuccess } = arg;
+
     if (
       !!meta.get('missing_alt_text_modal') &&
       missingAltText &&
-      privacy !== 'direct'
+      privacy !== 'direct' &&
+      !force
     ) {
       dispatch(
         openModal({
@@ -408,7 +411,7 @@ export const submitComposer = createAppThunk(
           modalProps: {},
         }),
       );
-    } else if (quoteToPrivate) {
+    } else if (quoteToPrivate && !force) {
       dispatch(
         openModal({
           modalType: 'CONFIRM_PRIVATE_QUOTE_NOTIFY',
@@ -433,7 +436,7 @@ export const toggleContentWarning = createAppThunk(
   (_arg, { dispatch, getState }) => {
     dispatch(changeComposeSpoilerText(''));
     dispatch(changeComposeSpoilerness());
-    dispatch(clearComposerErrors(['missing-content-warning']));
+    dispatch(clearComposerErrors(['missing-content-warning', 'empty']));
 
     if (!getState().compose.get('spoiler')) {
       dispatch(requestComposerFocus());

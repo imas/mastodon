@@ -5,6 +5,9 @@
 
   display: grid;
   grid-template-columns: var(--first-col-width) auto;
+
+  // Force an explicit track size otherwise Safari 17 doesn't calculate correctly.
+  grid-template-rows: minmax(auto, max-content);
   align-items: center;
   color: var(--color-text-secondary);
 
@@ -45,6 +48,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
+  overflow: hidden; // Forces the display name to not push contents out of view.
 }
 
 // Add a tag to override .root a
