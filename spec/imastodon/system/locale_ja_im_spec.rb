@@ -119,7 +119,15 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_link('だまっとけ☆リスト')
     end
 
-    it '投稿のいいねボタンが「ティンと来た！」と表示される'
+    it '投稿のいいねボタンが「ティンと来た！」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティンテスト投稿', visibility: :public)
+      FeedManager.instance.push_to_home(bob.account, status)
+      visit '/home'
+      wait_for_react
+
+      # ブーストと同じく、ラベルは aria-labelledby の参照先の見えない要素にある
+      expect(page).to have_css('article[data-id] [id]', exact_text: 'ティンと来た！', visible: :hidden)
+    end
 
     it 'いいねされた通知が「〇〇さんがあなたのあふぅにティンと来たようです」と表示される'
 
