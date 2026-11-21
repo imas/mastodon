@@ -120,6 +120,8 @@
   "notification.label.private_reply": "非公開のRe:あふぅ",
   "notification.like": "{name}さんがあなたのあふぅにティンと来たようです",
   "notification.like.name_and_others_with_link": "{name}さんと<a>ほか{count, plural, other {#人}}</a>がティンと来ました",
+  "notification.like_message": "{name}さんがあなたの機密資料にティンと来たようです",
+  "notification.like_message.name_and_others_with_link": "{name}さんと<a>ほか{count, plural, other {#人}}</a>があなたの機密資料にティンと来たようです",
   "notification.mention": "{name}さんがReあふぅしました",
   "notification.mentioned_you": "{name} さんがあなたにRe:あふぅしました",
   "notification.moderation_warning.action_delete_statuses": "あなたによるいくつかのあふぅが削除されました。",

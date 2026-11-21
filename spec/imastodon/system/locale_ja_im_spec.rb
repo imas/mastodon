@@ -176,7 +176,18 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_text('春香さんとほか1人がティンと来ました')
     end
 
-    it 'メッセージにいいねされた通知が「〇〇さんがあなたの機密資料にティンと来たようです」と表示される'
+    it 'メッセージにいいねされた通知が「〇〇さんがあなたの機密資料にティンと来たようです」と表示され、複数人なら「ほか〇人」が付く' do
+      single = Fabricate(:status, account: bob.account, text: '機密資料ティンテスト（1人）', visibility: :direct)
+      notify_like(single, Fabricate(:account, username: 'yayoi', display_name: 'やよい'))
+      multiple = Fabricate(:status, account: bob.account, text: '機密資料ティンテスト（2人）', visibility: :direct)
+      notify_like(multiple, Fabricate(:account, username: 'iori', display_name: '伊織'))
+      notify_like(multiple, Fabricate(:account, username: 'ami', display_name: '亜美'))
+      visit '/notifications'
+      wait_for_react
+
+      expect(page).to have_text('やよいさんがあなたの機密資料にティンと来たようです')
+      expect(page).to have_text('亜美さんとほか1人があなたの機密資料にティンと来たようです')
+    end
 
     it 'メッセージの投稿小窓の暗号化の注意で、投稿が「機密資料」と言い換えられている'
 
