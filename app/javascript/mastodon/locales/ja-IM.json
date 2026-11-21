@@ -66,6 +66,7 @@
   "emoji_button.not_found": "絵文字がなーい！！ ζ╯'ヮ')ζ╯︵ ┻━┻",
   "empty_column.account_timeline": "あふぅがありません！",
   "empty_column.community": "楽屋にはまだ誰もいないようです。何か書いてみましょう！",
+  "empty_column.custom_feed": "このカスタムフィードにはまだなにもありません。このフィードのメンバーが新しいあふぅをするとここに表示されます。",
   "empty_column.domain_blocks": "非表示にしているドメインはありません。",
   "empty_column.home": "オフィスにはまだ誰もいません。だれかをフォローして埋めてみましょう。",
   "empty_column.liked_posts": "まだ何もティンと来ていません。ティンと来るとここに表示されます。",

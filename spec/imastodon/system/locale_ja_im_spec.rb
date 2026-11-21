@@ -196,7 +196,13 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_text('機密資料はエンドツーエンド暗号化に対応していません。電話番号や口座情報など、安全に送受信されるべき情報をMastodonで共有しないでください。')
     end
 
-    it '投稿がまだ無いカスタムフィードに「このメンバーが新しいあふぅをすると」と表示される'
+    it '投稿がまだ無いカスタムフィードに「このフィードのメンバーが新しいあふぅをすると」と表示される' do
+      list = Fabricate(:list, account: bob.account, title: '765プロ')
+      visit "/lists/#{list.id}"
+      wait_for_react
+
+      expect(page).to have_text('このカスタムフィードにはまだなにもありません。このフィードのメンバーが新しいあふぅをするとここに表示されます。')
+    end
 
     it 'まだ誰もいいねしていない投稿のいいね一覧に「まだ誰もティンと来ていません」と表示される'
 
