@@ -28,6 +28,14 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       find('form[role="dialog"] button[aria-haspopup="menu"]', text: '公開資料').click
     end
 
+    # bob の投稿に from がいいねした通知を、グループ化のキー付きで作る
+    def notify_like(status, from)
+      favourite = Fabricate(:favourite, account: from, status: status)
+      notification = Notification.new(account: bob.account, activity: favourite, type: :favourite)
+      notification.set_group_key!
+      notification.save!
+    end
+
     # ja-IM で言い換えていない文言は、アプリと同じく ja、en の順に引き継がれる
     def ui_text(key)
       %w(ja-IM ja en).each do |locale|
@@ -129,7 +137,14 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css('article[data-id] [id]', exact_text: 'ティンと来た！', visible: :hidden)
     end
 
-    it 'いいねされた通知が「〇〇さんがあなたのあふぅにティンと来たようです」と表示される'
+    it 'いいねされた通知が「〇〇さんがあなたのあふぅにティンと来たようです」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティン通知テスト投稿', visibility: :public)
+      notify_like(status, Fabricate(:account, username: 'haruka', display_name: '春香'))
+      visit '/notifications'
+      wait_for_react
+
+      expect(page).to have_text('春香さんがあなたのあふぅにティンと来たようです')
+    end
 
     it 'アカウントメニューのサインアウトが「チャオ☆」である'
 
