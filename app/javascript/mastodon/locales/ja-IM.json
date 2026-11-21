@@ -67,6 +67,7 @@
   "empty_column.community": "楽屋にはまだ誰もいないようです。何か書いてみましょう！",
   "empty_column.domain_blocks": "非表示にしているドメインはありません。",
   "empty_column.home": "オフィスにはまだ誰もいません。だれかをフォローして埋めてみましょう。",
+  "empty_column.liked_posts": "まだ何もティンと来ていません。ティンと来るとここに表示されます。",
   "empty_column.notifications": "まだホワイトボードは真っ白です。同僚さんとたくさん交流していきましょう！",
   "empty_column.public": "開館時間になりました。搬入を開始して下さい。",
   "explore.trending_statuses": "あふぅ",

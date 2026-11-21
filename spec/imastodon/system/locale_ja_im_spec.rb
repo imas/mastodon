@@ -159,7 +159,12 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css('header h1', text: 'ティン！一覧')
     end
 
-    it 'いいねした投稿が無いとき、ティン！一覧に「まだ何もティンと来ていません」と表示される'
+    it 'いいねした投稿が無いとき、ティン！一覧に「まだ何もティンと来ていません」と表示される' do
+      visit '/favourites'
+      wait_for_react
+
+      expect(page).to have_text('まだ何もティンと来ていません。ティンと来るとここに表示されます。')
+    end
 
     it '複数人にいいねされた通知が「〇〇さんとほか〇人がティンと来ました」と表示される'
 
