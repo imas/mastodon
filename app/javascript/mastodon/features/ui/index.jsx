@@ -162,15 +162,15 @@ class SwitchingColumnsArea extends PureComponent {
     const { signedIn } = this.props.identity;
     const pathName = this.props.location.pathname;
 
-    // imastodon: ログイン後の既定ページはローカル TL
-    const defaultHomepage = '/timelines/public/local';
+    const defaultHomepage = '/home';
 
     let rootRedirect;
     if (signedIn) {
       if (forceOnboarding) {
         rootRedirect = '/start';
       } else {
-        rootRedirect = defaultHomepage;
+        // imastodon: ログイン後の既定ページはローカル TL。/home や /getting-started の行き先は upstream のまま
+        rootRedirect = '/timelines/public/local';
       }
     } else if (singleUserMode && owner && initialState?.accounts[owner]) {
       rootRedirect = `/@${initialState.accounts[owner].username}`;
