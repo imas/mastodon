@@ -5,9 +5,10 @@ import { FormattedMessage } from 'react-intl';
 import { WarningIcon } from '@phosphor-icons/react';
 
 import { changeComposeLanguage } from '@/mastodon/actions/compose';
+import { Button } from '@/mastodon/components/button';
 import { Callout } from '@/mastodon/components/callout/redesign';
 import { Icon } from '@/mastodon/components/icon';
-import { useDismissible } from '@/mastodon/hooks/useDismissible';
+import { useToggle } from '@/mastodon/hooks/useToggle';
 import { selectAccountStatus } from '@/mastodon/selectors/statuses';
 import {
   createAppSelector,
@@ -21,10 +22,15 @@ import { languageName, useLanguageGuess } from './hooks';
 import { selectComposeAttachments } from './selectors';
 
 const selectComposeAttachmentsWithoutAlt = createAppSelector(
-  [selectComposeAttachments],
-  (attachments) => ({
+  [
+    selectComposeAttachments,
+    (state) => !!state.meta.get('missing_alt_text_modal'),
+  ],
+  (attachments, missingAltTextModal) => ({
     count: attachments.length,
-    missingAlt: attachments.some((attachment) => !attachment.description),
+    missingAlt:
+      missingAltTextModal &&
+      attachments.some((attachment) => !attachment.description),
   }),
 );
 
@@ -94,9 +100,15 @@ export const ComposeHints = (props: React.ComponentPropsWithRef<'div'>) => {
     );
   }
 
-  const { wasDismissed } = useDismissible('compose_language_hint');
+  const [wasDismissed, { onTrue: onDismiss }] = useToggle();
   if (isDifferentLanguage && !wasDismissed) {
-    messages.push(<LanguageHint guess={guess} key='different-language' />);
+    messages.push(
+      <LanguageHint
+        guess={guess}
+        onDismiss={onDismiss}
+        key='different-language'
+      />,
+    );
   }
 
   if (missingAlt && count === 1) {
@@ -150,38 +162,43 @@ const ComposerError: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-const LanguageHint: React.FC<{ guess: string }> = ({ guess }) => {
+const LanguageHint: React.FC<{ guess: string; onDismiss: () => void }> = ({
+  guess,
+  onDismiss,
+}) => {
   const language = languageName(guess);
-
-  const { wasDismissed, dismiss } = useDismissible('compose_language_hint');
 
   const dispatch = useAppDispatch();
   const handleChange = useCallback(() => {
     dispatch(changeComposeLanguage(guess));
-  }, [dispatch, guess]);
+    // Trigger the dismiss since if the language is changed we assume the user doesn't want to be prompted again.
+    onDismiss();
+  }, [dispatch, guess, onDismiss]);
 
-  if (!language || wasDismissed) {
+  if (!language) {
     return null;
   }
 
   return (
     <Callout
       icon={WarningIcon}
-      actionClick={handleChange}
-      actionText={
-        <FormattedMessage
-          id='compose.hints.language.change'
-          defaultMessage='Change'
-          description='Label on button to accept language change prompt'
-        />
-      }
-      secondaryActionClick={dismiss}
-      secondaryActionText={
-        <FormattedMessage
-          id='compose.hints.language.dismiss'
-          defaultMessage='Dismiss'
-          description='Label on button to dismiss language change prompt'
-        />
+      actions={
+        <>
+          <Button size='sm' onClick={handleChange}>
+            <FormattedMessage
+              id='compose.hints.language.change'
+              defaultMessage='Change'
+              description='Label on button to accept language change prompt'
+            />
+          </Button>
+          <Button size='sm' variant='ghost' onClick={onDismiss}>
+            <FormattedMessage
+              id='compose.hints.language.dismiss'
+              defaultMessage='Dismiss'
+              description='Label on button to dismiss language change prompt'
+            />
+          </Button>
+        </>
       }
     >
       <FormattedMessage

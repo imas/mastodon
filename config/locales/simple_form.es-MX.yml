@@ -62,7 +62,6 @@ es-MX:
         setting_default_quote_policy_private: Las publicaciones solo para seguidores hechas en Mastodon no pueden ser citadas por otros usuarios.
         setting_default_quote_policy_unlisted: Cuando las personas te citen, su publicación también se ocultará en las cronologías públicas.
         setting_default_sensitive: El contenido multimedia sensible está oculto por defecto y puede ser mostrado con un clic
-        setting_default_spoiler_field: Mantiene el campo de advertencia de contenido abierto dentro del editor. Puedes personalizar el texto en cada publicación.
         setting_display_media_default: Advertir antes de mostrar contenidos marcados como sensibles
         setting_display_media_hide_all: Advertir antes de mostrar todos los archivos multimedia
         setting_display_media_show_all: Mostrar todos los archivos multimedia sin advertir, incluidos los marcados como sensibles
@@ -257,7 +256,6 @@ es-MX:
         setting_default_privacy: Visibilidad de publicación
         setting_default_quote_policy: Quién puede citar
         setting_default_sensitive: Marcar siempre imágenes como sensibles
-        setting_default_spoiler_field: Usar advertencias de contenido por defecto
         setting_delete_modal: Avisarme antes de eliminar una publicación
         setting_disable_hover_cards: Desactivar la vista previa del perfil al pasar el cursor por encima
         setting_disable_swiping: Desactivar los gestos de deslizamiento
@@ -273,6 +271,7 @@ es-MX:
         setting_missing_alt_text_modal: Avisarme antes de publicar contenido multimedia sin descripción de texto
         setting_quick_boosting: Habilitar impulso rápido
         setting_reduce_motion: Reducir el movimiento de las animaciones
+        setting_show_stats_in_feed: Mostrar estadísticas de interacciones en cronologías
         setting_split_default_privacy_discoverable: Permitir que mis publicaciones aparezcan en las cronologías públicas y resultados de búsqueda
         setting_system_font_ui: Usar la fuente por defecto del sistema
         setting_system_scrollbars_ui: Usar la barra de desplazamiento por defecto del sistema

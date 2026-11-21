@@ -37,6 +37,10 @@
   }
 }
 
+.isMessage {
+  @include mixins.message-background;
+}
+
 @keyframes highlight-fade {
   from {
     background: var(--color-bg-brand-softest);
@@ -44,25 +48,6 @@
 
   to {
     background: transparent;
-  }
-}
-
-.isMessage {
-  position: relative;
-
-  &::before {
-    content: '';
-    mask-repeat: repeat;
-    mask-image: url('@/images/composer_message.svg');
-    mask-size: 311.36px auto;
-    background-color: var(--color-border-brand);
-    opacity: 0.15;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    top: 0;
-    left: 0;
-    pointer-events: none;
   }
 }
 
@@ -232,4 +217,28 @@
 
 .inlineIcon {
   vertical-align: middle;
+}
+
+.boostSpin :global(.icon) {
+  :global(.no-reduce-motion) & {
+    animation: boost-spin 0.4s ease-out;
+  }
+}
+
+@keyframes boost-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  55% {
+    transform: rotate(200deg) scale(1.15);
+  }
+
+  80% {
+    transform: rotate(170deg) scale(0.95);
+  }
+
+  100% {
+    transform: rotate(180deg) scale(1);
+  }
 }

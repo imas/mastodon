@@ -81,12 +81,10 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_css('form[role="dialog"] button[aria-haspopup="menu"]', text: '社内資料')
     end
 
-    it '閲覧注意のトグルが「早苗さんに見つからないようにする」、入力欄のラベルが「ζ\'ヮ\')ζ＜まえせつ」である' do
+    it '閲覧注意の入力欄のプレースホルダーが「早苗さんに見つからないようにする…」である' do
       open_composer
-      find('form[role="dialog"] button[aria-haspopup="menu"]', text: ui_text('compose.settings')).click
-      find('[role="menuitemcheckbox"]', text: '早苗さんに見つからないようにする').click
 
-      expect(page).to have_css('form[role="dialog"] label', exact_text: "ζ'ヮ')ζ＜まえせつ")
+      expect(page).to have_field(placeholder: '早苗さんに見つからないようにする…')
     end
 
     it '返信の投稿小窓のタイトルが「Re:あふぅ」である' do
@@ -114,8 +112,8 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       end
     end
 
-    it 'アカウントカードの「⋯」メニューに「理由あってブロック！」「だまっとけ☆リスト」がある' do
-      find('nav footer button[aria-expanded]').click
+    it 'アカウントメニューに「理由あってブロック！」「だまっとけ☆リスト」がある' do
+      within('nav') { click_on ui_text('tabs_bar.account') }
 
       expect(page).to have_link('理由あってブロック！')
       expect(page).to have_link('だまっとけ☆リスト')

@@ -16,7 +16,6 @@ class UserSettings
   setting :default_sensitive, default: false
   setting :default_privacy, default: nil, in: %w(public unlisted private)
   setting :default_quote_policy, default: 'public', in: %w(public followers nobody)
-  setting :default_spoiler_field, default: false
   setting :email_subscriptions, default: false
   setting :display_own_boosts, default: false
   setting :display_own_posts, default: true
@@ -44,6 +43,7 @@ class UserSettings
     setting :color_scheme, default: 'auto', in: %w(auto light dark)
     setting :contrast, default: 'auto', in: %w(auto high)
     setting :theme_color, default: 'indigo' # TODO: dynamic inclusion checking?
+    setting :show_stats_in_feed, default: true
   end
 
   namespace :notification_emails do

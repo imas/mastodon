@@ -850,6 +850,7 @@ export const Video: React.FC<{
           !editable &&
           !fullscreen &&
           !alwaysVisible &&
+          !onToggleVisibility &&
           revealed && (
             <div
               className={classNames('media-gallery__actions', {
@@ -857,12 +858,12 @@ export const Video: React.FC<{
               })}
             >
               <Button
-                contrastOnMedia
                 size='xs'
-                variant='solid'
+                color='media'
                 className='media-gallery__actions__pill'
                 onClick={toggleReveal}
                 type='button'
+                expandHitArea={3}
               >
                 <FormattedMessage
                   id='media_gallery.hide'

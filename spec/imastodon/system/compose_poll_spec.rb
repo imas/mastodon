@@ -15,7 +15,8 @@ RSpec.describe '投稿小窓の投票', :js, type: :system do
     it '投票ボタンが表示されない' do
       within('form[role="dialog"]') do
         expect(page).to have_button(frontend_translations('compose.publish'))
-        expect(page).to have_no_button(frontend_translations('poll_button.add_poll'))
+        # 唯一の使用箇所を imastodon が消したので、キーが en.json に残らない。upstream の defaultMessage で探す
+        expect(page).to have_no_button('Add a poll')
       end
     end
   end

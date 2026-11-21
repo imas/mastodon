@@ -13,6 +13,8 @@ import classNames from 'classnames';
 
 import { fromJS } from 'immutable';
 
+import { EyeSlashIcon } from '@phosphor-icons/react';
+
 import { openModal } from '@/mastodon/actions/modal';
 import type { DeployPictureInPictureCallback } from '@/mastodon/actions/picture_in_picture';
 import { deployPictureInPicture } from '@/mastodon/actions/picture_in_picture';
@@ -29,7 +31,7 @@ import { selectPictureInPicture } from '@/mastodon/selectors/statuses';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 import { compareUrls } from '@/mastodon/utils/compare_urls';
 
-import { Button } from '../button';
+import { Button, IconButton } from '../button';
 
 import classes from './attachments.module.scss';
 import { useStatusContext } from './hooks';
@@ -247,10 +249,7 @@ const MediaAttachments: React.FC<{
     aspectRatio,
     mediaFilters,
     wrapperRef,
-  } satisfies Omit<
-    React.ComponentProps<typeof MediaAttachmentWrapper>,
-    'children'
-  >;
+  } satisfies Omit<MediaAttachmentWrapperProps, 'children'>;
 
   if (isMediaAttachmentOfType(attachment, 'audio')) {
     const { colors, original } = attachment.meta ?? {};
@@ -296,35 +295,42 @@ const MediaAttachments: React.FC<{
   }
 
   return (
-    <MediaAttachmentWrapper {...wrapperProps} type='gallery'>
+    <MediaAttachmentWrapper
+      {...wrapperProps}
+      type='gallery'
+      aspectRatioForce={restAttachments.length === 0}
+    >
       <MediaGallery
         media={immutableAttachments}
         lang={language}
         height={110}
         onOpenMedia={handleOpenMedia}
-        onToggleVisibility={handleToggleMediaVisibility}
         visible={showMedia}
       />
     </MediaAttachmentWrapper>
   );
 };
 
-const MediaAttachmentWrapper: React.FC<{
+interface MediaAttachmentWrapperProps {
   visible: boolean;
   statusHidden: boolean;
   onToggle: () => void;
   type?: 'gallery' | 'video' | 'audio';
   children: React.ReactNode;
   aspectRatio: string;
+  aspectRatioForce?: boolean;
   mediaFilters: string[];
   wrapperRef: React.RefObject<HTMLDivElement | null>;
-}> = ({
+}
+
+const MediaAttachmentWrapper: React.FC<MediaAttachmentWrapperProps> = ({
   visible,
   statusHidden,
   type = 'gallery',
   onToggle,
   children,
   aspectRatio,
+  aspectRatioForce,
   mediaFilters,
   wrapperRef,
 }) => {
@@ -332,11 +338,18 @@ const MediaAttachmentWrapper: React.FC<{
     <div
       ref={wrapperRef}
       data-color-scheme='dark'
-      className={classes.galleryWrapper}
+      className={classNames(
+        classes.galleryWrapper,
+        aspectRatioForce && classes.galleryWrapperAspectForce,
+      )}
+      style={{ ['--aspect-ratio']: aspectRatio } as React.CSSProperties}
     >
       {!visible && !statusHidden && (
         <div
-          className={classes.gallerySpoiler}
+          className={classNames(
+            classes.gallerySpoilerBox,
+            mediaFilters.length > 0 && classes.gallerySpoilerFilter,
+          )}
           data-interactive-post-content='true'
         >
           {mediaFilters.length > 0 && (
@@ -350,7 +363,7 @@ const MediaAttachmentWrapper: React.FC<{
               }}
             />
           )}
-          <Button size='sm' variant='solid' onClick={onToggle}>
+          <Button color='media' size='sm' onClick={onToggle}>
             <FormattedMessage
               id='content_warning.media.show_short'
               defaultMessage='Show media'
@@ -362,7 +375,6 @@ const MediaAttachmentWrapper: React.FC<{
         className={classNames(
           mainClasses.contentWarningBlur,
           !visible && mainClasses.contentWarningBlurActive,
-          !visible && classes.galleryHideButtons,
           !visible && classes.galleryHideActions,
           mediaFilters.length > 0 && classes.galleryFilterBlur,
         )}
@@ -372,6 +384,18 @@ const MediaAttachmentWrapper: React.FC<{
         >
           {children}
         </Suspense>
+        {visible && (
+          <IconButton
+            icon={EyeSlashIcon}
+            className={classes.gallerySpoilerButton}
+            color='media'
+            size='xs'
+            expandHitArea={3}
+            onClick={onToggle}
+          >
+            <FormattedMessage id='media_gallery.hide' defaultMessage='Hide' />
+          </IconButton>
+        )}
       </div>
     </div>
   );

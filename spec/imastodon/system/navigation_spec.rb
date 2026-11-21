@@ -13,4 +13,23 @@ RSpec.describe 'ナビゲーション', :js, type: :system do
       expect(page).to have_current_path(%r{/public/local})
     end
   end
+
+  context 'ログインユーザーがマルチカラムUIを使っている場合' do
+    before do
+      login_and_visit_spa
+      enable_advanced_ui
+    end
+
+    after do
+      disable_advanced_ui
+    end
+
+    it '/home を開くとローカルTLへ飛ばされずにホームTLが表示される' do
+      visit '/home'
+      wait_for_react
+
+      # マルチカラムでは upstream が /deck 配下のホームへ寄せる
+      expect(page).to have_current_path('/deck/home')
+    end
+  end
 end

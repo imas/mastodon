@@ -101,12 +101,11 @@ RSpec.describe 'お気に入りタグ', :js, type: :system do
     end
   end
 
-  context 'アカウントカードの「⋯」メニューの場合' do
+  context 'ナビゲーションのアカウントメニューの場合' do
     before { login_and_visit_spa }
 
     it 'お気に入りタグの設定画面へのリンクがある' do
-      # ナビゲーション型のメニューなので、トリガーは aria-haspopup を持たず、項目もただのリンクになる
-      find('nav footer button[aria-expanded]').click
+      within('nav') { click_on frontend_translations('tabs_bar.account') }
       expect(page).to have_link(frontend_translations('navigation_bar.favourite_tags'), href: '/settings/favourite_tags')
     end
   end

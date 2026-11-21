@@ -2,11 +2,14 @@
 
 .root {
   --main-column-max-width: 600px;
-  --navigation-width: 320px;
-  --search-column-width: 320px;
+  --sidebar-width: var(--main-navigation-width);
+
+  &[data-collapsed='true'] {
+    --sidebar-width: var(--main-navigation-width-collapsed);
+  }
 
   // This grid definition is shared with the composer
-  --columns-area-grid-columns: minmax(var(--navigation-width), 1fr)
+  --columns-area-grid-columns: minmax(var(--sidebar-width), 1fr)
     minmax(0, var(--main-column-max-width)) minmax(0, 1fr);
 
   display: flex;
@@ -26,56 +29,22 @@
 
 .rootMinimal {
   // In `minimalShell` layout, no sidebar navigation is shown,
-  // so we allow the column to collapse
-  --navigation-width: 0;
+  // so we allow the column to shrink to 0
+  --sidebar-width: 0;
 }
 
-.multiColumnRoot {
-  --multi-column-navigation-width: 320px;
-  --multi-column-gap: var(--space-2);
-
-  position: relative;
-  display: flex;
-  flex: 1 1 auto;
-  justify-content: flex-start;
-  gap: var(--multi-column-gap);
-  padding-inline-end: var(--multi-column-gap);
-  overflow-x: auto;
-}
-
-.navigationWrapper,
-.discoveryWrapper {
+.navigationWrapper {
   position: sticky;
   top: 0;
   z-index: 1;
   box-sizing: border-box;
   width: 100%;
   height: 100dvh;
-}
-
-.navigationWrapper {
-  max-width: var(--navigation-width);
+  max-width: var(--sidebar-width);
   padding-bottom: env(safe-area-inset-bottom);
   justify-self: end;
 
-  .multiColumnRoot & {
-    height: initial;
-    min-width: var(--multi-column-navigation-width);
-    inset-inline-start: 0;
-    z-index: 100;
-    background: var(--color-bg-desktop);
-  }
-
   @media (max-width: ($mobile-menu-breakpoint - 1)) {
-    display: none;
-  }
-}
-
-.discoveryWrapper {
-  max-width: var(--search-column-width);
-  padding: var(--space-5) var(--space-4) var(--space-6);
-
-  @media (width <= $no-gap-breakpoint) {
     display: none;
   }
 }

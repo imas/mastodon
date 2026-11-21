@@ -62,7 +62,6 @@ es-AR:
         setting_default_quote_policy_private: Los mensajes solo para seguidores redactados en Mastodon no pueden ser citados por otras cuentas.
         setting_default_quote_policy_unlisted: Cuando otras cuentas te citen, sus publicaciones también se ocultarán de las líneas temporales de tendencias.
         setting_default_sensitive: El contenido de medios sensibles está oculto predeterminadamente y puede ser mostrado con un clic
-        setting_default_spoiler_field: Mantiene el campo de advertencia de contenido abierto dentro del compositor. Podé personalizar el texto en cada mensaje.
         setting_display_media_default: Advertir antes de mostrar medios marcados como sensibles
         setting_display_media_hide_all: Advertir antes de mostrar todos los medios
         setting_display_media_show_all: Mostrar todos los medios sin advertir, incluyendo los medios marcados como sensibles
@@ -257,7 +256,6 @@ es-AR:
         setting_default_privacy: Visibilidad del mensaje
         setting_default_quote_policy: Quién puede citar
         setting_default_sensitive: Siempre marcar medios como sensibles
-        setting_default_spoiler_field: Usar advertencias de contenido predeterminadamente
         setting_delete_modal: Advertirme antes de eliminar un mensaje
         setting_disable_hover_cards: Deshabilitar previsualización del perfil al pasar el cursor
         setting_disable_swiping: Deshabilitar movimientos de deslizamiento
@@ -273,6 +271,7 @@ es-AR:
         setting_missing_alt_text_modal: Advertirme antes de enviar medios sin texto alternativo
         setting_quick_boosting: Habilitar adhesión rápida
         setting_reduce_motion: Reducir el movimiento de las animaciones
+        setting_show_stats_in_feed: Mostrar estadísticas de interacciones en las líneas temporales
         setting_split_default_privacy_discoverable: Hacer que mis mensajes aparezcan en líneas temporales públicas y resultados de búsqueda
         setting_system_font_ui: Utilizar la tipografía predeterminada del sistema
         setting_system_scrollbars_ui: Usar la barra de desplazamiento predeterminada del sistema operativo

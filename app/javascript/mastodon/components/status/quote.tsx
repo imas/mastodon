@@ -51,7 +51,7 @@ import {
   useStatusContext,
   useStatusHandlers,
 } from './hooks';
-import { StatusGalleryImage, StatusImage } from './image';
+import { StatusImage, StatusImageGrid } from './image';
 import classes from './quote.module.scss';
 import { accountStatusLinkProps, statusLink } from './utils';
 
@@ -272,7 +272,6 @@ const QuotedStatusBody: React.FC<{
   }
 
   const text = (status.translation?.contentHtml ?? status.contentHtml).trim();
-  const ImageComp = linkStatus ? StatusGalleryImage : StatusImage;
 
   return (
     <>
@@ -317,9 +316,9 @@ const QuotedStatusBody: React.FC<{
       )}
 
       {mainAttachment?.type === 'video' && (
-        <div className={classNames(classes.media, classes.mediaSingle)}>
-          <ImageComp
-            statusId={status.id}
+        <div className={classes.media}>
+          <StatusImage
+            statusId={linkStatus ? status.id : undefined}
             className={classes.image}
             attachment={mainAttachment}
             sensitive={sensitive}
@@ -330,31 +329,28 @@ const QuotedStatusBody: React.FC<{
 
               {duration}
             </div>
-          </ImageComp>
+          </StatusImage>
         </div>
       )}
 
       {imageAttachments.length > 0 && (
-        <div
-          className={classNames(
-            classes.media,
-            imageAttachments.length === 1 && classes.mediaSingle,
-            imageAttachments.length > 1 && classes.mediaGrid,
-          )}
-          data-number={imageAttachments.length}
+        <StatusImageGrid
+          className={classes.media}
+          count={imageAttachments.length}
         >
-          {imageAttachments.map((attachment) => (
-            <ImageComp
+          {imageAttachments.map((attachment, index) => (
+            <StatusImage
               showAlt
-              statusId={status.id}
+              statusId={linkStatus ? status.id : undefined}
               className={classes.image}
               attachment={attachment}
               sensitive={sensitive}
               key={attachment.id}
               aria-label={attachment.description}
+              index={index}
             />
           ))}
-        </div>
+        </StatusImageGrid>
       )}
     </>
   );
