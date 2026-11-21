@@ -109,6 +109,7 @@
   "mute_modal.you_wont_see_posts": "相手はあなたのあふぅを今までどおり閲覧できますが、あなたは相手のあふぅを閲覧できなくなります。",
   "navigation_bar.blocked": "理由あってブロック！",
   "navigation_bar.favourite_tags": "スウィーティー☆なタグ",
+  "navigation_bar.liked_posts": "ティン！一覧",
   "navigation_bar.muted": "だまっとけ☆リスト",
   "navigation_bar.sign_out": "チャオ☆",
   "notification.admin.report_account": "{name}さんが{target}さんのあふぅ{count, plural, other {#件}}を「{category}」として通報しました",

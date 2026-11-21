@@ -152,7 +152,12 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_button('チャオ☆', exact: true)
     end
 
-    it 'アカウントメニューのいいねした投稿が「ティン！一覧」で、開いた先の見出しも「ティン！一覧」である'
+    it 'アカウントメニューのいいねした投稿が「ティン！一覧」で、開いた先の見出しも「ティン！一覧」である' do
+      within('nav') { click_on ui_text('tabs_bar.account') }
+      click_on 'ティン！一覧'
+
+      expect(page).to have_css('header h1', text: 'ティン！一覧')
+    end
 
     it 'いいねした投稿が無いとき、ティン！一覧に「まだ何もティンと来ていません」と表示される'
 
