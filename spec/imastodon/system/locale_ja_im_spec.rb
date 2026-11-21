@@ -166,7 +166,15 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_text('まだ何もティンと来ていません。ティンと来るとここに表示されます。')
     end
 
-    it '複数人にいいねされた通知が「〇〇さんとほか〇人がティンと来ました」と表示される'
+    it '複数人にいいねされた通知が「〇〇さんとほか〇人がティンと来ました」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティン複数テスト投稿', visibility: :public)
+      notify_like(status, Fabricate(:account, username: 'chihaya', display_name: '千早'))
+      notify_like(status, Fabricate(:account, username: 'haruka', display_name: '春香'))
+      visit '/notifications'
+      wait_for_react
+
+      expect(page).to have_text('春香さんとほか1人がティンと来ました')
+    end
 
     it 'メッセージにいいねされた通知が「〇〇さんがあなたの機密資料にティンと来たようです」と表示される'
 
