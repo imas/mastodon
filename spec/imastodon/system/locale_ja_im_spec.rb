@@ -146,7 +146,11 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_text('春香さんがあなたのあふぅにティンと来たようです')
     end
 
-    it 'アカウントメニューのサインアウトが「チャオ☆」である'
+    it 'アカウントメニューのサインアウトが「チャオ☆」である' do
+      within('nav') { click_on ui_text('tabs_bar.account') }
+
+      expect(page).to have_button('チャオ☆', exact: true)
+    end
 
     it 'アカウントメニューのいいねした投稿が「ティン！一覧」で、開いた先の見出しも「ティン！一覧」である'
 

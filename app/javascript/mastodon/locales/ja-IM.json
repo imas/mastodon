@@ -110,6 +110,7 @@
   "navigation_bar.blocked": "理由あってブロック！",
   "navigation_bar.favourite_tags": "スウィーティー☆なタグ",
   "navigation_bar.muted": "だまっとけ☆リスト",
+  "navigation_bar.sign_out": "チャオ☆",
   "notification.admin.report_account": "{name}さんが{target}さんのあふぅ{count, plural, other {#件}}を「{category}」として通報しました",
   "notification.admin.report_account_other": "{name}さんが{target}さんのあふぅ{count, plural, other {#件}}を通報しました",
   "notification.favourite": "{name}さんがあなたのあふぅにティンと来たようです",
