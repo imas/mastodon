@@ -212,6 +212,12 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_text('まだ誰もティンと来ていません。ティンと来るとここに表示されます。')
     end
 
-    it 'キーボードショートカットの一覧でいいねが「ティン！」、いいねした投稿を開くが「ティンと来た！リストを開く」である'
+    it 'キーボードショートカットの一覧でいいねが「ティン！」、いいねした投稿を開くが「ティンと来た！リストを開く」である' do
+      visit '/keyboard-shortcuts'
+      wait_for_react
+
+      expect(page).to have_css('td', exact_text: 'ティン！')
+      expect(page).to have_css('td', exact_text: 'ティンと来た！リストを開く')
+    end
   end
 end
