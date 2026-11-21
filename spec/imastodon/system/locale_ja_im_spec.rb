@@ -28,6 +28,14 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       find('form[role="dialog"] button[aria-haspopup="menu"]', text: '公開資料').click
     end
 
+    # bob の投稿に from がいいねした通知を、グループ化のキー付きで作る
+    def notify_like(status, from)
+      favourite = Fabricate(:favourite, account: from, status: status)
+      notification = Notification.new(account: bob.account, activity: favourite, type: :favourite)
+      notification.set_group_key!
+      notification.save!
+    end
+
     # ja-IM で言い換えていない文言は、アプリと同じく ja、en の順に引き継がれる
     def ui_text(key)
       %w(ja-IM ja en).each do |locale|
@@ -117,6 +125,99 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
 
       expect(page).to have_link('理由あってブロック！')
       expect(page).to have_link('だまっとけ☆リスト')
+    end
+
+    it '投稿のいいねボタンが「ティンと来た！」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティンテスト投稿', visibility: :public)
+      FeedManager.instance.push_to_home(bob.account, status)
+      visit '/home'
+      wait_for_react
+
+      # ブーストと同じく、ラベルは aria-labelledby の参照先の見えない要素にある
+      expect(page).to have_css('article[data-id] [id]', exact_text: 'ティンと来た！', visible: :hidden)
+    end
+
+    it 'いいねされた通知が「〇〇さんがあなたのあふぅにティンと来たようです」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティン通知テスト投稿', visibility: :public)
+      notify_like(status, Fabricate(:account, username: 'haruka', display_name: '春香'))
+      visit '/notifications'
+      wait_for_react
+
+      expect(page).to have_text('春香さんがあなたのあふぅにティンと来たようです')
+    end
+
+    it 'アカウントメニューのサインアウトが「チャオ☆」である' do
+      within('nav') { click_on ui_text('tabs_bar.account') }
+
+      expect(page).to have_button('チャオ☆', exact: true)
+    end
+
+    it 'アカウントメニューのいいねした投稿が「ティン！一覧」で、開いた先の見出しも「ティン！一覧」である' do
+      within('nav') { click_on ui_text('tabs_bar.account') }
+      click_on 'ティン！一覧'
+
+      expect(page).to have_css('header h1', text: 'ティン！一覧')
+    end
+
+    it 'いいねした投稿が無いとき、ティン！一覧に「まだ何もティンと来ていません」と表示される' do
+      visit '/favourites'
+      wait_for_react
+
+      expect(page).to have_text('まだ何もティンと来ていません。ティンと来るとここに表示されます。')
+    end
+
+    it '複数人にいいねされた通知が「〇〇さんとほか〇人がティンと来ました」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティン複数テスト投稿', visibility: :public)
+      notify_like(status, Fabricate(:account, username: 'chihaya', display_name: '千早'))
+      notify_like(status, Fabricate(:account, username: 'haruka', display_name: '春香'))
+      visit '/notifications'
+      wait_for_react
+
+      expect(page).to have_text('春香さんとほか1人がティンと来ました')
+    end
+
+    it 'メッセージにいいねされた通知が「〇〇さんがあなたの機密資料にティンと来たようです」と表示され、複数人なら「ほか〇人」が付く' do
+      single = Fabricate(:status, account: bob.account, text: '機密資料ティンテスト（1人）', visibility: :direct)
+      notify_like(single, Fabricate(:account, username: 'yayoi', display_name: 'やよい'))
+      multiple = Fabricate(:status, account: bob.account, text: '機密資料ティンテスト（2人）', visibility: :direct)
+      notify_like(multiple, Fabricate(:account, username: 'iori', display_name: '伊織'))
+      notify_like(multiple, Fabricate(:account, username: 'ami', display_name: '亜美'))
+      visit '/notifications'
+      wait_for_react
+
+      expect(page).to have_text('やよいさんがあなたの機密資料にティンと来たようです')
+      expect(page).to have_text('亜美さんとほか1人があなたの機密資料にティンと来たようです')
+    end
+
+    it 'メッセージ一覧の暗号化の注意で、メッセージが「機密資料」と言い換えられている' do
+      visit '/conversations'
+      wait_for_react
+
+      expect(page).to have_text('機密資料はエンドツーエンド暗号化に対応していません。電話番号や口座情報など、安全に送受信されるべき情報をMastodonで共有しないでください。')
+    end
+
+    it '投稿がまだ無いカスタムフィードに「このフィードのメンバーが新しいあふぅをすると」と表示される' do
+      list = Fabricate(:list, account: bob.account, title: '765プロ')
+      visit "/lists/#{list.id}"
+      wait_for_react
+
+      expect(page).to have_text('このカスタムフィードにはまだなにもありません。このフィードのメンバーが新しいあふぅをするとここに表示されます。')
+    end
+
+    it 'まだ誰もいいねしていない投稿のいいね一覧に「まだ誰もティンと来ていません」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティン待ちテスト投稿', visibility: :public)
+      visit "/statuses/#{status.id}/favourites"
+      wait_for_react
+
+      expect(page).to have_text('まだ誰もティンと来ていません。ティンと来るとここに表示されます。')
+    end
+
+    it 'キーボードショートカットの一覧でいいねが「ティン！」、いいねした投稿を開くが「ティンと来た！リストを開く」である' do
+      visit '/keyboard-shortcuts'
+      wait_for_react
+
+      expect(page).to have_css('td', exact_text: 'ティン！')
+      expect(page).to have_css('td', exact_text: 'ティンと来た！リストを開く')
     end
   end
 end
