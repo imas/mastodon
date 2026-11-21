@@ -189,7 +189,12 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_text('亜美さんとほか1人があなたの機密資料にティンと来たようです')
     end
 
-    it 'メッセージの投稿小窓の暗号化の注意で、投稿が「機密資料」と言い換えられている'
+    it 'メッセージ一覧の暗号化の注意で、メッセージが「機密資料」と言い換えられている' do
+      visit '/conversations'
+      wait_for_react
+
+      expect(page).to have_text('機密資料はエンドツーエンド暗号化に対応していません。電話番号や口座情報など、安全に送受信されるべき情報をMastodonで共有しないでください。')
+    end
 
     it '投稿がまだ無いカスタムフィードに「このメンバーが新しいあふぅをすると」と表示される'
 

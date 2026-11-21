@@ -48,6 +48,7 @@
   "compose.reply.title.new": "Re:あふぅ",
   "compose.sensitive.placeholder": "早苗さんに見つからないようにする…",
   "compose.visibility.title": "公開範囲",
+  "compose_form.encryption_warning_messages": "機密資料はエンドツーエンド暗号化に対応していません。電話番号や口座情報など、安全に送受信されるべき情報をMastodonで共有しないでください。",
   "compose_form.favourite_tags": "スウィーティー☆なタグ",
   "compose_form.message.title.new": "新しい機密資料",
   "confirmations.delete.title": "あふぅを削除しようとしています",
