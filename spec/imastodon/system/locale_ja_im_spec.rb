@@ -204,7 +204,13 @@ RSpec.describe 'ja-IMロケール', :js, type: :system do
       expect(page).to have_text('このカスタムフィードにはまだなにもありません。このフィードのメンバーが新しいあふぅをするとここに表示されます。')
     end
 
-    it 'まだ誰もいいねしていない投稿のいいね一覧に「まだ誰もティンと来ていません」と表示される'
+    it 'まだ誰もいいねしていない投稿のいいね一覧に「まだ誰もティンと来ていません」と表示される' do
+      status = Fabricate(:status, account: bob.account, text: 'ティン待ちテスト投稿', visibility: :public)
+      visit "/statuses/#{status.id}/favourites"
+      wait_for_react
+
+      expect(page).to have_text('まだ誰もティンと来ていません。ティンと来るとここに表示されます。')
+    end
 
     it 'キーボードショートカットの一覧でいいねが「ティン！」、いいねした投稿を開くが「ティンと来た！リストを開く」である'
   end
